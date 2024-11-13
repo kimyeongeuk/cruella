@@ -42,21 +42,23 @@
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/apex-charts/apex-charts.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/swiper/swiper.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css" />
-    <link rel="stylesheet" href="${ contextPath }/assets/vendor/libs/bs-stepper/bs-stepper.css" />
-    <link rel="stylesheet" href="${ contextPath }/assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
-    <link rel="stylesheet" href="${ contextPath }/assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css" />
+    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/bs-stepper/bs-stepper.css" />
+    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
+    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css" />
     
-    <link rel="stylesheet" href="${ contextPath }/assets/vendor/libs/flatpickr/flatpickr.css" />
-    <link rel="stylesheet" href="${ contextPath }/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css" />
-    <link rel="stylesheet" href="${ contextPath }/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css" />
-    <link rel="stylesheet" href="${ contextPath }/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css" />
-    <link rel="stylesheet" href="${ contextPath }/assets/vendor/libs/pickr/pickr-themes.css" />
+    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/flatpickr/flatpickr.css" />
+    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css" />
+    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css" />
+    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css" />
+    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/pickr/pickr-themes.css" />
+    
+    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/tagify/tagify.css" />
     
     <!-- Page CSS -->
 
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/css/pages/app-ecommerce.css" />
 	  <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/css/pages/cards-advance.css" />
-    <link rel="stylesheet" href="${ contextPath }/assets/vendor/css/pages/app-chat.css" />	  
+    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/css/pages/app-chat.css" />	  
 	  
     <!-- Helpers -->
     <script src="${ contextPath }/resources/assets/vendor/js/helpers.js"></script>
