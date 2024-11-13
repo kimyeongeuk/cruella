@@ -19,17 +19,7 @@ public class WebSocketConfig implements WebSocketConfigurer{
 
 	private final ChatEchoHandler chatEchoHandler;
 	
-	/**
-   	<websocket:handlers>
-      <websocket:mapping handler="chatEchoHandler" path="/chat" />
-      <websocket:handshake-interceptors>
-         <beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
-      </websocket:handshake-interceptors>
-      <websocket:sockjs />
-   </websocket:handlers>
-	
-	 * 
-	 */
+
 	
 	@Bean
 	HttpSessionHandshakeInterceptor httpSessionHandshackInterceptor() {
