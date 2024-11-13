@@ -87,5 +87,13 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     
+    <script src="${ contextPath }/resources/assets/vendor/libs/tagify/tagify.js"></script>
+    <script src="${ contextPath }/resources/assets/vendor/libs/bloodhound/bloodhound.js"></script>
+
+    <script src="${ contextPath }/resources/assets/js/forms-selects.js"></script>
+    <script src="${ contextPath }/resources/assets/js/forms-tagify.js"></script>
+    <script src="${ contextPath }/resources/assets/js/forms-typeahead.js"></script>
+    <script src="${ contextPath }/resources/assets/js/forms-editors.js"></script>
+    
     
     
