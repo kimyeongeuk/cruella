@@ -240,15 +240,26 @@
                 </li>
               </ul>
             </li>
-
-            <!-- 매출분석 -->
+						
+						<!-- 매출분석 -->
             <li class="menu-item">
-              <a href="#" class="menu-link">
+              <a href="#" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-chart-dots"></i>
                 <div data-i18n="매출분석">매출분석</div>
               </a>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="#" class="menu-link">
+                    <div data-i18n="차트">차트</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="#" class="menu-link">
+                    <div data-i18n="매출등록">매출등록</div>
+                  </a>
+                </li>
+              </ul>
             </li>
-
 
             <!-- 메신저 -->
             <li class="menu-item">
