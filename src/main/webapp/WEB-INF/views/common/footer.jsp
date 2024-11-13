@@ -60,14 +60,18 @@
     <script src="${ contextPath }/resources/assets/vendor/libs/@form-validation/auto-focus.js"></script>
     <script src="${ contextPath }/resources/assets/vendor/libs/quill/katex.js"></script>
     <script src="${ contextPath }/resources/assets/vendor/libs/quill/quill.js"></script>
+    <script src="${ contextPath }/resources/assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js"></script>
 
     <!-- Main JS -->
     <script src="${ contextPath }/resources/assets/js/main.js"></script>
 
     <!-- Page JS -->
     <script src="${ contextPath }/resources/assets/js/app-ecommerce-category-list.js"></script>
-    
-    
+    <script src="${ contextPath }/resources/assets/js/app-chat.js"></script>
+    <script src="${ contextPath }/resources/assets/vendor/libs/bs-stepper/bs-stepper.js"></script>
+    <script src="${ contextPath }/resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js"></script>
+    <script src="${ contextPath }/resources/assets/vendor/libs/select2/select2.js"></script>
+    <script src="${ contextPath }/resources/assets/js/form-wizard-icons.js"></script>
     
     
     

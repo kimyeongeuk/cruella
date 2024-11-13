@@ -7,211 +7,11 @@
 $(function () {
   var theme = $('html').hasClass('light-style') ? 'default' : 'default-dark',
     basicTree = $('#jstree-basic'),
-    customIconsTree = $('#jstree-custom-icons'),
-    contextMenu = $('#jstree-context-menu'),
     dragDrop = $('#jstree-drag-drop'),
-    checkboxTree = $('#jstree-checkbox'),
-    ajaxTree = $('#jstree-ajax');
+    dragDrop2 = $('#jstree-drag-drop2');
 
-  // Basic
-  // --------------------------------------------------------------------
-  if (basicTree.length) {
-    basicTree.jstree({
-      core: {
-        themes: {
-          name: theme
-        }
-      }
-    });
-  }
 
-  // Custom Icons
-  // --------------------------------------------------------------------
-  if (customIconsTree.length) {
-    customIconsTree.jstree({
-      core: {
-        themes: {
-          name: theme
-        },
-        data: [
-          {
-            text: 'css',
-            children: [
-              {
-                text: 'app.css',
-                type: 'css'
-              },
-              {
-                text: 'style.css',
-                type: 'css'
-              }
-            ]
-          },
-          {
-            text: 'img',
-            state: {
-              opened: true
-            },
-            children: [
-              {
-                text: 'bg.jpg',
-                type: 'img'
-              },
-              {
-                text: 'logo.png',
-                type: 'img'
-              },
-              {
-                text: 'avatar.png',
-                type: 'img'
-              }
-            ]
-          },
-          {
-            text: 'js',
-            state: {
-              opened: true
-            },
-            children: [
-              {
-                text: 'jquery.js',
-                type: 'js'
-              },
-              {
-                text: 'app.js',
-                type: 'js'
-              }
-            ]
-          },
-          {
-            text: 'index.html',
-            type: 'html'
-          },
-          {
-            text: 'page-one.html',
-            type: 'html'
-          },
-          {
-            text: 'page-two.html',
-            type: 'html'
-          }
-        ]
-      },
-      plugins: ['types'],
-      types: {
-        default: {
-          icon: 'ti ti-folder'
-        },
-        html: {
-          icon: 'ti ti-brand-html5 text-danger'
-        },
-        css: {
-          icon: 'ti ti-brand-css3 text-info'
-        },
-        img: {
-          icon: 'ti ti-photo text-success'
-        },
-        js: {
-          icon: 'ti ti-brand-javascript text-warning'
-        }
-      }
-    });
-  }
-
-  // Context Menu
-  // --------------------------------------------------------------------
-  if (contextMenu.length) {
-    contextMenu.jstree({
-      core: {
-        themes: {
-          name: theme
-        },
-        check_callback: true,
-        data: [
-          {
-            text: 'css',
-            children: [
-              {
-                text: 'app.css',
-                type: 'css'
-              },
-              {
-                text: 'style.css',
-                type: 'css'
-              }
-            ]
-          },
-          {
-            text: 'img',
-            state: {
-              opened: true
-            },
-            children: [
-              {
-                text: 'bg.jpg',
-                type: 'img'
-              },
-              {
-                text: 'logo.png',
-                type: 'img'
-              },
-              {
-                text: 'avatar.png',
-                type: 'img'
-              }
-            ]
-          },
-          {
-            text: 'js',
-            state: {
-              opened: true
-            },
-            children: [
-              {
-                text: 'jquery.js',
-                type: 'js'
-              },
-              {
-                text: 'app.js',
-                type: 'js'
-              }
-            ]
-          },
-          {
-            text: 'index.html',
-            type: 'html'
-          },
-          {
-            text: 'page-one.html',
-            type: 'html'
-          },
-          {
-            text: 'page-two.html',
-            type: 'html'
-          }
-        ]
-      },
-      plugins: ['types', 'contextmenu'],
-      types: {
-        default: {
-          icon: 'ti ti-folder'
-        },
-        html: {
-          icon: 'ti ti-brand-html5 text-danger'
-        },
-        css: {
-          icon: 'ti ti-brand-css3 text-info'
-        },
-        img: {
-          icon: 'ti ti-photo text-success'
-        },
-        js: {
-          icon: 'ti ti-brand-javascript text-warning'
-        }
-      }
-    });
-  }
-
+  // 참조선
   // Drag Drop
   // --------------------------------------------------------------------
   if (dragDrop.length) {
@@ -223,66 +23,81 @@ $(function () {
         check_callback: true,
         data: [
           {
-            text: 'css',
+            text: '영업총괄팀',
             children: [
               {
-                text: 'app.css',
-                type: 'css'
+                text: '박시우 점장',
+                icon: 'ti ti-user'
+
               },
               {
-                text: 'style.css',
-                type: 'css'
+                text: '김영욱 부장',
+                icon: 'ti ti-user'
               }
             ]
           },
           {
-            text: 'img',
+            text: '인사팀',
             state: {
-              opened: true
+              opened: false
+            },
+            children: [
+
+              {
+                text: '이예빈 팀장',
+                icon: 'ti ti-user'
+              },
+              {
+                text: '김동규 대리',
+                icon: 'ti ti-user'
+              },
+            ]
+          },
+          {
+            text: '지원팀',
+            state: {
+              opened: false
             },
             children: [
               {
-                text: 'bg.jpg',
-                type: 'img'
+                text: '김유빈 팀장',
+                icon: 'ti ti-user'
               },
               {
-                text: 'logo.png',
-                type: 'img'
+                text: '황재운 대리',
+                icon: 'ti ti-user'
               },
               {
-                text: 'avatar.png',
-                type: 'img'
+                text: '황재운 대리',
+                icon: 'ti ti-user'
+              },
+              {
+                text: '황재운 대리',
+                icon: 'ti ti-user'
+              },
+              {
+                text: '황재운 대리',
+                icon: 'ti ti-user'
+              },
+              {
+                text: '황재운 대리',
+                icon: 'ti ti-user'
               }
             ]
           },
           {
-            text: 'js',
+            text: '남성브랜드',
             state: {
-              opened: true
+              opened: false
             },
             children: [
               {
-                text: 'jquery.js',
-                type: 'js'
+                text: '강보람 팀장',
+                icon: 'ti ti-user'
               },
-              {
-                text: 'app.js',
-                type: 'js'
-              }
             ]
-          },
-          {
-            text: 'index.html',
-            type: 'html'
-          },
-          {
-            text: 'page-one.html',
-            type: 'html'
-          },
-          {
-            text: 'page-two.html',
-            type: 'html'
           }
+
         ]
       },
       plugins: ['types', 'dnd'],
@@ -306,79 +121,116 @@ $(function () {
     });
   }
 
-  // Checkbox
+  dragDrop.bind("move_node.jstree", function (e, d) {
+    console.log(e); //event
+    console.log(d); //node
+
+
+    // 현재 드랍된 node 객체 가지고 db에 반영시켜주는 ajax 기술
+
+  });
+
+
+
+
+
+
+
+  // Drag Drop
+  // 결재선 조직도
   // --------------------------------------------------------------------
-  if (checkboxTree.length) {
-    checkboxTree.jstree({
+  if (dragDrop2.length) {
+    dragDrop2.jstree({
       core: {
         themes: {
-          name: theme
+          name: theme,
+          
         },
+        check_callback: true,
         data: [
           {
-            text: 'css',
+            text: '영업총괄팀',
             children: [
               {
-                text: 'app.css',
-                type: 'css'
+                text: '박시우 점장',
+                memName: '박시우',
+                memNo:1,
+                teamName: '영업총괄팀',
+
+                icon: 'ti ti-user'
+
               },
               {
-                text: 'style.css',
-                type: 'css'
+                text: '김영욱 부장',
+                icon: 'ti ti-user'
               }
             ]
           },
           {
-            text: 'img',
+            text: '인사팀',
             state: {
-              opened: true
+              opened: false
+            },
+            children: [
+
+              {
+                text: '이예빈 팀장',
+                icon: 'ti ti-user'
+              },
+              {
+                text: '김동규 대리',
+                icon: 'ti ti-user'
+              },
+            ]
+          },
+          {
+            text: '지원팀',
+            state: {
+              opened: false
             },
             children: [
               {
-                text: 'bg.jpg',
-                type: 'img'
+                text: '김유빈 팀장',
+                icon: 'ti ti-user'
               },
               {
-                text: 'logo.png',
-                type: 'img'
+                text: '황재운 대리',
+                icon: 'ti ti-user'
               },
               {
-                text: 'avatar.png',
-                type: 'img'
+                text: '황재운 대리',
+                icon: 'ti ti-user'
+              },
+              {
+                text: '황재운 대리',
+                icon: 'ti ti-user'
+              },
+              {
+                text: '황재운 대리',
+                icon: 'ti ti-user'
+              },
+              {
+                text: '황재운 대리',
+                icon: 'ti ti-user'
               }
             ]
           },
           {
-            text: 'js',
+            text: '남성브랜드',
             state: {
-              opened: true
+              opened: false
             },
             children: [
               {
-                text: 'jquery.js',
-                type: 'js'
+                text: '손흥민 팀장',
+                icon: 'ti ti-user'
               },
-              {
-                text: 'app.js',
-                type: 'js'
-              }
             ]
-          },
-          {
-            text: 'index.html',
-            type: 'html'
-          },
-          {
-            text: 'page-one.html',
-            type: 'html'
-          },
-          {
-            text: 'page-two.html',
-            type: 'html'
           }
+
         ]
       },
-      plugins: ['types', 'checkbox', 'wholerow'],
+      plugins: ['types', 'dnd'],
       types: {
         default: {
           icon: 'ti ti-folder'
@@ -395,9 +247,95 @@ $(function () {
         js: {
           icon: 'ti ti-brand-javascript text-warning'
         }
-      }
+      },
+     
     });
+
+
+    let count = 0;
+    // drag & drop external div
+    $(document).on('dnd_stop.vakata', function (e, data) {
+        //console.log('dnd_stop');
+        var t = $(data.event.target); // drop된 위치의 요소 => 여기에 노드 정보를 append 시키면됨
+        console.log(t);
+        //t.text("떨궈짐");
+        
+
+        var node = data.data.origin.get_node(data.element); // {..., original:{text:xx, memNo:xx}, ..}
+       
+        if(t.closest('thead').hasClass('aa')){
+          if(count == 0){
+
+            t.closest("thead").html(
+              '<tr style="height: 50px; border: 1px solid;">'
+              +'<td style="width: 138px;">결재서</td>' 
+              + '<td style="width: 150px;">'+ node.original.memName 
+              + '<input type="hidden" value=' + node.original.memNo  +'>'+'</td>'
+              + '<td style="width: 150px;">'+ node.original.teamName +'</td>'
+              + '<td style="padding-left: 70px;">결재</td>'
+              + '<td style="width: 153px; padding-left: 33px;"><i class="ti ti-trash"></i></td>'
+            + '</tr>'
+            );
+  
+          }else if(count>0){
+            t.closest("thead").append(
+              '<tr style="height: 50px; border: 1px solid;">'
+              +'<td style="width: 138px;">결재서</td>' 
+              + '<td style="width: 150px;">'+ node.original.memName 
+              + '<input type="hidden" value=' + node.original.memNo + '></td>'
+              + '<td style="width: 150px;">'+ node.original.teamName +'</td>'
+              + '<td style="padding-left: 70px;">결재</td>'
+              + '<td style="width: 153px; padding-left: 33px;"><i class="ti ti-trash"></i></td>'
+            + '</tr>'
+            );
+  
+            
+          }
+        
+          
+          count++;
+        }
+
+       
+        console.log(count);
+
+        
+      });
+
+
+  
+
+
   }
+
+  dragDrop2.bind("move_node.jstree", function (e, d) {
+    //console.log(e); //event
+    //console.log(d); //node
+
+    // 현재 드랍된 node 객체 가지고 db에 반영시켜주는 ajax 
+
+    
+
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // Ajax Example
   // --------------------------------------------------------------------
