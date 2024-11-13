@@ -235,12 +235,12 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="${ contextPath }/notice/noticeList.do" class="menu-link">
                     <div data-i18n="공지사항">공지사항</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="${ contextPath }/board/boardList.do" class="menu-link">
                     <div data-i18n="팀 게시판">팀 게시판</div>
                   </a>
                 </li>
@@ -255,12 +255,12 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="${ contextPath }/chart/chart.do" class="menu-link">
                     <div data-i18n="차트">차트</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="${ contextPath }/revenue/revenue.do" class="menu-link">
                     <div data-i18n="매출등록">매출등록</div>
                   </a>
                 </li>
