@@ -62,6 +62,14 @@
     <script src="${ contextPath }/resources/assets/vendor/libs/quill/quill.js"></script>
     <script src="${ contextPath }/resources/assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js"></script>
 
+    <script src="${ contextPath }/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+    <script src="${ contextPath }/assets/vendor/libs/swiper/swiper.js"></script>
+    <script src="${ contextPath }/assets/vendor/libs/flatpickr/flatpickr.js"></script>
+    <script src="${ contextPath }/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+    <script src="${ contextPath }/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js"></script>
+    <script src="${ contextPath }/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js"></script>
+    <script src="${ contextPath }/assets/vendor/libs/pickr/pickr.js"></script>
+    
     <!-- Main JS -->
     <script src="${ contextPath }/resources/assets/js/main.js"></script>
 
@@ -72,6 +80,12 @@
     <script src="${ contextPath }/resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js"></script>
     <script src="${ contextPath }/resources/assets/vendor/libs/select2/select2.js"></script>
     <script src="${ contextPath }/resources/assets/js/form-wizard-icons.js"></script>
+    
+    <script src="${ contextPath }/assets/js/dashboards-analytics.js"></script>
+    <script src="${ contextPath }/assets/js/charts-apex.js"></script>
+    <script src="${ contextPath }/assets/js/forms-pickers.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     
     
     
