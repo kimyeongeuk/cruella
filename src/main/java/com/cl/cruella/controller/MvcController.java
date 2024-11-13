@@ -12,4 +12,8 @@ public class MvcController {
 		return "main";
 	}
 
+	@GetMapping("/mainTest")
+	public String testMainPage() {
+		return "동규/mainTest";
+	}
 }
