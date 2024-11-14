@@ -59,7 +59,7 @@
 												class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
 
 										<li class="nav-item"><a class="nav-link active" href="#"><i
-												class="ti-sm ti ti-money me-1_5"></i> 급여내역확인 </a></li>
+												class="ti-sm ti ti-users me-1_5"></i> 급여내역확인 </a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
 												class="ti-sm ti ti-users me-1_5"></i> 조직도 </a></li>

@@ -56,9 +56,6 @@
 												class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-money me-1_5"></i> 급여지급 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
 												class="ti-sm ti ti-money me-1_5"></i> 급여내역확인 </a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
@@ -99,7 +96,7 @@
 										</div>
 										<h5 class="pb-4 border-bottom mb-4"></h5>
 										<div class="card-body pt-4">
-											<form id="formAccountSettings" method="GET"
+											<form id="formAccountSettings" action="" method="GET"
 												onsubmit="return false">
 												<div class="row">
 													<div class="mb-4 col-md-6">
@@ -149,8 +146,8 @@
 														</div>
 													</div>
 													<div class="mb-4 col-md-6">
-														<label for="rank" class="form-label">직급</label> <select
-															id="rank" class="select2 form-select">
+														<label for="positionrank" class="form-label">직급</label> <select
+															id="positionrank" class="select2 form-select">
 															<option value="">선택</option>
 															<option value="">점장</option>
 															<option value="">부점장</option>
@@ -172,22 +169,22 @@
 													</div>
 													<div class="mb-4 col-md-6">
 														<label class="joiningDate" for="country">입사날짜</label> <input
-															class="form-control" type="text" id="state" name="state"
+															class="form-control" type="text" id="joinDate" name="joinDate"
 															placeholder="YY/MM/DD" />
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="language" class="form-label">주소</label> <input
-															class="form-control" type="text" id="state" name="state"
+															class="form-control" type="text" id="address" name="address"
 															placeholder="Address" />
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="timeZones" class="form-label">주민등록번호</label> <input
-															class="form-control" type="text" id="state" name="state"
+															class="form-control" type="text" id="idNo" name="idNo"
 															placeholder="000000-0000000" />
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="currency" class="form-label">전화번호</label> <input
-															class="form-control" type="text" id="state" name="state"
+															class="form-control" type="text" id="phone" name="phone"
 															placeholder="010-1111-2222" />
 													</div>
 												</div>
@@ -204,8 +201,8 @@
 							</div>
 						</div>
 
-
-
+					
+						
 
 					</div>
 					<!-- 세션 끝 -->
@@ -238,6 +235,13 @@
 
 
 
+
+<script>
+    $(document).ready(function() {
+        $('#rank').select2();
+        $('#positionrank').select2();
+    });
+</script>
 
 </body>
 </html>

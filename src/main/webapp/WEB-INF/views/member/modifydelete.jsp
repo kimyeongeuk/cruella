@@ -78,7 +78,7 @@
                           <div class="card-body">
                             <div style="text-align: center;">
                               <img
-                                src="../../assets/img/avatars/1.png"
+                                src="${ contextPath }/assets/img/avatars/1.png"
                                 alt="user-avatar"
                                 class="d-block w-px-140 h-px-140 rounded mx-auto"
                                 id="uploadedAvatar" 
@@ -170,8 +170,8 @@
                                   </div>
                                 </div>
                                 <div class="mb-4 col-md-6">
-                                  <label for="rank" class="form-label">직급</label>
-                                  <select id="rank" class="select2 form-select">
+                                  <label for="positionrank" class="form-label">직급</label>
+                                  <select id="positionrank" class="select2 form-select">
                                     <option value="">선택</option>
                                     <option value="">점장</option>
                                     <option value="">부점장</option>
@@ -197,19 +197,19 @@
                                 </div>
                                 <div class="mb-4 col-md-6">
                                   <label class="joiningDate" for="country">입사날짜</label>
-                                  <input class="form-control" type="text" id="state" name="state" placeholder="수정불가능" readonly/>
+                                  <input class="form-control" type="text" id="joinDate" name="joinDate" placeholder="수정불가능" readonly/>
                                 </div>
                                 <div class="mb-4 col-md-6">
                                   <label for="language" class="form-label">주소</label>
-                                  <input class="form-control" type="text" id="state" name="state" placeholder="수정불가능" readonly />
+                                  <input class="form-control" type="text" id="address" name="address" placeholder="수정불가능" readonly />
                                 </div>
                                 <div class="mb-4 col-md-6">
                                   <label for="timeZones" class="form-label">주민등록번호</label>
-                                  <input class="form-control" type="text" id="state" name="state" placeholder="수정불가능" readonly />
+                                  <input class="form-control" type="text" id="idNo" name="idNo" placeholder="수정불가능" readonly />
                                 </div>
                                 <div class="mb-4 col-md-6">
                                   <label for="currency" class="form-label">전화번호</label>
-                                  <input class="form-control" type="text" id="state" name="state" placeholder="수정불가능" readonly />
+                                  <input class="form-control" type="text" id="phone" name="phone" placeholder="수정불가능" readonly />
                                 </div>
                               </div>
                               <div class="mt-2" style="justify-self: center;">
@@ -259,6 +259,11 @@
    
    
    
-   
+   <script>
+    $(document).ready(function() {
+        $('#rank').select2();
+        $('#positionrank').select2();
+    });
+</script>
 </body>
 </html>
