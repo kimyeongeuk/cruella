@@ -126,16 +126,9 @@
 	            </div>
 	          </form>
 	
-	          <p class="text-center">
-	            <span></span>
-	            <a href="auth-register-basic.html">
-	              <span></span>
-	            </a>
-	          </p>
-	
 	        </div>
 	      </div>
-	      <!-- /Register -->
+	      <!-- /Login -->
 	    </div>
 	  </div>
 	</div>
