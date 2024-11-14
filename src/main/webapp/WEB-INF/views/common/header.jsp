@@ -165,8 +165,7 @@
             </li>
 
 
-
-            <!-- 자산관리 -->
+						<!-- 자산관리 -->
             <li class="menu-item">
               <a href="#" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-box"></i>
@@ -183,9 +182,13 @@
                     <div data-i18n="비품 관리">비품 관리</div>
                   </a>
                 </li>
+                <li class="menu-item">
+                  <a href="#" class="menu-link">
+                    <div data-i18n="내 예약">내 예약</div>
+                  </a>
+                </li>
               </ul>
             </li>
-
             <!-- 인사관리 -->
             <li class="menu-item">
               <a href="#" class="menu-link menu-toggle">
