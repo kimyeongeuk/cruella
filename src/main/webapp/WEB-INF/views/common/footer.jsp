@@ -69,7 +69,6 @@
     <script src="${ contextPath }/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js"></script>
     <script src="${ contextPath }/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js"></script>
     <script src="${ contextPath }/assets/vendor/libs/pickr/pickr.js"></script>
-    <script src="${ contextPath }/assets/vendor/libs/jstree/jstree.js"></script>
     
     <!-- Main JS -->
     <script src="${ contextPath }/resources/assets/js/main.js"></script>
@@ -94,6 +93,7 @@
     <script src="${ contextPath }/resources/assets/js/forms-selects.js"></script>
     <script src="${ contextPath }/resources/assets/js/forms-tagify.js"></script>
     <script src="${ contextPath }/resources/assets/js/forms-typeahead.js"></script>
+    
     <script src="${ contextPath }/resources/assets/js/forms-editors.js"></script>
     <script src="${ contextPath }/assets/js/extended-ui-treeview.js"></script>
         
@@ -101,6 +101,17 @@
     <script src="../../assets/vendor/libs/moment/moment.js"></script>
     <script src="../../assets/vendor/libs/flatpickr/flatpickr.js"></script>
     
+    <script src="${ contextPath }/resources/assets/js/app-ecommerce-category-list.js"></script>
+  	<script src="${ contextPath }/resources/assets/vendor/libs/jstree/jstree.js"></script>
+  	<script src="${ contextPath }/resources/assets/js/extended-ui-treeview.js"></script>
+  	<script src="${ contextPath }/resources/assets/vendor/libs/quill/katex.js"></script>
+  	<script src="${ contextPath }/resources/assets/vendor/libs/quill/quill.js"></script>
     
     
-   
+    
+    
+    
+    
+    
+    
+    

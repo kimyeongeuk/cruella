@@ -5,7 +5,7 @@
 
 
   	<!-- Favicon -->
-		<link rel="icon" type="image/x-icon" href="${ contextPath }/resources/assets/img/favicon/favicon.ico" />
+	<link rel="icon" type="image/x-icon" href="${ contextPath }/resources/assets/img/favicon/favicon.ico" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,20 +25,28 @@
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
 
     <link rel="stylesheet" href="${ contextPath }/resources/assets/css/demo.css" />
+    <!-- 여기까지 공통 건들지마세요! -->
+    
+    
+    
+    
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/node-waves/node-waves.css" />
 
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/scrollbar-js/typeahead.css" />
+    
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
-    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/select2/select2.css" />
+   
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/@form-validation/form-validation.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/quill/typography.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/quill/katex.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/quill/editor.css" />
+    <!-- // -->
+    
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/apex-charts/apex-charts.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/swiper/swiper.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css" />
@@ -52,15 +60,22 @@
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/jquery-timepicker/jquery-timepicker.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/pickr/pickr-themes.css" />
+    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/node-waves/node-waves.css" />
+  <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+  <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/typeahead-js/typeahead.css" />  
+    
     
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/tagify/tagify.css" />
     
     <!-- Page CSS -->
 
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/css/pages/app-ecommerce.css" />
-	  <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/css/pages/cards-advance.css" />
-    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/css/pages/app-chat.css" />	  
-	  
+	<link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/css/pages/cards-advance.css" />
+    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/css/pages/app-chat.css" />	
+    
+  
+  
+  <!-- 여기도 공통!!!! -->
     <!-- Helpers -->
     <script src="${ contextPath }/resources/assets/vendor/js/helpers.js"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
@@ -71,6 +86,15 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="${ contextPath }/resources/assets/js/config.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<!-- // -->
+
+
+
+
+
+
+
+
 
 
 
@@ -127,7 +151,7 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="${contextPath }/app/app_main.do" class="menu-link">
                     <div data-i18n="결재 작성">결재 작성</div>
                   </a>
                 </li>
