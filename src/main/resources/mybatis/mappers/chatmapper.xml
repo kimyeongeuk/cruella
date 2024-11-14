@@ -57,17 +57,17 @@
 
 
 <resultMap type="MemberDto" id="memberResultMap">
-	<result column="MEM_NO" property="" />
-	<result column="MEM_NAME" property="" />
-	<result column="PHONE" property="" />
-	<result column="EMAIL" property="" />
-	<result column="ADDRESS" property="" />
-	<result column="HIRE_DATE" property="" />
-	<result column="END_DATE" property="" />
-	<result column="STATUS" property="" />
-	<result column="PROFILE_URL" property="" />
-	<result column="DEPT_NAME" property="" />
-	<result column="POS_NAME" property="" />
+	<result column="MEM_NO" property="memNo" />
+	<result column="MEM_NAME" property="memName" />
+	<result column="PHONE" property="phone" />
+	<result column="EMAIL" property="email" />
+	<result column="ADDRESS" property="address" />
+	<result column="HIRE_DATE" property="hireDate" />
+	<result column="END_DATE" property="endDate" />
+	<result column="STATUS" property="status" />
+	<result column="PROFILE_URL" property="profileURL" />
+	<result column="DEPT_NAME" property="deptName" />
+	<result column="POS_NAME" property="posName" />
 </resultMap>
 
 
