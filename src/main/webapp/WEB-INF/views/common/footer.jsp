@@ -96,6 +96,10 @@
     <script src="${ contextPath }/resources/assets/js/forms-typeahead.js"></script>
     <script src="${ contextPath }/resources/assets/js/forms-editors.js"></script>
     <script src="${ contextPath }/assets/js/extended-ui-treeview.js"></script>
+        
+    <!-- Flat Picker -->
+    <script src="../../assets/vendor/libs/moment/moment.js"></script>
+    <script src="../../assets/vendor/libs/flatpickr/flatpickr.js"></script>
     
     
     
