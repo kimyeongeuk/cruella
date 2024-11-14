@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="memberMapper">
+
+	<resultMap id="memberResultMap" type="MemberDto">
+		<result column="mem_no" property="memNo" />
+		<result column="mem_name" property="memName" />
+		<result column="mem_pwd" property="memPwd" />
+		<result column="phone" property="phone" />
+		<result column="email" property="email" />
+		<result column="address" property="address" />
+		<result column="hire_date" property="hireDate" />
+		<result column="end_date" property="endDate" />
+		<result column="status" property="status" />
+		<result column="gender" property="gender" />
+		<result column="mem_ssn" property="memSSN" />
+		<result column="account" property="account" />
+		<result column="profile_url" property="profileURL" />
+		<result column="bank_name" property="bankName" />
+		<result column="vac_count" property="vacCount" />
+		<result column="dept_name" property="deptName" />
+		<result column="pos_name" property="posName" />
+		<result column="sign_path" property="signPath" />
+	</resultMap>
+
+	<!-- 로그인 -->
+	<select id="selectMember" resultMap="memberResultMap">
+		select
+					mem_no
+				, mem_name
+				, mem_pwd
+				, phone
+				, email
+				, address
+				, hire_date
+				, end_date
+				, status
+				, gender
+				, mem_ssn
+				, account
+				, profile_url
+				, bank_name
+				, vac_count
+				, dept_name
+				, pos_name
+				, sign_path
+		 from member
+		where mem_no = #{memNo}
+		  and to_char(mem_pwd) = #{memPwd}
+	</select>
+
+
+
+
+
+
+
+</mapper>

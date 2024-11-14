@@ -9,7 +9,7 @@ public class MvcController {
 	
 	@GetMapping("/")
 	public String maingPage() {
-		return "main";
+		return "member/loginPage";
 	}
 
 	@GetMapping("/mainTest")

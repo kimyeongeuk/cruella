@@ -35,7 +35,7 @@ public class MemberDto {
 		private String profileURL;
 		private String bankName;
 		private int vacCount;
-		private String detpName;
+		private String deptName;
 		private String posName;
 		private String signPath;
 	
