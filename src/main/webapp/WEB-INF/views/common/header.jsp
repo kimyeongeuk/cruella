@@ -4,7 +4,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 
-  
+  	<!-- Favicon -->
 		<link rel="icon" type="image/x-icon" href="${ contextPath }/resources/assets/img/favicon/favicon.ico" />
 
     <!-- Fonts -->
@@ -45,6 +45,7 @@
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/bs-stepper/bs-stepper.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css" />
+    <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/jstree/jstree.css" />
     
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/flatpickr/flatpickr.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css" />

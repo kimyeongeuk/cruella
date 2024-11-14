@@ -69,6 +69,7 @@
     <script src="${ contextPath }/assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js"></script>
     <script src="${ contextPath }/assets/vendor/libs/jquery-timepicker/jquery-timepicker.js"></script>
     <script src="${ contextPath }/assets/vendor/libs/pickr/pickr.js"></script>
+    <script src="${ contextPath }/assets/vendor/libs/jstree/jstree.js"></script>
     
     <!-- Main JS -->
     <script src="${ contextPath }/resources/assets/js/main.js"></script>
@@ -94,6 +95,8 @@
     <script src="${ contextPath }/resources/assets/js/forms-tagify.js"></script>
     <script src="${ contextPath }/resources/assets/js/forms-typeahead.js"></script>
     <script src="${ contextPath }/resources/assets/js/forms-editors.js"></script>
+    <script src="${ contextPath }/assets/js/extended-ui-treeview.js"></script>
     
     
     
+   
