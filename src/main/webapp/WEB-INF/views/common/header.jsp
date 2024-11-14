@@ -72,6 +72,7 @@
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/css/pages/app-ecommerce.css" />
 	<link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/css/pages/cards-advance.css" />
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/css/pages/app-chat.css" />	
+    <link rel="stylesheet" href="${ contextPaath }/resources/assets/vendor/css/pages/page-faq.css" />
     
   
   
