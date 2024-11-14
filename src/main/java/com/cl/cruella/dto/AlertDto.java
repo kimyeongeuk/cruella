@@ -11,16 +11,19 @@ import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
+@Getter
 @ToString
 @Builder
-public class ChatDto {
 
-	private int chatNo;
-	private String chatTitle;
-	private Date chatRegistDate;
-	private String chatCreater;
-	private String chatNewMsg;
+public class AlertDto {
 	
+		private int alertNo;
+		private String alertType;
+		private String alertContent;
+		private String alertStatus;
+		private String memNo;
+		private Date alertRegistDate;
+		private String alertLink;
+
 }

@@ -420,7 +420,7 @@
           
 
                   <!-- 메인 화면 -->
-                  <div class="col app-chat-history" style="display: none;" id="chatMain">
+                  <div class="col app-chat-history" style="display: block;" id="chatMain">
 
                   </div>
                   <!-- 메인 화면 끘-->
@@ -433,7 +433,7 @@
 
 
                   <!-- 채팅방 클릭시 보이는 화면 -->
-                  <div class="col app-chat-history" style="display: block;" id="chatList">
+                  <div class="col app-chat-history" style="display: none;" id="chatList">
 
                     <div class="chat-history-wrapper">
                       <div class="chat-history-header border-bottom">
