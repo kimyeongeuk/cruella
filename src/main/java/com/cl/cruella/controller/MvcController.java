@@ -12,8 +12,6 @@ public class MvcController {
 		return "member/loginPage";
 	}
 
-	@GetMapping("/mainTest")
-	public String testMainPage() {
-		return "동규/mainTest";
-	}
+	@GetMapping("/dashboard")
+	public void testMainPage() {}
 }

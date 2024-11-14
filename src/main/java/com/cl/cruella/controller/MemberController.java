@@ -24,7 +24,7 @@ public class MemberController {
 	private final MemberService memberService;
 	
 	@PostMapping("/signin.do")
-	public void signin(MemberDto m
+	public String signin(MemberDto m
 								 , HttpSession session
 								 , HttpServletResponse response) throws IOException {	// memNo = '입력한 아이디', memPwd = '입력한 비밀번호'
 		
@@ -32,17 +32,22 @@ public class MemberController {
 		
 		System.out.println(loginUser);
 		
+		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
-		if(loginUser != null) {	// 추후에 암호화된 비밀번호도 함께 비교
+		out.println("<script>");
+		if(loginUser != null) {	// 추후에 암호화된 비밀번호도 함께 비교할 예정
 			
 			session.setAttribute("loginUser", loginUser); // 세션에 로그인 한 회원 정보 담기
 			
 			out.println("alert('" + loginUser.getMemName() + "님 환영합니다');");
-		}else {
 			
+		}else {
+			return "/";
 		}
+		out.println("</script>");
 		
+		return "/dashboard";
 		
 	}
 
