@@ -267,7 +267,7 @@
                           <h6 class="text-muted mb-0">사원이 없습니다</h6>
                         </li>
 
-
+	
                         <li class="chat-contact-list-item" data-target="#app-chat-sidebar-right" data-bs-toggle="sidebar" data-overlay="app-overlay-ex">
                           <a class="d-flex align-items-center">
                             <div class="flex-shrink-0 avatar">
@@ -281,74 +281,14 @@
                         </li>
 
 
-                        <li class="chat-contact-list-item" data-target="#app-chat-sidebar-right-no2" data-bs-toggle="sidebar" data-overlay="app-overlay-ex">
-                          <a class="d-flex align-items-center">
-                            <div class="flex-shrink-0 avatar">
-                              <img src="${ contextPath }/resources/assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <h6 class="chat-contact-name text-truncate m-0 fw-normal">황재운</h6>
-                              <small class="chat-contact-status text-truncate">17~20일 휴가입니다</small>
-                            </div>
-                          </a>
-                        </li>
+                      
 
 
-                        <li class="chat-contact-list-item">
-                          <a class="d-flex align-items-center">
-                            <div class="avatar d-block flex-shrink-0">
-                              <span class="avatar-initial rounded-circle bg-label-primary">LM</span>
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <h6 class="chat-contact-name text-truncate m-0 fw-normal">황조롱이</h6>
-                              <small class="chat-contact-status text-truncate">삐약삐약</small>
-                            </div>
-                          </a>
-                        </li>
-                        <li class="chat-contact-list-item">
-                          <a class="d-flex align-items-center">
-                            <div class="flex-shrink-0 avatar">
-                              <img src="${ contextPath }/resources/assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <h6 class="chat-contact-name text-truncate m-0 fw-normal">박시우</h6>
-                              <small class="chat-contact-status text-truncate">아 졸라 싫어</small>
-                            </div>
-                          </a>
-                        </li>
-                        <li class="chat-contact-list-item">
-                          <a class="d-flex align-items-center">
-                            <div class="flex-shrink-0 avatar">
-                              <img src="${ contextPath }/resources/assets/img/avatars/8.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <h6 class="chat-contact-name text-truncate m-0 fw-normal">이예빈</h6>
-                              <small class="chat-contact-status text-truncate">우리 강아지 귀엽죠</small>
-                            </div>
-                          </a>
-                        </li>
-                        <li class="chat-contact-list-item">
-                          <a class="d-flex align-items-center">
-                            <div class="avatar d-block flex-shrink-0">
-                              <span class="avatar-initial rounded-circle bg-label-success">CM</span>
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <h6 class="chat-contact-name text-truncate m-0 fw-normal">박막례</h6>
-                              <small class="chat-contact-status text-truncate" style="color: blueviolet;";>국수 팝니다 문의는 카톡</small>
-                            </div>
-                          </a>
-                        </li>
-                        <li class="chat-contact-list-item">
-                          <a class="d-flex align-items-center">
-                            <div class="flex-shrink-0 avatar">
-                              <img src="${ contextPath }/resources/assets/img/avatars/10.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <h6 class="chat-contact-name text-truncate m-0 fw-normal">김동규</h6>
-                              <small class="chat-contact-status text-truncate">이거 폰트 다르지 않아요?</small>
-                            </div>
-                          </a>
-                        </li>
+                        
+                       
+                       
+                        
+                        
 
                       
                       </ul>

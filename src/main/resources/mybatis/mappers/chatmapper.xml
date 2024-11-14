@@ -2,4 +2,113 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="chatMapper">
 
+
+<resultMap type="ChatDto" id="chatResultMap">
+	<result column="CHAT_NO" property="chatNo" />
+	<result column="CHAT_TITLE" property="chatTitle" />
+	<result column="CHAT_REGIST_DATE" property="chatRegistDate" />
+	<result column="mem_no" property="chatCreater" />
+	<result column="CHAT_NEWMSG" property="chatNewMsg" />
+</resultMap>
+
+
+
+<resultMap type="chatProfileDto" id="chatProfileResultMap">
+	<result column="MEM_NO" property="memNo" />
+	<result column="CP_MESSAGE" property="cpMessage" />
+	<result column="CP_STATUS" property="cpStatus" />
+</resultMap>
+
+
+
+<resultMap type="ChatListDto" id="chatListResultMap">
+	<result column="CHAT_NO" property="chatNo" />
+	<result column="MEM_NO" property="memNo" />
+	<result column="CL_REGIST_DATE" property="clRegistDate" />
+	<result column="CHAT_NOTICE_NO" property="chatNoticeNo" />
+	<result column="CL_LOCK" property="clLock" />
+	<result column="CL_ALRAM" property="clAlram" />
+</resultMap>
+
+
+
+<resultMap type="MessageDto" id="messageResultMap">
+	<result column="MSG_NO" property="msgNo" />
+	<result column="CHAT_NO" property="chatNo" />
+	<result column="MEM_NO" property="memNo" />
+	<result column="MSG_CONTENT" property="msgContnet" />
+	<result column="MSG_REGIST_DATE" property="msgRegistDate" />
+	<result column="MSG_CHECK" property="msgCheck" />
+	<result column="MSG_STATUS" property="msgStatus" />
+	<result column="MSG_MODIFY_DATE" property="msgModifyDate" />
+</resultMap>
+
+
+
+<resultMap type="AlertDto" id="alertResultMap">
+	<result column="ALERT_NO" property="alertNo" />
+	<result column="ALERT_TYPE" property="alertType" />
+	<result column="ALERT_CONTENT" property="alertContent" />
+	<result column="ALERT_STATUS" property="alertStatus" />
+	<result column="MEM_NO" property="memNo" />
+	<result column="ALERT_REGIST_DATE" property="alertRegistDate" />
+	<result column="ALERT_LINK" property="alertLink" />
+</resultMap>
+
+
+<resultMap type="MemberDto" id="memberResultMap">
+	<result column="MEM_NO" property="" />
+	<result column="MEM_NAME" property="" />
+	<result column="PHONE" property="" />
+	<result column="EMAIL" property="" />
+	<result column="ADDRESS" property="" />
+	<result column="HIRE_DATE" property="" />
+	<result column="END_DATE" property="" />
+	<result column="STATUS" property="" />
+	<result column="PROFILE_URL" property="" />
+	<result column="DEPT_NAME" property="" />
+	<result column="POS_NAME" property="" />
+</resultMap>
+
+
+<!-- 채팅방 목록 불러오기 -->
+<select id="chatList" resultMap="chatResultMap">
+select 
+			 c.CHAT_NO
+			,CHAT_TITLE
+			,CHAT_REGIST_DATE
+			,CL.mem_no
+			,CHAT_NEWMSG
+  from chat c
+  join chat_list cl on (c.chat_no = cl.chat_no)
+ where cl.mem_no = #{memNo}
+</select>
+
+<!-- 유저 프로필상태 불러오기 -->
+<select id="chatProFileList" resultMap="chatProfileResultMap">
+	select cp.MEM_NO
+		   , CP_MESSAGE
+		   , CP_STATUS
+	  from chat_profile cp
+	  join member m on (cp.mem_no = m.mem_no)
+   where m.status in ('Y','S')
+</select>
+
+<!-- 사원 목록 불러오기 -->
+<select id="memberList" resultMap="">
+	select MEM_NO
+			 , MEM_NAME
+			 , PHONE,EMAIL
+			 , ADDRESS,HIRE_DATE
+			 , END_DATE
+			 , STATUS
+			 , PROFILE_URL
+			 , DEPT_NAME
+			 , POS_NAME
+	  from member
+   where status in ('Y','S')	  
+</select>
+
+
+
 </mapper>

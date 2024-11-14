@@ -21,7 +21,7 @@ public class ChatListDto {
 	 private int chatNo;
 	 private String memNo;
 	 private Date clRegistDate;
-	 private int chatNoticeNo;
+	 private String chatNoticeNo;
 	 private String clLock;
 	 private String clAlram;
 

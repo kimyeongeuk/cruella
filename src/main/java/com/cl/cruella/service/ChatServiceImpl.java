@@ -4,26 +4,34 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.cl.cruella.dto.ChatListDto;
+import com.cl.cruella.dao.ChatDao;
+import com.cl.cruella.dto.ChatDto;
 import com.cl.cruella.dto.ChatProfileDto;
 import com.cl.cruella.dto.MemberDto;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService{
 
+	
+	private final ChatDao chatDao;
+	
+	
 	@Override
-	public List<ChatListDto> chatList(int memNo) {
-		return null;
+	public List<ChatDto> chatList(String memNo) {
+		return chatDao.chatList(memNo);
+	}
+	@Override
+	public List<ChatProfileDto> chatProFileList() {
+		return chatDao.chatProFileList();
 	}
 
 	@Override
 	public List<MemberDto> memberList() {
-		return null;
+		return chatDao.memberList();
 	}
 
-	@Override
-	public List<ChatProfileDto> chatProFileList() {
-		return null;
-	}
 
 }
