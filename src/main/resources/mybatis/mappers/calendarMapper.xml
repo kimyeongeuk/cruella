@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="calenderMapper">
+
+<resultMap type="CalendarDto" id="companyCalenderResultMap">
+	<result column="CAL_TITLE" property="calTitle" />
+	<result column="CAL_CATEGORY" property="calCategory" />
+	<result column="CAL_STARTDATE" property="calStartDt" />
+	<result column="CAL_ENDDATE" property="calEndDt" />	
+</resultMap>
+
+
+
+
+<!-- 전사 일정 목록 조회하기 -->
+<select id="companyCalenderList" resultMap="companyCalenderResultMap">
+		SELECT CAL_TITLE
+		     , CAL_STARTDATE
+		     , CAL_ENDDATE
+      FROM CALENDAR
+     WHERE CAL_CATEGORY = '전사 일정'
+</select>
+
+
+</mapper>

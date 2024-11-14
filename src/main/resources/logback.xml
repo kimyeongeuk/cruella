@@ -15,8 +15,8 @@
 	
 	
 	<logger name="org.springframework" level="INFO"/>
-	<logger name="com.br.cruella" level="DEBUG" />
-	<logger name="com.br.cruella.handler" level="DEBUG" additivity="false">
+	<logger name="com.cl.cruella" level="DEBUG" />
+	<logger name="com.cl.cruella.handler" level="DEBUG" additivity="false">
 		<appender-ref ref="websocketLog" />
 	</logger>
 	
