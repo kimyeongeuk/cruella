@@ -102,8 +102,8 @@
   	<script src="${ contextPath }/resources/assets/js/extended-ui-treeview.js"></script>
   	<script src="${ contextPath }/resources/assets/vendor/libs/quill/katex.js"></script>
   	<script src="${ contextPath }/resources/assets/vendor/libs/quill/quill.js"></script>
-  	<script src="${ contextPath }/assets/js/tables-datatables-basic.js"></script>
-    
+		<!-- <script src="${ contextPath }/assets/js/tables-datatables-basic.js"></script> -->
+     
     
     
     
