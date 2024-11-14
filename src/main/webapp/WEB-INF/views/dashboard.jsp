@@ -255,10 +255,10 @@
                 <div class="mx-auto my-6">
                   <img src="${ contextPath }/assets/img/avatars/3.png" alt="Avatar Image" class="rounded-circle w-px-100" />
                 </div>
-                <h5 class="mb-0 card-title">Mark Gilbert</h5>
+                <h5 class="mb-0 card-title">${ loginUser.getMemName() }</h5>
                 <div class="d-flex align-items-center justify-content-center my-6 gap-2">
-                  <a href="javascript:;" class="me-2"><span class="badge bg-label-secondary">인사관리팀</span></a>
-                  <a href="javascript:;"><span class="badge bg-label-warning">대리</span></a>
+                  <a href="javascript:;" class="me-2"><span class="badge bg-label-secondary">${ loginUser.getDeptName() }</span></a>
+                  <a href="javascript:;"><span class="badge bg-label-warning">${ loginUser.getPosName() }</span></a>
                 </div>
 
                 <div class="d-flex align-items-center justify-content-around mb-6">
@@ -526,7 +526,7 @@
                     <p style="margin-right: 50px; margin-left: 15px; font-size: 18px;">공지사항</p>
                     <a style="color: blue;" href="#">전체</a>
                     &nbsp;&nbsp;/&nbsp;&nbsp;
-                    <a href="#">인사관리팀</a>
+                    <a href="#">${ loginUser.getDeptName() }</a>
                   </div>
                   <div style="position: relative; top: 20px; left: 200px; display: flex; gap: 30px;">
                     <div>
