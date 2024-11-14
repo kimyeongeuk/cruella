@@ -95,7 +95,7 @@ select
 </select>
 
 <!-- 사원 목록 불러오기 -->
-<select id="memberList" resultMap="">
+<select id="memberList" resultMap="memberResultMap">
 	select MEM_NO
 			 , MEM_NAME
 			 , PHONE,EMAIL
