@@ -1,0 +1,34 @@
+package com.cl.cruella.dto;
+
+import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+@ToString
+@Builder
+
+public class NoticeDto {
+	
+	private int noticeNo;
+	private String noticeTitle;
+	private String noticeContent;
+	private String memNo; 
+	private String noticeRegistDT;
+	private String noticeModifyDT;
+	private int count;
+	private String status;
+	private String deptCode;
+	private int attachCount;
+	private String memName;
+	private List<AttachDto> attachList;
+}
+

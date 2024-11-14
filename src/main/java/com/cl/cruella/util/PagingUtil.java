@@ -2,10 +2,12 @@ package com.cl.cruella.util;
 
 import org.springframework.stereotype.Component;
 
+import com.cl.cruella.dto.PageInfoDto;
+
 
 @Component
 public class PagingUtil {
-/*
+
 	public PageInfoDto getPageInfoDto(int listCount, int currentPage, int pageLimit, int boardLimit) {
 		
 		int maxPage = (int)Math.ceil((double)listCount / boardLimit);		
@@ -18,7 +20,5 @@ public class PagingUtil {
 		return PageInfoDto.builder().listCount(listCount).currentPage(currentPage).pageLimit(pageLimit).boardLimit(boardLimit)
 				.maxPage(maxPage).startPage(startPage).endPage(endPage).build(); 
 	}
-	
-	*/
 	
 }
