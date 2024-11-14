@@ -18,4 +18,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectMember(m);
 	}
 
+	@Override
+	public int resetPwd(String newPwd, String memNo) {
+		return memberDao.resetPwd(newPwd, memNo);
+	}
+
 }

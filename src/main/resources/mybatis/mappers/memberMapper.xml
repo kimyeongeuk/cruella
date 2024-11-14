@@ -23,7 +23,7 @@
 		<result column="sign_path" property="signPath" />
 	</resultMap>
 
-	<!-- 로그인 -->
+	<!-- 로그인(김동규) -->
 	<select id="selectMember" resultMap="memberResultMap">
 		select
 					mem_no
@@ -49,6 +49,16 @@
 		  and to_char(mem_pwd) = #{memPwd}
 	</select>
 
+	<!-- 비밀번호 변경(김동규) -->
+	<update id="resetPwd" parameterType="map">
+		update
+					 member
+			 set 
+			 		 mem_pwd = #{newPwd}
+			   , status = 'Y'
+		 where 
+		 			 mem_no = #{memNo}
+	</update>
 
 
 

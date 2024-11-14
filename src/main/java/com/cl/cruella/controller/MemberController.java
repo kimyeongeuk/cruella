@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.service.MemberService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -27,29 +28,52 @@ public class MemberController {
 	@PostMapping("/signin.do")
 	public String signin(MemberDto m
 								 , HttpSession session
-								 , HttpServletResponse response) throws IOException {	// memNo = '입력한 아이디', memPwd = '입력한 비밀번호'
+								 , HttpServletResponse response
+								 , HttpServletRequest request) throws IOException {	// memNo = '입력한 아이디', memPwd = '입력한 비밀번호'
 		
 		MemberDto loginUser = memberService.selectMember(m);	
 		
-		System.out.println(loginUser);
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out = response.getWriter();
+		
+		
+		if(loginUser != null) {	// 추후에 암호화된 비밀번호도 함께 비교할 예정
+			
+			session.setAttribute("loginUser", loginUser); // 세션에 로그인 한 회원 정보 담기
+			
+			if(loginUser.getStatus().equals("A")) {	// 비밀번호 변경이 필요한 회원일 경우 변경 화면으로 (첫 로그인, 임시 비번 발급)
+				return "/member/resetPwd";
+			}
+			
+			return "/dashboard";
+			
+		}else {
+	        out.println("<script>alert('로그인에 실패하였습니다. 다시 시도해주세요.');");
+	        out.println("location.href='" + request.getContextPath() + "/';</script>");
+	        out.close();
+		}
+		
+		return null;
+	}
+	
+	
+	@PostMapping("/resetPwd.do")
+	public String newPwdCheck(String newPwd, String memNo, HttpServletResponse response) throws IOException {
+		
+
+		int result = memberService.resetPwd(newPwd, memNo); // 비밀번호 변경 실행
 		
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
 		out.println("<script>");
-		if(loginUser != null) {	// 추후에 암호화된 비밀번호도 함께 비교할 예정
-			
-			session.setAttribute("loginUser", loginUser); // 세션에 로그인 한 회원 정보 담기
-			
-			out.println("alert('" + loginUser.getMemName() + "님 환영합니다');");
-			
+		if(result > 0) { // 변경 성공
+			return "/member/pwdResetSuccess";
 		}else {
-			return "/";
+			out.println("history.back();");
 		}
 		out.println("</script>");
-		
-		return "/dashboard";
-		
+		return "/";
 	}
 	 @GetMapping("/employeelistview.do")
 	public void salarypayment() {}
