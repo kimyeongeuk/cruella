@@ -9,7 +9,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BoardController {
 	
 	@GetMapping("/boardList.do")
-	public void chatPage() {
+	public void boardListPage() {
+		
+	}
+	
+	@GetMapping("/boardDetail.do")
+	public void boardDetailPage() {
+		
+	}
+	
+	@GetMapping("/boardModify.do")
+	public void boardModifyPage() {
+		
+	}
+	
+	@GetMapping("/boardRegist.do")
+	public void boardRegistPage() {
 		
 	}
 

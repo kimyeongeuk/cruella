@@ -47,10 +47,12 @@
 			          <span class="fs-4">팀게시판</span>
 			          <span class="text-primary ms-4">전체</span> / 인사관리팀
 			        </div>
+			        
 			        <div class="ms-5">
-			          <button id="create" class="btn btn-primary" style="width: 100px;">+ 글작성</button>
+			          <button id="create" class="btn btn-primary" style="width: 100px;" onclick="regist();">+ 글작성</button>	          
 			          <i class="menu-icon tf-icons ti ti-trash ms-2"></i>
 			        </div>
+
 			        <div class="ms-auto d-flex">
 			          <input type="text" class="form-control" id="noticeSearch" placeholder="검색어 입력" style="width: 260px;" />
 			          <button id="searchBtn" class="btn btn-primary ms-2" style="width: 90px;">+ 검색</button>
@@ -74,7 +76,7 @@
 			              <td><input type="checkbox" /></td>
 			              <td>인사팀</td>
 			              <td>Jordan Stevenson</td>
-			              <td class="text-warning">팀게시판 제목입니다.<i class="menu-icon tf-icons ti ti-file ms-2"></i></td>
+			              <td class="text-warning"><a href="${ contextPath }/board/boardDetail.do">팀게시판 제목입니다.<i class="menu-icon tf-icons ti ti-file ms-2"></i></a></td>
 			              <td>2024.11.05</td>
 			              <td>10</td>
 			            </tr>
@@ -128,7 +130,13 @@
 			    </div>
 			  </div>
 			</div>
-
+			
+			<script>
+			  function regist() {
+			    window.location.href = "${contextPath}/board/boardRegist.do";
+			  }
+			</script>
+			
     	
     
     

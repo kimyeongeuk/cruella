@@ -12,5 +12,20 @@ public class NoticeController {
 	public void chatPage() {
 		
 	}
+	
+	@GetMapping("/noticeDetail.do")
+	public void boardDetailPage() {
+		
+	}
+	
+	@GetMapping("/noticeModify.do")
+	public void boardModifyPage() {
+		
+	}
+	
+	@GetMapping("/noticeRegist.do")
+	public void boardRegistPage() {
+		
+	}
 
 }
