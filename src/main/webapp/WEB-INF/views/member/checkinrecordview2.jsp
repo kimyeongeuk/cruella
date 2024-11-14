@@ -41,25 +41,26 @@
 										class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
 
 										<li class="nav-item"><a class="nav-link" href="#"> <i
-												class="ti-sm ti ti-user-check me-1_5"></i> 직원등록</a></li>
+												class="ti-sm ti ti-user-check me-1_5"></i> 직원 등록
+										</a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 직원조회 </a></li>
+												class="ti-sm ti ti-users me-1_5"></i> 직원 조회 </a></li>
+
+										<li class="nav-item"><a class="nav-link" href="#"><i
+												class="ti-sm ti ti-users me-1_5"></i> 출퇴근 기록관리 </a></li>
+
+										<li class="nav-item"><a class="nav-link" href="#"><i
+												class="ti-sm ti ti-users me-1_5"></i> 근무시간 조회 </a></li>
+
+										<li class="nav-item"><a class="nav-link" href="#"><i
+												class="ti-sm ti ti-users me-1_5"></i> 조직도 관리 </a></li>
 
 										<li class="nav-item"><a class="nav-link active" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 출근기록조회 </a></li>
+												class="ti-sm ti ti-users me-1_5"></i> 급여 지급 </a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 근무시간조회 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여내역확인 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 조직도 </a></li>
+												class="ti-sm ti ti-money me-1_5"></i> 급여명세서 조회/발급 </a></li>
 
 									</ul>
 								</div>
@@ -109,7 +110,6 @@
 						</div>
 						<!--/상단프로필-->
 						<div class="card" style="padding: 30px;">
-
 							<div style="display: flex;">
 								<h5 class="card-header"
 									style="display: flex; align-items: center;">
@@ -119,7 +119,6 @@
 										<option value="">2023</option>
 									</select> <span>년</span>
 								</h5>
-
 								<h5 class="card-header"
 									style="display: flex; align-items: center; padding: 0;">
 									<select class="form-select"
@@ -132,9 +131,10 @@
 								</h5>
 							</div>
 							<div class="table-responsive text-nowrap">
-								<table class="table" style="text-align: center;">
+								<table class="table">
 									<thead>
 										<tr>
+											<th></th>
 											<th>휴무명</th>
 											<th>상세</th>
 											<th>출근</th>
@@ -146,6 +146,14 @@
 
 									<tbody class="table-border-bottom-0">
 										<tr>
+											<td>
+												<button type="button" class="btn btn-primary"
+													data-bs-toggle="modal" data-bs-target="#myModal">
+													수정</button>
+
+
+
+											</td>
 											<td><span class="fw-medium">-</span></td>
 
 											<td><span class="fw-medium">-</span></td>
@@ -201,35 +209,120 @@
 							</div>
 						</div>
 
-
-
-
 					</div>
-					<!-- 세션 끝 -->
+
+					<!-- The Modal -->
+					<div class="modal" id="myModal">
+						<div class="modal-dialog ">
+							<div class="modal-content">
+
+								<!-- Modal Header -->
+								<div class="modal-header">
+									<h4 class="modal-title">출퇴근 기록 수정</h4>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+								</div>
+								<!-- Modal body -->
+								<div class="modal-body">
+									<div class="content">
+										<div class="card">
+											<table class="table">
+												<thead>
+													<tr>
+														<th></th>
+														<th>상세</th>
+														<th>출근</th>
+														<th>퇴근</th>
+														<th>날짜</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td></td>
+														<td>지각</td>
+														<td>09:23</td>
+														<td>18:00</td>
+														<td>2024/05/08</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+
+
+										<div style="margin-top: 20px;">
+											<label for="detail">변경 후 상세</label> <label for="reason"
+												style="margin-left: 54px;">사유</label>
+											<div
+												style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+												<div style="margin-bottom: auto;">
+													<select class="form-select" id="detail"
+														style="width: 130px;">
+														<option value="">선택</option>
+														<option value="연차">연차</option>
+														<option value="정상출근">정상출근</option>
+													</select>
+												</div>
+
+												<div
+													style="position: relative; display: inline-block; width: 100%;">
+													<textarea
+														style="resize: none; height: 200px; width: 100%; border-radius: 6px; border: 1px solid lightgray; padding-right: 40px;"></textarea>
+
+													<!-- 파일 업로드 아이콘 버튼 -->
+													<label for="file-upload"
+														style="position: absolute; right: 10px; bottom: 10px; cursor: pointer;">
+														<img src="upload-icon.png" alt="Upload"
+														style="width: 24px; height: 24px;">
+													</label> <input type="file" id="file-upload" style="display: none;">
+												</div>
 
 
 
-					<!-- 푸터 시작 -->
-					<jsp:include page="/WEB-INF/views/common/footer.jsp" />
-					<!-- 푸터 끝 -->
+											</div>
+										</div>
+									</div>
+								</div>
 
-					<div class="content-backdrop fade"></div>
-					<!-- wrapper 닫기 -->
+								<!-- Modal footer -->
+								<div class="modal-footer" style="align-self: center;">
+									<button type="button" class="btn btn-primary"
+										data-bs-dismiss="modal">수정하기</button>
+									<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal">취소하기</button>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+
+
+
 				</div>
+				<!-- 세션 끝 -->
 
-				<!-- nav layout page 닫기 -->
+
+
+				<!-- 푸터 시작 -->
+				<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+				<!-- 푸터 끝 -->
+
+				<div class="content-backdrop fade"></div>
+				<!-- wrapper 닫기 -->
 			</div>
 
-			<!-- layout-container 닫기 -->
+			<!-- nav layout page 닫기 -->
 		</div>
-		<!-- Overlay -->
-		<div class="layout-overlay layout-menu-toggle"></div>
 
-		<!-- Drag Target Area To SlideIn Menu On Small Screens -->
-		<div class="drag-target"></div>
+		<!-- layout-container 닫기 -->
+	</div>
+	<!-- Overlay -->
+	<div class="layout-overlay layout-menu-toggle"></div>
+
+	<!-- Drag Target Area To SlideIn Menu On Small Screens -->
+	<div class="drag-target"></div>
 
 
-		<!-- layout wrapper 닫기 -->
+	<!-- layout wrapper 닫기 -->
 	</div>
 
 

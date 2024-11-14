@@ -164,7 +164,31 @@
 	</div>
 
 
-
+<script>
+    $(document).ready(function() {
+        $('#jstree-basic').jstree({
+            'core': {
+                'data': [
+                    {
+                        "text": "대표이사",
+                        "children": [
+                            { "text": "점장" },
+                            { 
+                                "text": "부점장",
+                                "children": [
+                                    { "text": "인사팀" },
+                                    { "text": "영업총괄팀" },
+                                    { "text": "지원팀" }
+                                    // 추가적인 하위 요소들...
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+    });
+</script>
 
 
 </body>

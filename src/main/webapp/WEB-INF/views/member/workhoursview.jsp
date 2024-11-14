@@ -53,10 +53,10 @@
 												class="ti-sm ti ti-users me-1_5"></i> 근무시간조회 </a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-money me-1_5"></i> 급여지급 </a></li>
+												class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-money me-1_5"></i> 급여내역확인 </a></li>
+												class="ti-sm ti ti-users me-1_5"></i> 급여내역확인 </a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
 												class="ti-sm ti ti-users me-1_5"></i> 조직도 </a></li>
@@ -64,7 +64,7 @@
 									</ul>
 								</div>
 							</div>
-						</div>
+
 
 
 						<!--상단프로필-->
@@ -72,7 +72,7 @@
 							<div
 								class="user-profile-header d-flex flex-column flex-lg-row text-sm-start text-center mb-5">
 								<div style="align-content: center; margin-top: 20px;">
-									<img src="../../assets/img/avatars/1.png" alt="user image"
+									<img src="${ contextPath }/assets/img/avatars/1.png" alt="user image"
 										class="d-block h-auto ms-0 ms-sm-6 rounded user-profile-img" />
 								</div>
 								<div class="flex-grow-1 mt-3 mt-lg-5">
