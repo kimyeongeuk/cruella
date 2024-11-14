@@ -131,162 +131,160 @@
               document.addEventListener('DOMContentLoaded', () => {
                 const dateSpan = document.getElementById('currentDate');
                 const today = new Date();
-                const year = today.getFullYear();
-                const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
-                const day = String(today.getDate()).padStart(2, '0');
-                dateSpan.textContent = `today ${year}-${month}-${day}`;
+                dateSpan.textContent = "today " + today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + String(today.getDate()).padStart(2, '0');
               });
           </script>   
 
           <script>
-            const storeOptions = {
-              '남성의류': ['레노마셔츠', '라코스테'],
-              '여성의류': ['샤넬', '구찌'],
-              '식품': ['롯데마트', '홈플러스'],
-              '스포츠': ['나이키', '아디다스'],
-              '뷰티': ['아모레퍼시픽', 'LG생활건강'],
-              '명품': ['루이비통', '에르메스'],
-              '문화센터': ['CGV', '롯데시네마'],
-              '디지털 및 가전': ['삼성전자', 'LG전자']
-            };
+          document.addEventListener('DOMContentLoaded', () => {
+        	  const storeOptions = {
+        	    '남성의류': ['레노마셔츠', '라코스테'],
+        	    '여성의류': ['샤넬', '구찌'],
+        	    '식품': ['롯데마트', '홈플러스'],
+        	    '스포츠': ['나이키', '아디다스'],
+        	    '뷰티': ['아모레퍼시픽', 'LG생활건강'],
+        	    '명품': ['루이비통', '에르메스'],
+        	    '문화센터': ['CGV', '롯데시네마'],
+        	    '디지털 및 가전': ['삼성전자', 'LG전자']
+        	  };
 
-            const categorySelect = document.getElementById('categorySelect');
-            const storeSelect = document.getElementById('storeSelect');
+        	  const categorySelect = document.getElementById('categorySelect');
+        	  const storeSelect = document.getElementById('storeSelect');
 
-            categorySelect.addEventListener('change', function () {
-              const selectedCategory = this.value;
-              const stores = storeOptions[selectedCategory] || [];
+        	  categorySelect.addEventListener('change', function () {
+        	    const selectedCategory = this.value;
+        	    const stores = storeOptions[selectedCategory] || [];
 
-              storeSelect.innerHTML = ''; // 기존 옵션 제거
+        	    storeSelect.innerHTML = ''; // 기존 옵션 제거
 
-              stores.forEach(store => {
-                const option = document.createElement('option');
-                option.value = store;
-                option.textContent = store;
-                storeSelect.appendChild(option);
-              });
-            });
+        	    stores.forEach(store => {
+        	      const option = document.createElement('option');
+        	      option.value = store;
+        	      option.textContent = store;
+        	      storeSelect.appendChild(option);
+        	    });
+        	  });
 
-            // 초기 선택된 카테고리의 상점 옵션 추가
-            categorySelect.dispatchEvent(new Event('change'));
+        	  // 초기 선택된 카테고리의 상점 옵션 추가
+        	  categorySelect.dispatchEvent(new Event('change'));
 
-            document.addEventListener('DOMContentLoaded', () => {
-              const currentYear = new Date().getFullYear();
-              const currentMonth = new Date().getMonth() + 1;
-              const currentDate = new Date().getDate();
+        	  const currentYear = new Date().getFullYear();
+        	  const currentMonth = new Date().getMonth() + 1;
+        	  const currentDate = new Date().getDate();
 
-              const yearSelectBtn = document.querySelector('#yearSelect > button');
-              const yearSelectMenu = document.querySelector('#yearSelect > ul');
-              const monthSelectBtn = document.querySelector('#monthSelect > button');
-              const monthSelectMenu = document.querySelector('#monthSelect > ul');
-              const salesTableBody = document.getElementById('salesTableBody');
+        	  const yearSelectBtn = document.querySelector('#yearSelect > button');
+        	  const yearSelectMenu = document.querySelector('#yearSelect > ul');
+        	  const monthSelectBtn = document.querySelector('#monthSelect > button');
+        	  const monthSelectMenu = document.querySelector('#monthSelect > ul');
+        	  const salesTableBody = document.getElementById('salesTableBody');
 
-              // 매출 데이터 객체를 각 매장별로 저장
-              const salesData = {};
+        	  // 매출 데이터 객체를 각 매장별로 저장
+        	  const salesData = {};
 
-              const formatCurrency = (amount) => {
-                return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';
-              };
+        	  const formatCurrency = (amount) => {
+        	    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';
+        	  };
 
-              for (let year = currentYear - 5; year <= currentYear; year++) {
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.className = 'dropdown-item';
-                a.href = 'javascript:void(0);';
-                a.textContent = year;
-                a.addEventListener('click', () => {
-                  yearSelectBtn.textContent = year;
-                  populateSalesTable();
-                });
-                li.appendChild(a);
-                yearSelectMenu.appendChild(li);
-              }
+        	  for (let year = currentYear - 5; year <= currentYear; year++) {
+        	    const li = document.createElement('li');
+        	    const a = document.createElement('a');
+        	    a.className = 'dropdown-item';
+        	    a.href = 'javascript:void(0);';
+        	    a.textContent = year;
+        	    a.addEventListener('click', () => {
+        	      yearSelectBtn.textContent = year;
+        	      populateSalesTable();
+        	    });
+        	    li.appendChild(a);
+        	    yearSelectMenu.appendChild(li);
+        	  }
 
-              for (let month = 1; month <= 12; month++) {
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.className = 'dropdown-item';
-                a.href = 'javascript:void(0);';
-                a.textContent = month;
-                a.addEventListener('click', () => {
-                  monthSelectBtn.textContent = month;
-                  populateSalesTable();
-                });
-                li.appendChild(a);
-                monthSelectMenu.appendChild(li);
-              }
+        	  for (let month = 1; month <= 12; month++) {
+        	    const li = document.createElement('li');
+        	    const a = document.createElement('a');
+        	    a.className = 'dropdown-item';
+        	    a.href = 'javascript:void(0);';
+        	    a.textContent = month;
+        	    a.addEventListener('click', () => {
+        	      monthSelectBtn.textContent = month;
+        	      populateSalesTable();
+        	    });
+        	    li.appendChild(a);
+        	    monthSelectMenu.appendChild(li);
+        	  }
 
-              const populateSalesTable = () => {
-                salesTableBody.innerHTML = '';
-                const selectedYear = yearSelectBtn.textContent;
-                const selectedMonth = monthSelectBtn.textContent;
-                const selectedStore = storeSelect.value;
-                const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
-                const firstDay = new Date(selectedYear, selectedMonth - 1, 1).getDay();
-                let dayCount = 1;
+        	  const populateSalesTable = () => {
+        	    salesTableBody.innerHTML = '';
+        	    const selectedYear = yearSelectBtn.textContent;
+        	    const selectedMonth = monthSelectBtn.textContent;
+        	    const selectedStore = storeSelect.value;
+        	    const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
+        	    const firstDay = new Date(selectedYear, selectedMonth - 1, 1).getDay();
+        	    let dayCount = 1;
 
-                for (let week = 0; week < 6; week++) {
-                  const row = document.createElement('tr');
-                  for (let day = 0; day < 7; day++) {
-                    const cell = document.createElement('td');
-                    if ((week === 0 && day < firstDay) || dayCount > daysInMonth) {
-                      cell.innerHTML = '';
-                    } else {
-                      const div = document.createElement('div');
-                      
-                      const salesAmount = salesData[selectedStore] &&
-                        salesData[selectedStore][selectedYear] &&
-                        salesData[selectedStore][selectedYear][selectedMonth] &&
-                        salesData[selectedStore][selectedYear][selectedMonth][dayCount]
-                          ? formatCurrency(salesData[selectedStore][selectedYear][selectedMonth][dayCount])
-                          : 'N/A';
+        	    for (let week = 0; week < 6; week++) {
+        	      const row = document.createElement('tr');
+        	      for (let day = 0; day < 7; day++) {
+        	        const cell = document.createElement('td');
+        	        if ((week === 0 && day < firstDay) || dayCount > daysInMonth) {
+        	          cell.innerHTML = '';
+        	        } else {
+        	          const div = document.createElement('div');
+        	          
+        	          const salesAmount = salesData[selectedStore] &&
+        	            salesData[selectedStore][selectedYear] &&
+        	            salesData[selectedStore][selectedYear][selectedMonth] &&
+        	            salesData[selectedStore][selectedYear][selectedMonth][dayCount]
+        	              ? formatCurrency(salesData[selectedStore][selectedYear][selectedMonth][dayCount])
+        	              : 'N/A';
 
-                      cell.innerHTML = `${dayCount}일<br>${salesAmount}`;
-                      cell.appendChild(div);
-                      
-                      dayCount++;
-                    }
-                    row.appendChild(cell);
-                  }
-                  salesTableBody.appendChild(row);
-                  if (dayCount > daysInMonth) break;
-                }
-              };
+        	          cell.innerHTML = `${dayCount}일<br>${salesAmount}`;
+        	          cell.appendChild(div);
+        	          
+        	          dayCount++;
+        	        }
+        	        row.appendChild(cell);
+        	      }
+        	      salesTableBody.appendChild(row);
+        	      if (dayCount > daysInMonth) break;
+        	    }
+        	  };
 
-              yearSelectBtn.textContent = currentYear;
-              monthSelectBtn.textContent = currentMonth;
+        	  yearSelectBtn.textContent = currentYear;
+        	  monthSelectBtn.textContent = currentMonth;
 
-              populateSalesTable();
+        	  populateSalesTable();
 
-              document.getElementById('registerButton').addEventListener('click', () => {
-                const input = document.querySelector('.form-control[aria-label="매출 입력"]');
-                const salesValue = input.value;
-                if (!salesValue) {
-                  alert('매출을 입력하세요.');
-                  return;
-                }
-                const selectedYear = yearSelectBtn.textContent;
-                const selectedMonth = monthSelectBtn.textContent;
-                const selectedStore = storeSelect.value;
+        	  document.getElementById('registerButton').addEventListener('click', () => {
+        	    const input = document.querySelector('.form-control[aria-label="매출 입력"]');
+        	    const salesValue = input.value;
+        	    if (!salesValue) {
+        	      alert('매출을 입력하세요.');
+        	      return;
+        	    }
+        	    const selectedYear = yearSelectBtn.textContent;
+        	    const selectedMonth = monthSelectBtn.textContent;
+        	    const selectedStore = storeSelect.value;
 
-                if (!salesData[selectedStore]) {
-                  salesData[selectedStore] = {};
-                }
-                if (!salesData[selectedStore][selectedYear]) {
-                  salesData[selectedStore][selectedYear] = {};
-                }
-                if (!salesData[selectedStore][selectedYear][selectedMonth]) {
-                  salesData[selectedStore][selectedYear][selectedMonth] = {};
-                }
-                salesData[selectedStore][selectedYear][selectedMonth][currentDate] = parseInt(salesValue);
+        	    if (!salesData[selectedStore]) {
+        	      salesData[selectedStore] = {};
+        	    }
+        	    if (!salesData[selectedStore][selectedYear]) {
+        	      salesData[selectedStore][selectedYear] = {};
+        	    }
+        	    if (!salesData[selectedStore][selectedYear][selectedMonth]) {
+        	      salesData[selectedStore][selectedYear][selectedMonth] = {};
+        	    }
+        	    salesData[selectedStore][selectedYear][selectedMonth][currentDate] = parseInt(salesValue);
 
-                // 로그를 통해 데이터 확인
-                console.log('Sales Data:', salesData);
+        	    // 로그를 통해 데이터 확인
+        	    console.log('Sales Data:', salesData);
 
-                populateSalesTable();
-                input.value = ''; // 입력 필드 초기화
-              });
-            });
+        	    populateSalesTable();
+        	    input.value = ''; // 입력 필드 초기화
+        	  });
+        	});
+
           </script>
 
         </div> 

@@ -100,7 +100,7 @@
                     <div class="d-flex justify-content-between align-items-center user-info">
                       <div class="avatar-wrapper d-flex align-items-center">
                         <div class="avatar me-2">
-                          <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" /> 
+                          <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" /> 
                         </div>
                         <div class="d-flex flex-column">
                           <span class="emp_name text_truncate" style="color: black;">Jodan Strvenson</span>

@@ -99,7 +99,7 @@
                     <div class="d-flex justify-content-between align-items-center user-info">
                       <div class="avatar-wrapper d-flex align-items-center">
                         <div class="avatar me-2">
-                          <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" /> 
+                          <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" /> 
                         </div>
                         <div class="d-flex flex-column">
                           <span class="emp_name text_truncate" style="color: black;">Jodan Strvenson</span>
@@ -167,7 +167,7 @@ SNS 이벤트 홍보 및 참여 독려
                         <br><hr>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                       <div class="input" style="flex-grow: 1; margin-right: 10px;">
-                        <textarea class="form-control" aria-label="With textarea" placeholder="댓글을 입력하세요." style="width: 100%;"></textarea>
+                        <textarea class="form-control" aria-label="With textarea" placeholder="댓글을 입력하세요." style="width: 100%; resize: none;"></textarea>
                       </div>  
                       <div>
                         <button id="regist" class="btn btn-secondary" style="text-align: center;">등록</button>
@@ -179,7 +179,7 @@ SNS 이벤트 홍보 및 참여 독려
                     <div class="d-flex justify-content-between align-items-center user-info">
                       <div class="avatar-wrapper d-flex align-items-center">
                         <div class="avatar me-2">
-                          <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" /> 
+                          <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" /> 
                         </div>
                         <div class="d-flex flex-column">
                           <span class="emp_name text_truncate" style="color: black;">Jodan Strvenson</span>
@@ -214,7 +214,7 @@ SNS 이벤트 홍보 및 참여 독려
                     <div class="d-flex justify-content-between align-items-center user-info">
                       <div class="avatar-wrapper d-flex align-items-center">
                         <div class="avatar me-2">
-                          <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" /> 
+                          <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" /> 
                         </div>
                         <div class="d-flex flex-column">
                           <span class="emp_name text_truncate" style="color: black;">Jodan Strvenson</span>
@@ -262,7 +262,7 @@ SNS 이벤트 홍보 및 참여 독려
                     <div class="d-flex justify-content-between align-items-center" style="margin: 10px;">
                       <div class="avatar-wrapper d-flex align-items-center">
                         <div class="avatar me-2">
-                          <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" /> 
+                          <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" /> 
                         </div>
                         <div class="d-flex flex-column">
                           <span class="emp_name text_truncate" style="color: black;">Jodan Strvenson</span>
@@ -296,7 +296,7 @@ SNS 이벤트 홍보 및 참여 독려
                       <div class="avatar-wrapper d-flex align-items-center">
                         <div class="avatar me-2 d-flex justify-content-between">
                           <i class="menu-icon tf-icons ti ti-currency-leu" style="margin-right: auto; font-size: 40px; margin-top: -10px;"></i>
-                          <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" style="margin-left: auto;" /> 
+                          <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" style="margin-left: auto;" /> 
                         </div>            
                         <div class="d-flex flex-column">
                           <span class="emp_name text_truncate" style="color: black; margin-left: 40px;">Jodan Strvenson</span>
@@ -323,7 +323,7 @@ SNS 이벤트 홍보 및 참여 독려
                       <div class="avatar-wrapper d-flex align-items-center">
                         <div class="avatar me-2 d-flex justify-content-between">
                           <i class="menu-icon tf-icons ti ti-currency-leu" style="margin-right: auto; font-size: 40px; margin-top: -10px;"></i>
-                          <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" style="margin-left: auto;" /> 
+                          <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" style="margin-left: auto;" /> 
                         </div>            
                         <div class="d-flex flex-column">
                           <span class="emp_name text_truncate" style="color: black; margin-left: 40px;">Jodan Strvenson</span>
@@ -350,7 +350,7 @@ SNS 이벤트 홍보 및 참여 독려
                       <div class="avatar-wrapper d-flex align-items-center">
                         <div class="avatar me-2 d-flex justify-content-between">
                           <i class="menu-icon tf-icons ti ti-currency-leu" style="margin-right: auto; font-size: 40px; margin-top: -10px;"></i>
-                          <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" style="margin-left: auto;" /> 
+                          <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" style="margin-left: auto;" /> 
                         </div>            
                         <div class="d-flex flex-column">
                           <span class="emp_name text_truncate" style="color: black; margin-left: 40px;">Jodan Strvenson</span>
@@ -377,7 +377,7 @@ SNS 이벤트 홍보 및 참여 독려
                       <div class="avatar-wrapper d-flex align-items-center">
                         <div class="avatar me-2 d-flex justify-content-between">
                           <i class="menu-icon tf-icons ti ti-currency-leu" style="margin-right: auto; font-size: 40px; margin-top: -10px;"></i>
-                          <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" style="margin-left: auto;" /> 
+                          <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" style="margin-left: auto;" /> 
                         </div>            
                         <div class="d-flex flex-column">
                           <span class="emp_name text_truncate" style="color: black; margin-left: 40px;">Jodan Strvenson</span>
@@ -404,7 +404,7 @@ SNS 이벤트 홍보 및 참여 독려
                       <div class="avatar-wrapper d-flex align-items-center">
                         <div class="avatar me-2 d-flex justify-content-between">
                           <i class="menu-icon tf-icons ti ti-currency-leu" style="margin-right: auto; font-size: 40px; margin-top: -10px;"></i>
-                          <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" style="margin-left: auto;" /> 
+                          <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" style="margin-left: auto;" /> 
                         </div>            
                         <div class="d-flex flex-column">
                           <span class="emp_name text_truncate" style="color: black; margin-left: 40px;">Jodan Strvenson</span>
