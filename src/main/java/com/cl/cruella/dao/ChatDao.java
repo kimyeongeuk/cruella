@@ -29,6 +29,17 @@ public class ChatDao {
 		return sqlSession.selectList("chatMapper.memberList");
 	}
 	
+	public int chatCount(int chatNo) {
+		return sqlSession.selectOne("chatMapper.chatCount",chatNo);
+	}
+
+	public MemberDto memberInfo(String memNo) {
+		return sqlSession.selectOne("chatMapper.memberInfo",memNo);
+	}
+
+	public ChatProfileDto chatProFileInfo(String memNo) {
+		return sqlSession.selectOne("chatMapper.chatProFileInfo",memNo);
+	}
 	
 
 }

@@ -21,7 +21,15 @@ public class ChatServiceImpl implements ChatService{
 	
 	@Override
 	public List<ChatDto> chatList(String memNo) {
-		return chatDao.chatList(memNo);
+		List<ChatDto> list = chatDao.chatList(memNo);
+		
+		if(!list.isEmpty()) {
+			for(int i =0;i<list.size();i++) {
+				list.get(i).setChatCount(chatDao.chatCount(list.get(i).getChatNo()));
+			}
+		}
+		
+		return list;
 	}
 	@Override
 	public List<ChatProfileDto> chatProFileList() {
@@ -31,6 +39,12 @@ public class ChatServiceImpl implements ChatService{
 	@Override
 	public List<MemberDto> memberList() {
 		return chatDao.memberList();
+	}
+	public MemberDto memberInfo(String memNo) {
+		return chatDao.memberInfo(memNo);
+	}
+	public ChatProfileDto chatProFileInfo(String memNo) {
+		return chatDao.chatProFileInfo(memNo);
 	}
 
 

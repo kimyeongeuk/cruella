@@ -22,5 +22,6 @@ public class ChatDto {
 	private Date chatRegistDate;
 	private String chatCreater;
 	private String chatNewMsg;
+	private int chatCount;
 	
 }

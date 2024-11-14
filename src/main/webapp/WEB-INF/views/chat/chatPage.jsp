@@ -187,10 +187,10 @@
                           <h6 class="text-muted mb-0">채팅방이 없습니다</h6>
                         </li>
 
-                        <!-- 단체 채팅방 -->
+                        <!-- 단체 채팅방
+                        
                         <li class="chat-contact-list-item mb-1 chat-list-form">
                           <a class="d-flex align-items-center">
-                          
                             <div class="flex-shrink-0 avatar">
                               <div style="flex-direction: row; display: flex;"><img src="${ contextPath }/resources/assets/img/avatars/13.png" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
                                 <img src="${ contextPath }/resources/assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
@@ -198,11 +198,8 @@
                               <div style="flex-direction: row; display: flex;"><img src="${ contextPath }/resources/assets/img/avatars/14.png" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
                                 <img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
                               </div>
-
                             </div>
-
                             
-                          
                             <div class="chat-contact-info flex-grow-1 ms-4">
                               <div class="d-flex justify-content-between align-items-center">
                                 <h6 class="chat-contact-name text-truncate m-0 fw-normal">인사팀</h6>
@@ -215,39 +212,56 @@
                             </div>
                           </a>
                         </li>
+                         -->
                         <!-- 단체 채팅방 끗 -->
 
-
-                        <li class="chat-contact-list-item active mb-1 chat-list-form">
-                          <a class="d-flex align-items-center">
-                            <div class="flex-shrink-0 avatar avatar-offline">
-                              <img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="chat-contact-name text-truncate fw-normal m-0">김유빈</h6>
-                                <small class="text-muted">30분전</small>
-                              </div>
-                              <small class="chat-contact-status text-truncate">수고하셨습니다.</small>
-                            </div>
-                          </a>
-                        </li>
-                        <li class="chat-contact-list-item mb-0 chat-list-form">
-                          <a class="d-flex align-items-center">
-                            <div class="flex-shrink-0 avatar avatar-busy">
-                              <span class="avatar-initial rounded-circle bg-label-success">CM</span>
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="chat-contact-name text-truncate fw-normal m-0">박막례</h6>
-                                <small class="text-muted">2024-11-06</small>
-                              </div>
-                              <small class="chat-contact-status text-truncate"
-                                >선제시요</small
-                              >
-                            </div>
-                          </a>
-                        </li>
+												<c:forEach var="list" items="${ chatList }">
+													<c:choose>
+														<c:when test="${ list.chatCount eq 2 }">
+			                        <li class="chat-contact-list-item mb-1 chat-list-form">
+			                          <a class="d-flex align-items-center">
+			                            <div class="flex-shrink-0 avatar avatar-offline">
+			                              <img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />
+			                            </div>
+			                            <div class="chat-contact-info flex-grow-1 ms-4">
+			                              <div class="d-flex justify-content-between align-items-center">
+			                                <h6 class="chat-contact-name text-truncate fw-normal m-0">${ list.chatTitle }</h6>
+			                                <small class="text-muted">30분전</small>
+			                              </div>
+			                              <small class="chat-contact-status text-truncate">${ list.chatNewMsg }</small>
+			                            </div>
+			                          </a>
+			                        </li>
+	                       	 	</c:when>
+	                       	 	<c:otherwise>
+			                       	<li class="chat-contact-list-item mb-1 chat-list-form">
+		                          <a class="d-flex align-items-center">
+		                            <div class="flex-shrink-0 avatar">
+		                              <div style="flex-direction: row; display: flex;"><img src="${ contextPath }/resources/assets/img/avatars/13.png" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+		                                <img src="${ contextPath }/resources/assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+		                              </div>
+		                              <div style="flex-direction: row; display: flex;"><img src="${ contextPath }/resources/assets/img/avatars/14.png" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+		                                <img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+		                              </div>
+		                            </div>
+		                            
+		                            <div class="chat-contact-info flex-grow-1 ms-4">
+		                              <div class="d-flex justify-content-between align-items-center">
+		                                <h6 class="chat-contact-name text-truncate m-0 fw-normal">${ list.chatTitle }</h6>
+		                                <small class="text-muted">2024-11-08</small>
+		                              </div>
+		                              <div class="d-flex justify-content-between align-items-center">
+		                              <small class="chat-contact-status text-truncate">${ list.chatNewMsg }</small>
+		                              <div class="badge bg-danger rounded-pill ms-auto">5</div>
+		                              </div>
+		                            </div>
+		                          </a>
+		                        </li>
+	                       	 	
+	                       	 	</c:otherwise>
+	                        
+	                        </c:choose>
+												</c:forEach>
 
 
                         
@@ -268,29 +282,25 @@
                         </li>
 
 	
-                        <li class="chat-contact-list-item" data-target="#app-chat-sidebar-right" data-bs-toggle="sidebar" data-overlay="app-overlay-ex">
-                          <a class="d-flex align-items-center">
-                            <div class="flex-shrink-0 avatar">
-                              <img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <h6 class="chat-contact-name text-truncate m-0 fw-normal">김유빈</h6>
-                              <small class="chat-contact-status text-truncate">안녕하세요</small>
-                            </div>
-                          </a>
-                        </li>
+													<c:forEach var="memList" items="${ memberList }">
+														<c:forEach var="memProfile" items="${ chatProfileList }">
+														<c:if test="${ memList.memNo eq  memProfile.memNo}">
+	                        <li class="chat-contact-list-item userInFo" data-target="#app-chat-sidebar-right" data-bs-toggle="sidebar" data-overlay="app-overlay-ex" id="userInFo">
+	                        	<input type="hidden" value="${ memList.memNo }">
+	                          <a class="d-flex align-items-center">
+	                            <div class="flex-shrink-0 avatar">
+	                              <img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />
+	                            </div>
+	                            <div class="chat-contact-info flex-grow-1 ms-4">
+	                              <h6 class="chat-contact-name text-truncate m-0 fw-normal">${ memList.memName }</h6>
+	                              <small class="chat-contact-status text-truncate">${ memProfile.cpMessage }</small>
+	                            </div>
+	                          </a>
+	                        </li>
+	                       		 </c:if>
+	                      		</c:forEach>
+													</c:forEach>
 
-
-                      
-
-
-                        
-                       
-                       
-                        
-                        
-
-                      
                       </ul>
                     </div>
                   </div>
@@ -299,62 +309,91 @@
                   
                   <!-- 채팅방 메뉴칸 -->
 
+							<script>
+								$(document).ready(function(){
+									
+									$('.userInFo').on('click',function(){
+										
+										$.ajax({
+											
+											url:'${contextPath}/chat/userInfo.do',
+											
+											data:{
+												memNo:
+													$(this).children().eq(0).val()
+											},
+											success:function(res){
+												console.log(res.m);
+												$('#userNameInfo').html(res.m.memName);
+											},
+										})
+										
+									})
+									
+								})
+							</script>
 
-
-
+	
+		
                   <!-- 상대방 정보 확인 -->
-                   
-                  <div class="col app-chat-sidebar-right app-sidebar overflow-hidden" id="app-chat-sidebar-right">
-                    <div
-                      class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
-                      <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
-                        <img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />
-                      </div>
-                      <h5 class="mt-4 mb-0">김유빈</h5>
-                      <span>인사팀</span>
-                      <i
-                        class="ti ti-x ti-lg cursor-pointer close-sidebar d-block"
-                        data-bs-toggle="sidebar"
-                        data-overlay="app-overlay-ex"
-                        data-target="#app-chat-sidebar-right"></i>
-                    </div>
 
-                    <div class="sidebar-body p-6 pt-0">
-                      <div class="my-6">
-                        <p class="text-uppercase mb-1 text-muted">상태 메시지</p>
-                        <p class="mb-0">
-                          안녕하세요
-                        </p>
-                      </div>
+		                  <div class="col app-chat-sidebar-right app-sidebar overflow-hidden" id="app-chat-sidebar-right">
+		                    <div
+		                      class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
+		                      <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
+		                        <img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />
+		                      </div>
+		                      <h5 class="mt-4 mb-0" id="userNameInfo">사람이름자리</h5>
+		                      <div>
+		                      <span id="deptName">부서코드</span>
+		                      </div>
+		                      <i
+		                        class="ti ti-x ti-lg cursor-pointer close-sidebar d-block"
+		                        data-bs-toggle="sidebar"
+		                        data-overlay="app-overlay-ex"
+		                        data-target="#app-chat-sidebar-right"></i>
+		                    </div>
+		
+		                    <div class="sidebar-body p-6 pt-0">
+		                      <div class="my-6">
+		                        <p class="text-uppercase mb-1 text-muted">상태 메시지</p>
+		                       
+		                        <p class="mb-0">
+		                          ${ cp.cpMessage }ASD
+		                        </p>
+		                       
+		                      </div>
+		
+		
+		                      <div class="my-6">
+		                        <p class="text-uppercase mb-1 text-muted">정보</p>
+		                        <ul class="list-unstyled d-grid gap-4 mb-0 ms-2 py-2 text-heading">
+		                          <li class="d-flex align-items-center">
+		                            <i class="ti ti-mail ti-md"></i>
+		                            <span class="align-middle ms-2">${ m.email }</span>
+		                          </li>
+		                          <li class="d-flex align-items-center">
+		                            <i class="ti ti-phone-call ti-md"></i>
+		                            <span class="align-middle ms-2">${ m.phone }</span>
+		                          </li>
+		                        </ul>
+		                      </div>
+		
+		
+		                      <div class="d-flex mt-6">
+		                        <button
+		                          class="btn btn-primary w-100"
+		                          data-bs-toggle="sidebar"
+		                          data-overlay
+		                          data-target="#app-chat-sidebar-right">
+		                          채팅 시작
+		                        </button>
+		                      </div>
+		                    </div>
+		                  </div>
 
 
-                      <div class="my-6">
-                        <p class="text-uppercase mb-1 text-muted">정보</p>
-                        <ul class="list-unstyled d-grid gap-4 mb-0 ms-2 py-2 text-heading">
-                          <li class="d-flex align-items-center">
-                            <i class="ti ti-mail ti-md"></i>
-                            <span class="align-middle ms-2">josephGreen@email.com</span>
-                          </li>
-                          <li class="d-flex align-items-center">
-                            <i class="ti ti-phone-call ti-md"></i>
-                            <span class="align-middle ms-2">010-1122-1569</span>
-                          </li>
-                        </ul>
-                      </div>
-
-
-                      <div class="d-flex mt-6">
-                        <button
-                          class="btn btn-primary w-100"
-                          data-bs-toggle="sidebar"
-                          data-overlay
-                          data-target="#app-chat-sidebar-right">
-                          채팅 시작
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
+	
 
 
           
