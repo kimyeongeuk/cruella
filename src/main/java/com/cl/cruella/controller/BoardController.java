@@ -37,10 +37,20 @@ public class BoardController {
 		model.addAttribute("list", list);
 	}
 
+	@GetMapping("/increase.do") // 조회수 증가용 (타인의 글일 경우 호출) => /board/detail.do 재요청
+	public String increaseCount(int no) {
+		boardService.updateIncreaseCount(no);
+		return "redirect:/board/detail.do?no=" + no;
+	}
 	
 	@GetMapping("/boardDetail.do")
-	public void boardDetailPage() {
+	public void detail(int no, Model model) {
+		// 상세페이지에 필요한 데이터
+		// 게시글(제목,작성자,작성일,내용) 데이터, 첨부파일(원본명,저장경로,실
+		BoardDto b = boardService.selectBoard(no);
+		// boardNo, boardTitle, boardContent, boardWriter, registDt, attachList
 		
+		model.addAttribute("b", b);
 	}
 	
 	@GetMapping("/boardModify.do")

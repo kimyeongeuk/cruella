@@ -65,9 +65,9 @@
 			            <tr>
 			              <th style="width: 5%;"><input type="checkbox" /></th>
 			              <th style="width: 15%;">카테고리</th>
-			              <th style="width: 20%;">작성자</th>
+			              <th style="width: 15%;">작성자</th>
 			              <th style="width: 40%;">제목</th>
-			              <th style="width: 10%;">작성일</th>
+			              <th style="width: 15%;">작성일</th>
 			              <th style="width: 10%;">조회수</th>
 			            </tr>
 			          </thead>
@@ -80,7 +80,7 @@
 			          		</c:when>
 			          		<c:otherwise>
 			          			<c:forEach var="board" items="${list}">
-										    <tr>
+										    <tr onclick='location.href = "${contextPath}/board/${ loginUser.userId eq b.memNo ? "detail.do" : "increase.do" }?no=${ b.boardNo }";'>
 										    	<td><input type="checkbox" /></td>
 									        <td>공지</td>
 									        <td>${board.memName}</td> 
