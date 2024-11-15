@@ -67,8 +67,8 @@
 	<result column="END_DATE" property="endDate" />
 	<result column="STATUS" property="status" />
 	<result column="PROFILE_URL" property="profileURL" />
-	<result column="DEPT_NAME" property="deptName" />
-	<result column="POS_NAME" property="posName" />
+	<result column="DEPT_NAME" property="deptCode" />
+	<result column="POS_NAME" property="posCode" />
 </resultMap>
 
 
@@ -104,10 +104,12 @@ select
 			 , END_DATE
 			 , STATUS
 			 , PROFILE_URL
-			 , DEPT_NAME
-			 , POS_NAME
-	  from member
-   where status in ('Y','S')	  
+			 , DEPT_name
+			 , POS_name
+	  from member m
+      join department d on (m.dept_code = d.dept_code)
+      join position p on (m.pos_code = p.pos_code)
+   where status in ('Y','S')  
 </select>
 
 <!-- 채팅방 인원 체크 -->
@@ -121,16 +123,18 @@ select count(chat_no) chat_count
 
 <!-- 맴버 정보 불러오기 -->
 <select id="memberInfo" resultMap="memberResultMap">
-	select MEM_NO
+ 	select MEM_NO
 			 , MEM_NAME
 			 , PHONE,EMAIL
 			 , ADDRESS,HIRE_DATE
 			 , END_DATE
 			 , STATUS
 			 , PROFILE_URL
-			 , DEPT_NAME
-			 , POS_NAME
-	  from member
+			 , d.DEPT_NAME
+			 , p.POS_NAME
+	  from member m
+      join department d on (m.dept_code = d.dept_code)
+      join position p on (m.pos_code = p.pos_code)
    where status in ('Y','S')	 
    	 and mem_no = #{memNo} 
 </select>

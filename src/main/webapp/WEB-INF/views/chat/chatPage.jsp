@@ -15,6 +15,28 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <script src="${ contextPath }/resources/assets/js/config.js"></script>
+     <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script> 
+  <style>
+ .chat-message .dropdown {
+   display: none;
+ }
+
+ .chat-message:hover .dropdown {
+   display: block; 
+ }
+
+ .chat-message .dropdown {
+   position: relative; 
+ }
+
+ .dropdown-menu {
+   position: absolute;
+   top: 100%;
+   left: 0;
+   z-index: 10;
+   display: none;
+ }
+ </style>
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
@@ -327,7 +349,7 @@
 											success:function(res){
 												console.log(res.m);
 												$('#userNameInfo').html(res.m.memName);
-												$('#deptName').html(res.m.deptName);
+												$('#deptName').html(res.m.deptCode);
 												$('#statusmessage').html(res.cp.cpMessage);
 												$('#emailinfo').html(res.m.email);
 												$('#phoneinfo').html(res.m.phone);
@@ -652,13 +674,13 @@
 														            if(res.msg[i].memNo == res.m){
 														            	a += '<li class="chat-message chat-message-right">';
 														            	a += '<div class="dropdown">';
-														            	a += '<button class="btn btn-sm btn-icon btn-text-secondary text-secondary rounded-pill dropdown-toggle hide-arrow" aria-expanded="true" id="chat-header-actions">'
+														            	a += '<button class="btn btn-sm btn-icon btn-text-secondary text-secondary rounded-pill dropdown-toggle hide-arrow waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="true" id="chat-header-actions">'
 														            	a += '<i class="ti ti-dots-vertical ti-md"></i>';
 														            	a += '</button>';
 														            	a += '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">';
-														            	a += '<a class="dropdown-item noticeInsert" id="noticeInsert">공지사항 등록</a>';
-														            	a += '<a class="dropdown-item messageModify" id="messageModify">수정</a>';
-														            	a += '<a class="dropdown-item messageDelete" id="messageDelete">삭제</a>';
+														            	a += '<a class="dropdown-item noticeInsert waves-effect" id="noticeInsert">공지사항 등록</a>';
+														            	a += '<a class="dropdown-item messageModify waves-effect" id="messageModify">수정</a>';
+														            	a += '<a class="dropdown-item messageDelete waves-effect" id="messageDelete">삭제</a>';
 														            	a += '</div>';
 														            	a += '</div>';
 														            	a += '<div class="d-flex overflow-hidden">';
@@ -715,6 +737,7 @@
 														            	a += '</div>';
 														            	a += '</li>';
 														            	
+
 												                          
 														            }
 														        	}
@@ -722,8 +745,8 @@
 													        			$('#chathistory').html(a);
 																		    $('#chatMain').css('display', 'none');
 																		    $('#chatList').css('display', 'block');
-											                 
-													 		
+																		    $('#chathistory').scrollTop( $('#chathistory')[0].scrollHeight )
+													 			
 																}
 													    });
 													    
@@ -755,7 +778,7 @@
 
 
                       
-                        <div class="chat-history-header noticeContent" style="position: absolute; width: 100%; z-index: 1; background-color: #ffffffad;" id="noticeContent">
+                        <div class="chat-history-header noticeContent" style="position: absolute; width: 100%; z-index: 1; background-color: #ffffffad;" id="noticeContent" >
                               <div class="d-flex overflow-hidden align-items-center">
                                 <div class="chat-contact-info flex-grow-1">
                                   <h6 class="m-0 fw-normal noticeMessage" style="font-weight: 900;" id="noticeMessage">공지사항 내용이 들어갈 자리</h6>  
@@ -869,27 +892,7 @@
 
 
                           
-                          <style>
-                            .chat-message .dropdown {
-                              display: none;
-                            }
-
-                            .chat-message:hover .dropdown {
-                              display: block; 
-                            }
-
-                            .chat-message .dropdown {
-                              position: relative; 
-                            }
-
-                            .dropdown-menu {
-                              position: absolute;
-                              top: 100%;
-                              left: 0;
-                              z-index: 10;
-                              display: none;
-                            }
-                            </style>
+ 
 
                           
 
@@ -920,9 +923,9 @@
 
                       <!-- 채팅 입력 칸  -->
                       <div class="chat-history-footer shadow-xs" >
-                        <form class="form-send-message d-flex justify-content-between align-items-center">
+                        <form class="form-send-message d-flex justify-content-between align-items-center" id="chatinput">
                           <input
-                            class="form-control message-input border-0 me-4 shadow-none"
+                            class="form-control message-input border-0 me-4 shadow-none" 
                              />
                           <div class="message-actions d-flex align-items-center">
                             <label for="attach-doc" class="form-label mb-0">
@@ -930,7 +933,7 @@
                                 class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
                               <input type="file" id="attach-doc" hidden />
                             </label>
-                            <button class="btn btn-primary d-flex send-msg-btn">
+                            <button class="btn btn-primary d-flex send-msg-btn" type="button" onclick="sendMessage();">
                               <span class="align-middle d-md-inline-block d-none" style="flex: none;">전송</span>
                             </button>
                           </div>
@@ -956,8 +959,6 @@
                       </div>
                     </div>
                     -->
-                  
-
 
                   </div>
 

@@ -18,9 +18,9 @@
 		<result column="profile_url" property="profileURL" />
 		<result column="bank_name" property="bankName" />
 		<result column="vac_count" property="vacCount" />
-		<result column="sign_path" property="signPath" />
 		<result column="DEPT_CODE" property="deptCode" />
 		<result column="POS_CODE" property="posCode" />
+		<result column="sign_path" property="signPath" />
 	</resultMap>
 
 	<!-- 로그인(김동규) -->
