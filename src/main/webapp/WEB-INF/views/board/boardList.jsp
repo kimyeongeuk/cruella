@@ -119,14 +119,14 @@
 			          		</c:when>
 			          		<c:otherwise>
 			          			<c:forEach var="board" items="${list}">
-										    <tr onclick='location.href = "${contextPath}/board/${ loginUser.memNo eq b.memNo ? "detail.do" : "increase.do" }?no=${ b.boardNo }";'>
-										    	<td><input type="checkbox" /></td>
-									        <td>공지</td>
-									        <td>${board.memName}</td> 
-									        <td>${board.boardTitle}</td>
-									        <td>${board.boardRegistDT}</td> 
-									        <td>${board.boardCount}</td> 
-										    </tr>
+											  <tr onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>
+											    <td><input type="checkbox" /></td>
+											    <td>공지</td>
+											    <td>${board.memName}</td>
+											    <td>${board.boardTitle}</td>
+											    <td>${board.boardRegistDT}</td>
+											    <td>${board.boardCount}</td>
+											  </tr>
 											</c:forEach>
 			          		</c:otherwise>
 			          	</c:choose>

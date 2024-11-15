@@ -62,7 +62,7 @@ public class BoardController {
 	@GetMapping("/increase.do") // 조회수 증가용 (타인의 글일 경우 호출) => /board/detail.do 재요청
 	public String increaseCount(int no) {
 		boardService.updateIncreaseCount(no);
-		return "redirect:/board/detail.do?no=" + no;
+		return "redirect:/board/boardDetail.do?no=" + no;
 	}
 	
 	@GetMapping("/boardDetail.do")
