@@ -1,7 +1,5 @@
 package com.cl.cruella.dto;
 
-import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,15 +14,16 @@ import lombok.ToString;
 @ToString
 @Builder
 
-public class MessageDto {
-	
-	 private int msgNo;
-	 private int chatNo;
-	 private String memNo;
-	 private String msgContent;
-	 private Date msgRegistDate;
-	 private String msgCheck;
-	 private String msgStatus;
-	 private Date msgModifyDate;
+public class PageInfoDto {
+		
+	private int listCount;
+	private int currentPage;
+	private int pageLimit;
+	private int boardLimit;
+	private int maxPage;
+	private int startPage;
+	private int endPage;
+
 
 }
+

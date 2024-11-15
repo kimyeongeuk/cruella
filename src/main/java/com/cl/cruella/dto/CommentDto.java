@@ -1,7 +1,5 @@
 package com.cl.cruella.dto;
 
-import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,15 +14,16 @@ import lombok.ToString;
 @ToString
 @Builder
 
-public class MessageDto {
+public class CommentDto {
 	
-	 private int msgNo;
-	 private int chatNo;
-	 private String memNo;
-	 private String msgContent;
-	 private Date msgRegistDate;
-	 private String msgCheck;
-	 private String msgStatus;
-	 private Date msgModifyDate;
+	private int comNo;
+	private String comContent;
+	private String memNo; 
+	private int boardNo;
+	private int comType;
+	private String comRegistDT;
+	private String comModifyDT;
+	private int comRef;
 
 }
+

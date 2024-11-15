@@ -8,6 +8,7 @@ import com.cl.cruella.dao.ChatDao;
 import com.cl.cruella.dto.ChatDto;
 import com.cl.cruella.dto.ChatProfileDto;
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.dto.MessageDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +22,15 @@ public class ChatServiceImpl implements ChatService{
 	
 	@Override
 	public List<ChatDto> chatList(String memNo) {
-		return chatDao.chatList(memNo);
+		List<ChatDto> list = chatDao.chatList(memNo);
+		
+		if(!list.isEmpty()) {
+			for(int i =0;i<list.size();i++) {
+				list.get(i).setChatCount(chatDao.chatCount(list.get(i).getChatNo()));
+			}
+		}
+		
+		return list;
 	}
 	@Override
 	public List<ChatProfileDto> chatProFileList() {
@@ -31,6 +40,15 @@ public class ChatServiceImpl implements ChatService{
 	@Override
 	public List<MemberDto> memberList() {
 		return chatDao.memberList();
+	}
+	public MemberDto memberInfo(String memNo) {
+		return chatDao.memberInfo(memNo);
+	}
+	public ChatProfileDto chatProFileInfo(String memNo) {
+		return chatDao.chatProFileInfo(memNo);
+	}
+	public List<MessageDto> messageList(int chatNo) {
+		return chatDao.messageList(chatNo);
 	}
 
 

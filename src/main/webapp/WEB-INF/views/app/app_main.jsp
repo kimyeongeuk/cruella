@@ -396,6 +396,54 @@
                                 </option>
                               </select>
                             </span>
+                            <script>
+                            $(document).ready(function() {
+                            	
+                            	// 일반기안
+                                $('#select_formType2').change(function() {
+                                    // 선택된 값 가져오기
+                                    var selectedValue = $(this).val();
+                                    
+                                    // 멘토지적
+                                    location.href="${contextPath}/app/"
+                                    
+                                    
+                                    if (selectedValue === '기안서') {
+                                        location.href = '${contextPath}/app/form_draft.do'; 
+                                    }else if(selectedValue === '품의서'){
+                                    	location.href = '${contextPath}/app/form_robin.do'; 
+                                    }
+                                });
+                                
+                                // 인사
+                                $('#select_formType3').change(function() {
+                                    // 선택된 값 가져오기
+                                    var selectedValue = $(this).val();
+                                    
+                                    
+                                    if (selectedValue === '연차') {
+                                        location.href = '${contextPath}/app/form_annual.do'; 
+                                    }else if(selectedValue === '지각'){
+                                    	location.href = '${contextPath}/app/form_per.do'; 
+                                    }else if(selectedValue === '증명서'){
+                                    	location.href = '${contextPath}/app/form_cer.do'; 
+                                    }
+                                });
+                                
+                                // 공문
+                                $('#select_formType4').change(function() {
+                                    // 선택된 값 가져오기
+                                    var selectedValue = $(this).val();
+                                    
+                                    if (selectedValue === '요청서') {
+                                        location.href = '${contextPath}/app/form_request.do'; 
+                                    }
+                                });
+                                
+                                
+                                
+                            });
+                            </script>
 
 
 
@@ -412,11 +460,11 @@
                                   지각/불참사유서
                                 </option>
                                 <option value="증명서">
-                                  재직증명서
+                                  증명서
                                 </option>
-                                <option value="인사발령">
+                                <!-- <option value="인사발령">
                                   인사발령 요청서
-                                </option>
+                                </option> -->
                               </select>
                             </span>
 
@@ -498,7 +546,8 @@
 
             case '인사' : $('#select_small_type_2').css('display','block');
                           $('#select_small_type_1').css('display','none'); 
-                          $('#select_small_type_3').css('display','none'); break;
+                          $('#select_small_type_3').css('display','none'); 
+                          break;
 
 
             case '공문' : $('#select_small_type_3').css('display','block');
@@ -513,12 +562,21 @@
           }
         })
 
+        
+        
+        
+        
 
 
         
 
 
       })
+      
+      
+      
+      
+      
 
 
   </script>

@@ -16,15 +16,15 @@ import lombok.ToString;
 @ToString
 @Builder
 
-public class MessageDto {
+public class AttachDto {
 	
-	 private int msgNo;
-	 private int chatNo;
-	 private String memNo;
-	 private String msgContent;
-	 private Date msgRegistDate;
-	 private String msgCheck;
-	 private String msgStatus;
-	 private Date msgModifyDate;
+	private int fileNo;
+	private String filePath;
+	private String filesystemName;
+	private String originalName;
+	private Date uploadDt;
+	private String refType;
+	private int refNo;
 
 }
+

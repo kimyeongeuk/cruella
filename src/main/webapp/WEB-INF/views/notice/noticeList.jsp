@@ -69,9 +69,9 @@
                   <tr>
                     <th style="width: 5%;"><input type="checkbox" name="" id=""></th>
                     <th style="width: 15%;">카테고리</th>
-                    <th style="width: 20%;">작성자</th>
+                    <th style="width: 15%;">작성자</th>
                     <th style="width: 40%;">제목</th>
-                    <th style="width: 10%;">작성일</th>
+                    <th style="width: 15%;">작성일</th>
                     <th style="width: 10%;">조회수</th>
                   </tr>
                 </thead>

@@ -5,6 +5,7 @@ import java.util.List;
 import com.cl.cruella.dto.ChatDto;
 import com.cl.cruella.dto.ChatProfileDto;
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.dto.MessageDto;
 
 public interface ChatService {
 	
@@ -12,7 +13,14 @@ public interface ChatService {
 	List<ChatDto> chatList(String memNo);
 	// 채팅 프로필 불러오기
 	List<ChatProfileDto> chatProFileList();
-		// 사원 목록 불러오기
+	// 사원 목록 불러오기
 	List<MemberDto> memberList();
+	// 사원 한사람만 조회
+	MemberDto memberInfo(String memNo);	
+	// 채팅 프로필 조회
+	ChatProfileDto chatProFileInfo(String memNo);
+	// 채팅방 메시지 목록 가져오기
+	List<MessageDto> messageList(int chatNo);
+	
 	
 }

@@ -18,9 +18,9 @@
 		<result column="profile_url" property="profileURL" />
 		<result column="bank_name" property="bankName" />
 		<result column="vac_count" property="vacCount" />
-		<result column="dept_name" property="deptName" />
-		<result column="pos_name" property="posName" />
 		<result column="sign_path" property="signPath" />
+		<result column="DEPT_CODE" property="deptCode" />
+		<result column="POS_CODE" property="posCode" />
 	</resultMap>
 
 	<!-- 로그인(김동규) -->
@@ -41,8 +41,8 @@
 				, profile_url
 				, bank_name
 				, vac_count
-				, dept_name
-				, pos_name
+				, DEPT_CODE
+				, POS_CODE
 				, sign_path
 		 from member
 		where mem_no = #{memNo}

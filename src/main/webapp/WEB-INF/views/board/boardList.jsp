@@ -65,67 +65,86 @@
 			            <tr>
 			              <th style="width: 5%;"><input type="checkbox" /></th>
 			              <th style="width: 15%;">카테고리</th>
-			              <th style="width: 20%;">작성자</th>
+			              <th style="width: 15%;">작성자</th>
 			              <th style="width: 40%;">제목</th>
-			              <th style="width: 10%;">작성일</th>
+			              <th style="width: 15%;">작성일</th>
 			              <th style="width: 10%;">조회수</th>
 			            </tr>
 			          </thead>
 			          <tbody>
-			            <tr>
-			              <td><input type="checkbox" /></td>
-			              <td>인사팀</td>
-			              <td>Jordan Stevenson</td>
-			              <td class="text-warning"><a href="${ contextPath }/board/boardDetail.do">팀게시판 제목입니다.<i class="menu-icon tf-icons ti ti-file ms-2"></i></a></td>
-			              <td>2024.11.05</td>
-			              <td>10</td>
-			            </tr>
-			            <!-- 반복되는 데이터는 줄입니다. -->
+			          	<c:choose>
+			          		<c:when test="${ empty list }">
+			          			<tr>
+			          				<td colspan="6">조회된 게시글이 없습니다.</td>
+			          			</tr>
+			          		</c:when>
+			          		<c:otherwise>
+			          			<c:forEach var="board" items="${list}">
+										    <tr onclick='location.href = "${contextPath}/board/${ loginUser.memNo eq b.memNo ? "detail.do" : "increase.do" }?no=${ b.boardNo }";'>
+										    	<td><input type="checkbox" /></td>
+									        <td>공지</td>
+									        <td>${board.memName}</td> 
+									        <td>${board.boardTitle}</td>
+									        <td>${board.boardRegistDT}</td> 
+									        <td>${board.boardCount}</td> 
+										    </tr>
+											</c:forEach>
+			          		</c:otherwise>
+			          	</c:choose>
 			          </tbody>
 			        </table>
 			
-			        <!-- 페이징바 -->
-			        <div class="card-body">
-			          <div class="row">
-			            <span class="col-lg-12 d-flex justify-content-center">
-			              <div class="demo-inline-spacing">
-			                <nav aria-label="Page navigation">
-			                  <ul class="pagination">
-			                    <li class="page-item first">
-			                      <a class="page-link" href="javascript:void(0);">
-			                        <i class="ti ti-chevrons-left ti-sm"></i>
-			                      </a>
-			                    </li>
-			                    <li class="page-item prev">
-			                      <a class="page-link" href="javascript:void(0);">
-			                        <i class="ti ti-chevron-left ti-sm"></i>
-			                      </a>
-			                    </li>
-			                    <li class="page-item active">
-			                      <a class="page-link" href="javascript:void(0);">1</a>
-			                    </li>
-			                    <li class="page-item">
-			                      <a class="page-link" href="javascript:void(0);">2</a>
-			                    </li>
-			                    <li class="page-item">
-			                      <a class="page-link" href="javascript:void(0);">3</a>
-			                    </li>
-			                    <li class="page-item next">
-			                      <a class="page-link" href="javascript:void(0);">
-			                        <i class="ti ti-chevron-right ti-sm"></i>
-			                      </a>
-			                    </li>
-			                    <li class="page-item last">
-			                      <a class="page-link" href="javascript:void(0);">
-			                        <i class="ti ti-chevrons-right ti-sm"></i>
-			                      </a>
-			                    </li>
-			                  </ul>
-			                </nav>
-			              </div>
-			            </span>
-			          </div>
-			        </div>
+						  <!-- 페이징 바 -->
+						  <div class="card-body">
+						    <div class="row">
+						      <span class="col-lg-12 d-flex justify-content-center">
+						        <div class="demo-inline-spacing">
+						          <nav aria-label="Page navigation">
+						            <ul class="pagination">
+						              <li class="page-item first">
+						                <a class="page-link" href="javascript:void(0);" onclick="goToPage(1);">
+						                  <i class="ti ti-chevrons-left ti-sm"></i>
+						                </a>
+						              </li>
+						              <li class="page-item prev ${pi.currentPage == 1 ? 'disabled' : ''}">
+						                <a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage - 1});">
+						                  <i class="ti ti-chevron-left ti-sm"></i>
+						                </a>
+						              </li>
+						              <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+						                <li class="page-item ${i == pi.currentPage ? 'active' : ''}">
+						                  <a class="page-link" href="javascript:void(0);" onclick="goToPage(${i});">${i}</a>
+						                </li>
+						              </c:forEach>
+						              <li class="page-item next ${pi.currentPage == pi.maxPage ? 'disabled' : ''}">
+						                <a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage + 1});">
+						                  <i class="ti ti-chevron-right ti-sm"></i>
+						                </a>
+						              </li>
+						              <li class="page-item last">
+						                <a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.maxPage});">
+						                  <i class="ti ti-chevrons-right ti-sm"></i>
+						                </a>
+						              </li>
+						            </ul>
+						          </nav>
+						        </div>
+						      </span>
+						    </div>
+						  </div>
+						
+						  <script>
+						    function goToPage(pageNumber) {
+						    	//console.log(pageNumber);
+						    	
+						      window.location.href = `${contextPath}/board/boardList.do?page=` + pageNumber;
+						    }
+						    
+						  </script>
+						  
+						  <!-- /페이징 바 -->
+
+			        
 			      </div>
 			    </div>
 			  </div>
