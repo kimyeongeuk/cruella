@@ -19,5 +19,15 @@ public class AppController {
 	public void formDraftPage() {
 		
 	}
+	
+	
+	
+	
+//  연차신청서 페이지 이동
+	@GetMapping("/form_annual.do")
+	public void formAnnualPage() {
+		
+	}
+	
 
 }

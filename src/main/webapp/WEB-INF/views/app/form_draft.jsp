@@ -460,7 +460,7 @@
                             </span>
                             
                             
-                             <script>
+                            <script>
                             $(document).ready(function() {
                             	
                             	// 일반기안
@@ -468,11 +468,14 @@
                                     // 선택된 값 가져오기
                                     var selectedValue = $(this).val();
                                     
+                                    // 멘토지적
+                                    location.href="${contextPath}/app/"
+                                    
                                     
                                     if (selectedValue === '기안서') {
                                         location.href = '${contextPath}/app/form_draft.do'; 
                                     }else if(selectedValue === '품의서'){
-                                    	location.href = 품의서페이지로; 
+                                    	location.href = '${contextPath}/app/form_robin.do'; 
                                     }
                                 });
                                 
@@ -483,21 +486,21 @@
                                     
                                     
                                     if (selectedValue === '연차') {
-                                        location.href = 연차신청서페이지; 
+                                        location.href = '${contextPath}/app/form_annual.do'; 
                                     }else if(selectedValue === '지각'){
-                                    	location.href = 품의서페이지; 
+                                    	location.href = '${contextPath}/app/form_per.do'; 
                                     }else if(selectedValue === '증명서'){
-                                    	location.href = 증명서페이지; 
+                                    	location.href = '${contextPath}/app/form_cer.do'; 
                                     }
                                 });
                                 
                                 // 공문
-                                $('#select_formType3').change(function() {
+                                $('#select_formType4').change(function() {
                                     // 선택된 값 가져오기
                                     var selectedValue = $(this).val();
                                     
                                     if (selectedValue === '요청서') {
-                                        location.href = 요청서페이지; 
+                                        location.href = '${contextPath}/app/form_request.do'; 
                                     }
                                 });
                                 
@@ -505,7 +508,6 @@
                                 
                             });
                             </script>
-                            
                             
                             
                             

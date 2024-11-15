@@ -457,24 +457,27 @@ $(function () {
     let orderCount = 0; // 결재선 순서를 세기 위한 변수??
     
     $(document).on('dnd_stop.vakata.dragDrop2', function (e, data) {
-      //console.log('dnd_stop');
+		
+		console.log('dnd_stop 작동됨');
       var t = $(data.event.target); // drop된 위치의 요소 => 여기에 노드 정보를 append 시키면됨
-      console.log(t);
-      //t.text("떨궈짐");
-
+		console.log(t);
 
       var node = data.data.origin.get_node(data.element); // {..., original:{text:xx, memNo:xx}, ..}
 
-
+	  
 
       if (t.closest('tbody').hasClass('aa')) { // closest : 드래그 시 가장 가까운 태그 찾음
 
         // 중복 검사 (input value에서 memNo를 비교)
         var memNo = node.original.memNo;
+		console.log('현재 옮겨지는 노드의 memNo', memNo);
         var isDuplicate = t.closest('tbody').find('tr').toArray().some(function (row) {
           var existingMemNo = $(row).find('input[type="hidden"]').val(); // hidden input에서 memNo 가져오기
+		  console.log('현재 결재선에 등록된 memNo', existingMemNo);
           return existingMemNo == memNo;
         });
+		
+		console.log(isDuplicate);
 
         if (isDuplicate) {
           alert('이미 추가된 사용자입니다.');
@@ -523,11 +526,6 @@ $(function () {
 
       }
 
-
-
-
-      console.log(countDnd);
-      
 
     });
 

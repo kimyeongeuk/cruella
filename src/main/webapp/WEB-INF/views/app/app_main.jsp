@@ -404,6 +404,9 @@
                                     // 선택된 값 가져오기
                                     var selectedValue = $(this).val();
                                     
+                                    // 멘토지적
+                                    location.href="${contextPath}/app/"
+                                    
                                     
                                     if (selectedValue === '기안서') {
                                         location.href = '${contextPath}/app/form_draft.do'; 
@@ -428,7 +431,7 @@
                                 });
                                 
                                 // 공문
-                                $('#select_formType3').change(function() {
+                                $('#select_formType4').change(function() {
                                     // 선택된 값 가져오기
                                     var selectedValue = $(this).val();
                                     
