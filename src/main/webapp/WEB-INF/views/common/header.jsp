@@ -226,7 +226,7 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="${ contextPath }/member/signup.do" class="menu-link">
                     <div data-i18n="직원 등록">직원 등록</div>
                   </a>
                 </li>
@@ -237,22 +237,27 @@
                 </li>
                 <li class="menu-item">
                   <a href="#" class="menu-link">
-                    <div data-i18n="출퇴근 기록관리">출퇴근 기록관리</div>
+                    <div data-i18n="출근기록조회">출근 기록 조회</div>
                   </a>
                 </li>
                 <li class="menu-item">
                   <a href="#" class="menu-link">
-                    <div data-i18n="근무시간 조회">근무시간 조회</div>
+                    <div data-i18n="근무시간조회">근무시간 조회</div>
                   </a>
                 </li>
                 <li class="menu-item">
                   <a href="#" class="menu-link">
-                    <div data-i18n="조직도 관리">조직도 관리</div>
+                    <div data-i18n="급여지급">급여지급</div>
                   </a>
                 </li>
                 <li class="menu-item">
                   <a href="#" class="menu-link">
-                    <div data-i18n="급여명세서 조회/발급">급여명세서 조회/발급</div>
+                    <div data-i18n="급여내역확인">급여 내역 확인</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="#" class="menu-link">
+                    <div data-i18n="조직도">조직도</div>
                   </a>
                 </li>
               </ul>

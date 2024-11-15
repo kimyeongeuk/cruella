@@ -56,7 +56,7 @@
 												class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-money me-1_5"></i> 급여내역확인 </a></li>
+												class="ti-sm ti ti-users me-1_5"></i> 급여내역확인 </a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
 												class="ti-sm ti ti-users me-1_5"></i> 조직도 </a></li>
@@ -73,7 +73,7 @@
 										<!-- Account -->
 										<div class="card-body">
 											<div style="text-align: center;">
-												<img src="../../assets/img/avatars/1.png" alt="user-avatar"
+												<img src="${ contextPath }/assets/img/avatars/1.png" alt="user-avatar"
 													class="d-block w-px-140 h-px-140 rounded mx-auto"
 													id="uploadedAvatar"
 													style="margin-bottom: 20px; align-items: center;"
@@ -96,7 +96,7 @@
 										</div>
 										<h5 class="pb-4 border-bottom mb-4"></h5>
 										<div class="card-body pt-4">
-											<form id="formAccountSettings" action="" method="GET"
+											<form id="formAccountSettings" action="${ contextPath }/member/insert.do" method="post"
 												onsubmit="return false">
 												<div class="row">
 													<div class="mb-4 col-md-6">
@@ -124,7 +124,8 @@
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="rank" class="form-label">부서</label> <select
-															id="rank" class="select2 form-select">
+															id="rank" class="select form-select">
+															<option value="">선택</option>
 															<option value="">인사</option>
 															<option value="">영업총괄</option>
 															<option value="">지원</option>
@@ -147,7 +148,7 @@
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="positionrank" class="form-label">직급</label> <select
-															id="positionrank" class="select2 form-select">
+															id="positionrank" class="select form-select">
 															<option value="">선택</option>
 															<option value="">점장</option>
 															<option value="">부점장</option>
@@ -170,7 +171,7 @@
 													<div class="mb-4 col-md-6">
 														<label class="joiningDate" for="country">입사날짜</label> <input
 															class="form-control" type="text" id="joinDate" name="joinDate"
-															placeholder="YY/MM/DD" />
+															placeholder="YYYY/MM/DD" />
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="language" class="form-label">주소</label> <input
@@ -236,12 +237,12 @@
 
 
 
-<script>
+<!--  <script>
     $(document).ready(function() {
         $('#rank').select2();
         $('#positionrank').select2();
     });
 </script>
-
+-->
 </body>
 </html>

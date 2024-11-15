@@ -75,7 +75,7 @@ public class MemberController {
 		out.println("</script>");
 		return "/";
 	}
-	 @GetMapping("/employeelistview.do")
+	 @GetMapping("/signup.do")
 	public void salarypayment() {}
 
 }
