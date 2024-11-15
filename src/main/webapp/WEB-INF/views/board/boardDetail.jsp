@@ -99,6 +99,7 @@
 	                <div class="d-flex justify-content-between align-items-center user-info">
 	                  <div class="avatar-wrapper d-flex align-items-center">
 	                    <div class="avatar me-2">
+	                    <!-- 세션에서 이미지 가져오기 -->
 	                      <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" /> 
 	                    </div>
 	                    <div class="d-flex flex-column">
@@ -126,7 +127,7 @@
 	                  <div class="icon-wrapper">
 	                    <i class="ti ti-dots-vertical ti-md icon"></i>
 	                    <div class="action-box" style="display: none;">
-	                      <a href="${ contextPath }/board/boardModify.do"><i class="menu-icon tf-icons ti ti-edit"></i></a>
+	                      <a href="${ contextPath }/board/boardModify.do?no=${ b.boardNo }"><i class="menu-icon tf-icons ti ti-edit"></i></a>
 	                      <a href="javascript:void(0);"><i class="menu-icon tf-icons ti ti-trash"></i></a>
 	                    </div>
 	                  </div>
@@ -140,6 +141,7 @@
 	                   <textarea class="form-control" aria-label="With textarea" placeholder="댓글을 입력하세요." style="width: 100%; resize: none;"></textarea>
 	                 </div>  
 	                 <div>
+	                 	 <!-- onclick으로 등록페이지 이동하도록하기 -->
 	                   <button id="regist" class="btn btn-secondary" style="text-align: center;">등록</button>
 	                 </div> 
 	               </div>                   

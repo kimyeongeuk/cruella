@@ -44,10 +44,49 @@
 			    <div class="container card py-5">
 			      <div class="d-flex align-items-center">
 			        <div>
-			          <span class="fs-4">팀게시판</span>
-			          <span class="text-primary ms-4">전체</span> / 인사관리팀
-			        </div>
-			        
+							  <span class="fs-4">팀게시판</span>
+							  <span class="text-primary ms-4">
+							    <c:choose>
+							      <c:when test="${loginUser.deptCode eq 'S1'}">
+							        영업총괄팀
+							      </c:when>
+							      <c:when test="${loginUser.deptCode eq 'S2'}">
+							        인사팀
+							      </c:when>
+							      <c:when test="${loginUser.deptCode eq 'S3'}">
+							        지원팀
+							      </c:when>
+							      <c:when test="${loginUser.deptCode eq 'T1'}">
+							        남성의류팀
+							      </c:when>
+							      <c:when test="${loginUser.deptCode eq 'T2'}">
+							        여성의류팀
+							      </c:when>
+							      <c:when test="${loginUser.deptCode eq 'T3'}">
+							        식품팀
+							      </c:when>
+							      <c:when test="${loginUser.deptCode eq 'T4'}">
+							        스포츠팀
+							      </c:when>
+							      <c:when test="${loginUser.deptCode eq 'T5'}">
+							        뷰티팀
+							      </c:when>
+							      <c:when test="${loginUser.deptCode eq 'T6'}">
+							        명품팀
+							      </c:when>
+							      <c:when test="${loginUser.deptCode eq 'T7'}">
+							        문화센터팀
+							      </c:when>
+							      <c:when test="${loginUser.deptCode eq 'T8'}">
+							        디지털 및 가전팀
+							      </c:when>
+							      <c:otherwise>
+							        기타부서팀
+							      </c:otherwise>
+							    </c:choose>
+							  </span>
+							</div>
+  
 			        <div class="ms-5">
 			          <button id="create" class="btn btn-primary" style="width: 100px;" onclick="regist();">+ 글작성</button>	          
 			          <i class="menu-icon tf-icons ti ti-trash ms-2"></i>

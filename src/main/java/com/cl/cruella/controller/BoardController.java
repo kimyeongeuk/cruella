@@ -1,6 +1,8 @@
 package com.cl.cruella.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cl.cruella.dto.BoardDto;
+import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
 import com.cl.cruella.service.BoardService;
 import com.cl.cruella.util.FileUtil;
 import com.cl.cruella.util.PagingUtil;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -26,16 +30,34 @@ public class BoardController {
 	private final FileUtil fileUtil;
 	
 	@GetMapping("/boardList.do")
-	public void list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model) {
-		int listCount = boardService.selectBoardListCount();
-		
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10); 
-		List<BoardDto> list = boardService.selectBoardList(pi);
-		//System.out.println(list);
-		System.out.println(pi);
-		model.addAttribute("pi", pi);
-		model.addAttribute("list", list);
-	}
+    public String list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session) {
+        MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/member/signin.do"; // 로그인 페이지로 리디렉션
+        }
+
+        String loggedInDeptCode = loginUser.getDeptCode();
+        if (loggedInDeptCode == null) {
+            model.addAttribute("error", "부서 코드가 설정되지 않았습니다.");
+            return "errorPage"; // 에러 페이지로 리디렉션
+        }
+
+        int listCount = boardService.selectBoardListCount(loggedInDeptCode);
+
+        PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("pi", pi);
+        params.put("deptCode", loggedInDeptCode);
+
+        List<BoardDto> list = boardService.selectBoardList(params);
+
+        model.addAttribute("pi", pi);
+        model.addAttribute("list", list);
+
+        return "board/boardList";
+    }
+
 
 	@GetMapping("/increase.do") // 조회수 증가용 (타인의 글일 경우 호출) => /board/detail.do 재요청
 	public String increaseCount(int no) {

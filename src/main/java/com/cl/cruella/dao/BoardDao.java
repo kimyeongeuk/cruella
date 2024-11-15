@@ -35,14 +35,15 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.selectBoard", boardNo);
 	}
 
-	public int selectBoardListCount() {
-		return sqlSession.selectOne("boardMapper.selectBoardListCount");
-	}
+	public int selectBoardListCount(String deptCode) {
+        return sqlSession.selectOne("boardMapper.selectBoardListCount", deptCode);
+    }
 
-	public List<BoardDto> selectBoardList(PageInfoDto pi) {
-		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() - 1) * pi.getBoardLimit() , pi.getBoardLimit());
-		return sqlSession.selectList("boardMapper.selectBoardList", null, rowBounds);
-	}
+    public List<BoardDto> selectBoardList(Map<String, Object> params) {
+        PageInfoDto pi = (PageInfoDto) params.get("pi");
+        RowBounds rowBounds = new RowBounds((pi.getCurrentPage() - 1) * pi.getBoardLimit(), pi.getBoardLimit());
+        return sqlSession.selectList("boardMapper.selectBoardList", params, rowBounds);
+    }
 
 	public List<BoardDto> selectSearchList(Map<String, String> search, PageInfoDto pi) {
 		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() - 1) * pi.getBoardLimit() , pi.getBoardLimit());

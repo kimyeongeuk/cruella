@@ -27,35 +27,37 @@
         <result column="file_ref_no" property="refNo"/>
     </resultMap>
     
-    <select id="selectBoardListCount" resultType="int">
-        select count(*)
-        from board
-        where board_status = 'Y'
-    </select>
-    
-    <select id="selectBoardList" resultMap="boardResultMap">
-        select
-	           b.board_no
-	         , b.board_title
-	         , b.board_content
-	         , m.mem_no
-	         , m.mem_name
-	         , b.board_count
-	         , to_char(b.board_regist_date, 'YYYY-MM-DD') as board_regist_date
-	         , to_char(b.board_modify_date, 'YYYY-MM-DD') as board_modify_date
-	         , b.board_status
-	         , b.dept_code
-	         , (
-	             select count(*)
-	               from attachment
-	              where file_ref_type = 'B'
-	                and file_ref_no = b.board_no
-	           ) as attachCount
-	      from board b
-	      join member m on (m.mem_no = b.mem_no)
-	     where b.board_status = 'Y'
-	     order by b.board_no desc
-    </select>
+    <select id="selectBoardListCount" parameterType="string" resultType="int">
+		    SELECT COUNT(*)
+		    FROM board
+		    WHERE dept_code = #{deptCode}
+		</select>
+		
+		<select id="selectBoardList" parameterType="map" resultMap="boardResultMap">
+		    select
+		           b.board_no
+		         , b.board_title
+		         , b.board_content
+		         , m.mem_no
+		         , m.mem_name
+		         , b.board_count
+		         , to_char(b.board_regist_date, 'YYYY-MM-DD') as board_regist_date
+		         , to_char(b.board_modify_date, 'YYYY-MM-DD') as board_modify_date
+		         , b.board_status
+		         , b.dept_code
+		         , (
+		             select count(*)
+		               from attachment
+		              where file_ref_type = 'B'
+		                and file_ref_no = b.board_no
+		           ) as attachCount
+		      from board b
+		      join member m on (m.mem_no = b.mem_no)
+		     where b.board_status = 'Y'
+		       and b.dept_code = #{deptCode}
+		     order by b.board_no desc
+		</select>
+
 
     <select id="selectSearchListCount" resultType="int">
         select count(*)

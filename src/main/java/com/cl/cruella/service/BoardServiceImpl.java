@@ -77,14 +77,14 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int selectBoardListCount() {
-		return boardDao.selectBoardListCount();
-	}
+    public int selectBoardListCount(String deptCode) {
+        return boardDao.selectBoardListCount(deptCode);
+    }
 
-	@Override
-	public List<BoardDto> selectBoardList(PageInfoDto pi) {
-		return boardDao.selectBoardList(pi);
-	}
+    @Override
+    public List<BoardDto> selectBoardList(Map<String, Object> params) {
+        return boardDao.selectBoardList(params);
+    }
 
 	@Override
 	public int selectSearchListCount(Map<String, String> search) {

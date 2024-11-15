@@ -12,9 +12,10 @@ import com.cl.cruella.dto.PageInfoDto;
 public interface BoardService {
 	
 	// 게시글 목록 조회 (페이징 처리)
-	int selectBoardListCount();
-	List<BoardDto> selectBoardList(PageInfoDto pi);
+	int selectBoardListCount(String deptCode);
+    List<BoardDto> selectBoardList(Map<String, Object> params);
 	
+
 	// 게시글 검색 조회 (페이징 처리)
 	int selectSearchListCount(Map<String, String> search);
 	List<BoardDto> selectSearchList(Map<String, String> search, PageInfoDto pi);
