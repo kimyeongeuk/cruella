@@ -19,15 +19,15 @@ import lombok.ToString;
 public class AppdocDto { // 기안문서
 	
 	
-	private int docNo;
-	private String memNo;
-	private String docType;
-	private String docTitle;
-	private String docContent;
-	private String docImpo;
-	private Date docDt;
-	private Date docModifyDt;
-	private String docStatus;
+	private int docNo; // 문서번호
+	private String memNo; // 기안자 사번
+	private String docType; // 문서종류
+	private String docTitle; // 제목
+	private String docContent; // 내용
+	private String docImpo; // 중요도
+	private Date docDt; // 작성일
+	private Date docModifyDt; // 수정일 // 이건 안쓸듯
+	private String docStatus; // 문서 상태 = 대기/진행/최종승인/반려
 	private int docOrder;
 	private String status;
 	private String reason;

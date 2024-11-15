@@ -559,19 +559,19 @@
                                                 <td style="font-weight: 700;">중요도</td>
                                                 <td>
                                                   <span style="margin-left: 30px;">
-                                                    <input type="checkbox" value="C" id="C">
+                                                    <input type="checkbox" value="C" id="C" class="checkBox_result">
                                                     <label for="C" style="font-weight: 700;">일반</label>
                                                   </span>
                                                 </td>
                                                 <td> 
                                                   <span style="margin-left: 30px;">
-                                                    <input type="checkbox" value="E" id="E">
+                                                    <input type="checkbox" value="E" id="E" class="checkBox_result">
                                                     <label for="E" style="font-weight: 700;">긴급</label>
                                                   </span>
                                                 </td>
                                                 <td>
                                                   <span style="margin-left: 30px;">
-                                                    <input type="checkbox" value="I" id="I">
+                                                    <input type="checkbox" value="I" id="I" class="checkBox_result">
                                                     <label for="I" style="font-weight: 700;">중요</label>
                                                   </span>
                                                 </td>
@@ -616,13 +616,7 @@
                             </span>
                             
                             
-                            <script>
-                            	$('#last_app_btn').on('click',function(){
-                            		
-                            	})
-                            	
                             
-                            </script>
                             
                             
                             <!-- /결재요청 모달 -->
@@ -797,7 +791,7 @@
                       <tr>
                         <td class="app_title_td" style="text-align: center; height: 40px;">기안자</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
-                          <span style="position: relative; left: 10px;">${m.memName}</span>
+                          <span style="position: relative; left: 10px;" id="userNo_value">${m.memName}</span>
                         </td>
                       </tr>
                     </table>
@@ -876,12 +870,46 @@
         <!-- </div> -->
 
 
+				<script>
+				
+					$('#last_app_btn').on('click', function() {
+						
+						if($('#defaultFormControlInput').val() == ""){
+							alert('제목을 입력해주세요')
+						}else if($('.ql-editor').html() == ""){
+							alert('내용을 입력해주세요')
+						}
+						
+						
+						
+						$.ajax({
+							url : '${contextPath}/app/insert.do',
+							data : {
+								memNo : $('#userNo_value').val(), // 사원번호
+								docType : '기안서',
+								docTitle : $('#defaultFormControlInput').val(), // 제목
+								docContent: $('.ql-editor').html(), // 내용
+								docImpo : $('#checkBox_result:checked').val(), // 중요도
+								
+							},
+							success:function(res){
+								
+								if(res>1){
+									alert('성공적으로 결재하였습니다');
+								}
+							}
+						})
+
+					})
+					
+				</script>
 
 
 
 
 
-        <!-- 미리보기 모달 -->
+
+				<!-- 미리보기 모달 -->
         <div class="modal fade" id="exLargeModal2" tabindex="-1" aria-hidden="true">
           <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -1019,18 +1047,6 @@
 
 
 
-
-          // 결재선 추가 테스트용
-          function dd() {
-
-            let div = '<span class="line_user">'
-              + '<span>' + $('') + '</span>'
-              + '<span class="signLine">' + $('') + '</span>'
-              + '<span>' + $('') + '</span>'
-              + '</span>';
-
-            $('.app_line_div').append(div);
-          }
 
 
           // 미리보기 결재선라인 결과값 대입 함수
