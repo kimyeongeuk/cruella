@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.cl.cruella.dto.DeptDto;
+import com.cl.cruella.dto.MemberDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +21,10 @@ public class AppDao {
 	
 	public List<DeptDto> ajaxJstree(){
 		return sqlSession.selectList("appMapper.ajaxJstree");
+	}
+	
+	public DeptDto formDraftPage(String userNo) {
+		return sqlSession.selectOne("appMapper.formDraftPage",userNo);
 	}
 	
 	

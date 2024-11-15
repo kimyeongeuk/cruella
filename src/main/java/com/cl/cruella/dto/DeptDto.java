@@ -18,6 +18,8 @@ import lombok.ToString;
 @Builder
 public class DeptDto { // 부서객체
 	
+	private String memNo; // 사원번호
+	private String memName; // 사원이름
 	private String deptCode; // 부서번호
 	private String posCode; // 직급번호
 	private String deptName; // 부서이름

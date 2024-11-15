@@ -42,5 +42,11 @@ public class AppdocDto { // 기안문서
 //	결재자 리스트 
 	private List<AppRovalDto> rovalList;
 	
+//	참조자 리스트
+	private List<AppRefDto> refList;
+	
+//	파일첨부 리스트
+	private List<AttachDto> attachList;
+	
 	
 }

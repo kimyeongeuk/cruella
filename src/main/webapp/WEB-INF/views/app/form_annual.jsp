@@ -764,16 +764,39 @@
                       </thead>
                     </table>
 
+                   <!-- db 조회해서 담기 -->
                     <table class="app_table_container">
                       <tr class="app_result_div">
                         <td class="dept_td">기안부서</td>
-                        <td class="dept_td_result">인사팀</td>
-                        <td class="app_date">기안일</td>
-                        <td class="app_date_result">24/12/01</td>
-                        <td class="app_no">문서번호</td>
-                        <td class="app_no_result">12</td>
+                        <td class="dept_td_result">${m.deptName}</td>
+                        <td class="app_date">직급</td>
+                        <td class="app_date_result">${m.posName}</td>
+                        <td class="app_no">기안일</td>
+                        <td class="app_no_result"></td>
                       </tr>
                     </table>
+                    
+                     <script>
+                    $(document).ready(function(){
+                    	
+                    	
+                    		var today = new Date();
+                    	    var year = today.getFullYear();
+                    	    var month = today.getMonth() + 1; // 월은 0부터 시작하므로 +1
+                    	    var day = today.getDate();
+                    	    var count = 0;
+
+                    	    month = month < 10 ? '0' + month : month;
+                    	    day = day < 10 ? '0' + day : day;
+
+                    	    var formatDate = year + '/' + month + '/' + day;
+                    	    
+                    	    
+                    	    
+                    	    $('.app_no_result').html(formatDate);
+                    	
+                    })
+                    </script>
 
                     <table style="border-spacing: 0;">
                       <tr>

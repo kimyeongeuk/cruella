@@ -18,10 +18,18 @@
 		
 		
 </resultMap>
-	
+
+
+<resultMap  id="deptDtoResultSmall" type="DeptDto">
+	<result column="mem_name" property="memName"/>
+	<result column="dept_name" property="deptName"/>
+	<result column="pos_name" property="posName"/>
+</resultMap>
 
 	
-	<select id="ajaxJstree" resultMap="deptResultMap">
+	
+<!-- jstree 조직도 조회문 -->
+<select id="ajaxJstree" resultMap="deptResultMap">
 	
 	SELECT 
         MEM_NO
@@ -38,7 +46,26 @@
 		DEPARTMENT D ON (M.DEPT_CODE = D.DEPT_CODE)
 	
 	
-	</select>
+</select>
+
+
+
+<!-- 양식마다 이동시 양식 기본값 적용할 데이터 조회문 -->
+<select id="formDraftPage" resultMap="deptDtoResultSmall">
+	select
+      dept_name 
+      ,mem_name 
+      ,pos_name 
+    from
+        member m
+    join position p on (m.pos_code = p.pos_code)
+    join department d on(m.dept_code = d.dept_code)
+    where mem_no = #{userNo}
+		
+</select>
+
+
+
 
 
 

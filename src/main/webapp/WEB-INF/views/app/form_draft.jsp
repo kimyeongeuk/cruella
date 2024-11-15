@@ -262,7 +262,6 @@
 
 
 
-
                           </div>
                         </div>
                       </div>
@@ -318,6 +317,8 @@
                                   <th><i class="ti ti-trash"></i></th>
                                 </tr>
                               </thead>
+                              
+                              
                             </table>
 
 
@@ -510,15 +511,14 @@
                             </script>
                             
                             
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-
-                            <!-- 결재요청 모달창 -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    
+                       <!-- 결재요청 모달창 -->
                             <span>
 
                              
@@ -531,7 +531,7 @@
                                       <div style="width: 100%; padding: 15px;">
                                         <h4 class="modal-title" id="exampleModalLabel4">결재요청</h4>
                                         <span>
-                                          <pre style="position: relative; top: 16px;">최종요청을 하기 전에 다시 한번 확인바랍니다.</pre>
+                                          <pre style="position: relative; top: 16px; color:red;">최종요청을 하기 전에 다시 한번 확인바랍니다.</pre>
                                         </span>
                                       </div>
 
@@ -605,41 +605,39 @@
                                         취소
                                       </button>
                                       <button type="button" class="btn btn-primary waves-effect waves-light"
-                                      data-bs-dismiss="modal">
+                                      data-bs-dismiss="modal" id="last_app_btn">
                                         확인
                                       </button>
                                     </div>
                                   </div>
 
-
                                 </div>
                               </div>
-
-
-
                             </span>
+                            
+                            
+                            <script>
+                            	$('#last_app_btn').on('click',function(){
+                            		
+                            	})
+                            	
+                            
+                            </script>
+                            
+                            
                             <!-- /결재요청 모달 -->
 
 
-
-
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     
                     <style>
                       * {
@@ -765,19 +763,41 @@
                     <table class="app_table_container">
                       <tr class="app_result_div">
                         <td class="dept_td">기안부서</td>
-                        <td class="dept_td_result">인사팀</td>
-                        <td class="app_date">기안일</td>
-                        <td class="app_date_result">24/12/01</td>
-                        <td class="app_no">문서번호</td>
-                        <td class="app_no_result">12</td>
+                        <td class="dept_td_result">${m.deptName}</td>
+                        <td class="app_date">직급</td>
+                        <td class="app_date_result">${m.posName}</td>
+                        <td class="app_no">기안일</td>
+                        <td class="app_no_result"></td>
                       </tr>
                     </table>
+                    
+                    <script>
+                    $(document).ready(function(){
+                    	
+                    	
+                    		var today = new Date();
+                    	    var year = today.getFullYear();
+                    	    var month = today.getMonth() + 1; // 월은 0부터 시작하므로 +1
+                    	    var day = today.getDate();
+                    	    var count = 0;
+
+                    	    month = month < 10 ? '0' + month : month;
+                    	    day = day < 10 ? '0' + day : day;
+
+                    	    var formatDate = year + '/' + month + '/' + day;
+                    	    
+                    	    
+                    	    
+                    	    $('.app_no_result').html(formatDate);
+                    	
+                    })
+                    </script>
 
                     <table style="border-spacing: 0;">
                       <tr>
                         <td class="app_title_td" style="text-align: center; height: 40px;">기안자</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
-                          <span style="position: relative; left: 10px;">박시우</span>
+                          <span style="position: relative; left: 10px;">${m.memName}</span>
                         </td>
                       </tr>
                     </table>
@@ -904,11 +924,11 @@
                 <table class="app_table_container" style="width: 100%;">
                   <tr class="app_result_div">
                     <td class="dept_td">기안부서</td>
-                    <td class="dept_td_result">인사팀</td>
-                    <td class="app_date">기안일</td>
-                    <td class="app_date_result">24/12/01</td>
-                    <td class="app_no">문서번호</td>
-                    <td class="app_no_result">12</td>
+                    <td class="dept_td_result">${m.deptName}</td>
+                    <td class="app_date">직급</td>
+                    <td class="app_date_result">${m.posName}</td>
+                    <td class="app_no">기안일</td>
+                    <td class="app_no_result"></td>
                   </tr>
                 </table>
 
@@ -916,7 +936,7 @@
                   <tr>
                     <td class="app_title_td" style="text-align: center; height: 40px;">기안자</td>
                     <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
-                      <span style="position: relative; left: 10px;">박시우</span>
+                      <span style="position: relative; left: 10px;">${m.memName}</span>
                     </td>
                   </tr>
                 </table>
@@ -976,6 +996,9 @@
             </div>
           </div>
         </div>
+        
+        
+        
 
 
 
