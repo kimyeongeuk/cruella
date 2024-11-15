@@ -1,6 +1,7 @@
 package com.cl.cruella.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +38,11 @@ public class MemberDto {
 		private int vacCount;
 		private String deptCode;
 		private String posCode;
+		private String posName;
+		
+		
 		private String signPath;
-	
+		
+		
+		
 }

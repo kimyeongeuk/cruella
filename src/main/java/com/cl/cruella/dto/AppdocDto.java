@@ -1,6 +1,7 @@
 package com.cl.cruella.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @Builder
-public class AppdocDto {
+public class AppdocDto { // 기안문서
 	
 	
 	private int docNo;
@@ -37,6 +38,9 @@ public class AppdocDto {
 	
 //	증명서신청서
 	private Date appCoreDt; // 발행날짜
+	
+//	결재자 리스트 
+	private List<AppRovalDto> rovalList;
 	
 	
 }

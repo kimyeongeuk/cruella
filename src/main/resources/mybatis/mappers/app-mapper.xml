@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="appMapper">
+
+<resultMap id="deptResultMap" type="DeptDto">
+	
+  		<result column="DEPT_CODE" property="deptCode"/>
+  		<result column="DEPT_NAME" property="deptName"/>
+  	
+		
+		
+	<collection ofType="MemberDto" property="memList">
+  		<result column="MEM_NO" property="memNo"/>
+  		<result column="MEM_NAME" property="memName"/>
+  		<result column="POS_CODE" property="posCode"/>
+  		<result column="POS_NAME" property="posName"/>
+  	</collection>
+		
+		
+</resultMap>
+	
+
+	
+	<select id="ajaxJstree" resultMap="deptResultMap">
+	
+	SELECT 
+        MEM_NO
+       ,MEM_NAME
+       ,P.POS_NAME AS POS_NAME
+       ,M.POS_CODE AS POS_CODE
+       ,D.DEPT_NAME AS DEPT_NAME
+       ,M.DEPT_CODE AS DEPT_CODE
+	FROM 
+		MEMBER M
+	JOIN 
+		POSITION P ON (M.POS_CODE = P.POS_CODE)
+	JOIN 
+		DEPARTMENT D ON (M.DEPT_CODE = D.DEPT_CODE)
+	
+	
+	</select>
+
+
+
+
+
+</mapper>

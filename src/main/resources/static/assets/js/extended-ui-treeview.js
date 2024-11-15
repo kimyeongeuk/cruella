@@ -4,120 +4,20 @@
 
 'use strict';
 
-$(function () {
-  var theme = $('html').hasClass('light-style') ? 'default' : 'default-dark',
-    dragDrop = $('#jstree-drag-drop'),
-    dragDrop2 = $('#jstree-drag-drop2');
 
-
-  // 참조선
-  // Drag Drop
-  // --------------------------------------------------------------------
-  if (dragDrop.length) {
-    dragDrop.jstree({
+function jstreeRendering(jstreeView, theme, nodeData){
+	jstreeView.jstree({
       core: {
         themes: {
           name: theme,
-
         },
         check_callback: true,
-        data: [
-          {
-            text: '영업총괄팀',
-            children: [
-              {
-                text: '박시우 점장',
-                memName: '박시우',
-                memNo: 1,
-                teamName: '영업총괄팀',
-
-                icon: 'ti ti-user'
-
-              },
-              {
-                text: '김영욱 부장',
-
-                memName: '김영욱',
-                memNo: 2,
-                teamName: '영업총괄팀',
-
-                icon: 'ti ti-user'
-              }
-            ]
-          },
-
-
-          {
-            text: '인사팀',
-            state: {
-              opened: false
-            },
-            children: [
-
-              {
-                text: '이예빈 팀장',
-                memName: '이예빈',
-                memNo: 3,
-                teamName: '인사팀',
-
-                icon: 'ti ti-user'
-              },
-              {
-                text: '김동규 대리',
-                memName: '김동규',
-                memNo: 4,
-                teamName: '인사팀',
-
-                icon: 'ti ti-user'
-              },
-            ]
-          },
-
-
-          {
-            text: '지원팀',
-            state: {
-              opened: false
-            },
-            children: [
-              {
-                text: '김유빈 팀장',
-                memName: '김유빈',
-                memNo: 5,
-                teamName: '지원팀',
-
-                icon: 'ti ti-user'
-              },
-              {
-                text: '황재운 대리',
-                memName: '황재운',
-                memNo: 6,
-                teamName: '지원팀',
-
-                icon: 'ti ti-user'
-              }
-
-            ]
-          },
-          {
-            text: '남성브랜드',
-            state: {
-              opened: false
-            },
-            children: [
-              {
-                text: '손흥민 팀장',
-                memName: '손흥민',
-                memNo: 7,
-                teamName: '남성브랜드',
-
-                icon: 'ti ti-user'
-              },
-            ]
-          }
-
-        ]
+        data: nodeData 
+		
       },
+	  
+	  
+	  
       plugins: ['types', 'dnd'],
       types: {
         default: {
@@ -138,6 +38,73 @@ $(function () {
       },
 
     });
+}
+
+
+$(function () {
+  var theme = $('html').hasClass('light-style') ? 'default' : 'default-dark',
+  dragDrop = $('#jstree-drag-drop'),
+  dragDrop2 = $('#jstree-drag-drop2');
+  
+  
+  $.ajax({
+	url: '/cruella/app/jstreeList.do',
+	async: false,
+	success:function(list){
+		
+		console.log(list);
+		
+		let nodeData = [];
+		
+		for(let i=0; i<list.length; i++){ // 부서 순차접근을 위한 for문
+			
+			let deptObj = {
+				text: list[i].deptName,
+				state: {
+	              opened: false
+	            },
+				children:[]
+			};
+			
+			let memList = list[i].memList;
+			
+			for(let j=0; j<memList.length; j++){ // 해당 부서 내의 사원들 순차접근을 위한 for문
+				let memObj = {
+					text: memList[j].memName + " " + memList[j].posName,
+				    memName: memList[j].memName,
+					memNo: memList[j].memNo,
+					teamName: list[i].deptName,
+					icon: 'ti ti-user'
+				};
+				
+				deptObj.children.push(memObj);
+			}
+			
+			nodeData.push(deptObj);
+			
+		}
+		
+		
+		
+		jstreeRendering(dragDrop, theme,nodeData ); // 참조선 jstree 렌더링
+		jstreeRendering(dragDrop2, theme,nodeData);// 결재선 jstree 렌더링
+		
+		
+	}
+	
+  })
+  
+ 
+  
+  
+  
+
+
+  // 참조선
+  // Drag Drop
+  // --------------------------------------------------------------------
+  if (dragDrop.length) {
+    
 
 
     let count = 0;
@@ -326,131 +293,15 @@ $(function () {
   // 결재선 조직도
   // Drag Drop
   // --------------------------------------------------------------------
+  
+  
+ 
+  
+  
+  
+  
   if (dragDrop2.length) {
-    dragDrop2.jstree({
-      core: {
-        themes: {
-          name: theme,
-
-        },
-        check_callback: true,
-        data: [
-          {
-            text: '영업총괄팀',
-            children: [
-              {
-                text: '박시우 점장',
-                memName: '박시우',
-                memNo: 1,
-                teamName: '영업총괄팀',
-
-                icon: 'ti ti-user'
-
-              },
-              {
-                text: '김영욱 부장',
-
-                memName: '김영욱',
-                memNo: 2,
-                teamName: '영업총괄팀',
-
-                icon: 'ti ti-user'
-              }
-            ]
-          },
-
-
-          {
-            text: '인사팀',
-            state: {
-              opened: false
-            },
-            children: [
-
-              {
-                text: '이예빈 팀장',
-                memName: '이예빈',
-                memNo: 3,
-                teamName: '인사팀',
-
-                icon: 'ti ti-user'
-              },
-              {
-                text: '김동규 대리',
-                memName: '김동규',
-                memNo: 4,
-                teamName: '인사팀',
-
-                icon: 'ti ti-user'
-              },
-            ]
-          },
-
-
-          {
-            text: '지원팀',
-            state: {
-              opened: false
-            },
-            children: [
-              {
-                text: '김유빈 팀장',
-                memName: '김유빈',
-                memNo: 5,
-                teamName: '지원팀',
-
-                icon: 'ti ti-user'
-              },
-              {
-                text: '황재운 대리',
-                memName: '황재운',
-                memNo: 6,
-                teamName: '지원팀',
-
-                icon: 'ti ti-user'
-              }
-
-            ]
-          },
-          {
-            text: '남성브랜드',
-            state: {
-              opened: false
-            },
-            children: [
-              {
-                text: '손흥민 팀장',
-                memName: '손흥민',
-                memNo: 7,
-                teamName: '남성브랜드',
-
-                icon: 'ti ti-user'
-              },
-            ]
-          }
-
-        ]
-      },
-      plugins: ['types', 'dnd'],
-      types: {
-        default: {
-          icon: 'ti ti-folder'
-        },
-        html: {
-          icon: 'ti ti-brand-html5 text-danger'
-        },
-        css: {
-          icon: 'ti ti-brand-css3 text-info'
-        },
-        img: {
-          icon: 'ti ti-photo text-success'
-        },
-        js: {
-          icon: 'ti ti-brand-javascript text-warning'
-        }
-      },
-
-    });
+    
 
 
     let countDnd = 0; // 추가된 데이터를 세기 위한 변수
@@ -611,11 +462,6 @@ $(function () {
     });
 
 
-    
-
-
-
-
 
   }
 
@@ -685,8 +531,8 @@ $(function () {
 
     var formatDate = year + '/' + month + '/' + day;
 
-     // drag_line_div 안의 데이터를 가져와서 처리
-     var count = 1;
+     
+     var countLevel = 1; // 순서지정
 
      $('#drag_line_div tr').each(function() {
       // 각 row에서 필요한 데이터 가져오기
@@ -697,22 +543,26 @@ $(function () {
       
       
        
-        // div 형식으로 결합
+        
         var div = '<span class="line_user">'
                 + '<span>' + teamName + '</span>'
                 + '<span class="signLine">' + memName + '</span>'
                 + '<span>' + formatDate + '</span>'
                 + '<input type="hidden" value="' + memNo + '">'
-                + '<input type="hidden" value="' + count + '">'
+                + '<input type="hidden" value="' + countLevel + '">'
                 + '</span>';
         
         
       if($('#drag_line_div tr').length > 1){
         
         $('.app_line_div').append(div);
-        count++;
-      }
-      console.log(count)
+		
+        countLevel++;
+      }else if($('#drag_line_div tr').length == 1){
+		$('.app_line_div').html(div);
+      	
+		countLevel++;
+	  }
 
       
 
