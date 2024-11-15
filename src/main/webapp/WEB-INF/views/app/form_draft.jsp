@@ -438,11 +438,11 @@
                                   지각/불참사유서
                                 </option>
                                 <option value="증명서">
-                                  재직증명서
+                                  증명서
                                 </option>
-                                <option value="인사발령">
+                                <!-- <option value="인사발령">
                                   인사발령 요청서
-                                </option>
+                                </option> -->
                               </select>
                             </span>
 
