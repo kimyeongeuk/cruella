@@ -86,7 +86,7 @@
           word-wrap: break-word;
         }
       </style>
-
+			
        <!-- Content wrapper -->
        <div class="content-wrapper">
          <div class="container-xxl flex-grow-1 container-p-y">
@@ -103,15 +103,15 @@
 	                      <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" /> 
 	                    </div>
 	                    <div class="d-flex flex-column">
-	                      <span class="emp_name text_truncate" style="color: black;">Jodan Strvenson</span>
+	                      <span class="emp_name text_truncate" style="color: black;">${ b.memName }</span>
 	                    </div>
 	                    <div class="d-flex flex-column" style="margin-left: 20px;">
-	                      <span>${ b.registDt }</span>
+	                      <span>${ b.boardRegistDT }</span>
 	                    </div>
 	                  </div>
 	                  <div class="d-flex">
-	                    <span id="attachment-toggle" style="cursor: pointer;">첨부파일(${attachCount})</span>
-	                    <span style="margin-left: 20px; color: black;">조회수 (${board.boardCount})</span>
+	                    <span id="attachment-toggle" style="cursor: pointer;">첨부파일(${b.attachCount})</span>
+	                    <span style="margin-left: 20px; color: black;">조회수 (${b.boardCount})</span>
 	                  </div>
 	                </div>
 	                <div id="attachment-list" style="display: none; margin-top: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
@@ -132,9 +132,9 @@
 	                    </div>
 	                  </div>
 	                </div>
-	                <pre class="content-pre">
-	${ b.boardContent }
-	                </pre>   
+	                <div class="content"> 
+	                	<pre style="font-size: 16px; color:black; font-family: 'Noto Sans KR', sans-serif;">${ b.boardContent }</pre> 
+	                </div>
 	                <br><hr>
 	                <div style="display: flex; align-items: center; justify-content: space-between;">
 	                 <div class="input" style="flex-grow: 1; margin-right: 10px;">
@@ -144,15 +144,19 @@
 	                 	 <!-- onclick으로 등록페이지 이동하도록하기 -->
 	                   <button id="regist" class="btn btn-secondary" style="text-align: center;">등록</button>
 	                 </div> 
-	               </div>                   
+	               </div>  
+	               <div style="display: flex; justify-content: center; margin-top: 20px;">
+                   <button id="back" class="btn btn-label-secondary" style="text-align: center;" onclick="boardList();">목록</button>
+                 </div>                  
                </div>
              </div>
            </div>
 
           <script>
-          	function list(){
-          		history.back();
-          	}
+	          function boardList() {
+	        	    window.location.href = '${contextPath}/board/boardList.do';
+	        	}
+
           
             document.addEventListener('DOMContentLoaded', () => {
               const icon = document.querySelector('.icon');

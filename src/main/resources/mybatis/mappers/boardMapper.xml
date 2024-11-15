@@ -12,7 +12,6 @@
         <result column="board_modify_date" property="boardModifyDT" />
         <result column="board_status" property="boardStatus" />
         <result column="dept_code" property="deptCode" />
-        <result column="attach_count" property="attachCount" />
         <result column="mem_name" property="memName" />
         <collection resultMap="attachResultMap" property="attachList" />
     </resultMap>
@@ -121,8 +120,8 @@
           (
             file_no
           , file_path
-          , filesystem_name
-          , original_name
+          , file_system_name
+          , file_original_name
           , file_ref_type
           , file_ref_no
           )
@@ -146,21 +145,24 @@
 
     <select id="selectBoard" resultMap="boardResultMap">
         select
-               b.board_no
-             , b.board_title
-             , b.board_content
-             , m.mem_no
-             , to_char(b.board_regist_date, 'YYYY-MM-DD') as board_regist_date
-             , to_char(b.board_modify_date, 'YYYY-MM-DD') as board_modify_date
-             , a.file_no
-             , a.file_path
-             , a.filesystem_name
-             , a.original_name
-          from board b
-          join member m on (m.mem_no = b.mem_no)
-          left join attachment a on (a.file_ref_type = 'B' and a.file_ref_no = b.board_no)
-         where b.board_status = 'Y'
-           and b.board_no = #{boardNo}
+				       b.board_no
+				     , b.board_title
+				     , b.board_content
+				     , m.mem_no
+				     , m.mem_name
+				     , to_char(b.board_regist_date, 'YYYY-MM-DD') as board_regist_date
+				     , to_char(b.board_modify_date, 'YYYY-MM-DD') as board_modify_date
+				     , b.board_count
+				     , b.dept_code
+				     , a.file_no
+				     , a.file_path
+				     , a.file_system_name
+				     , a.file_original_name
+				  from board b
+				  join member m on (m.mem_no = b.mem_no)
+				  left join attachment a on (a.file_ref_type = 'B' and a.file_ref_no = b.board_no)
+				 where b.board_status = 'Y'
+				   and b.board_no = #{boardNo}
     </select>
 
     <update id="updateIncreaseCount">

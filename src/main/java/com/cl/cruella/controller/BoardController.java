@@ -73,6 +73,7 @@ public class BoardController {
 		// boardNo, boardTitle, boardContent, boardWriter, registDt, attachList
 		
 		model.addAttribute("b", b);
+		System.out.println(model);
 	}
 	
 	@GetMapping("/boardModify.do")
