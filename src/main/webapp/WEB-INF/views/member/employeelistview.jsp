@@ -37,7 +37,7 @@
     <div class="container-xxl flex-grow-1 container-p-y">
      <!-- 이쪽에 세션정보 넣어야합니다 -->
     
-                  <div class="row">
+              <div class="row">
                 <div class="col-md-12">
                   <div class="nav-align-top">
                     <ul class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
@@ -58,7 +58,7 @@
 												class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-money me-1_5"></i> 급여내역확인 </a></li>
+												class="ti-sm ti ti-users me-1_5"></i> 급여내역확인 </a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
 												class="ti-sm ti ti-users me-1_5"></i> 조직도 </a></li>
@@ -71,7 +71,7 @@
               <div
                 class="faq-header d-flex flex-column justify-content-center align-items-center h-px-100 position-relative" style="margin-bottom: 10px;">
                 <img
-                  src="../../assets/img/pages/header.png"
+                  src="${ contextPath }/assets/img/pages/header.png"
                   class="scaleX-n1-rtl faq-banner-img z-n1 rounded"
                   alt="background image" />
                 <div class="input-wrapper mt-4 input-group input-group-merge px-lg-5">
@@ -121,7 +121,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-                    <tbody class="table-border-bottom-0">
+
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -140,7 +140,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-                    <tbody class="table-border-bottom-0">
+
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -159,7 +159,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-                    <tbody class="table-border-bottom-0">
+
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -178,7 +178,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-                    <tbody class="table-border-bottom-0">
+
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -197,7 +197,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-                    <tbody class="table-border-bottom-0">
+
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -216,7 +216,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-                    <tbody class="table-border-bottom-0">
+ 
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -235,7 +235,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-                    <tbody class="table-border-bottom-0">
+
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -254,7 +254,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-                    <tbody class="table-border-bottom-0">
+
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -273,7 +273,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-                    <tbody class="table-border-bottom-0">
+                      
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -385,8 +385,6 @@
 
     <!-- Drag Target Area To SlideIn Menu On Small Screens -->
     <div class="drag-target"></div>
-   
-   
    <!-- layout wrapper 닫기 -->
    </div>
    

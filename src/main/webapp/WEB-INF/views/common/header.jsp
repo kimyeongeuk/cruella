@@ -32,6 +32,7 @@
     
 
     <!-- Vendors CSS -->
+
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/node-waves/node-waves.css" />
 
     <link rel="stylesheet" href="${ contextPath }/resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
