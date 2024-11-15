@@ -37,7 +37,7 @@
 	<result column="MSG_NO" property="msgNo" />
 	<result column="CHAT_NO" property="chatNo" />
 	<result column="MEM_NO" property="memNo" />
-	<result column="MSG_CONTENT" property="msgContnet" />
+	<result column="MSG_CONTENT" property="msgContent" />
 	<result column="MSG_REGIST_DATE" property="msgRegistDate" />
 	<result column="MSG_CHECK" property="msgCheck" />
 	<result column="MSG_STATUS" property="msgStatus" />
@@ -145,6 +145,21 @@ select count(chat_no) chat_count
    where m.status in ('Y','S')
      and m.mem_no = #{memNo}  
 </select>
+
+<!-- 메시지 목록 불러오기 -->
+<select id="messageList" resultMap="messageResultMap">
+	select MSG_NO
+			 , CHAT_NO
+			 , MEM_NO
+			 , MSG_CONTENT
+			 , MSG_REGIST_DATE
+			 , MSG_CHECK
+			 , MSG_STATUS
+			 , MSG_MODIFY_DATE
+  from message
+ where chat_no = #{chatNo}
+</select>
+
 
 
 

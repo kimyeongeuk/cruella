@@ -21,7 +21,7 @@ public class MessageDto {
 	 private int msgNo;
 	 private int chatNo;
 	 private String memNo;
-	 private String msgContnet;
+	 private String msgContent;
 	 private Date msgRegistDate;
 	 private String msgCheck;
 	 private String msgStatus;

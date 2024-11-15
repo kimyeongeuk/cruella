@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.cl.cruella.dto.ChatDto;
 import com.cl.cruella.dto.ChatProfileDto;
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.dto.MessageDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +40,10 @@ public class ChatDao {
 
 	public ChatProfileDto chatProFileInfo(String memNo) {
 		return sqlSession.selectOne("chatMapper.chatProFileInfo",memNo);
+	}
+
+	public List<MessageDto> messageList(int chatNo) {
+		return sqlSession.selectList("chatMapper.messageList",chatNo);
 	}
 	
 

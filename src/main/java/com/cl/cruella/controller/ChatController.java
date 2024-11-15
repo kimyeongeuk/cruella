@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cl.cruella.dto.ChatDto;
 import com.cl.cruella.dto.ChatProfileDto;
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.dto.MessageDto;
 import com.cl.cruella.service.ChatServiceImpl;
 
 import jakarta.servlet.http.HttpSession;
@@ -49,7 +50,7 @@ public class ChatController {
 	}
 	
 	@ResponseBody
-	@GetMapping(value="userInfo.do",produces="application/json")
+	@GetMapping(value="/userInfo.do",produces="application/json")
 	public Map<String,Object>  userInfo(String memNo,Model model) {
 		
 		log.debug(memNo);
@@ -68,6 +69,21 @@ public class ChatController {
 		return map;
 		
 }
+	
+	@ResponseBody
+	@GetMapping(value="/list.do",produces="application/json")
+	public Map<String,Object> chatList(int chatNo,String memNo) {
+		log.debug("넘버 {}",memNo);
+		// 채팅리스트 불러오기
+		List<MessageDto> msgList = chatServiceImpl.messageList(chatNo);
+		log.debug("넘버 {}",chatNo);
+		
+		Map<String,Object> map = new HashMap<>();
+		map.put("m", memNo);
+		map.put("msg", msgList);
+		
+		return map;
+	}
 	
 	
 	

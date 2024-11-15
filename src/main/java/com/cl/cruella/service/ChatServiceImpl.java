@@ -8,6 +8,7 @@ import com.cl.cruella.dao.ChatDao;
 import com.cl.cruella.dto.ChatDto;
 import com.cl.cruella.dto.ChatProfileDto;
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.dto.MessageDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -45,6 +46,9 @@ public class ChatServiceImpl implements ChatService{
 	}
 	public ChatProfileDto chatProFileInfo(String memNo) {
 		return chatDao.chatProFileInfo(memNo);
+	}
+	public List<MessageDto> messageList(int chatNo) {
+		return chatDao.messageList(chatNo);
 	}
 
 
