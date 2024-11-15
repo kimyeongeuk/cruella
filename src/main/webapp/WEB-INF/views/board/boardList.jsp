@@ -80,7 +80,7 @@
 			          		</c:when>
 			          		<c:otherwise>
 			          			<c:forEach var="board" items="${list}">
-										    <tr onclick='location.href = "${contextPath}/board/${ loginUser.userId eq b.memNo ? "detail.do" : "increase.do" }?no=${ b.boardNo }";'>
+										    <tr onclick='location.href = "${contextPath}/board/${ loginUser.memNo eq b.memNo ? "detail.do" : "increase.do" }?no=${ b.boardNo }";'>
 										    	<td><input type="checkbox" /></td>
 									        <td>공지</td>
 									        <td>${board.memName}</td> 
