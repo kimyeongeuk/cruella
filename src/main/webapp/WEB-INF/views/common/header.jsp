@@ -136,7 +136,7 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="${ contextPath }/member/myinfo.do" class="menu-link">
                     <div data-i18n="내 정보">내 정보</div>
                   </a>
                 </li>

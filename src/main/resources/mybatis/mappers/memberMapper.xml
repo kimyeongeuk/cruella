@@ -21,6 +21,8 @@
 		<result column="DEPT_CODE" property="deptCode" />
 		<result column="POS_CODE" property="posCode" />
 		<result column="sign_path" property="signPath" />
+		<result column="pos_name" property="posName" />
+		<result column="dept_name" property="deptName" />
 	</resultMap>
 
 	<!-- 로그인(김동규) -->
@@ -44,7 +46,11 @@
 				, DEPT_CODE
 				, POS_CODE
 				, sign_path
+				, d.dept_name
+				, p.pos_name
 		 from member
+		 join department d using(dept_code)
+     join position p using(pos_code)
 		where mem_no = #{memNo}
 		  and to_char(mem_pwd) = #{memPwd}
 	</select>

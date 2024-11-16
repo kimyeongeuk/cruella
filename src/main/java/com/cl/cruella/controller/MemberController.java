@@ -25,6 +25,7 @@ public class MemberController {
 	
 	private final MemberService memberService;
 	
+	// 로그인(김동규)
 	@PostMapping("/signin.do")
 	public String signin(MemberDto m
 								 , HttpSession session
@@ -57,6 +58,7 @@ public class MemberController {
 	}
 	
 	
+	// 비밀번호변경(김동규)
 	@PostMapping("/resetPwd.do")
 	public String newPwdCheck(String newPwd, String memNo, HttpServletResponse response) throws IOException {
 		
@@ -77,5 +79,8 @@ public class MemberController {
 	}
 	 @GetMapping("/signup.do")
 	public void salarypayment() {}
-
+	 
+	 @GetMapping("/myinfo.do")
+	 public void myinfo() {}
+	 
 }
