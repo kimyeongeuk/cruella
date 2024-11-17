@@ -22,4 +22,8 @@ public class MemoDao {
 	public int insertMemo(MemoDto memo) {
 		return sqlSession.insert("memoMapper.insertMemo", memo);
 	}
+	
+	public MemoDto selectMemoByNo(int memoNo) {
+		return sqlSession.selectOne("memoMapper.selectMemoByNo", memoNo);
+	}
 }

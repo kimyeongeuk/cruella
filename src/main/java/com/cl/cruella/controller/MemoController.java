@@ -54,5 +54,18 @@ public class MemoController {
 		
 		return "redirect:/member/myinfo.do";
 	}
+	
+	// 메모 조회 (메모번호로)
+	// 김동규
+	@PostMapping("/selectMemo.do")
+	@ResponseBody
+	public MemoDto selectMemo(int memoNo) {
+		
+		MemoDto memo = memoService.selectMemoByNo(memoNo);
+		
+		System.out.println(memo);
+		
+		return memo;
+	}
 
 }

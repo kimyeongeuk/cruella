@@ -19,6 +19,8 @@
 				 , memo_modify_date
 		  from memo
 		 where mem_no = #{memNo}
+		 order
+		    by memo_no desc
 	</select>
 	
 	<insert id="insertMemo">
@@ -40,5 +42,16 @@
  	 			 , sysdate
  	 				)
 	</insert>
+	
+	<select id="selectMemoByNo" resultMap="memoResultMap">
+		select
+					 memo_no
+				 , mem_no
+				 , memo_content
+				 , memo_regist_date
+				 , memo_modify_date
+		  from memo
+		 where memo_no = #{memoNo}
+	</select>
   
 </mapper>

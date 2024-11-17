@@ -17,25 +17,31 @@
    <script src="${ contextPath }/resources/assets/js/config.js"></script>
     
    <style>
-   	#insertMemoInput{
-   		 width: 400px;
-   		 height: 290px;
-   		 border: 2px solid transparent;
-       outline: none; 
-       resize: none;
+   	textarea{
+  		width: 400px;
+  		height: 290px;
+  		border: 2px solid transparent;
+      outline: none; 
+      resize: none !important;
    	}
    	#memoList{
-	   	 background-color: #e9e7fd;
-	   	 border-radius: 5px;
+   	 background-color: #e9e7fd;
+   	 border-radius: 5px;
    	 }
    	#memoList > span{
-	   	 width: 340px;
-	   	 height: 23px;
-	   	 cursor: pointer;
-	   	 overflow: hidden;
+   	 width: 340px;
+   	 height: 23px;
+   	 cursor: pointer;
+   	 overflow: hidden;
+   	 }
+   	 #memoDiv{
+   	 height: 220px;
+   	 margin-top: 15px;
+   	 overflow-y: scroll;
    	 }
    </style>
 </head>
+
 <body>
 <div class="layout-wrapper layout-content-navbar">
    <div class="layout-container">
@@ -173,7 +179,7 @@
                   <!--/ About User -->
                   
                   <!-- 메모목록 -->
-                  <div class="card mb-6" style="height: 331px; overflow-y: scroll;">
+                  <div class="card mb-6" style="height: 331px;">
                     <div class="card-body">
                       <small class="card-text text-uppercase text-muted small">Memo</small> 
                       <i class="ti ti-edit ti-sm" style="margin-left: 310px; cursor: pointer;" onclick="fnOpenMemoModal();"></i>
@@ -181,7 +187,7 @@
                     </div>
                   </div>
                   
-                  <!-- 메모등록 Modal -->
+                  <!-- 메모등록 모달 -->
                   <form action="${ contextPath }/memo/insertMemo.do" method="post">
                   <input type="hidden" name="memNo" value="${ loginUser.getMemNo() }">
 	                  <div class="modal fade" id="insertMemoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -202,7 +208,29 @@
 	                    </div>
 	                  </div>
                   </form>
-
+                  
+                  <!-- 메모 조회 및 수정 모달 -->
+                  <form action="${ contextPath }/memo/modifyMemo.do" method="post">
+                  <input type="hidden" name="memNo" value="${ loginUser.getMemNo() }">
+	                  <div class="modal fade" id="selectMemoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                    <div class="modal-dialog">
+	                        <div class="modal-content" style="width: 450px; height: 450px;">
+	                            <div class="modal-header" style="background-color: #CEC9FF;">
+	                                <h5 class="modal-title" id="exampleModalLabel" style="color: white; margin-bottom: 12px;">Memo</h5>
+	                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	                            </div>
+	                            <div class="modal-body">
+	                               <textarea id="insertMemoInput_edit" name="memoContent"></textarea>
+	                            </div>
+	                            <div class="modal-footer justify-content-center">
+	                                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_memo_insert">수정</button>
+	                                <button type="button" class="btn btn-primary" id="btn_memo_cancel">취소</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                  </div>
+                  </form>
+									
 
 
 
@@ -786,7 +814,7 @@
       
    <script>
    
-   	// 페이지 로드 시 실행시킬 함수
+   	// 페이지 로드 시 실행시킬 함수(김동규)
     window.onload = function(){
     	
     	fnMemoList();	// 메모 전체 리스트 조회
@@ -794,7 +822,7 @@
     	
     }
     
-    // 메모 전체 리스트 조회
+    // 메모 전체 리스트 조회(김동규)
    	function fnMemoList(){
    		
    		const memNo = '${loginUser.getMemNo()}'; // 현재 로그인한 사원의 사번
@@ -805,15 +833,15 @@
 	   			data: {memNo: memNo},
 	   	 success: function(res){
 	   		 
-	   		 		let liEl = "<ul class='list-unstyled mb-2 mt-3 pt-1'>";
+	   		 		let liEl = "<ul class='list-unstyled mb-2'>";
 	   		 
  		 				for(let i = 0; i < res.length; i++) {
  		 				liEl += "<li class='d-flex align-items-center pt-5 pb-5 mt-3' id='memoList'>"
-	 		 							+ "<span class='fw-medium mx-2'>" + res[i].memoContent + "</span>"
+	 		 							+ "<span class='fw-medium mx-2' onclick='fnSelectMemo(" + res[i].memoNo + ");'>" + res[i].memoContent + "</span>"
 	 		 							+ "<div class='dropdown'>"
 	 		 								+ "<i class='ti ti-dots-vertical ti-sm' type='button' data-bs-toggle='dropdown' aria-expanded='false'></i>"
 	 		 									+"<ul class='dropdown-menu'>"
-	 		 										+"<li><a class='dropdown-item' onclick='();'><i class='ti ti-zoom-in'></i>메모 열기</a></li>"
+	 		 										+"<li><a class='dropdown-item' onclick=''><i class='ti ti-zoom-in'></i>메모 열기</a></li>"
 	 		 										+"<li><a class='dropdown-item' href='#'><i class='ti ti-trash'></i>메모 삭제</a></li>"
 	 		 									+"</ul>"
 	 		 								+"</div>"
@@ -827,11 +855,31 @@
 	   	})	
    	}
     
-    // 메모작성 아이콘 클릭 시 열리는 새 메모 작성 모달
+    // 메모작성 아이콘 클릭 시 열리는 새 메모 작성 모달(김동규)
     function fnOpenMemoModal(){
       var memoModal = new bootstrap.Modal(document.getElementById("insertMemoModal"));
 
       memoModal.show();
+    }
+    
+    
+    // 메모 클릭시 해당 메모 조회(김동규)
+    function fnSelectMemo(memoNo){
+    	
+    	var memoModal = new bootstrap.Modal(document.getElementById("selectMemoModal"));
+
+    	$.ajax({
+    		url: '${contextPath}/memo/selectMemo.do',
+    		type: 'POST',
+    		data: {memoNo: memoNo},
+    		success: function(res){
+
+		    	memoModal.show();
+		    	
+		    	$('#insertMemoInput_edit').val(res.memoContent);
+    		}
+    	})
+    	
     }
     
     
