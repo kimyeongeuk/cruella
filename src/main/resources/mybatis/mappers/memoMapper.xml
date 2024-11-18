@@ -53,5 +53,15 @@
 		  from memo
 		 where memo_no = #{memoNo}
 	</select>
+	
+	<update id="modifyMemo">
+		update
+					 memo
+		   set 
+		   		 memo_content = #{memoContent}
+		   	 , memo_modify_date	= sysdate
+		 where memo_no = #{memoNo}
+		   and mem_no = #{memNo}
+	</update>
   
 </mapper>

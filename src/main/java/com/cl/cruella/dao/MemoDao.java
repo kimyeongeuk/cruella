@@ -26,4 +26,8 @@ public class MemoDao {
 	public MemoDto selectMemoByNo(int memoNo) {
 		return sqlSession.selectOne("memoMapper.selectMemoByNo", memoNo);
 	}
+	
+	public int modifyMemo(MemoDto memo) {
+		return sqlSession.update("memoMapper.modifyMemo", memo);
+	}
 }

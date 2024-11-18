@@ -63,9 +63,33 @@ public class MemoController {
 		
 		MemoDto memo = memoService.selectMemoByNo(memoNo);
 		
-		System.out.println(memo);
+		// System.out.println(memo);
 		
 		return memo;
+	}
+	
+	// 메모 수정
+	// 김동규
+	@PostMapping("/modifyMemo.do")
+	public String modifyMemo(MemoDto memo) {
+		
+		// System.out.println(memo);
+		MemoDto m = memoService.selectMemoByNo(memo.getMemoNo());
+		String before = m.getMemoContent(); 	// 수정 전 메모내용
+		
+		String after = memo.getMemoContent();  // 수정 후 메모내용
+		
+		// System.out.println( " 수정요청 전_____ " + m.getMemoContent());
+		// System.out.println(" 수정요청 후_____ " + memo.getMemoContent()); // 수정 후 메모내용
+		
+		
+		if(!before.equals(after)) {
+			
+			int result = memoService.modifyMemo(memo);
+			
+		}
+		return "redirect:/member/myinfo.do"; 
+		
 	}
 
 }

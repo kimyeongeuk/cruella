@@ -29,5 +29,10 @@ public class MemoServiceImpl implements MemoService {
 	public MemoDto selectMemoByNo(int memoNo) {
 		return memoDao.selectMemoByNo(memoNo);
 	}
+
+	@Override
+	public int modifyMemo(MemoDto memo) {
+		return memoDao.modifyMemo(memo);
+	}
 	
 }

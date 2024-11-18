@@ -14,4 +14,7 @@ public interface MemoService {
 	
 	// 메모 조회 (메모번호 활용)
 	MemoDto selectMemoByNo(int memoNo);
+	
+	// 메모 수정
+	int modifyMemo(MemoDto memo);
 }

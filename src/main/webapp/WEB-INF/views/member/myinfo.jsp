@@ -212,6 +212,7 @@
                   <!-- 메모 조회 및 수정 모달 -->
                   <form action="${ contextPath }/memo/modifyMemo.do" method="post">
                   <input type="hidden" name="memNo" value="${ loginUser.getMemNo() }">
+                  <input type="hidden" name="memoNo" id="modifyMemoNo" value="">
 	                  <div class="modal fade" id="selectMemoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                    <div class="modal-dialog">
 	                        <div class="modal-content" style="width: 450px; height: 450px;">
@@ -877,6 +878,7 @@
 		    	memoModal.show();
 		    	
 		    	$('#insertMemoInput_edit').val(res.memoContent);
+		    	$('#modifyMemoNo').val(res.memoNo);
     		}
     	})
     	
