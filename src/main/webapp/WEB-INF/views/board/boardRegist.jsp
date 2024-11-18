@@ -52,7 +52,7 @@
 							            <br>
 							            <div id="file-container" style="margin-top: 10px;"></div>
 							            <br>							            
-							            <div id="full-editor"></div>                
+							            <div id="board-editor"></div>                
 							            <br>
 							            <div style="display: flex; justify-content: space-between; align-items: center;">
 							              <button id="back" class="btn btn-secondary" type="button" onclick="window.history.back();">취소</button>
@@ -69,15 +69,63 @@
                
                document.addEventListener('DOMContentLoaded', function () {
             	   // Quill 에디터 초기화
-            	   const quill = new Quill('#full-editor', {
+            	   const quill = new Quill('#board-editor', {
             	     bounds: '#full-editor',
             	     placeholder: '내용을 입력해주세요.',
             	     modules: {
             	       toolbar: [
-            	         ['bold', 'italic', 'underline', 'strike'], // 글자 스타일
-            	         [{ header: 1 }, { header: 2 }],           // 헤더
-            	         [{ list: 'ordered' }, { list: 'bullet' }], // 리스트
-            	         ['link', 'image', 'video']               // 링크, 이미지, 비디오
+            	    	   [
+	       	    		       {
+	       	    		         font: []
+	       	    		       },
+	       	    		       {
+	       	    		         size: []
+	       	    		       }
+         	    		     ],
+            	         ['bold', 'italic', 'underline', 'strike'],
+            	         [
+           	             {
+           	               color: []
+           	             },
+           	             {
+           	               background: []
+           	             }
+           	           ],
+	           	        [
+	           	         {
+	           	           script: 'super'
+	           	         },
+	           	         {
+	           	           script: 'sub'
+	           	         }
+	           	       ],
+	           	       [
+	           	         {
+	           	           header: '1'
+	           	         },
+	           	         {
+	           	           header: '2'
+	           	         },
+	           	         'blockquote',
+	           	         'code-block'
+	           	       ],
+	           	       [
+	           	         {
+	           	           list: 'ordered'
+	           	         },
+	           	         {
+	           	           list: 'bullet'
+	           	         },
+	           	         {
+	           	           indent: '-1'
+	           	         },
+	           	         {
+	           	           indent: '+1'
+	           	         }
+	           	       ],
+	           	   		 [{ direction: 'rtl' }],
+	           	  		 ['link', 'image', 'video', 'formula'],         
+	           	  	   ['clean']
             	       ]
             	     },
             	     theme: 'snow'
