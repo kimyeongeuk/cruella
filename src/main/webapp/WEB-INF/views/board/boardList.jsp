@@ -89,7 +89,7 @@
   
 			        <div class="ms-5">
 			          <button id="create" class="btn btn-primary" style="width: 100px;" onclick="regist();">+ 글작성</button>	          
-			          <i class="menu-icon tf-icons ti ti-trash ms-2"></i>
+			          <i class="menu-icon tf-icons ti ti-trash ms-2" style="cursor: pointer;"></i>
 			        </div>
 
 			        <div class="ms-auto d-flex">
@@ -100,104 +100,107 @@
 			
 			      <div class="card-datatable table-responsive pt-3">
 			        <table class="datatables-basic table text-center">
-			          <thead>
-			            <tr>
-			              <th style="width: 5%;"><input type="checkbox" /></th>
-			              <th style="width: 15%;">카테고리</th>
-			              <th style="width: 15%;">작성자</th>
-			              <th style="width: 40%;">제목</th>
-			              <th style="width: 15%;">작성일</th>
-			              <th style="width: 10%;">조회수</th>
-			            </tr>
-			          </thead>
-			          <tbody>
-			          	<c:choose>
-			          		<c:when test="${ empty list }">
-			          			<tr>
-			          				<td colspan="6">조회된 게시글이 없습니다.</td>
-			          			</tr>
-			          		</c:when>
-			          		<c:otherwise>
-			          			<c:forEach var="board" items="${list}">
-											  <tr onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>
-											    <td><input type="checkbox" /></td>
-											    <td>공지</td>
-											    <td>${board.memName}</td>
-											    <td>${board.boardTitle}</td>
-											    <td>${board.boardRegistDT}</td>
-											    <td>${board.boardCount}</td>
-											  </tr>
-											</c:forEach>
-			          		</c:otherwise>
-			          	</c:choose>
-			          </tbody>
-			        </table>
-			
-						  <!-- 페이징 바 -->
-						  <div class="card-body">
-						    <div class="row">
-						      <span class="col-lg-12 d-flex justify-content-center">
-						        <div class="demo-inline-spacing">
-						          <nav aria-label="Page navigation">
-						            <ul class="pagination">
-						              <li class="page-item first">
-						                <a class="page-link" href="javascript:void(0);" onclick="goToPage(1);">
-						                  <i class="ti ti-chevrons-left ti-sm"></i>
-						                </a>
-						              </li>
-						              <li class="page-item prev ${pi.currentPage == 1 ? 'disabled' : ''}">
-						                <a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage - 1});">
-						                  <i class="ti ti-chevron-left ti-sm"></i>
-						                </a>
-						              </li>
-						              <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
-						                <li class="page-item ${i == pi.currentPage ? 'active' : ''}">
-						                  <a class="page-link" href="javascript:void(0);" onclick="goToPage(${i});">${i}</a>
-						                </li>
-						              </c:forEach>
-						              <li class="page-item next ${pi.currentPage == pi.maxPage ? 'disabled' : ''}">
-						                <a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage + 1});">
-						                  <i class="ti ti-chevron-right ti-sm"></i>
-						                </a>
-						              </li>
-						              <li class="page-item last">
-						                <a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.maxPage});">
-						                  <i class="ti ti-chevrons-right ti-sm"></i>
-						                </a>
-						              </li>
-						            </ul>
-						          </nav>
-						        </div>
-						      </span>
-						    </div>
-						  </div>
-						
-						  <script>
-						    function goToPage(pageNumber) {
-						    	//console.log(pageNumber);
-						    	
-						      window.location.href = `${contextPath}/board/boardList.do?page=` + pageNumber;
-						    }
-						    
-						  </script>
-						  
-						  <!-- /페이징 바 -->
+							  <thead>
+							    <tr>
+							      <th style="width: 5%;"><input type="checkbox" id="selectAll" /></th>
+							      <th style="width: 15%;">카테고리</th>
+							      <th style="width: 15%;">작성자</th>
+							      <th style="width: 40%;">제목</th>
+							      <th style="width: 15%;">작성일</th>
+							      <th style="width: 10%;">조회수</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							    <c:choose>
+							      <c:when test="${empty list}">
+							        <tr>
+							          <td colspan="6">조회된 게시글이 없습니다.</td>
+							        </tr>
+							      </c:when>
+							      <c:otherwise>
+							        <c:forEach var="board" items="${list}">
+							          <tr>
+							            <td><input type="checkbox" class="item-checkbox" /></td>
+							            <td>공지</td>
+							            <td>${board.memName}</td>
+							            <c:choose>
+							              <c:when test="${board.attachCount != 0}">
+							                <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle}
+							                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip">
+							                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+							                    <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
+							                  </svg>
+							                </td>
+							              </c:when>
+							              <c:otherwise>
+							                <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle}</td>
+							              </c:otherwise>
+							            </c:choose>
+							            <td>${board.boardRegistDT}</td>
+							            <td>${board.boardCount}</td>
+							          </tr>
+							        </c:forEach>
+							      </c:otherwise>
+							    </c:choose>
+							  </tbody>
+							</table>
+							
+							<!-- 페이징 바 -->
+							<div class="card-body">
+							  <div class="row">
+							    <span class="col-lg-12 d-flex justify-content-center">
+							      <div class="demo-inline-spacing">
+							        <nav aria-label="Page navigation">
+							          <ul class="pagination">
+							            <li class="page-item first">
+							              <a class="page-link" href="javascript:void(0);" onclick="goToPage(1);">
+							                <i class="ti ti-chevrons-left ti-sm"></i>
+							              </a>
+							            </li>
+							            <li class="page-item prev ${pi.currentPage == 1 ? 'disabled' : ''}">
+							              <a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage - 1});">
+							                <i class="ti ti-chevron-left ti-sm"></i>
+							              </a>
+							            </li>
+							            <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+							              <li class="page-item ${i == pi.currentPage ? 'active' : ''}">
+							                <a class="page-link" href="javascript:void(0);" onclick="goToPage(${i});">${i}</a>
+							              </li>
+							            </c:forEach>
+							            <li class="page-item next ${pi.currentPage == pi.maxPage ? 'disabled' : ''}">
+							              <a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage + 1});">
+							                <i class="ti ti-chevron-right ti-sm"></i>
+							              </a>
+							            </li>
+							            <li class="page-item last">
+							              <a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.maxPage});">
+							                <i class="ti ti-chevrons-right ti-sm"></i>
+							              </a>
+							            </li>
+							          </ul>
+							        </nav>
+							      </div>
+							    </span>
+							  </div>
+							</div>
+							
+							<script>
+							  document.getElementById('selectAll').addEventListener('click', function(event) {
+							    const checkboxes = document.querySelectorAll('.item-checkbox');
+							    checkboxes.forEach(checkbox => {
+							      checkbox.checked = event.target.checked;
+							    });
+							  });
+							
+							  function goToPage(pageNumber) {
+							    window.location.href = `${contextPath}/board/boardList.do?page=` + pageNumber;
+							  }
+							
+							  function regist() {
+							    window.location.href = "${contextPath}/board/boardRegist.do";
+							  }
+							</script>
 
-			        
-			      </div>
-			    </div>
-			  </div>
-			</div>
-			
-			<script>
-			  function regist() {
-			    window.location.href = "${contextPath}/board/boardRegist.do";
-			  }
-			</script>
-			
-    	
-    
-    
     
     	<!-- 세션정보 끝 ---------------------------------------------------------------------------------------- -->
     </div>
@@ -227,10 +230,6 @@
    
    <!-- layout wrapper 닫기 -->
    </div>
-   
-   
-   
-   
    
 </body>
 </html>

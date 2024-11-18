@@ -1,5 +1,6 @@
 package com.cl.cruella.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,9 +8,13 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.BoardDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
@@ -82,6 +87,44 @@ public class BoardController {
 	
 	@GetMapping("/boardRegist.do")
 	public void boardRegistPage() {
+		
+	}
+	
+	@PostMapping("/insert.do")
+	public String regist(BoardDto board
+					   , List<MultipartFile> uploadFiles
+					   , HttpSession session
+					   , RedirectAttributes rdAttributes) {
+		
+		// board테이블에 insert할 데이터 
+		board.setMemNo( String.valueOf( ((MemberDto)session.getAttribute("loginUser")).getMemNo() ) );
+		
+		// 첨부파일 업로드 후에 
+		// attachment테이블에 insert할 데이터
+		List<AttachDto> attachList = new ArrayList<>();
+		for(MultipartFile file : uploadFiles) {
+			if(file != null && !file.isEmpty()) {
+				Map<String, String> map = fileUtil.fileupload(file, "board");
+				attachList.add(AttachDto.builder()
+										.filePath(map.get("filePath"))
+										.originalName(map.get("originalName"))
+										.filesystemName(map.get("filesystemName"))
+										.refType("B")
+										.build());
+			}
+		}
+		board.setAttachList(attachList); // 제목,내용,작성자회원번호,첨부파일들정보
+		
+		int result = boardService.insertBoard(board);
+		
+		if(attachList.isEmpty() && result == 1 
+				|| !attachList.isEmpty() && result == attachList.size()) {
+			rdAttributes.addFlashAttribute("alertMsg", "게시글 등록 성공");
+		}else {
+			rdAttributes.addFlashAttribute("alertMsg", "게시글 등록 실패");			
+		}
+		
+		return "redirect:/board/boardList.do";
 		
 	}
 

@@ -8,6 +8,7 @@
         <result column="board_content" property="boardContent" />
         <result column="mem_no" property="memNo" />
         <result column="board_count" property="boardCount" />
+        <result column="attach_count" property="attachCount" />
         <result column="board_regist_date" property="boardRegistDT" />
         <result column="board_modify_date" property="boardModifyDT" />
         <result column="board_status" property="boardStatus" />
@@ -49,7 +50,7 @@
 		               from attachment
 		              where file_ref_type = 'B'
 		                and file_ref_no = b.board_no
-		           ) as attachCount
+		           ) as attach_count
 		      from board b
 		      join member m on (m.mem_no = b.mem_no)
 		     where b.board_status = 'Y'
@@ -108,9 +109,9 @@
           , #{boardTitle}
           , #{memNo}
           , #{boardContent}
-          , #{boardRegistDT}
-          , #{boardModifyDT}
-          , #{boardStatus}
+          , SYSDATE
+          , SYSDATE
+          , 'Y'
           , #{deptCode}
           )
     </insert>
@@ -158,6 +159,12 @@
 				     , a.file_path
 				     , a.file_system_name
 				     , a.file_original_name
+				     , (
+		             select count(*)
+		               from attachment
+		              where file_ref_type = 'B'
+		                and file_ref_no = b.board_no
+		           ) as attach_count
 				  from board b
 				  join member m on (m.mem_no = b.mem_no)
 				  left join attachment a on (a.file_ref_type = 'B' and a.file_ref_no = b.board_no)

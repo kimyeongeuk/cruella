@@ -36,105 +36,134 @@
                
                <!-- Content wrapper -->
                <div class="content-wrapper">
-                  <div class="container-xxl flex-grow-1 container-p-y">
-                     <div class="container card" style="padding: 50px;">
-                        <form action="${contextPath}/board/boardRegist.do" method="post" enctype="multipart/form-data">
-                           <div style="align-items: center;">
-                              <div>
-                                 <span style="font-size: 24px;">팀게시판 작성</span><br><br><br>
-                                 <label for="defaultFormControlInput" class="form-label">제목</label>
-                                 <input type="text" class="form-control" id="defaultFormControlInput" name="title" placeholder="제목을 입력하세요."/>
-                                 <br>
-                                 <label for="formFile" class="form-label">첨부파일</label>
-                                 <input class="form-control" type="file" id="formFile" name="file" multiple/>
-                                 <br>
-                                 <div id="file-container" style="margin-top: 10px;"></div>
-                                 <br>
-                                 <textarea id="full-editor" name="content" class="form-control" rows="10" placeholder="내용을 입력하세요."></textarea>
-                                 <br>
-                                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <button id="back" class="btn btn-secondary" type="button" onclick="window.history.back();">취소</button>
-                                    <button id="registerButton" class="btn btn-primary">작성</button>
-                                 </div>                                        
-                              </div>             
-                           </div>
-                        </form>
-                     </div>
-                  </div>
-               </div>
-               
+							  <div class="container-xxl flex-grow-1 container-p-y">
+							    <div class="container card" style="padding: 50px;">
+							      <form action="${contextPath}/board/insert.do" method="post" enctype="multipart/form-data">
+							        <div class="card-body" style="align-items: center;">
+							          <div>
+							            <input type="hidden" name="deptCode" value="${loginUser.deptCode}" />
+							            <input type="hidden" name="boardContent" id="boardContent">
+							            <span style="font-size: 24px;">팀게시판 작성</span><br><br><br>
+							            <label for="defaultFormControlInput" class="form-label">제목</label>
+							            <input type="text" class="form-control" id="defaultFormControlInput" name="boardTitle" placeholder="제목을 입력하세요." required />
+							            <br>
+							            <label for="formFile" class="form-label">첨부파일</label>
+							            <input class="form-control" type="file" id="formFile" name="uploadFiles" multiple />
+							            <br>
+							            <div id="file-container" style="margin-top: 10px;"></div>
+							            <br>							            
+							            <div id="full-editor"></div>                
+							            <br>
+							            <div style="display: flex; justify-content: space-between; align-items: center;">
+							              <button id="back" class="btn btn-secondary" type="button" onclick="window.history.back();">취소</button>
+							              <button id="registerButton" class="btn btn-primary" type="submit">작성</button>
+							            </div>
+							          </div>
+							        </div>
+							      </form>
+							    </div>
+							  </div>
+							 </div>
+
                <script>
-                  document.addEventListener('DOMContentLoaded', function() {
-                     const fileInput = document.getElementById('formFile');
-                     const fileContainer = document.getElementById('file-container');
-                     let files = [];
+               
+               document.addEventListener('DOMContentLoaded', function () {
+            	   // Quill 에디터 초기화
+            	   const quill = new Quill('#full-editor', {
+            	     bounds: '#full-editor',
+            	     placeholder: '내용을 입력해주세요.',
+            	     modules: {
+            	       toolbar: [
+            	         ['bold', 'italic', 'underline', 'strike'], // 글자 스타일
+            	         [{ header: 1 }, { header: 2 }],           // 헤더
+            	         [{ list: 'ordered' }, { list: 'bullet' }], // 리스트
+            	         ['link', 'image', 'video']               // 링크, 이미지, 비디오
+            	       ]
+            	     },
+            	     theme: 'snow'
+            	   });
 
-                     fileInput.addEventListener('change', function(event) {
-                        files = Array.from(event.target.files);
-                        renderFiles();
-                     });
+            	   // 폼 제출 시 내용 동기화
+            	   const form = document.querySelector('form');
+            	   const hiddenInput = document.getElementById('boardContent');
 
-                     function renderFiles() {
-                        fileContainer.innerHTML = ''; // 기존 내용을 초기화
+            	   form.addEventListener('submit', function () {
+            	     // Quill 에디터 내용을 HTML로 변환하여 숨겨진 입력 필드에 저장
+            	     hiddenInput.value = quill.root.innerHTML;
+            	   });
+            	 });
+               
+               document.addEventListener('DOMContentLoaded', function() {
+                  const fileInput = document.getElementById('formFile');
+                  const fileContainer = document.getElementById('file-container');
+                  let files = [];
 
-                        files.forEach((file, index) => {
-                           const fileType = file.type;
-                           const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-
-                           const fileDiv = document.createElement('div');
-                           fileDiv.style.position = 'relative';
-                           fileDiv.style.display = 'inline-block';
-                           fileDiv.style.margin = '10px';
-                           fileDiv.setAttribute('data-index', index);
-
-                           if (validImageTypes.includes(fileType)) {
-                              const reader = new FileReader();
-                              reader.onload = function(e) {
-                                 const img = document.createElement('img');
-                                 img.src = e.target.result;
-                                 img.style.maxWidth = '200px';
-                                 img.style.height = 'auto';
-                                 fileDiv.appendChild(img);
-                              };
-                              reader.readAsDataURL(file);
-                           } else {
-                              const p = document.createElement('p');
-                              p.textContent = file.name;
-                              fileDiv.appendChild(p);
-                           }
-
-                           const removeButton = document.createElement('button');
-                           removeButton.innerHTML = '&#10005;';
-                           removeButton.style.position = 'absolute';
-                           removeButton.style.top = '-20px';
-                           removeButton.style.right = '-5px';
-                           removeButton.style.background = 'none';
-                           removeButton.style.border = 'none';
-                           removeButton.style.fontSize = '20px';
-                           removeButton.style.cursor = 'pointer';
-                           removeButton.onclick = function() {
-                              files.splice(index, 1);
-                              renderFiles();
-                              fileInput.files = new FileListItem(...files);
-                           };
-
-                           fileDiv.appendChild(removeButton);
-                           fileContainer.appendChild(fileDiv);
-                        });
-                     }
-
-                     // Helper function to create a new FileList
-                     function FileListItem() {
-                        const b = new DataTransfer();
-                        files.forEach(file => b.items.add(file));
-                        return b.files;
-                     }
+                  fileInput.addEventListener('change', function(event) {
+                     files = Array.from(event.target.files);
+                     renderFiles();
                   });
 
-                  function removeFile() {
-                     document.getElementById('formFile').value = '';
-                     document.getElementById('file-container').innerHTML = '';
+                  function renderFiles() {
+                     fileContainer.innerHTML = ''; // 기존 내용을 초기화
+
+                     files.forEach((file, index) => {
+                        const fileType = file.type;
+                        const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+                        const fileDiv = document.createElement('div');
+                        fileDiv.style.position = 'relative';
+                        fileDiv.style.display = 'inline-block';
+                        fileDiv.style.margin = '10px';
+                        fileDiv.setAttribute('data-index', index);
+
+                        if (validImageTypes.includes(fileType)) {
+                           const reader = new FileReader();
+                           reader.onload = function(e) {
+                              const img = document.createElement('img');
+                              img.src = e.target.result;
+                              img.style.maxWidth = '200px';
+                              img.style.height = 'auto';
+                              fileDiv.appendChild(img);
+                           };
+                           reader.readAsDataURL(file);
+                        } else {
+                           const p = document.createElement('p');
+                           p.textContent = file.name;
+                           fileDiv.appendChild(p);
+                        }
+
+                        const removeButton = document.createElement('button');
+                        removeButton.innerHTML = '&#10005;';
+                        removeButton.style.position = 'absolute';
+                        removeButton.style.top = '-20px';
+                        removeButton.style.right = '-5px';
+                        removeButton.style.background = 'none';
+                        removeButton.style.border = 'none';
+                        removeButton.style.fontSize = '20px';
+                        removeButton.style.cursor = 'pointer';
+                        removeButton.onclick = function() {
+                           files.splice(index, 1);
+                           renderFiles();
+                           fileInput.files = new FileListItem(...files);
+                        };
+
+                        fileDiv.appendChild(removeButton);
+                        fileContainer.appendChild(fileDiv);
+                     });
                   }
+
+                  // Helper function to create a new FileList
+                  function FileListItem() {
+                     const b = new DataTransfer();
+                     files.forEach(file => b.items.add(file));
+                     return b.files;
+                  }
+               });
+
+               function removeFile() {
+                  document.getElementById('formFile').value = '';
+                  document.getElementById('file-container').innerHTML = '';
+               }
                </script>
             </div>
             <!-- 세션 끝 -->
