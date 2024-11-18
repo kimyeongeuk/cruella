@@ -261,10 +261,6 @@ $(function () {
 
 
 
-
-
-
-
   }
 
   dragDrop.bind("move_node.jstree", function (e, d) {
@@ -275,6 +271,11 @@ $(function () {
     // 현재 드랍된 node 객체 가지고 db에 반영시켜주는 ajax 기술
 
   });
+	
+
+	
+	
+	
 
 
 
@@ -519,7 +520,7 @@ $(function () {
     );
 
 
-
+/*
     var today = new Date();
     var year = today.getFullYear();
     var month = today.getMonth() + 1; // 월은 0부터 시작하므로 +1
@@ -529,10 +530,11 @@ $(function () {
     month = month < 10 ? '0' + month : month;
     day = day < 10 ? '0' + day : day;
 
-    var formatDate = year + '/' + month + '/' + day;
+    var formatDate = year + '/' + month + '/' + day;*/
 
      
      var countLevel = 1; // 순서지정
+		 var idcount = 0; // 리스트 인덱스
 
      $('#drag_line_div tr').each(function() {
       // 각 row에서 필요한 데이터 가져오기
@@ -543,25 +545,32 @@ $(function () {
       
       
        
-        
+        // 결재선
         var div = '<span class="line_user">'
                 + '<span>' + teamName + '</span>'
                 + '<span class="signLine">' + memName + '</span>'
-                + '<span>' + formatDate + '</span>'
-                + '<input type="hidden" value="' + memNo + '">'
-                + '<input type="hidden" value="' + countLevel + '">'
+                + '<span class="app_line_date">결재일</span>'
+                + '<input type="hidden" value="' + memNo + '" id="mem_no_' + idcount + '">'
+                + '<input type="hidden" class="line_level" value="' + countLevel + '" name="appLevel">'
                 + '</span>';
         
         
+							
+								
       if($('#drag_line_div tr').length > 1){
         
         $('.app_line_div').append(div);
-		
+				idcount++;
         countLevel++;
+				console.log("id" + idcount);
+				
       }else if($('#drag_line_div tr').length == 1){
 		$('.app_line_div').html(div);
-      	
-		countLevel++;
+		  idcount++;
+			countLevel++;
+			
+			
+			
 	  }
 
       

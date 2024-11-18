@@ -559,7 +559,7 @@
                                                 <td style="font-weight: 700;">중요도</td>
                                                 <td>
                                                   <span style="margin-left: 30px;">
-                                                    <input type="checkbox" value="C" id="C" class="checkBox_result">
+                                                    <input type="checkbox" value="C" id="C" class="checkBox_result" checked>
                                                     <label for="C" style="font-weight: 700;">일반</label>
                                                   </span>
                                                 </td>
@@ -870,32 +870,44 @@
         <!-- </div> -->
 
 
+
+	<!-- 결재요청 확인버튼 클릭시 발생이벤트 -->
 				<script>
 				
 					$('#last_app_btn').on('click', function() {
 						
 						if($('#defaultFormControlInput').val() == ""){
 							alert('제목을 입력해주세요')
-						}else if($('.ql-editor').html() == ""){
+						}else if($('.ql-editor').text() == ""){
 							alert('내용을 입력해주세요')
 						}
 						
 						
 						
 						$.ajax({
-							url : '${contextPath}/app/insert.do',
+							url : '${contextPath}/app/ajaxInsert.do',
+							type: 'post',
 							data : {
 								memNo : $('#userNo_value').val(), // 사원번호
 								docType : '기안서',
 								docTitle : $('#defaultFormControlInput').val(), // 제목
 								docContent: $('.ql-editor').html(), // 내용
 								docImpo : $('#checkBox_result:checked').val(), // 중요도
+								uploadFile : $('#formFileMultiple').files[0]
+							 rovalList[0].rvNo : ,
+							 
+							 
+								 
 								
 							},
+							processData : false, 
+							// 파일전송시 기술(필수) : false 선언시 formDate를 string으로 변환하지 않음 
+							contentType : false, 
+							// 파일전송시 기술(필수) : false 선언시 multipart/form-data로 전송하게 함
 							success:function(res){
 								
 								if(res>1){
-									alert('성공적으로 결재하였습니다');
+									alert('성공적으로 작성 하였습니다');
 								}
 							}
 						})
@@ -931,15 +943,14 @@
                       <td class="line_div">
                         <span class="app_line_div">
                           <span class="line_title">결재선</span>
+                          
 
-                          <span class="line_user">
-
-                            <!-- 양식 result값 대입 -->
-                            <span>대표이사</span>
-                            <span class="signLine"></span>
-                            <span class="sign_date"></span>
-
-                          </span>
+                          <span class="line_title"><b>결재선</b></span>
+                              <span class="line_user">
+                                <span>직급</span>
+                                <span class="signLine">이름</span>
+                                <span class="sign_date">결재일</span>
+                              </span>
 
                         </span>
                       </td>

@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemberDto;
@@ -14,6 +16,7 @@ import com.cl.cruella.service.AppService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -96,6 +99,17 @@ public class AppController {
 		return list;
 		
 	}
+	
+	
+//	기안작성 insert
+	@ResponseBody
+	@PostMapping(value="/ajaxInsert.do", produces="application/json")
+	public void ajaxAppInsert(MultipartFile uploadFile) {
+		
+		
+		
+	}
+	
 	
 	
 	

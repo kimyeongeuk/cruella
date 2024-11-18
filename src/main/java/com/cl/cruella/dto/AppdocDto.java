@@ -28,9 +28,9 @@ public class AppdocDto { // 기안문서
 	private Date docDt; // 작성일
 	private Date docModifyDt; // 수정일 // 이건 안쓸듯
 	private String docStatus; // 문서 상태 = 대기/진행/최종승인/반려
-	private int docOrder;
-	private String status;
-	private String reason;
+	private int docOrder; // 결재순서
+	private String status; // 존재 여부 : Y , N
+	private String reason; // 반려사유
 	
 //	연차신청서
 	private Date appDateStart; // 시작일
