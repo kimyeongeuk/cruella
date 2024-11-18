@@ -518,7 +518,11 @@
                     
                     
                     
+                    
+                    
+                    
                        <!-- 결재요청 모달창 -->
+                     <form action="" method="post" >
                             <span>
 
                              
@@ -549,11 +553,13 @@
                                               <th style="font-weight: 700;">
                                                 <span>결재문서명</span>
                                               </th>
+                                              <!-- 문서종류 선택 -->
                                               <td style=" width: 145px; text-align: center; font-weight: 700;">
-                                                <span>기안서</span>
+                                                <span name="">기안서</span>
                                               </td>
                                             </tr>
 
+																						<!-- 중요도 선택 -->
                                             <table style="position: relative; top: 40px;">
                                               <tr>
                                                 <td style="font-weight: 700;">중요도</td>
@@ -762,6 +768,7 @@
                         <td class="app_date_result">${m.posName}</td>
                         <td class="app_no">기안일</td>
                         <td class="app_no_result"></td>
+                        
                       </tr>
                     </table>
                     
@@ -791,7 +798,8 @@
                       <tr>
                         <td class="app_title_td" style="text-align: center; height: 40px;">기안자</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
-                          <span style="position: relative; left: 10px;" id="userNo_value">${m.memName}</span>
+                          <span style="position: relative; left: 10px;" id="userNo_value" >${m.memName}</span>
+                          
                         </td>
                       </tr>
                     </table>
@@ -803,7 +811,8 @@
                         <td class="app_title_td" style="text-align: center; height: 40px;">제목</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
                           <input type="text" class="form-control" id="defaultFormControlInput" placeholder="제목을 입력하세요."
-                            aria-describedby="defaultFormControlHelp" />
+                            aria-describedby="defaultFormControlHelp" name="docTitle"/>
+                            <input type="hidden" value="${m.memNo}" name="memNo">
                           <!-- 제목글자수 제한 조건을 걸거나 아니면 리스트 조회시 보이는 글자수 제한 걸기 -->
                         </td>
                       </tr>
@@ -820,8 +829,9 @@
                               <div class="card">
 
                                 <div class="card-body">
-
-                                  <div id="full-editor" style="height: 500px;">
+		
+																	<!-- 내용부분  -->
+                                  <div id="full-editor" style="height: 500px;" name="docContent">
                                     <!-- <p id="editor_content_div">
                                       
                                     </p> -->
@@ -842,7 +852,8 @@
                       <h5 class="card-header"></h5>
                       <div class="card-body">
                         <div class="mb-4">
-                          <input class="form-control" type="file" id="formFileMultiple" multiple />
+                        <!-- 파일 -->
+                          <input class="form-control" type="file" id="formFileMultiple" name="uploadfile" multiple />
                         </div>
 
                       </div>
@@ -882,24 +893,16 @@
 							alert('내용을 입력해주세요')
 						}
 						
+						let formData = new FormData();
+						formData.append("docTitle",);
 						
 						
+						
+					
 						$.ajax({
 							url : '${contextPath}/app/ajaxInsert.do',
 							type: 'post',
-							data : {
-								memNo : $('#userNo_value').val(), // 사원번호
-								docType : '기안서',
-								docTitle : $('#defaultFormControlInput').val(), // 제목
-								docContent: $('.ql-editor').html(), // 내용
-								docImpo : $('#checkBox_result:checked').val(), // 중요도
-								uploadFile : $('#formFileMultiple').files[0]
-							 rovalList[0].rvNo : ,
-							 
-							 
-								 
-								
-							},
+							data : formdata,
 							processData : false, 
 							// 파일전송시 기술(필수) : false 선언시 formDate를 string으로 변환하지 않음 
 							contentType : false, 
@@ -910,7 +913,7 @@
 									alert('성공적으로 작성 하였습니다');
 								}
 							}
-						})
+						}) 
 
 					})
 					

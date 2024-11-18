@@ -520,21 +520,11 @@ $(function () {
     );
 
 
-/*
-    var today = new Date();
-    var year = today.getFullYear();
-    var month = today.getMonth() + 1; // 월은 0부터 시작하므로 +1
-    var day = today.getDate();
-    var count = 0;
 
-    month = month < 10 ? '0' + month : month;
-    day = day < 10 ? '0' + day : day;
-
-    var formatDate = year + '/' + month + '/' + day;*/
 
      
      var countLevel = 1; // 순서지정
-		 var idcount = 0; // 리스트 인덱스
+		 var idcount = 0; // 아이디 카운트
 
      $('#drag_line_div tr').each(function() {
       // 각 row에서 필요한 데이터 가져오기
@@ -551,7 +541,7 @@ $(function () {
                 + '<span class="signLine">' + memName + '</span>'
                 + '<span class="app_line_date">결재일</span>'
                 + '<input type="hidden" value="' + memNo + '" id="mem_no_' + idcount + '">'
-                + '<input type="hidden" class="line_level" value="' + countLevel + '" name="appLevel">'
+                + '<input type="hidden" id="line_level_' + countLevel +'" value="' + countLevel + '">'
                 + '</span>';
         
         
@@ -562,7 +552,7 @@ $(function () {
         $('.app_line_div').append(div);
 				idcount++;
         countLevel++;
-				console.log("id" + idcount);
+				
 				
       }else if($('#drag_line_div tr').length == 1){
 		$('.app_line_div').html(div);

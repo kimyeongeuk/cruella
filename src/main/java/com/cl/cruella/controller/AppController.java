@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.service.AppService;
@@ -104,7 +105,8 @@ public class AppController {
 //	기안작성 insert
 	@ResponseBody
 	@PostMapping(value="/ajaxInsert.do", produces="application/json")
-	public void ajaxAppInsert(MultipartFile uploadFile) {
+	public void ajaxAppInsert(AppdocDto ad, MultipartFile uploadFile) {
+		
 		
 		
 		
