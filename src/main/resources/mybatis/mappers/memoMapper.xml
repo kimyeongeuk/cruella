@@ -10,6 +10,7 @@
 		<result column="MEMO_MODIFY_DATE" property="memoModifyDt" />
 	</resultMap>
 	
+	<!-- 메모 전체 조회(리스트) -->
 	<select id="selectMemoList" resultMap="memoResultMap">
 		select
 				   memo_no
@@ -23,6 +24,7 @@
 		    by memo_no desc
 	</select>
 	
+	<!-- 메모 등록 -->
 	<insert id="insertMemo">
 		insert
 		  into memo
@@ -43,6 +45,7 @@
  	 				)
 	</insert>
 	
+	<!-- 메모 선택조회 -->
 	<select id="selectMemoByNo" resultMap="memoResultMap">
 		select
 					 memo_no
@@ -54,6 +57,7 @@
 		 where memo_no = #{memoNo}
 	</select>
 	
+	<!-- 메모 수정 -->
 	<update id="modifyMemo">
 		update
 					 memo
@@ -63,5 +67,12 @@
 		 where memo_no = #{memoNo}
 		   and mem_no = #{memNo}
 	</update>
+	
+	<!-- 메모 삭제 -->
+	<delete id="deleteMemo">
+		delete
+			from memo
+	   where memo_no = #{memoNo}
+	</delete>
   
 </mapper>

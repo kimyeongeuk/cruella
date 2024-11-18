@@ -842,8 +842,8 @@
 	 		 							+ "<div class='dropdown'>"
 	 		 								+ "<i class='ti ti-dots-vertical ti-sm' type='button' data-bs-toggle='dropdown' aria-expanded='false'></i>"
 	 		 									+"<ul class='dropdown-menu'>"
-	 		 										+"<li><a class='dropdown-item' onclick=''><i class='ti ti-zoom-in'></i>메모 열기</a></li>"
-	 		 										+"<li><a class='dropdown-item' href='#'><i class='ti ti-trash'></i>메모 삭제</a></li>"
+	 		 										+"<li><a class='dropdown-item' onclick='fnSelectMemo(" + res[i].memoNo + ")'><i class='ti ti-zoom-in'></i>메모 열기</a></li>"
+	 		 										+"<li><a class='dropdown-item' onclick='fnDeleteMemo(" + res[i].memoNo + ")'><i class='ti ti-trash'></i>메모 삭제</a></li>"
 	 		 									+"</ul>"
 	 		 								+"</div>"
  		 								+"</li>"
@@ -881,6 +881,22 @@
 		    	$('#modifyMemoNo').val(res.memoNo);
     		}
     	})
+    	
+    }
+    
+    // 메모 삭제
+    function fnDeleteMemo(memoNo){
+    	
+    	$.ajax({
+    		url: '${contextPath}/memo/deleteMemo.do',
+    		type: 'POST',
+    		data: {memoNo: memoNo},
+    		success: function(res) {
+    	    	fnMemoList();	// 삭제 후 전체 리스트 조회 재실행
+    		}
+    		
+    	})
+    	
     	
     }
     

@@ -17,4 +17,7 @@ public interface MemoService {
 	
 	// 메모 수정
 	int modifyMemo(MemoDto memo);
+	
+	// 메모 삭제
+	void deleteMemo(int memoNo);
 }

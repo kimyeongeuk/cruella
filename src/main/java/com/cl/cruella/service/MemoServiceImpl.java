@@ -34,5 +34,10 @@ public class MemoServiceImpl implements MemoService {
 	public int modifyMemo(MemoDto memo) {
 		return memoDao.modifyMemo(memo);
 	}
+
+	@Override
+	public void deleteMemo(int memoNo) {
+		memoDao.deleteMemo(memoNo);
+	}
 	
 }

@@ -91,5 +91,15 @@ public class MemoController {
 		return "redirect:/member/myinfo.do"; 
 		
 	}
+	
+	@PostMapping("/deleteMemo.do")
+	public String deleteMemo(int memoNo) {
+		
+		System.out.println(memoNo);
+		
+		memoService.deleteMemo(memoNo);
+		
+		return "redirect:/member/myinfo.do";
+	}
 
 }

@@ -30,4 +30,8 @@ public class MemoDao {
 	public int modifyMemo(MemoDto memo) {
 		return sqlSession.update("memoMapper.modifyMemo", memo);
 	}
+	
+	public void deleteMemo(int memoNo) {
+		sqlSession.delete("memoMapper.deleteMemo", memoNo);
+	}
 }
