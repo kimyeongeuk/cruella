@@ -926,14 +926,14 @@
                         <form class="form-send-message d-flex justify-content-between align-items-center" id="chatinput">
                           <input
                             class="form-control message-input border-0 me-4 shadow-none" 
-                             />
+                             id="inputchatform"/>
                           <div class="message-actions d-flex align-items-center">
                             <label for="attach-doc" class="form-label mb-0">
                               <i
                                 class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
                               <input type="file" id="attach-doc" hidden />
                             </label>
-                            <button class="btn btn-primary d-flex send-msg-btn" type="button" onclick="sendMessage();">
+                            <button class="btn btn-primary d-flex send-msg-btn" type="button" id="sendmessage">
                               <span class="align-middle d-md-inline-block d-none" style="flex: none;">전송</span>
                             </button>
                           </div>
@@ -961,25 +961,69 @@
                     -->
 
                   </div>
-
+									<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script> -->
                   <!-- 채팅 기록 끝 -->
 
+									<script>
+										
+									$(document).ready(function(){
+							
+											var chatNo = 
+											var chat
+											
+											var socket = new SockJS("${contextPath}/chatPage"); // 엔드포인트
+											var client = Stomp.over(socket);
+											
+											// connection이 되면 실행
+											client.connect({},function(){
+												
+												console.log("stomp Connection")
 
+												// subscribe(path,callback)로 메시지 받기 ?? callback 첫번째 파라미터의 body로 메시지의 내용이 들어옴
+												client.subscribe('/sub/' + chatNo, function(chat){
+													var content = JSON.parse(chat.body);
+													
+													var writer = content.writer;
+													var str = '';
+													
+													if(writer === 로그인한유저){
+														맞으면 오른쪽에 메시지 나오게
+													}else{
+														아니면 왼쪽에 메시지 나오게
+													}
+												
+												)};
+												
+												// send(path,header,message)로 메시지 보내기
+												client.send('/pub/chat/enter',{},JSON.stringify({ChatNo: 채팅방번호, memNo: 작성자번호}))
+												
+												});
+											
+												$('#sendmessage').on('click',function(e){
+													var msg = document.getElementById("inputchatform");
+													
+													console.log(작성자이름 + ":" + msg.value);
+													stomp.send('/pub/chat/message',{},JSON.stringify({chatNo: 채팅방번호,msgContent: msg.value, memNo:작성자번호}));
+													msg.value='';
+													
+												});
+											
+											
+											
+											});
+											
+
+										
+								
+									
+									
+
+									</script>
 
 
           
 
 
-
-                   <!-- 테스트!@#!@#!@#!@#12 -->
-
-                    <!-- 테스트!@#!@#!@#!@#12 -->
-                      <!-- 테스트!@#!@#!@#!@#12 -->
-                        <!-- 테스트!@#!@#!@#!@#12 -->
-
-                         <!-- 테스트!@#!@#!@#!@#12 -->
-                           <!-- 테스트!@#!@#!@#!@#12 -->
-                             <!-- 테스트!@#!@#!@#!@#12 -->
 
                   <!-- 테스트111111111111111111111111 -->
 

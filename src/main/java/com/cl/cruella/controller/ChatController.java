@@ -29,6 +29,7 @@ public class ChatController {
 	private final ChatServiceImpl chatServiceImpl;
 	
 	
+	// 채팅방 목록 띄우기
 	@GetMapping("/chatPage.do")
 	public void chatPage(HttpSession session, Model model) {
 
@@ -49,6 +50,8 @@ public class ChatController {
 
 	}
 	
+	
+	// 사원 상세 정보
 	@ResponseBody
 	@GetMapping(value="/userInfo.do",produces="application/json")
 	public Map<String,Object>  userInfo(String memNo,Model model) {
@@ -70,13 +73,13 @@ public class ChatController {
 		
 }
 	
+	
+	// 채팅 메시지 리스트 불러오기
 	@ResponseBody
 	@GetMapping(value="/list.do",produces="application/json")
 	public Map<String,Object> chatList(int chatNo,String memNo) {
-		log.debug("넘버 {}",memNo);
 		// 채팅리스트 불러오기
 		List<MessageDto> msgList = chatServiceImpl.messageList(chatNo);
-		log.debug("넘버 {}",chatNo);
 		
 		Map<String,Object> map = new HashMap<>();
 		map.put("m", memNo);

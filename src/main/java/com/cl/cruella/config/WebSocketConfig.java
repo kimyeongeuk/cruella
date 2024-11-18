@@ -30,7 +30,7 @@ public class WebSocketConfig implements WebSocketConfigurer{
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		
-		registry.addHandler(chatEchoHandler, "/chat").addInterceptors(httpSessionHandshackInterceptor()).withSockJS();
+		registry.addHandler(chatEchoHandler, "/chat").setAllowedOrigins("*").addInterceptors(httpSessionHandshackInterceptor()).withSockJS();
 		
 	}
 	
