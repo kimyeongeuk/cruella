@@ -38,7 +38,7 @@
                <div class="content-wrapper">
 							  <div class="container-xxl flex-grow-1 container-p-y">
 							    <div class="container card" style="padding: 50px;">
-							      <form action="${contextPath}/board/insert.do" method="post" enctype="multipart/form-data">
+							      <form action="${contextPath}/board/boardInsert.do" method="post" enctype="multipart/form-data">
 							        <div class="card-body" style="align-items: center;">
 							          <div>
 							            <input type="hidden" name="deptCode" value="${loginUser.deptCode}" />
@@ -69,67 +69,24 @@
                
                document.addEventListener('DOMContentLoaded', function () {
             	   // Quill 에디터 초기화
-            	   const quill = new Quill('#board-editor', {
-            	     bounds: '#full-editor',
-            	     placeholder: '내용을 입력해주세요.',
-            	     modules: {
-            	       toolbar: [
-            	    	   [
-	       	    		       {
-	       	    		         font: []
-	       	    		       },
-	       	    		       {
-	       	    		         size: []
-	       	    		       }
-         	    		     ],
-            	         ['bold', 'italic', 'underline', 'strike'],
-            	         [
-           	             {
-           	               color: []
-           	             },
-           	             {
-           	               background: []
-           	             }
-           	           ],
-	           	        [
-	           	         {
-	           	           script: 'super'
-	           	         },
-	           	         {
-	           	           script: 'sub'
-	           	         }
-	           	       ],
-	           	       [
-	           	         {
-	           	           header: '1'
-	           	         },
-	           	         {
-	           	           header: '2'
-	           	         },
-	           	         'blockquote',
-	           	         'code-block'
-	           	       ],
-	           	       [
-	           	         {
-	           	           list: 'ordered'
-	           	         },
-	           	         {
-	           	           list: 'bullet'
-	           	         },
-	           	         {
-	           	           indent: '-1'
-	           	         },
-	           	         {
-	           	           indent: '+1'
-	           	         }
-	           	       ],
-	           	   		 [{ direction: 'rtl' }],
-	           	  		 ['link', 'image', 'video', 'formula'],         
-	           	  	   ['clean']
-            	       ]
-            	     },
-            	     theme: 'snow'
-            	   });
+								 const quill = new Quill('#board-editor', {
+								   bounds: '#full-editor',
+								   placeholder: '내용을 입력해주세요.',
+								   theme: 'snow',
+								   modules: {
+								     toolbar: [
+								       [{ font: [] }, { size: [] }],
+								       ['bold', 'italic', 'underline', 'strike'],
+								       [{ color: [] }, { background: [] }],
+								       [{ script: 'super' }, { script: 'sub' }],
+								       [{ header: '1' }, { header: '2' }, 'blockquote', 'code-block'],
+								       [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+								       [{ direction: 'rtl' }],
+								       ['link', 'image', 'video', 'formula'],
+								       ['clean']
+								     ]
+							 	   }
+								 });
 
             	   // 폼 제출 시 내용 동기화
             	   const form = document.querySelector('form');

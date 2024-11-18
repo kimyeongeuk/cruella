@@ -14,145 +14,225 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-    <script src="${ contextPath }/resources/assets/js/config.js"></script>
+<script src="${ contextPath }/resources/assets/js/config.js"></script>
+<style>
+  .delete-btn {
+    position: absolute;
+    top: -20px;
+    right: -5px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: black;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .delete-btn:hover {
+    color: red;
+  }
+</style>
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
    <div class="layout-container">
    
-   
     <!-- 헤더 시작 -->
-      <jsp:include page="/WEB-INF/views/common/header.jsp"/>
+    <jsp:include page="/WEB-INF/views/common/header.jsp"/>
     <!-- 헤더 끝 -->
     
-      <div class="layout-page">
+    <div class="layout-page">
 
     <!-- nav 시작 -->
-      <jsp:include page="/WEB-INF/views/common/nav.jsp" />
-      <!-- nav 끗 -->
+    <jsp:include page="/WEB-INF/views/common/nav.jsp" />
+    <!-- nav 끗 -->
 
-
-   <div class="content-wrapper">
-   <!-- 세션 시작 -->
-    <div class="container-xxl flex-grow-1 container-p-y">
-     	<!-- 이쪽에 세션정보 넣어야합니다 ----------------------------------------------------------------------- -->
-    	
-    	<!-- Content wrapper -->
-      <div class="content-wrapper">
-        <div class="container-xxl flex-grow-1 container-p-y">
-          <div class="container card" style="padding: 50px;">
-            <div style="align-items: center;">
-              <div>
-                <span style="font-size: 24px;">팀게시판 수정</span><br><br><br>
-                <label for="defaultFormControlInput" class="form-label">제목</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="defaultFormControlInput"
-                  placeholder="제목을 입력하세요."
-                  value="팀게시판 제목입니다."/>
-                <br>
-                <label for="formFile" class="form-label">첨부파일</label>
-                <input class="form-control" type="file" id="formFile" />
-                <br>
-                <div id="file-container" style="margin-top: 10px;"></div> <!-- 파일을 표시할 컨테이너를 파일 폼 바로 아래에 배치 -->
-                <br>
-                <div id="full-editor">
-                  팀게시판 내용입니다.
-                </div> 
-                <br>     
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <button id="back" class="btn btn-secondary">취소</button>
-                  <button id="registerButton" class="btn btn-primary">수정</button>
-                </div>                                        
-              </div>             
+    <div class="content-wrapper">
+       <!-- 세션 시작 -->
+       <div class="container-xxl flex-grow-1 container-p-y">
+         <!-- 이쪽에 세션정보 넣어야합니다 ----------------------------------------------------------------------- -->
+        
+         <!-- Content wrapper -->
+         <div class="content-wrapper">
+            <div class="container-xxl flex-grow-1 container-p-y">
+               <div class="container card" style="padding: 50px;">
+                  <form id="modify-form" action="${contextPath}/board/boardUpdate.do" method="post" enctype="multipart/form-data">
+                     <div class="card-body" style="align-items: center;">
+                        <div>
+                           <input type="hidden" name="deptCode" value="${ loginUser.deptCode }" />
+                           <input type="hidden" name="boardNo" value="${ b.boardNo }" />
+                           <input type="hidden" id="boardContent" name="boardContent" value="${b.boardContent}" />
+                           <span style="font-size: 24px;">팀게시판 수정</span><br><br><br>
+                           <label for="defaultFormControlInput" class="form-label">제목</label>
+                           <input type="text" class="form-control" id="defaultFormControlInput" name="boardTitle" placeholder="제목을 입력하세요." value="${ b.boardTitle }" required />
+                           <br>
+                           <label for="formFile" class="form-label">첨부파일</label>
+                           <input class="form-control" type="file" id="formFile" name="uploadFiles" multiple />            
+                           <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+                           <div id="file-container" style="margin-top: 10px;">
+													   <c:forEach var="at" items="${b.attachList}">
+													     <div class="file-item" style="position: relative; display: inline-block; margin: 10px;" data-fileno="${at.fileNo}">
+													       <c:choose>
+													         <c:when test="${fn:endsWith(at.filesystemName, '.jpg') || 
+													                         fn:endsWith(at.filesystemName, '.jpeg') || 
+													                         fn:endsWith(at.filesystemName, '.png') || 
+													                         fn:endsWith(at.filesystemName, '.gif')}">
+													           <img src="${contextPath}${at.filePath}/${at.filesystemName}" style="max-width: 200px; height: auto;" />
+													         </c:when>
+													         <c:otherwise>
+													           <p style="margin: 0; padding: 5px; border: 1px solid #ccc; background: #f9f9f9;">
+													             ${at.originalName}
+													           </p>
+													         </c:otherwise>
+													       </c:choose>
+													       <span class="origin_attach_del delete-btn" data-fileno="${at.fileNo}">&#10005;</span>
+													     </div>
+													   </c:forEach>
+													 </div>							  	                      
+                           <br>
+                           <div id="board-editor"></div>
+                           <br>
+                           <div style="display: flex; justify-content: space-between; align-items: center;">
+                              <button id="back" class="btn btn-secondary" type="button" onclick="window.history.back();">취소</button>
+                              <button id="registerButton" class="btn btn-primary" type="submit">수정</button>
+                           </div>
+                        </div>
+                     </div>
+                  </form>
+               </div>
             </div>
-          </div>           
-        </div>
-      </div>
-      
-      <script>
-        document.getElementById('formFile').addEventListener('change', function(event) {
-          const file = event.target.files[0];
-          if (file) {
-            const fileType = file.type;
-            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-      
-            const fileContainer = document.getElementById('file-container');
-            if (validImageTypes.includes(fileType)) {
-              const reader = new FileReader();
-      
-              reader.onload = function(e) {
-                fileContainer.innerHTML = `
-                  <div style="position: relative; display: inline-block;">
-                    <img src="${e.target.result}" style="max-width: 200px; height: auto;" /> <!-- 이미지 크기를 작게 조정 -->
-                    <button 
-                      onclick="removeFile()" 
-                      style="position: absolute; top: 5px; right: 5px; background: none; border: none; font-size: 20px; cursor: pointer;">
-                      &#10005; <!-- 검정색 'X' 버튼 -->
-                    </button>
-                  </div>
-                `;
-              }
-      
-              reader.readAsDataURL(file);
-            } else {
-              fileContainer.innerHTML = `
-                <div style="position: relative; display: inline-block;">
-                  <p>${file.name}</p>
-                  <button 
-                    onclick="removeFile()" 
-                    style="background: none; border: none; font-size: 20px; cursor: pointer;">
-                    &#10005; <!-- 검정색 'X' 버튼 -->
-                  </button>
-                </div>
-              `;
-            }
-          } else {
-            console.log("No file selected");
-          }
-        });
-      
-        function removeFile() {
-          document.getElementById('formFile').value = '';  // 파일 첨부 필드에서 파일 제거
-          document.getElementById('file-container').innerHTML = '';  // 파일 컨테이너 비우기
-        }
-      </script>
-    
-    
-    
-    	<!-- 세션정보 끝 ---------------------------------------------------------------------------------------- -->
+         </div>
+       </div>
+       <!-- 세션 끝 -->
+
+       <!-- 푸터 시작 -->
+       <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+       <!-- 푸터 끝 -->
+   
+       <div class="content-backdrop fade"></div>
     </div>
-   <!-- 세션 끝 -->
-
-
-
-   <!-- 푸터 시작 -->
-   <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-   <!-- 푸터 끝 -->
-   
-   <div class="content-backdrop fade"></div>
-   <!-- wrapper 닫기 -->
+    <!-- nav layout page 닫기 -->
    </div>
-   
-   <!-- nav layout page 닫기 -->
-   </div>
-   
    <!-- layout-container 닫기 -->
-   </div>
-     <!-- Overlay -->
-    <div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<div class="layout-overlay layout-menu-toggle"></div>
+<div class="drag-target"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+	  console.log("DOMContentLoaded event fired"); // DOMContentLoaded 이벤트 확인
 
-    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-    <div class="drag-target"></div>
-   
-   
-   <!-- layout wrapper 닫기 -->
-   </div>
-   
-   
-   
-   
-   
+	  // Quill 에디터 초기화
+	  const quill = new Quill('#board-editor', {
+	    bounds: '#full-editor',
+	    placeholder: '내용을 입력해주세요.',
+	    theme: 'snow',
+	    modules: {
+	      toolbar: [
+	        [{ font: [] }, { size: [] }],
+	        ['bold', 'italic', 'underline', 'strike'],
+	        [{ color: [] }, { background: [] }],
+	        [{ script: 'super' }, { script: 'sub' }],
+	        [{ header: '1' }, { header: '2' }, 'blockquote', 'code-block'],
+	        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+	        [{ direction: 'rtl' }],
+	        ['link', 'image', 'video', 'formula'],
+	        ['clean']
+	      ]
+	    }
+	  });
+
+	  console.log("Quill editor initialized"); // Quill 에디터 초기화 확인
+
+	  // 숨겨진 input의 기존 내용을 읽어와 Quill 에디터에 로드
+	  const boardContentHidden = document.getElementById('boardContent');
+	  if (boardContentHidden && boardContentHidden.value) {
+	    quill.root.innerHTML = boardContentHidden.value; // Quill에 HTML 내용 삽입
+	    console.log("Content loaded into Quill editor"); // 내용 로드 확인
+	  }
+
+	  // 폼 제출 시 내용 동기화
+	  const form = document.querySelector('#modify-form');
+	  const hiddenInput = document.getElementById('boardContent');
+	  form.addEventListener('submit', function () {
+	    console.log("Form submit event fired"); // 폼 제출 이벤트 확인
+	    hiddenInput.value = quill.root.innerHTML; // Quill의 내용을 숨겨진 input에 저장
+	  });
+
+	  const fileInput = document.getElementById('formFile');
+	  const fileContainer = document.getElementById('file-container');
+	  const dataTransfer = new DataTransfer();
+
+	  fileInput.addEventListener('change', function(event) {
+	    console.log("File input change event fired"); // 파일 입력 변경 이벤트 확인
+	    const newFiles = Array.from(event.target.files);
+	    newFiles.forEach(file => dataTransfer.items.add(file));
+	    renderFiles();
+	    fileInput.files = dataTransfer.files;
+	  });
+
+	  function renderFiles() {
+		  console.log("Render files function called"); // 파일 렌더 함수 호출 확인
+		  fileContainer.innerHTML = ''; // 기존 내용을 초기화
+		  Array.from(dataTransfer.files).forEach((file, index) => {
+		    const fileType = file.type;
+		    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+		    const fileDiv = document.createElement('div');
+		    fileDiv.style.position = 'relative';
+		    fileDiv.style.display = 'inline-block';
+		    fileDiv.style.margin = '10px';
+		    fileDiv.setAttribute('data-index', index);
+
+		    if (validImageTypes.includes(fileType)) {
+		      // 이미지 파일일 경우
+		      const reader = new FileReader();
+		      reader.onload = function (e) {
+		        const img = document.createElement('img');
+		        img.src = e.target.result;
+		        img.style.maxWidth = '200px';
+		        img.style.height = 'auto';
+		        fileDiv.appendChild(img);
+		      };
+		      reader.readAsDataURL(file);
+		    } else {
+		      // 이미지 파일이 아닐 경우
+		      const p = document.createElement('p');
+		      p.textContent = file.name; // 파일명을 표시
+		      p.style.margin = '0';
+		      p.style.padding = '5px';
+		      p.style.border = '1px solid #ccc';
+		      p.style.background = '#f9f9f9';
+		      fileDiv.appendChild(p);
+		    }
+
+		    const removeButton = document.createElement('button');
+		    removeButton.innerHTML = '&#10005;';
+		    removeButton.className = 'delete-btn'; // 동일한 클래스 추가
+		    removeButton.onclick = function () {
+		      console.log("Remove button clicked"); // 삭제 버튼 클릭 확인
+		      fileDiv.remove();
+		      dataTransfer.items.remove(index);
+		      fileInput.files = dataTransfer.files;
+		    };
+
+		    fileDiv.appendChild(removeButton);
+		    fileContainer.appendChild(fileDiv);
+		  });
+		}
+
+	  $(document).ready(function() {
+		  $(".origin_attach_del").on("click", function() {
+		    // 삭제할 첨부파일 번호를 submit시 넘기기 위한 작업
+		    let hiddenEl = "<input type='hidden' name='delFileNo' value='" + $(this).data("fileno") + "'>";
+		    $("#modify-form").append(hiddenEl);
+
+		    // 화면으로부터 삭제된 것처럼 보여지게 해당 첨부파일 링크 삭제 처리
+		    $(this).parent().remove();
+		  });
+		});
+	});
+
+
+
+</script>
 </body>
 </html>

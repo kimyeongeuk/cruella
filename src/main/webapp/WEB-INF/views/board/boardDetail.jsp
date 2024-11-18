@@ -120,15 +120,27 @@
                 <hr>           
                 <c:choose>
                 	<c:when test="${ loginUser.memNo == b.memNo }">
-                		<div class="d-flex justify-content-end align-items-center">      
-		                  <div class="icon-wrapper">
-		                    <i class="ti ti-dots-vertical ti-md icon"></i>
-		                    <div class="action-box">
-		                      <a href="${contextPath}/board/boardModify.do?no=${b.boardNo}"><i class="menu-icon tf-icons ti ti-edit"></i></a>
-		                      <a href="javascript:void(0);"><i class="menu-icon tf-icons ti ti-trash"></i></a>
-		                    </div>
-		                  </div>         
-		                </div>
+                		<div class="d-flex justify-content-end align-items-center">
+										  <div class="icon-wrapper">
+										    <i class="ti ti-dots-vertical ti-md icon"></i>
+										    <div class="action-box">
+										      <form id="frm" action="" method="post">
+										        <input type="hidden" id="no" name="no" value="" />
+										        <a href="#" onclick="modifyPost(${b.boardNo})">
+										          <i class="menu-icon tf-icons ti ti-edit"></i>
+										        </a>
+										        <a href="#" onclick="deletePost(${b.boardNo})">
+										          <i class="menu-icon tf-icons ti ti-trash"></i>
+										        </a>
+										      </form>
+										    </div>
+										  </div>
+										</div>
+										
+										<script>
+										  
+										</script>
+
                 	</c:when>
                 	<c:otherwise>
                 		<br>
@@ -154,41 +166,58 @@
             </div>
           </div>
 
-          <script>
-            function boardList() {
-              window.location.href = '${contextPath}/board/boardList.do';
-            }
-
-            document.addEventListener('DOMContentLoaded', () => {
-              const icon = document.querySelector('.icon');
-              const actionBox = document.querySelector('.action-box');
-              const attachmentToggle = document.getElementById('attachment-toggle');
-              const attachmentList = document.getElementById('attachment-list');
-
-              icon.addEventListener('click', () => {
-                actionBox.style.display = actionBox.style.display === 'none' || !actionBox.style.display ? 'block' : 'none';
-              });
-
-              document.addEventListener('click', (e) => {
-                if (!icon.contains(e.target) && !actionBox.contains(e.target)) {
-                  actionBox.style.display = 'none';
-                }
-              });
-
-              attachmentToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                attachmentList.style.display = attachmentList.style.display === 'none' || !attachmentList.style.display ? 'block' : 'none';
-              });
-
-              document.addEventListener('click', () => {
-                attachmentList.style.display = 'none';
-              });
-
-              attachmentList.addEventListener('click', (e) => {
-                e.stopPropagation();
-              });
-            });
-          </script>
+				<script>
+				          
+				function modifyPost(boardNo) {
+				  var form = document.getElementById('frm');
+				  form.setAttribute('action', '${contextPath}/board/boardModify.do');
+				  document.getElementById('no').value = boardNo;
+				  form.submit();
+				}
+				
+				function deletePost(boardNo) {
+				  if (confirm('정말로 삭제하시겠습니까?')) {
+				    var form = document.getElementById('frm');
+				    form.setAttribute('action', '${contextPath}/board/boardDelete.do');
+				    document.getElementById('no').value = boardNo;
+				    form.submit();
+				  } 
+				}
+				 
+				function boardList() {
+				  window.location.href = '${contextPath}/board/boardList.do';
+				}
+				
+				document.addEventListener('DOMContentLoaded', () => {
+				  const icon = document.querySelector('.icon');
+				  const actionBox = document.querySelector('.action-box');
+				  const attachmentToggle = document.getElementById('attachment-toggle');
+				  const attachmentList = document.getElementById('attachment-list');
+				
+				  icon.addEventListener('click', () => {
+				    actionBox.style.display = actionBox.style.display === 'none' || !actionBox.style.display ? 'block' : 'none';
+				  });
+				
+				  document.addEventListener('click', (e) => {
+				    if (!icon.contains(e.target) && !actionBox.contains(e.target)) {
+				      actionBox.style.display = 'none';
+				    }
+				  });
+				
+				  attachmentToggle.addEventListener('click', (e) => {
+				    e.stopPropagation();
+				    attachmentList.style.display = attachmentList.style.display === 'none' || !attachmentList.style.display ? 'block' : 'none';
+				  });
+				
+				  document.addEventListener('click', () => {
+				    attachmentList.style.display = 'none';
+				  });
+				
+				  attachmentList.addEventListener('click', (e) => {
+				    e.stopPropagation();
+				  });
+				});
+				</script>
           
         </div>
         <!-- 세션 끝 -->

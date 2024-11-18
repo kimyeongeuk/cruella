@@ -1,5 +1,6 @@
 package com.cl.cruella.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +54,30 @@ public class BoardDao {
 	public int selectSearchListCount(Map<String, String> search) {
 		return sqlSession.selectOne("boardMapper.selectSearchListCount", search);
 	}
+
+	public int deleteBoard(int boardNo) {
+		return sqlSession.update("boardMapper.deleteBoard", boardNo);
+	}
+
+	public int updateBoard(BoardDto b) {
+		return sqlSession.update("boardMapper.updateBoard", b);
+	}
+
+	public int deleteAttach(String[] delFileNo) {
+		return sqlSession.delete("boardMapper.deleteAttach", delFileNo);
+	}
+
+	public List<AttachDto> selectDelAttach(String[] delFileNo) {
+		return sqlSession.selectList("boardMapper.selectDelAttach", delFileNo);
+	}
+
+	public int deleteSelectedPosts(List<Integer> boardNos) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("boardNos", boardNos);
+	    return sqlSession.delete("boardMapper.deleteSelectBoard", params);
+	}
+
+
 	
 	
 }

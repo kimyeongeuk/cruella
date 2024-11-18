@@ -36,6 +36,9 @@ public interface BoardService {
 	List<AttachDto> selectDelAttach(String[] delFileNo);
 	int updateBoard(BoardDto b, String[] delFileNo);
 	
+	// 게시글 선택 삭제
+	int deleteSelectedPosts(List<Integer> boardNos);
+	
 	// 댓글 목록 조회
 	List<CommentDto> selectCommentList(int boardNo);
 	
@@ -44,5 +47,7 @@ public interface BoardService {
 	
 	// 댓글 완전삭제 (스케줄러에 의해 작동)
 	int deleteCommentCompletely();
+	
+	
 
 }

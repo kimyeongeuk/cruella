@@ -179,6 +179,51 @@
            and board_status = 'Y'
     </update>
 
+		<delete id="deleteBoard">
+		    delete from board
+		    where board_no = #{boardNo}
+		</delete>
+
+		<delete id="deleteSelectBoard">
+		    delete from board
+		    where board_no in
+		    <foreach item="boardNo" collection="boardNos" open="(" separator="," close=")">
+		        #{boardNo}
+		    </foreach>
+		</delete>
+
+		<select id="selectDelAttach" resultMap="attachResultMap">
+			select
+						 file_path
+					 , file_system_name
+			  from attachment 
+			<where>
+			  <foreach item="no" collection="array"
+			  	open="file_no in (" separator="," close=")">
+			  	#{no}
+			  </foreach>
+			</where>
+		</select>
+		
+		<update id="updateBoard">
+			update 
+					   board
+				 set board_title = #{boardTitle}
+				   , board_content = #{boardContent}
+			 where board_no = #{boardNo}
+		</update>
+		
+		<delete id="deleteAttach">
+			delete
+			  from attachment
+			 <where>
+			  <foreach item="no" collection="array"
+			  	open="file_no in (" separator="," close=")">
+			  	#{no}
+			  </foreach>
+			</where> 
+		</delete>
+
 </mapper>
 
 

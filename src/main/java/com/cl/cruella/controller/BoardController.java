@@ -1,5 +1,6 @@
 package com.cl.cruella.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,18 +80,13 @@ public class BoardController {
 		
 		model.addAttribute("b", b);
 	}
-	
-	@GetMapping("/boardModify.do")
-	public void boardModifyPage() {
 		
-	}
-	
 	@GetMapping("/boardRegist.do")
 	public void boardRegistPage() {
 		
 	}
 	
-	@PostMapping("/insert.do")
+	@PostMapping("/boardInsert.do")
 	public String regist(BoardDto board
 					   , List<MultipartFile> uploadFiles
 					   , HttpSession session
@@ -127,5 +123,70 @@ public class BoardController {
 		return "redirect:/board/boardList.do";
 		
 	}
+	
+	@PostMapping("/boardModify.do")
+	public String modifyPage(@RequestParam("no") int no, Model model) {
+	    model.addAttribute("b", boardService.selectBoard(no));
+	    return "board/boardModify";
+	}
 
+	@PostMapping("/boardDelete.do")
+	public String remove(@RequestParam("no") int no, RedirectAttributes rdAttributes) {
+	    int result = boardService.deleteBoard(no);
+	    
+	    if(result > 0) {
+	        rdAttributes.addFlashAttribute("alertMsg", "성공적으로 삭제되었습니다.");
+	    } else {
+	        rdAttributes.addFlashAttribute("alertMsg", "게시글 삭제에 실패하였습니다.");
+	    }
+	    
+	    return "redirect:/board/boardList.do";
+	}
+
+	@PostMapping("/boardUpdate.do")
+	public String modify(BoardDto board 		// 번호,제목,내용
+					   , String[] delFileNo   // null | 삭제할첨부파일번호들
+					   , List<MultipartFile> uploadFiles // 새로넘어온첨부파일들
+					   , RedirectAttributes rdAttributes ) {
+		
+		// 후에 db에 반영 성공시 삭제할 파일들 삭제 위해 미리 조회
+		List<AttachDto> delAttachList = boardService.selectDelAttach(delFileNo);
+		
+		List<AttachDto> attachList = new ArrayList<>();
+		for(MultipartFile file : uploadFiles) {
+			if(file != null && !file.isEmpty()) {
+				Map<String, String> map = fileUtil.fileupload(file, "board");
+				attachList.add(AttachDto.builder()
+										.filePath(map.get("filePath"))
+										.originalName(map.get("originalName"))
+										.filesystemName(map.get("filesystemName"))
+										.refType("B")
+										.refNo(board.getBoardNo())
+										.build());	
+			}
+		}
+		board.setAttachList(attachList);
+		
+		int result = boardService.updateBoard(board, delFileNo);
+		
+		if(result > 0) { // 성공
+			rdAttributes.addFlashAttribute("alertMsg", "성공적으로 수정되었습니다.");
+			for(AttachDto at : delAttachList) {
+				new File(at.getFilePath() + "/" + at.getFilesystemName()).delete();
+			}
+		}else { // 실패
+			rdAttributes.addFlashAttribute("alertMsg", "게시글 수정에 실패했습니다.");
+		}
+		
+		return "redirect:/board/boardDetail.do?no=" + board.getBoardNo();
+		
+	}
+	
+	@PostMapping("/deleteSelectedPosts.do")
+	public String deleteSelectedPosts(@RequestParam("boardNos") List<Integer> boardNos) {
+	    boardService.deleteSelectedPosts(boardNos);
+	    return "redirect:/board/boardList.do";
+	}
+
+	
 }
