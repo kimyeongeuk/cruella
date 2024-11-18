@@ -14,6 +14,22 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="${contextPath}/resources/assets/js/config.js"></script>
+<style>
+  .delete-btn {
+    position: absolute;
+    top: -20px;
+    right: -5px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: black;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .delete-btn:hover {
+    color: red;
+  }
+</style>
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
@@ -134,18 +150,16 @@
                         } else {
                            const p = document.createElement('p');
                            p.textContent = file.name;
+                           p.style.margin = '0';
+		             		       p.style.padding = '5px';
+		             		       p.style.border = '1px solid #ccc';
+		             		       p.style.background = '#f9f9f9';
                            fileDiv.appendChild(p);
                         }
 
                         const removeButton = document.createElement('button');
                         removeButton.innerHTML = '&#10005;';
-                        removeButton.style.position = 'absolute';
-                        removeButton.style.top = '-20px';
-                        removeButton.style.right = '-5px';
-                        removeButton.style.background = 'none';
-                        removeButton.style.border = 'none';
-                        removeButton.style.fontSize = '20px';
-                        removeButton.style.cursor = 'pointer';
+                        removeButton.className = 'delete-btn';
                         removeButton.onclick = function() {
                            files.splice(index, 1);
                            renderFiles();

@@ -118,7 +118,6 @@
 <div class="drag-target"></div>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-	  console.log("DOMContentLoaded event fired"); // DOMContentLoaded 이벤트 확인
 
 	  // Quill 에디터 초기화
 	  const quill = new Quill('#board-editor', {
@@ -140,20 +139,16 @@ document.addEventListener('DOMContentLoaded', function () {
 	    }
 	  });
 
-	  console.log("Quill editor initialized"); // Quill 에디터 초기화 확인
-
 	  // 숨겨진 input의 기존 내용을 읽어와 Quill 에디터에 로드
 	  const boardContentHidden = document.getElementById('boardContent');
 	  if (boardContentHidden && boardContentHidden.value) {
 	    quill.root.innerHTML = boardContentHidden.value; // Quill에 HTML 내용 삽입
-	    console.log("Content loaded into Quill editor"); // 내용 로드 확인
 	  }
 
 	  // 폼 제출 시 내용 동기화
 	  const form = document.querySelector('#modify-form');
 	  const hiddenInput = document.getElementById('boardContent');
 	  form.addEventListener('submit', function () {
-	    console.log("Form submit event fired"); // 폼 제출 이벤트 확인
 	    hiddenInput.value = quill.root.innerHTML; // Quill의 내용을 숨겨진 input에 저장
 	  });
 
@@ -162,7 +157,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	  const dataTransfer = new DataTransfer();
 
 	  fileInput.addEventListener('change', function(event) {
-	    console.log("File input change event fired"); // 파일 입력 변경 이벤트 확인
 	    const newFiles = Array.from(event.target.files);
 	    newFiles.forEach(file => dataTransfer.items.add(file));
 	    renderFiles();
@@ -170,7 +164,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	  });
 
 	  function renderFiles() {
-		  console.log("Render files function called"); // 파일 렌더 함수 호출 확인
 		  fileContainer.innerHTML = ''; // 기존 내용을 초기화
 		  Array.from(dataTransfer.files).forEach((file, index) => {
 		    const fileType = file.type;
@@ -208,7 +201,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		    removeButton.innerHTML = '&#10005;';
 		    removeButton.className = 'delete-btn'; // 동일한 클래스 추가
 		    removeButton.onclick = function () {
-		      console.log("Remove button clicked"); // 삭제 버튼 클릭 확인
 		      fileDiv.remove();
 		      dataTransfer.items.remove(index);
 		      fileInput.files = dataTransfer.files;
