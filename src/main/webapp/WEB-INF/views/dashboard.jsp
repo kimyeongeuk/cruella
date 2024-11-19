@@ -257,8 +257,8 @@
                 </div>
                 <h5 class="mb-0 card-title">${ loginUser.getMemName() }</h5>
                 <div class="d-flex align-items-center justify-content-center my-6 gap-2">
-                  <a href="javascript:;" class="me-2"><span class="badge bg-label-secondary">${ loginUser.getDeptCode() }</span></a>
-                  <a href="javascript:;"><span class="badge bg-label-warning">${ loginUser.getPosCode() }</span></a>
+                  <a href="javascript:;" class="me-2"><span class="badge bg-label-secondary">${ loginUser.getDeptName() }</span></a>
+                  <a href="javascript:;"><span class="badge bg-label-warning">${ loginUser.getPosName() }</span></a>
                 </div>
 
                 <div class="d-flex align-items-center justify-content-around mb-6">

@@ -95,7 +95,23 @@
 		where dept_code = #{deptCode}
           and mem_no != #{memNo}
 	</select>
-
+	
+	<select id="checkEmail" resultMap="memberResultMap">
+		select
+					 mem_no
+			from 
+					 member
+		 where email = #{mail}
+	</select>
+	
+	<update id="updatePwd" parameterType="map">
+		update
+				   member
+			 set 
+			 		 mem_pwd = #{str}
+			 	 , status = 'A'
+		 where email = #{email}
+	</update>
 
 
 

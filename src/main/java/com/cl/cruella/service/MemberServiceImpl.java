@@ -30,4 +30,14 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectTeamList(m);
 	}
 
+	@Override
+	public MemberDto checkEmail(String email) {
+		return memberDao.checkEmail(email);
+	}
+
+	@Override
+	public void updatePwd(String email, String str) {
+		memberDao.updatePwd(email, str);
+	}
+
 }

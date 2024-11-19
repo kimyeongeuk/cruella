@@ -34,4 +34,16 @@ public class MemberDao {
 		return sqlSession.selectList("memberMapper.selectTeamList", m);
 	}
 	
+	public MemberDto checkEmail(String email) {
+		return sqlSession.selectOne("memberMapper.checkEmail", email);
+	}
+	
+	public void updatePwd(String email, String str) {
+		
+		Map<String, String> params = new HashMap<>();
+		params.put("str", str);
+		params.put("email", email);
+		
+		sqlSession.update("memberMapper.updatePwd", params);
+	}
 }

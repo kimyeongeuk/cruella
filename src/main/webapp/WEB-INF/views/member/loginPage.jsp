@@ -116,7 +116,7 @@
 	                  <input class="form-check-input" type="checkbox" id="remember-me" />
 	                  <label class="form-check-label" for="remember-me"> 아이디 저장 </label>
 	                </div>
-	                <a href="auth-forgot-password-basic.html">
+	                <a href="${ contextPath }/member/findPwd.do">
 	                  <p class="mb-0">비밀번호 찾기</p>
 	                </a>
 	              </div>
