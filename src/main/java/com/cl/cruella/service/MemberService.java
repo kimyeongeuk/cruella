@@ -22,5 +22,8 @@ public interface MemberService {
 	// 임시 비밀번호로 수정
 	void updatePwd(String email, String str);
 	
-	
+
+	// 회원등록
+	int insertMember(MemberDto m);
+
 }
