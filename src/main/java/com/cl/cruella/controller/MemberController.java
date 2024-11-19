@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -110,6 +111,8 @@ public class MemberController {
 	 @ResponseBody
 	 public String sendCode(String email) {
 		 
+		 /* https://velog.io/@hellocdpa/220319-%EC%9E%84%EC%8B%9C%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8-
+		 %EC%9D%B4%EB%A9%94%EC%9D%BC%EB%A1%9C-%EB%B3%B4%EB%82%B4%EB%8A%94-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84 */	// SMTP 참고 블로그
 		 
 		 // 1) 사용자가 입력한 이메일이 등록 되어있는지 
 		 	MemberDto m = memberService.checkEmail(email); // 등록된 이메일이 있는지 조회
@@ -152,6 +155,16 @@ public class MemberController {
 		 
 		 
 	 }
+	 
+	 // 이메일 발송 성공 화면(김동규)
+	 @GetMapping("/sentEmail.do")
+	 public String sentEmail(String email, Model model) {
+		 
+		 model.addAttribute("email", email);
+		 
+		 return "/member/sentEmail";
+	 };
+	 
 	 
 	 
 	 

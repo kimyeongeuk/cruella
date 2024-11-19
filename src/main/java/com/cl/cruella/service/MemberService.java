@@ -23,5 +23,4 @@ public interface MemberService {
 	void updatePwd(String email, String str);
 	
 	
-	
 }
