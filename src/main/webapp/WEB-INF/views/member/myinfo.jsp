@@ -39,6 +39,31 @@
    	 margin-top: 15px;
    	 overflow-y: scroll;
    	 }
+   	 #teamListDiv{
+   	 max-height: 442px;
+   	 overflow-y: auto;
+   	 }
+		 #memoDiv::-webkit-scrollbar {
+		  width: 10px;  /* 세로 스크롤바의 너비 */
+		  height: 8px; /* 가로 스크롤바의 높이 */
+		 }
+		
+		 #memoDiv::-webkit-scrollbar-track {
+		  background-color: #f1f1f1; /* 트랙 배경색 */
+		  border-radius: 10px; /* 트랙 모서리 둥글게 */
+		 }
+		
+		/* 스크롤바의 손잡이 (사용자가 드래그할 부분) */
+		#memoDiv::-webkit-scrollbar-thumb {
+		    background-color: #7367f0; /* 손잡이 색 */
+		    border-radius: 10px;     /* 손잡이 모서리 둥글게 */
+		    border: 2px solid #f1f1f1; /* 손잡이의 테두리 색 (트랙과 구분됨) */
+		}
+		
+		/* 스크롤바 손잡이 위에 마우스를 올렸을 때 */
+		#memoDiv::-webkit-scrollbar-thumb:hover {
+		    background-color: #564EB5; /* 손잡이 색을 다르게 */
+		}
    </style>
 </head>
 
@@ -608,132 +633,18 @@
                   <!--/ Projects table -->                  
                   <!--/ Activity Timeline -->
                   <div class="row">
-                    <!-- Connections -->
+                    <!-- 나의 소속팀 목록 -->
                     <div class="col-lg-12 col-xl-6">
                       <div class="card card-action mb-6 mt-6">
                         <div class="card-header align-items-center">
                           <i class="ti ti-users ti-lg"></i>
-                          <h5 class="card-action-title mb-0" style="margin-left: 15px;">인사관리팀</h5> <!-- 나의 소속팀이 보이게 -->
-                          <div class="card-action-element">
-                            <!--
-                            <div class="dropdown">
-                              <button
-                                type="button"
-                                class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow p-0 text-muted"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="ti ti-dots-vertical ti-md text-muted"></i>
-                              </button>
-                              <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="javascript:void(0);">Share connections</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0);">Suggest edits</a></li>
-                                <li>
-                                  <hr class="dropdown-divider" />
-                                </li>
-                                <li><a class="dropdown-item" href="javascript:void(0);">Report bug</a></li>
-                              </ul>
-                            </div>
-                            -->
-                          </div>
+                          <h5 class="card-action-title mb-0" style="margin-left: 15px;">${ loginUser.getDeptName() }</h5> <!-- 나의 소속팀이 보이게 -->
                         </div>
-                        <div class="card-body">
-                          <ul class="list-unstyled mb-0">
-                            <li class="mb-4">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <div class="avatar me-2">
-                                    <img src="${ contextPath }/assets/img/avatars/2.png" alt="Avatar" class="rounded-circle" />
-                                  </div>
-                                  <div class="me-2">
-                                    <h6 class="mb-0">김동규</h6>            <!-- 회원의 이름과 -->
-                                    <small>hiwinter99@gmail.com</small>     <!-- 메일이 보이도록 -->
-                                  </div>
-                                </div>
-                                <div class="ms-auto">
-                                  <button class="btn btn-label-primary btn-icon">
-                                    <i class="ti ti-brand-telegram ti-md"></i>
-                                  </button>
-                                </div>
-                              </div>
-                            </li>
-                            <li class="mb-4">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <div class="avatar me-2">
-                                    <img src="../../assets/img/avatars/3.png" alt="Avatar" class="rounded-circle" />
-                                  </div>
-                                  <div class="me-2">
-                                    <h6 class="mb-0">Curtis Fletcher</h6>
-                                    <small>1.32k Connections</small>
-                                  </div>
-                                </div>
-                                <div class="ms-auto">
-                                  <button class="btn btn-label-primary btn-icon">
-                                    <i class="ti ti-brand-telegram ti-md"></i>
-                                  </button>
-                                </div>
-                              </div>
-                            </li>
-                            <li class="mb-4">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <div class="avatar me-2">
-                                    <img src="${ contextPath }/assets/img/avatars/10.png" alt="Avatar" class="rounded-circle" />
-                                  </div>
-                                  <div class="me-2">
-                                    <h6 class="mb-0">Alice Stone</h6>
-                                    <small>125 Connections</small>
-                                  </div>
-                                </div>
-                                <div class="ms-auto">
-                                  <button class="btn btn-label-primary btn-icon">
-                                    <i class="ti ti-brand-telegram ti-md"></i>
-                                  </button>
-                                </div>
-                              </div>
-                            </li>
-                            <li class="mb-4">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <div class="avatar me-2">
-                                    <img src="${ contextPath }/assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
-                                  </div>
-                                  <div class="me-2">
-                                    <h6 class="mb-0">Darrell Barnes</h6>
-                                    <small>456 Connections</small>
-                                  </div>
-                                </div>
-                                <div class="ms-auto">
-                                  <button class="btn btn-label-primary btn-icon">
-                                    <i class="ti ti-brand-telegram ti-md"></i>
-                                  </button>
-                                </div>
-                              </div>
-                            </li>
-
-                            <li class="mb-6">
-                              <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                  <div class="avatar me-2">
-                                    <img src="../../assets/img/avatars/12.png" alt="Avatar" class="rounded-circle" />
-                                  </div>
-                                  <div class="me-2">
-                                    <h6 class="mb-0">Eugenia Moore</h6>
-                                    <small>1.2k Connections</small>
-                                  </div>
-                                </div>
-                                <div class="ms-auto">
-                                  <button class="btn btn-label-primary btn-icon">
-                                    <i class="ti ti-brand-telegram ti-md"></i>
-                                  </button>
-                                </div>
-                              </div>
-                            </li>
-                          </ul>
+                        <div class="card-body" id="teamListDiv"> <!-- 나의 소속팀 전체 리스트 조회 영역 -->
                         </div>
                       </div>
                     </div>
-                    <!--/ Connections -->
+                    <!--/ 나의 소속팀 목록 -->
                     <!-- 워크플로우 -->
                     <div class="col-lg-12 col-xl-6">
                       <div class="card card-action mb-6 mt-6">
@@ -818,8 +729,8 @@
    	// 페이지 로드 시 실행시킬 함수(김동규)
     window.onload = function(){
     	
-    	fnMemoList();	// 메모 전체 리스트 조회
-    	
+    	fnMemoList();	//   메모 전체 리스트 조회
+    	fnTeamList(); // 소속팀 전체 리스트 조회
     	
     }
     
@@ -837,7 +748,7 @@
 	   		 		let liEl = "<ul class='list-unstyled mb-2'>";
 	   		 
  		 				for(let i = 0; i < res.length; i++) {
- 		 				liEl += "<li class='d-flex align-items-center pt-5 pb-5 mt-3' id='memoList'>"
+ 		 					liEl += "<li class='d-flex align-items-center pt-5 pb-5 mt-3' id='memoList'>"
 	 		 							+ "<span class='fw-medium mx-2' onclick='fnSelectMemo(" + res[i].memoNo + ");'>" + res[i].memoContent + "</span>"
 	 		 							+ "<div class='dropdown'>"
 	 		 								+ "<i class='ti ti-dots-vertical ti-sm' type='button' data-bs-toggle='dropdown' aria-expanded='false'></i>"
@@ -848,7 +759,7 @@
 	 		 								+"</div>"
  		 								+"</li>"
  		 				}
-	   		 		liEl += "</ul>";
+ 		 				liEl += "</ul>";
              
 	   		 		$('#memoDiv').html(liEl);
 	   	 }
@@ -898,6 +809,49 @@
     	})
     	
     	
+    }
+    
+    // 소속팀 전체 리스트 조회
+    function fnTeamList(){
+    	
+   		const memNo = '${loginUser.getMemNo()}'; 			 // 현재 로그인한 사원의 사번
+    	const deptCode = '${loginUser.getDeptCode()}'; // 현재 로그인한 사원의 부서코드
+    	
+    	$.ajax({
+    		url: '${contextPath}/member/teamList.do',
+    		type: 'POST',
+    		data: {
+			    			memNo: memNo,
+			    			deptCode: deptCode
+			    		},
+    		success: function(res){
+    			
+    			let liEl = '<ul class="list-unstyled mb-0">'
+    			
+    			for(let i = 0; i < res.length; i++){
+    				
+    				liEl += '<li class="mb-4">'
+    							+'<div class="d-flex align-items-center">'
+    								+'<div class="d-flex align-items-center">'
+    									+'<div class="avatar me-2">'
+    										+'<img src="${ contextPath }/assets/img/avatars/2.png" alt="Avatar" class="rounded-circle" />'
+    									+'</div>'
+    									+'<div class="me-2">'
+    										+'<h6 class="mb-0">' + res[i].memName + '</h6>'
+    										+'<small>' + res[i].email + '</small>'
+    									+'</div>'
+    								+'</div>'
+    								+'<div class="ms-auto"><button class="btn btn-label-primary btn-icon"><i class="ti ti-brand-telegram ti-md"></i></button></div>'
+    						  +'</li>'
+    			}
+    			
+    			liEl += '</ul>';
+    			
+    			$('#teamListDiv').html(liEl);
+    			
+    		}
+    		
+    	})
     }
     
     

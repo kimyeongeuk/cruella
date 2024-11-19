@@ -1,5 +1,7 @@
 package com.cl.cruella.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.cl.cruella.dao.MemberDao;
@@ -21,6 +23,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int resetPwd(String newPwd, String memNo) {
 		return memberDao.resetPwd(newPwd, memNo);
+	}
+
+	@Override
+	public List<MemberDto> selectTeamList(MemberDto m) {
+		return memberDao.selectTeamList(m);
 	}
 
 }

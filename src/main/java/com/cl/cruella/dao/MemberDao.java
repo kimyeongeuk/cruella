@@ -1,6 +1,7 @@
 package com.cl.cruella.dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -27,6 +28,10 @@ public class MemberDao {
 	    params.put("memNo", memNo);
 		
 		return sqlSession.update("memberMapper.resetPwd", params);
+	}
+	
+	public List<MemberDto> selectTeamList(MemberDto m) {
+		return sqlSession.selectList("memberMapper.selectTeamList", m);
 	}
 	
 }

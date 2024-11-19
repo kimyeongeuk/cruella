@@ -65,7 +65,36 @@
 		 where 
 		 			 mem_no = #{memNo}
 	</update>
-
+	
+	<!-- 나의 소속팀 전체 리스트 조회(김동규) -->
+	<select id="selectTeamList" resultMap="memberResultMap">
+		select
+					mem_no
+				, mem_name
+				, mem_pwd
+				, phone
+				, email
+				, address
+				, hire_date
+				, end_date
+				, status
+				, gender
+				, mem_ssn
+				, account
+				, profile_url
+				, bank_name
+				, vac_count
+				, DEPT_CODE
+				, POS_CODE
+				, sign_path
+				, d.dept_name
+				, p.pos_name
+		 from member
+		 join department d using(dept_code)
+     join position p using(pos_code)
+		where dept_code = #{deptCode}
+          and mem_no != #{memNo}
+	</select>
 
 
 

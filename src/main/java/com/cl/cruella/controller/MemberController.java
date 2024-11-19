@@ -2,11 +2,13 @@ package com.cl.cruella.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.service.MemberService;
@@ -77,10 +79,23 @@ public class MemberController {
 		out.println("</script>");
 		return "/";
 	}
+	
 	 @GetMapping("/signup.do")
-	public void salarypayment() {}
+	 public void salarypayment() {}
 	 
 	 @GetMapping("/myinfo.do")
 	 public void myinfo() {}
 	 
+	 // 나의 팀 전체 리스트 조회(김동규)
+	 @PostMapping("/teamList.do")
+	 @ResponseBody
+	 public List<MemberDto> teamList(MemberDto m) {
+		 
+		 List<MemberDto> list = memberService.selectTeamList(m);
+		 
+		 // System.out.println(list);
+		 
+		 return list;
+		 
+	 }
 }

@@ -28,11 +28,11 @@ public class MemoController {
 	@ResponseBody
 	public List<MemoDto> memoList(String memNo) {
 		
-		// System.out.println(memNo);
+		 // System.out.println(memNo);
 		
 		List<MemoDto> list = memoService.selectMemoList(memNo);	// 사번을 활용 -> 모든 메모 정보 조회
 		
-		// System.out.println(list);
+		 // System.out.println(list);
 		
 		return list;
 	}
@@ -95,7 +95,7 @@ public class MemoController {
 	@PostMapping("/deleteMemo.do")
 	public String deleteMemo(int memoNo) {
 		
-		System.out.println(memoNo);
+		// System.out.println(memoNo);
 		
 		memoService.deleteMemo(memoNo);
 		
