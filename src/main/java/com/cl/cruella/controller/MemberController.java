@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+<<<<<<< Updated upstream
 import org.springframework.web.bind.annotation.ResponseBody;
 =======
 import org.springframework.web.servlet.ModelAndView;
@@ -86,9 +87,31 @@ public class MemberController {
 		out.println("</script>");
 		return "/";
 	}
+<<<<<<< Updated upstream
 	
 	 @GetMapping("/signup.do")
 	 public void salarypayment() {}
+=======
+	@GetMapping("/signup.do")
+	public void salarypayment() {}
+	
+	// 사원등록(이예빈)
+	@PostMapping("/insert.do")
+	public String insertMember(MemberDto m, RedirectAttributes rd) {
+		int result = memberService.insertMember(m);
+		
+		if(result > 0) {
+			rd.addFlashAttribute("alertMsg", "사원등록이 완료되었습니다.");
+		}else {
+			rd.addFlashAttribute("alertMsg", "사원등록에 실패하였습니다.");
+		}
+		 return "redirect:/";
+
+	}
+	
+	 
+	 
+>>>>>>> Stashed changes
 	 
 	 @GetMapping("/myinfo.do")
 	 public void myinfo() {}
