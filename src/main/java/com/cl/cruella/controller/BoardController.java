@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -19,6 +20,7 @@ import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.BoardDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
+import com.cl.cruella.dto.ReplyDto;
 import com.cl.cruella.service.BoardService;
 import com.cl.cruella.util.FileUtil;
 import com.cl.cruella.util.PagingUtil;
@@ -205,5 +207,46 @@ public class BoardController {
 		
 		return "board/boardList";
 	}
+
+	@ResponseBody
+	@GetMapping(value="/rlist.do", produces="application/json")
+	public List<ReplyDto> replyList(int no) {
+	    System.out.println("게시글 번호: " + no);
+	    List<ReplyDto> replies = boardService.selectReplyList(no);
+	    System.out.println("가져온 댓글 목록: " + replies);
+	    return replies;
+	}
+	
+	@ResponseBody
+	@PostMapping("/rinsert.do")
+	public String replyInsert(ReplyDto r, HttpSession session) {
+		r.setMemNo( String.valueOf( ((MemberDto)session.getAttribute("loginUser")).getMemNo() ) );
+		int result = boardService.insertReply(r);
+		return result > 0 ? "SUCCESS" : "FAIL";
+	}
+	
+
+	@ResponseBody
+    @PostMapping("/deleteReplyCompletely.do")
+    public Map<String, Object> deleteReplyCompletely(@RequestParam(value = "replyNo", required = false) Integer replyNo) {
+        Map<String, Object> result = new HashMap<>();
+        if (replyNo == null) {
+            result.put("status", "FAIL");
+            result.put("message", "Invalid reply number.");
+            return result;
+        }
+        int deleteResult = boardService.deleteReplyCompletely(replyNo);
+        result.put("status", deleteResult > 0 ? "SUCCESS" : "FAIL");
+        return result;
+    }
+	
+	@ResponseBody
+    @PostMapping("/updateReply.do")
+    public Map<String, Object> updateReply(@RequestParam("replyNo") int replyNo, @RequestParam("content") String content) {
+        Map<String, Object> result = new HashMap<>();
+        int updateResult = boardService.updateReply(replyNo, content);
+        result.put("status", updateResult > 0 ? "SUCCESS" : "FAIL");
+        return result;
+    }
 	
 }

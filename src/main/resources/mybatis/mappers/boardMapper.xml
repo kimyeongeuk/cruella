@@ -27,6 +27,18 @@
         <result column="file_ref_no" property="refNo"/>
     </resultMap>
     
+    <resultMap id="replyResultMap" type="ReplyDto">
+		  <result column="reply_no" property="replyNo"/>
+		  <result column="reply_content" property="replyContent"/>
+		  <result column="mem_no" property="memNo"/>
+		  <result column="board_no" property="boardNo"/>
+		  <result column="reply_type" property="replyType"/>
+		  <result column="reply_regist_date" property="replyRegistDT"/>
+		  <result column="reply_modify_date" property="replyModifyDT"/>
+		  <result column="reply_ref" property="replyRef"/>
+		  <result column="mem_name" property="memName"/> 
+		</resultMap>
+  
     <select id="selectBoardListCount" parameterType="string" resultType="int">
 		    SELECT COUNT(*)
 		    FROM board
@@ -151,7 +163,7 @@
           )
           values
           (
-            seq_ano.nextval
+            seq_fno.nextval
           , #{filePath}
           , #{filesystemName}
           , #{originalName}
@@ -246,6 +258,62 @@
 			  </foreach>
 			</where> 
 		</delete>
+
+		<select id="selectReplyList" resultMap="replyResultMap">
+		  select
+		         r.reply_no
+		       , r.board_no
+		       , r.mem_no 
+		       , m.mem_name
+		       , r.reply_content
+		       , r.reply_type
+		       , r.reply_ref
+		       , to_char(r.reply_regist_date, 'YYYY-MM-DD HH24:MI') as reply_regist_date
+		       , to_char(r.reply_modify_date, 'YYYY-MM-DD HH24:MI') as reply_modify_date
+		    from reply r
+		    join member m on (m.mem_no = r.mem_no)
+		   where r.board_no = #{boardNo}
+		   order by reply_no desc
+		</select>
+	
+		<insert id="insertReply">
+		    insert into reply
+		    (
+		        reply_no,
+		        reply_content,
+		        board_no,
+		        mem_no,
+		        reply_type,
+		        reply_regist_date,
+		        reply_modify_date,
+		        reply_ref
+		    )
+		    values
+		    (
+		        seq_rno.nextval,
+		        #{replyContent},
+		        #{boardNo},
+		        #{memNo},
+		        #{replyType},
+		        SYSDATE,
+		        SYSDATE,
+		        #{replyRef}
+		    )
+		</insert>
+
+
+		<delete id="deleteReplyCompletely">
+		    delete from reply
+		    where reply_no = #{replyNo}
+		       or reply_ref = #{replyNo}
+		</delete>
+		
+		<update id="updateReply">
+		    UPDATE reply
+		    SET reply_content = #{content}
+		    WHERE reply_no = #{replyNo}
+		</update>
+		
 
 </mapper>
 
