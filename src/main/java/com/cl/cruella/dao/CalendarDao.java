@@ -15,10 +15,13 @@ public class CalendarDao {
 
 	private final SqlSessionTemplate sqlSession;
 	
-	public List<CalendarDto> companyCalenderList(){
-		return sqlSession.selectList("calenderMapper.companyCalenderList");
+	public List<CalendarDto> selectCalenderList(){
+		return sqlSession.selectList("calenderMapper.selectCalenderList");
 	}
 	
+	public int insertCalendar(CalendarDto c) {
+		return sqlSession.insert("calenderMapper.insertCalendar", c);
+	}
 	
 	
 	
