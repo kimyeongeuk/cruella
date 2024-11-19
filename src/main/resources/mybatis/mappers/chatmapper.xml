@@ -164,7 +164,47 @@ select count(chat_no) chat_count
  where chat_no = #{chatNo}
 </select>
 
+<!-- 채팅 등록 -->
+<insert id="insertMessage">
+ 	insert
+		into
+ message
+			 (
+			 	MSG_NO
+			 ,CHAT_NO
+			 ,MEM_NO
+			 ,MSG_CONTENT
+			 ,MSG_CHECK
+			 )
+			 values
+			 (
+			 	seq_msg.nextval
+			 ,#{chatNo}
+			 ,#{memNo}
+			 ,#{msgContent}
+			 ,#{msgCheck}
+			 )
+</insert>
 
+
+
+<update id="updateNewMsg">
+			UPDATE 
+							chat
+				 SET 
+				 			CHAT_REGIST_DATE = (
+			    													SELECT MSG_REGIST_DATE
+			   														  FROM (
+			       																	 SELECT MSG_REGIST_DATE
+			       																		 FROM message
+			       																	  WHERE CHAT_NO = #{chatNo}
+			        																ORDER BY MSG_REGIST_DATE DESC
+																			     ) 
+																			        WHERE rownum = 1
+			),
+			CHAT_NEWMSG = #{msgContent}
+			WHERE CHAT_NO = #{chatNo}
+</update>
 
 
 </mapper>
