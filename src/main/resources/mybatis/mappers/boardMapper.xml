@@ -241,11 +241,11 @@
 		</select>
 		
 		<update id="updateBoard">
-			update 
-					   board
-				 set board_title = #{boardTitle}
-				   , board_content = #{boardContent}
-			 where board_no = #{boardNo}
+		    UPDATE board
+		    SET board_title = #{boardTitle},
+		        board_content = #{boardContent},
+		        board_modify_date = SYSDATE
+		    WHERE board_no = #{boardNo}
 		</update>
 		
 		<delete id="deleteAttach">
@@ -310,9 +310,11 @@
 		
 		<update id="updateReply">
 		    UPDATE reply
-		    SET reply_content = #{content}
+		    SET reply_content = #{content},
+		        reply_modify_date = SYSDATE
 		    WHERE reply_no = #{replyNo}
 		</update>
+
 		
 
 </mapper>
