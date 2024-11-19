@@ -273,6 +273,7 @@
 		    from reply r
 		    join member m on (m.mem_no = r.mem_no)
 		   where r.board_no = #{boardNo}
+		   	 and reply_type = 0
 		   order by reply_no desc
 		</select>
 	
@@ -294,7 +295,7 @@
 		        #{replyContent},
 		        #{boardNo},
 		        #{memNo},
-		        #{replyType},
+		        0,
 		        SYSDATE,
 		        SYSDATE,
 		        #{replyRef}
