@@ -24,8 +24,8 @@ public class AppRovalDto {// 결재자
 	private int appLevel; // 결재 순서
 	
 	//-------------------------------------------------------------------
-	private Date appDate; // 결재일 // 결재승인 및 반려 시 담김
-	private String appStatus; // 결재상태 : A =대기 , Y= 승인 , N= 반려 
+	private Date appDate; // 결재일 // 결재승인 및 반려 시 담김 // update 문
+	private String appStatus; // 결재상태 : A =대기 , Y= 승인 , N= 반려 // update 문
 	
 	
 

@@ -106,11 +106,12 @@ $(function () {
   if (dragDrop.length) {
     
 
-
-    let count = 0;
-    // drag & drop external div
+    let count = 0; // 드래그 카운트
+	let refIndex = 0; // 참조 index count
+	
+    
     $(document).on('dnd_stop.vakata.dragDrop', function (e, data) {
-      //console.log('dnd_stop');
+     
       var tt = $(data.event.target); // drop된 위치의 요소 => 여기에 노드 정보를 append 시키면됨
       console.log(tt);
       //t.text("떨궈짐");
@@ -134,6 +135,11 @@ $(function () {
           alert('이미 추가된 사용자입니다.');
           return; // 중복되면 추가하지 않음
         }
+		
+		if (count >= 3) {
+		    alert('더이상 추가할 수 없습니다');
+		   return; // 3개 이상일 경우 함수 종료
+		 }
 
 
         if (count == 0) {
@@ -141,7 +147,7 @@ $(function () {
           tt.closest("tbody").html(
 
             '<tr style="height: 50px; border: 1px solid;">'
-            + '<input type="hidden" value=' + node.original.memNo + '>' + '</td>'
+            + '<input type="hidden" value="' + node.original.memNo + '"/>'
             + '<td style="width: 52px;"></td>'
             + '<td style="width: 138px;">기안서</td>'
             + '<td style="width: 150px;">' + node.original.memName + '</td>'
@@ -157,7 +163,7 @@ $(function () {
 
 
             '<tr style="height: 50px; border: 1px solid;">'
-            + '<input type="hidden" value=' + node.original.memNo + '>' + '</td>'
+            + '<input type="hidden" value="' + node.original.memNo + '"/>'
             + '<td style="width: 52px;"></td>'
             + '<td style="width: 138px;">기안서</td>'
             + '<td style="width: 150px;">' + node.original.memName + '</td>'
@@ -179,12 +185,8 @@ $(function () {
       console.log(count);
 
 
-      
-
-
 
     });
-
 
 
     
@@ -207,12 +209,17 @@ $(function () {
               alert('이미 추가된 사용자입니다.');
               return; // 중복되면 추가하지 않음
             }
+			
+			if (count >= 3) {
+			alert('더이상 추가할 수 없습니다');
+			 return; // 3개 이상일 경우 함수 종료
+			 }
   
             // 첫 번째 항목일 때 테이블 초기화
             if (count === 0) {
               $('#drag_line_div2').html(
                 '<tr style="height: 50px; border: 1px solid;">'
-                + '<input type="hidden" value=' + node.original.memNo + '>'
+                + '<input type="hidden" value="' + node.original.memNo + '"/>'
                 + '<td style="width: 52px;"></td>'
                 + '<td style="width: 138px;">기안서</td>'
                 + '<td style="width: 150px;">' + node.original.memName + '</td>'
@@ -225,7 +232,7 @@ $(function () {
               // 두 번째 이후 항목은 추가
               $('#drag_line_div2').append(
                 '<tr style="height: 50px; border: 1px solid;">'
-                + '<input type="hidden" value=' + node.original.memNo + '>'
+                + '<input type="hidden" value="' + node.original.memNo + '"/>'
                 + '<td style="width: 52px;"></td>'
                 + '<td style="width: 138px;">기안서</td>'
                 + '<td style="width: 150px;">' + node.original.memName + '</td>'
@@ -249,7 +256,7 @@ $(function () {
       console.log(count);
 
       if (count === 0) {
-        var emptyRow = '<tr style="height: 50px;">'
+        var emptyRow = '<tr style="height: 50px;" class="noref">'
                      + '<td><span style="color: #aea9a9;">드래그하여 추가할 수 있습니다.</span></td>'
                      + '</tr>';
         $('.aa2').append(emptyRow); 
@@ -294,11 +301,6 @@ $(function () {
   // 결재선 조직도
   // Drag Drop
   // --------------------------------------------------------------------
-  
-  
- 
-  
-  
   
   
   if (dragDrop2.length) {
@@ -500,11 +502,15 @@ $(function () {
 
 
 
+//--------------------------------------------------------------------------------------------------
 
 
 
 
-  
+
+
+// 결재정보 확인버튼 클릭시
+  // ----------------------------------------------------------------------------------------------
 
   $(document).on('click','#app_success_btn', function(){
 
@@ -520,11 +526,11 @@ $(function () {
     );
 
 
-
-
      
      var countLevel = 1; // 순서지정
-		 var idcount = 0; // 아이디 카운트
+	 
+	 //var idcount = 0; // 아이디 카운트
+	 var rovalIndex = 0;
 
      $('#drag_line_div tr').each(function() {
       // 각 row에서 필요한 데이터 가져오기
@@ -536,6 +542,7 @@ $(function () {
       
        
         // 결재선
+		/*
         var div = '<span class="line_user">'
                 + '<span>' + teamName + '</span>'
                 + '<span class="signLine">' + memName + '</span>'
@@ -543,35 +550,68 @@ $(function () {
                 + '<input type="hidden" value="' + memNo + '" id="mem_no_' + idcount + '">'
                 + '<input type="hidden" id="line_level_' + countLevel +'" value="' + countLevel + '">'
                 + '</span>';
-        
+        */
+		var div = '<span class="line_user">'
+		                + '<span>' + teamName + '</span>'
+		                + '<span class="signLine">' + memName + '</span>'
+		                + '<span class="app_line_date">결재일</span>'
+		                + '<input type="hidden" value="' + memNo + '" name="rovalList[' + rovalIndex + '].rvNo">'
+		                + '<input type="hidden" name="rovalList[' + rovalIndex++ +'].appLevel" value="' + countLevel++ + '">'
+		        + '</span>';
         
 							
 								
       if($('#drag_line_div tr').length > 1){
-        
         $('.app_line_div').append(div);
-				idcount++;
-        countLevel++;
-				
-				
+		//idcount++;
+        //countLevel++;
       }else if($('#drag_line_div tr').length == 1){
 		$('.app_line_div').html(div);
-		  idcount++;
-			countLevel++;
-			
-			
-			
+		//idcount++;
+		//countLevel++;
 	  }
+	  
+	  
 
-      
-
-
-  });
-
+  	});
+	
+	
+	// 참조
+	var refIndex = 0;
+	
+	$('#drag_line_div2 tr').not(".noref").each(function(){
+		
+		
+		var refNo = $(this).find('input[type="hidden"]').val();
+		
+		var div2 = '<input type="hidden" value="' + refNo + '" name="refList[' + refIndex++ + '].refNo">'
+		
+				               
+		/*$('#ref_list_div').append(div2);*/
+		
+		if($('#drag_line_div2 tr').length > 1){
+		       $('#ref_list_div').append(div2);
+			
+		 }else if($('#drag_line_div2 tr').length == 1){
+			$('#ref_list_div').html(div2);
+			
+		 }/*else if($('##drag_line_div2 span').text() == '드래그하여 추가할 수 있습니다.'){
+			$('#ref_list_div').html(defaultDiv);
+		 }*/
+		
+		
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
   
-
-
-  })
+  });
 
 
 

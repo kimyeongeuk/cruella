@@ -24,6 +24,7 @@
 	<result column="mem_name" property="memName"/>
 	<result column="dept_name" property="deptName"/>
 	<result column="pos_name" property="posName"/>
+	<result column="mem_no" property="memNo"/>
 </resultMap>
 
 	
@@ -56,6 +57,7 @@
       dept_name 
       ,mem_name 
       ,pos_name 
+      ,mem_no
     from
         member m
     join position p on (m.pos_code = p.pos_code)
@@ -66,6 +68,105 @@
 
 
 
+
+<!-- 기안 insert -->
+<insert id="insertApp">
+insert 
+into app_doc
+(
+ DOC_NO
+,MEM_NO
+,DOC_TYPE
+,DOC_TITLE
+,DOC_CONTENT
+,DOC_IMPORTANCE
+,DOC_DATE
+,DOC_STATUS
+,DOC_ORDER
+,STATUS
+)
+values
+(
+   seq_app.nextval
+  ,#{memNo}
+  ,#{docType}
+  ,#{docTitle}
+  ,#{docContent}
+  ,#{docImpo}
+  ,sysdate
+  ,'A'  -- 대기/진행/최종승인/반려
+  ,1    -- 결재순서
+  ,'Y'  -- 존재여부
+)
+
+</insert>
+
+
+<!-- 파일 insert -->
+<insert id="insertAttach">
+insert 
+into attachment
+(
+    FILE_NO
+    ,FILE_PATH
+    ,FILE_ORIGINAL_NAME
+    ,FILE_SYSTEM_NAME
+    ,FILE_REF_NO
+    ,FILE_REF_TYPE
+)
+values
+(
+    seq_fno.nextval
+    ,#{filePath}
+    ,#{originalName}
+    ,#{filesystemName}
+    ,seq_app.currval
+    ,'A'
+)
+
+</insert>
+
+
+
+<!-- 결재선 insert -->
+<insert id="insertRoval">
+insert
+into approval
+(
+ mem_no
+ ,doc_no
+ ,app_level
+ ,app_status
+)
+values
+(
+  #{rvNo}
+  ,seq_app.currval
+  ,#{appLevel}  -- 결재순서
+  ,'대기'
+)
+
+</insert>
+
+
+<!-- 참조선 insert  -->
+<insert id="insertRef">
+insert 
+into app_ref
+(
+  doc_no
+  ,mem_no
+  ,ref_status
+)
+values
+(
+  seq_app.currval
+ ,#{refNo}
+ ,'참조'
+)
+
+
+</insert>
 
 
 

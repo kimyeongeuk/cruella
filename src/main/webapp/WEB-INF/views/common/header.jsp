@@ -96,12 +96,11 @@
 
 
 
-
-
-
-
-
-
+<c:if test="${not empty alertMsg}">
+    <script>
+       alert("${alertMsg}");
+    </script>
+</c:if>
 
 
 		<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
