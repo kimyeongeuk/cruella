@@ -51,78 +51,38 @@
 </head>
   <body>
     <!-- Content -->
-    <div class="container-xxl">
-      <div class="authentication-wrapper authentication-basic container-p-y">
-        <div class="authentication-inner py-6">
-          <!-- Forgot Password -->
-          <div class="card">
-            <div class="card-body">
-              <!-- Logo -->
-		          <div class="app-brand justify-content-center mb-6">
-		            <a href="index.html" class="app-brand-link">
-		              <img src="${ contextPath }/assets/img/mainlogo.png">
-		              <span class="app-brand-text demo text-heading fw-bold">Cruella</span>
-		            </a>
-		          </div>
-              <!-- /Logo -->
-              <h4 class="mb-1">비밀번호 찾기 🔒</h4>
-              <p class="mb-6">등록하신 이메일을 입력해 주세요. <br> 확인 후, 임시 비밀번호를 발급 받으실 수 있습니다.</p>
-              <form id="formAuthentication" class="mb-6" method="POST">
-                <div class="mb-6">
-                  <label for="email" class="form-label">Email</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="email"
-                    name="email"
-                    placeholder="이메일을 입력하세요."
-                    autofocus />
-                </div>
-                <button class="btn btn-primary d-grid w-100" onclick="fnSendCode();">임시 비밀번호 발급 받기</button> <!-- 임시비밀번호 발급 클릭 시 회원 상태값 'A'로 변경 -->
-              </form>
-              <div class="text-center">
-                <a href="auth-login-basic.html" class="d-flex justify-content-center">
-                  <i class="ti ti-chevron-left scaleX-n1-rtl me-1_5"></i>
-                  로그인 화면으로
-                </a>
-              </div>
-            </div>
+     <div class="authentication-wrapper authentication-basic px-6">
+      <div class="authentication-inner py-6">
+        <!-- Verify Email -->
+        <div class="card">
+          <div class="card-body">
+	          <!-- 로그인 폼 상단 로고, 이름 -->
+	          <div class="app-brand justify-content-center mb-6">
+	            <a href="index.html" class="app-brand-link">
+	              <img src="${ contextPath }/assets/img/mainlogo.png">
+	              <span class="app-brand-text demo text-heading fw-bold">Cruella</span>
+	            </a>
+	          </div>
+	          <!-- /로그인 폼 상단 로고, 이름 -->
+            <h4 class="mb-1">전송 완료 ✉️</h4>
+            <p class="text-start mb-0">
+              입력하신 이메일로 임시 비밀번호를 발송했습니다. <br>
+              ${email}  <!-- 입력받은 사용자의 이메일 표시 -->
+            </p>
+            <a class="btn btn-primary w-100 my-6" href="${ contextPath }/member/loginPage.jsp"> 로그인 하기 </a> <!-- 회원 상태값 'A'인지 확인후 비밀번호 변경화면으로 연결하게 설정 -->
+            <p class="text-center mb-0">
+              
+              <a href="javascript:void(0);"> 재전송 </a>
+            </p>
           </div>
-          <!-- /Forgot Password -->
         </div>
+        <!-- /Verify Email -->
       </div>
     </div>
     
     
 		<script>
 
-			function fnSendCode(){
-				
-			  event.preventDefault();
-
-				
-				let email = $('#email').val();
-				
-				$.ajax({
-					url: '${contextPath}/member/sendCode.do',
-					type: 'POST',
-					data: {email: email},
-					success: function(res){
-							console.log(res);
-						if(res == "YYY"){	// 일치하는 이메일이 있을 경우
-							window.location.href = "${contextPath}/member/sentEmail.do?email=" + email;
-						}else{
-							alert('등록된 이메일이 아닙니다.');
-						}
-						
-					},
-					error: function(){
-						console.log('ajax 실패');
-					}
-				})
-				
-			}
-			
 			
 		
 		</script>

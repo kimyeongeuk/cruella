@@ -96,97 +96,95 @@
 										</div>
 										<h5 class="pb-4 border-bottom mb-4"></h5>
 										<div class="card-body pt-4">
-											<form id="formAccountSettings" action="${ contextPath }/member/insert.do" method="post"
-												onsubmit="return false">
+											<form id="formAccountSettings" action="${ contextPath }/member/insert.do" method="post">
 												<div class="row">
 													<div class="mb-4 col-md-6">
-														<label for="name" class="form-label">이름</label> <input
-															class="form-control" type="text" id="name" name="name"
-															autofocus />
+														<label for="memName" class="form-label">이름</label> <input
+															class="form-control" type="text" id="memName" name="memName"
+															autofocus required />
 													</div>
 													<div class="mb-4 col-md-6">
-														<label for="accountNumber" class="form-label">계좌번호</label>
+														<label for="account" class="form-label">계좌번호</label>
 														<div style="display: flex; gap: 10px;">
-															<select class="form-select" style="flex: 1;">
+															<select class="form-select" style="flex: 1;" name="bankName">
 																<option value="">선택</option>
 																<option value="">국민</option>
-																<option value="">신한</option>
+																<option value="신한">신한</option>
 																<option value="">우리</option>
 															</select> <input class="form-control" type="text"
-																name="accountNumber" id="accountNumber"
-																placeholder="계좌번호 입력" style="flex: 3;" />
+																name="account" id="account"
+																placeholder="계좌번호 입력" style="flex: 3;" required />
 														</div>
 													</div>
 													<div class="mb-4 col-md-6">
-														<label for="employeeNumber" class="form-label">사번</label>
-														<input class="form-control" type="text"
-															id="employeeNumber" name="employeeNumber" />
+														<label for="memNo" class="form-label">사번</label>
+														<input class="form-control" type="text" id="memNo" name="memNo" readonly />
 													</div>
 													<div class="mb-4 col-md-6">
-														<label for="rank" class="form-label">부서</label> <select
-															id="rank" class="select form-select">
+														<label for="deptCode" class="form-label">부서</label> <select
+															id="deptCode" class="select form-select" name="deptCode">
 															<option value="">선택</option>
-															<option value="">인사</option>
-															<option value="">영업총괄</option>
-															<option value="">지원</option>
-															<option value="">남성의류</option>
-															<option value="">여성의류</option>
-															<option value="">식품</option>
-															<option value="">스포츠</option>
-															<option value="">뷰티</option>
-															<option value="">명품</option>
-															<option value="">문화센터</option>
-															<option value="">디지털 및 가전</option>
+															<option value="S1">영업총괄</option>
+															<option value="S2">인사</option>
+															<option value="S3">지원</option>
+															<option value="T1">남성의류</option>
+															<option value="T2">여성의류</option>
+															<option value="T3">식품</option>
+															<option value="T4">스포츠</option>
+															<option value="T5">뷰티</option>
+															<option value="T6">명품</option>
+															<option value="T7">문화센터</option>
+															<option value="T8">디지털 및 가전</option>
 														</select>
 													</div>
 													<div class="mb-4 col-md-6">
-														<label class="form-label" for="password">비밀번호</label>
+														<label class="form-label" for="memPwd">비밀번호</label>
 														<div class="input-group input-group-merge">
-															<input type="text" id="password" name="password"
+															<input type="text" id="memPwd" name="memPwd"
 																class="form-control" />
 														</div>
 													</div>
 													<div class="mb-4 col-md-6">
-														<label for="positionrank" class="form-label">직급</label> <select
-															id="positionrank" class="select form-select">
+														<label for="posCode" class="form-label">직급</label> <select
+															id="posCode" class="select form-select" name="posCode">
 															<option value="">선택</option>
-															<option value="">점장</option>
-															<option value="">부점장</option>
-															<option value="">부장</option>
-															<option value="">팀장</option>
-															<option value="">대리</option>
-															<option value="">주임</option>
-															<option value="">사원</option>
+															<option value="C1">점장</option>
+															<option value="C2">부점장</option>
+															<option value="C3">부장</option>
+															<option value="C4">팀장</option>
+															<option value="C5">대리</option>
+															<option value="C6">주임</option>
+															<option value="C7">사원</option>
 														</select>
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="email" class="form-label">Email</label> <input
-															class="form-control" type="text" id="email" name="email" />
+															class="form-control" type="text" id="email" name="email" required />
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="salary" class="form-label">급여</label> <input
 															type="text" class="form-control" id="salary"
-															name="salary" />
+															name="salary" required  />
 													</div>
 													<div class="mb-4 col-md-6">
-														<label class="joiningDate" for="country">입사날짜</label> <input
-															class="form-control" type="text" id="joinDate" name="joinDate"
-															placeholder="YYYY/MM/DD" />
+														<label class="hireDate" for="country">입사날짜</label> <input
+															class="form-control" type="date" id="hireDate" name="hireDate"
+															placeholder="YYYY/MM/DD"  required />
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="language" class="form-label">주소</label> <input
 															class="form-control" type="text" id="address" name="address"
-															placeholder="Address" />
+															placeholder="Address"  required />
 													</div>
 													<div class="mb-4 col-md-6">
-														<label for="timeZones" class="form-label">주민등록번호</label> <input
-															class="form-control" type="text" id="idNo" name="idNo"
-															placeholder="000000-0000000" />
+														<label for="memSSN" class="form-label">주민등록번호</label> <input
+															class="form-control" type="text" id="memSSN" name="memSSN"
+															placeholder="000000-0000000"  required pattern="^\d{6}-\d{7}$"/>
 													</div>
 													<div class="mb-4 col-md-6">
-														<label for="currency" class="form-label">전화번호</label> <input
+														<label for="phone" class="form-label">전화번호</label> <input
 															class="form-control" type="text" id="phone" name="phone"
-															placeholder="010-1111-2222" />
+															placeholder="010-1111-2222" required pattern="^\d{3}-\d{4}-\d{4}$"/>
 													</div>
 												</div>
 												<div class="mt-2" style="justify-self: center;">
