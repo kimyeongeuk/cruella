@@ -66,6 +66,7 @@
 		 			 mem_no = #{memNo}
 	</update>
 	
+<<<<<<< Updated upstream
 	<!-- 나의 소속팀 전체 리스트 조회(김동규) -->
 	<select id="selectTeamList" resultMap="memberResultMap">
 		select
@@ -112,6 +113,47 @@
 			 	 , status = 'A'
 		 where email = #{email}
 	</update>
+=======
+	<!-- 회원등록 (이예빈  -->
+	<insert id="insertMember">
+	insert
+		into member
+		(
+			mem_no
+		, mem_name
+		, mem_pwd
+		, phone
+		, email
+		, address
+		, hire_date
+		, status
+		, mem_ssn
+		, account
+		, bank_name
+		, pos_code
+		, dept_code
+		)
+		values
+		(
+		(select 'c' || to_char(sysdate, 'YYYY') || lpad(max(substr(mem_no, 1, 9)) +
+		1, 3, '0')
+		from member
+		where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY'))
+		, #{memName}
+		, #{memPwd}
+		, #{phone}
+		, #{email}
+		, #{address}
+		, TO_DATE(#{hireDate}, 'YYYY-MM-DD')
+		, 'Y'
+		, #{memSSN}
+		, #{account}
+		, #{bankName}
+		, #{posCode}
+		, #{deptCode}
+		)
+	</insert>
+>>>>>>> Stashed changes
 
 
 

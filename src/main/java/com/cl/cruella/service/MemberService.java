@@ -12,6 +12,7 @@ public interface MemberService {
 
 	// 비밀번호 변경
 	int resetPwd(String newPwd, String memNo);
+<<<<<<< Updated upstream
 	
 	// 나의 소속팀 전체 리스트
 	List<MemberDto> selectTeamList(MemberDto m);
@@ -24,4 +25,9 @@ public interface MemberService {
 	
 	
 	
+=======
+
+	// 회원등록
+	int insertMember(MemberDto m);
+>>>>>>> Stashed changes
 }

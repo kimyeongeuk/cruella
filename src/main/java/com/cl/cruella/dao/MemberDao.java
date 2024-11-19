@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cl.cruella.dto.MemberDto;
 
+import jakarta.websocket.Session;
 import lombok.RequiredArgsConstructor;
 
 @Repository
@@ -28,6 +29,10 @@ public class MemberDao {
 	    params.put("memNo", memNo);
 		
 		return sqlSession.update("memberMapper.resetPwd", params);
+	}
+
+	public int insertMember(MemberDto m) {
+		return sqlSession.insert("memberMapper.insertMember", m);
 	}
 	
 	public List<MemberDto> selectTeamList(MemberDto m) {

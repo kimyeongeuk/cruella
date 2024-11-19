@@ -26,6 +26,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+<<<<<<< Updated upstream
 	public List<MemberDto> selectTeamList(MemberDto m) {
 		return memberDao.selectTeamList(m);
 	}
@@ -38,6 +39,10 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void updatePwd(String email, String str) {
 		memberDao.updatePwd(email, str);
+=======
+	public int insertMember(MemberDto m) {
+		return memberDao.insertMember(m);
+>>>>>>> Stashed changes
 	}
 
 }
