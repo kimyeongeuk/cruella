@@ -56,8 +56,8 @@ public class AppController {
 	@GetMapping("/form_robin.do")
 	public void formRobinPage(Model model,HttpSession session) {
 		String userNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
-		DeptDto d = appService.formDraftPage(userNo);
-		model.addAttribute("d",d);
+		DeptDto m = appService.formDraftPage(userNo);
+		model.addAttribute("m",m);
 		
 	}
 	
@@ -113,7 +113,7 @@ public class AppController {
 	
 //	전자결재작성 insert
 	@PostMapping("/appInsert.do")
-	public String appInsert(AppdocDto ad, List<MultipartFile> uploadFile,RedirectAttributes rdAttributes ) {
+	public String appInsert(AppdocDto ad, List<MultipartFile> uploadFile,RedirectAttributes rdAttributes) {
 		
 		List<AttachDto> list = new ArrayList<>();
 		
@@ -133,20 +133,23 @@ public class AppController {
 		if(result > 0) {
 			log.debug("전자결재 신청 성공");
 			rdAttributes.addFlashAttribute("alertMsg", "성공적으로 결재 되었습니다.");
+			
 		}else {
 			log.debug("실패");
-			rdAttributes.addFlashAttribute("alertMsg", "실패");
+			rdAttributes.addFlashAttribute("alertMsg", "전자결재 실패하였습니다.");
 			
 		}
 		
-		return "redirect:/app/form_draft.do";
+		
+		return "redirect:/app/app_main.do";
 		
 		
+		
+	}
 	
-		
-		
-		
-		
+	
+	@GetMapping("/box_main.do")
+	public void boxpdPage(){
 		
 	}
 	

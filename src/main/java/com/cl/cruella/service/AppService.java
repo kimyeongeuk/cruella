@@ -49,25 +49,26 @@ public class AppService {
 	public int insertApp(AppdocDto ad,List<AttachDto> list) {
 		
 		
-		int result = appDao.insertApp(ad);
 		
 		List<AppRovalDto> rovalList = ad.getRovalList();
 		List<AppRefDto> refList = ad.getRefList();
 		
-		int rovalResult = 0;
-		int refResult = 0;
+		int result = appDao.insertApp(ad); // 기안작성
+		
+		int rovalResult = 0; // 결재자
+		int refResult = 0; // 참조자
+		int annResult = 0; // 연차신청서
+		int coeResult = 0; // 증명서신청서
 		
 //		결재자
 		for(AppRovalDto appRoval : rovalList) {
 			rovalResult += appDao.insertRoval(appRoval);
 		}
 		
-		
 //		참조자
 			for(AppRefDto ref : refList) {
 				refResult += appDao.insertRef(ref);
 			}
-		
 		
 		
 //		파일
@@ -76,6 +77,16 @@ public class AppService {
 			for(AttachDto at :list) {
 				result += appDao.insertAttach(at); // 여러개
 			}
+		}
+		
+//		연차신청서
+		if(result > 0 && ad.getDocType().equals("연차신청서")) {
+			annResult = appDao.insertFormAnn(ad);
+		}
+		
+//		증명서신청서
+		if(result > 0 && ad.getDocType().equals("증명서신청서")) {
+			coeResult = appDao.insertFormCoe(ad);
 		}
 		
 		

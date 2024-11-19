@@ -160,7 +160,7 @@
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="${contextPath }/app/box_main.do" class="menu-link">
                     <div data-i18n="결재 문서함">결재 문서함</div>
                   </a>
                 </li>

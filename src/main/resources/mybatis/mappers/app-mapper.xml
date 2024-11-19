@@ -165,8 +165,46 @@ values
  ,'참조'
 )
 
+</insert>
+
+
+<!-- 연차신청서 -->
+<insert id="insertFormAnn">
+insert
+into app_form_ann
+(
+ DOC_NO
+,APP_DATE_START
+,APP_DATE_END
+)
+values
+(
+  seq_app.currval
+  ,#{appDateStart}
+  ,#{appDateEnd}
+)
 
 </insert>
+
+
+<!-- 증명서신청서 -->
+<insert id="insertFormCoe">
+insert
+into app_form_coe
+(
+ DOC_NO
+,APP_COE_DATE
+)
+values
+(
+  seq_app.currval
+  ,#{appCoreDt}
+)
+
+</insert>
+
+
+
 
 
 

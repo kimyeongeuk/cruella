@@ -52,6 +52,16 @@ public class AppDao {
 	 public int insertRef(AppRefDto ref) {
 		 return sqlSession.insert("appMapper.insertRef",ref);
 	}
+	 
+	// 연차신청서
+	 public int insertFormAnn(AppdocDto ad) {
+		 return sqlSession.insert("appMapper.insertFormAnn",ad);
+	 }
+	 
+	 // 증명서신청서
+	 public int insertFormCoe(AppdocDto ad) {
+		 return sqlSession.insert("appMapper.insertFormCoe",ad);
+	 }
 	
 	
 	
