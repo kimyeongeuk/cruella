@@ -96,17 +96,7 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public List<CommentDto> selectCommentList(int boardNo) {
 		return null;
-	}
-
-	@Override
-	public int insertComment(CommentDto r) {
-		return 0;
-	}
-
-	@Override
-	public int deleteCommentCompletely() {
-		return 0;
-	}
+	}	
 
 	@Override
     public int selectBoardListCount(String deptCode) {
@@ -133,7 +123,15 @@ public class BoardServiceImpl implements BoardService{
 	    return boardDao.deleteSelectedPosts(boardNos);
 	}
 
+	@Override
+	public int insertComment(CommentDto r) {
+		return 0;
+	}
 
+	@Override
+	public int deleteCommentCompletely() {
+		return 0;
+	}
 
 
 }

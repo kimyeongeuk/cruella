@@ -14,7 +14,20 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-    <script src="${ contextPath }/resources/assets/js/config.js"></script>
+<script src="${ contextPath }/resources/assets/js/config.js"></script>
+<style>
+  .ms-auto {
+    margin-left: auto;
+  }
+  .d-flex {
+    display: flex;
+    align-items: center;
+  }
+  .select, .text, #searchBtn {
+    margin-right: 10px; /* 요소 간의 간격을 조정 */
+  }
+</style>
+
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
@@ -63,16 +76,54 @@
 						  </span>
 						</div>
  
-		        <div class="ms-5">
-						  <button id="create" class="btn btn-primary" style="width: 100px;" onclick="regist();">+ 글작성</button>            
-						  <i class="menu-icon tf-icons ti ti-trash ms-2" style="cursor: pointer;" onclick="deleteSelectedPosts();"></i>
-						</div>
+ 						<c:choose>
+ 							<c:when test="${ loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4' }">
+ 								<div class="ms-5">
+								  <button id="create" class="btn btn-primary" style="width: 100px;" onclick="regist();">+ 글작성</button>            
+								  <i class="menu-icon tf-icons ti ti-trash ms-2" style="cursor: pointer;" onclick="deleteSelectedPosts();"></i>
+								</div>
+ 							</c:when>
+ 							<c:otherwise></c:otherwise>
+ 						</c:choose>
 		        <div class="ms-auto d-flex">
-		          <input type="text" class="form-control" id="noticeSearch" placeholder="검색어 입력" style="width: 260px;" />
-		          <button id="searchBtn" class="btn btn-primary ms-2" style="width: 90px;">+ 검색</button>
-		        </div>
-		      </div>
-			
+						  <form id="search_form" action="${contextPath}/board/boardSearch.do" method="get" class="d-flex align-items-center">
+						    <input type="hidden" name="page" value="1">
+						    <div class="select">
+						      <select id="searchSelect" class="custom-select select1 form-select form-select-lg" name="condition" style="width: 110px; height: 38px !important; min-height: 38px !important; font-size: 16px !important; padding-top: 0.3rem !important; padding-right: 1rem !important; padding-bottom: calc(38px - 1rem - 16px) !important; padding-left: 1rem !important; box-sizing: border-box;">
+									  <option value="mem_name">작성자</option>
+									  <option value="board_title">제목</option>
+									  <option value="board_content">내용</option>
+									</select>
+						    </div>
+						    <div class="text">
+						    	<input type="hidden" name="deptCode" value="${loginUser.deptCode}">
+						      <input type="text" class="form-control" name="keyword" value="${search.keyword}">
+						    </div>
+						    <button type="submit" id="searchBtn" class="btn btn-primary ms-2" style="width: 90px;">+ 검색</button>
+						  </form>
+						  <c:if test="${not empty search}">
+						    <script>
+						      $(document).ready(function(){
+						        $("#search_form select").val('${search.condition}');
+						        
+						        // 검색 후의 페이징바 클릭 시 검색 form을 강제로 submit
+						        // (단, 페이지번호는 현재 클릭한 페이지번호로 바꿔서)
+						        $("#paging_area a").on("click", function(){
+						          let page = $(this).text(); // Previous | Next | 페이지번호
+						          if(page == 'Previous'){
+						            page = ${pi.currentPage - 1};
+						          } else if(page == 'Next'){
+						            page = ${pi.currentPage + 1};
+						          }
+						          $("#search_form input[name=page]").val(page);
+						          $("#search_form").submit();
+						          return false; // 기본이벤트(href='/board/list.do' url요청)가 동작 안 되도록
+						        });
+						      });
+						    </script>
+						  </c:if>
+						</div>
+		      </div>		
 		      <div class="card-datatable table-responsive pt-3">
 		        <table class="datatables-basic table text-center">
 						  <thead>

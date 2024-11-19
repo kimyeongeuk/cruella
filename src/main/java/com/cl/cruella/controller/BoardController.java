@@ -188,5 +188,22 @@ public class BoardController {
 	    return "redirect:/board/boardList.do";
 	}
 
+	@GetMapping("/boardSearch.do")
+	public String search(@RequestParam(value="page", defaultValue="1") int currentPage
+					   , @RequestParam Map<String, String> search
+					   , Model model) {
+		// Map<String,String> search ==> {condition=user_id|board_title|board_content, keyword=란}
+		
+		int listCount = boardService.selectSearchListCount(search);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
+		List<BoardDto> list = boardService.selectSearchList(search, pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("list", list);
+		model.addAttribute("search", search);
+		
+		
+		return "board/boardList";
+	}
 	
 }

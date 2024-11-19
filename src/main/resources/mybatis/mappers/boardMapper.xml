@@ -35,62 +35,85 @@
 		
 		<select id="selectBoardList" parameterType="map" resultMap="boardResultMap">
 		    select
-		           b.board_no
-		         , b.board_title
-		         , b.board_content
-		         , m.mem_no
-		         , m.mem_name
-		         , b.board_count
-		         , to_char(b.board_regist_date, 'YYYY-MM-DD') as board_regist_date
-		         , to_char(b.board_modify_date, 'YYYY-MM-DD') as board_modify_date
-		         , b.board_status
-		         , b.dept_code
-		         , (
-		             select count(*)
-		               from attachment
-		              where file_ref_type = 'B'
-		                and file_ref_no = b.board_no
-		           ) as attach_count
-		      from board b
-		      join member m on (m.mem_no = b.mem_no)
-		     where b.board_status = 'Y'
-		       and b.dept_code = #{deptCode}
-		     order by b.board_no desc
+		         b.board_no
+		       , b.board_title
+		       , b.board_content
+		       , m.mem_no
+		       , m.mem_name
+		       , b.board_count
+		       , to_char(b.board_regist_date, 'YYYY-MM-DD') as board_regist_date
+		       , to_char(b.board_modify_date, 'YYYY-MM-DD') as board_modify_date
+		       , b.board_status
+		       , b.dept_code
+		       , coalesce(a.attach_count, 0) as attach_count
+		    from board b
+		    join member m on (m.mem_no = b.mem_no)
+		    left join (
+		        select file_ref_no, count(*) as attach_count
+		        from attachment
+		        where file_ref_type = 'B'
+		        group by file_ref_no
+		    ) a on a.file_ref_no = b.board_no
+		    where b.board_status = 'Y'
+		      and b.dept_code = #{deptCode}
+		    order by b.board_no desc
 		</select>
 
 
-    <select id="selectSearchListCount" resultType="int">
-        select count(*)
-        from board b
-        join member m on (m.mem_no = b.board_writer)
-        where b.board_status = 'Y'
-          and ${condition} like '%' || #{keyword} || '%'
-    </select>
+		<select id="selectSearchListCount" resultType="int" parameterType="map">
+		    select count(*)
+		    from board b
+		    join member m on (m.mem_no = b.mem_no)
+		    where b.board_status = 'Y'
+		      and b.dept_code = #{deptCode}
+		    <if test="condition == 'mem_name'">
+		      and m.mem_name like '%' || #{keyword} || '%'
+		    </if>
+		    <if test="condition == 'board_title'">
+		      and b.board_title like '%' || #{keyword} || '%'
+		    </if>
+		    <if test="condition == 'board_content'">
+		      and b.board_content like '%' || #{keyword} || '%'
+		    </if>
+		</select>
 
-    <select id="selectSearchList" resultMap="boardResultMap">
-        select
-               b.board_no
-             , b.board_title
-             , b.board_content
-             , m.mem_no
-             , b.board_count
-             , to_char(b.board_regist_date, 'YYYY-MM-DD') as board_regist_date
-             , to_char(b.board_modify_date, 'YYYY-MM-DD') as board_modify_date
-             , b.board_status
-             , b.dept_code
-             , (
-                 select count(*)
-                   from attachment
-                  where file_ref_type = 'B'
-                    and file_ref_no = b.board_no
-               ) as attach_count
-          from board b
-          join member m on (m.mem_no = b.mem_no)
-         where b.board_status = 'Y'
-           and ${condition} like '%' || #{keyword} || '%'
-         order by b.board_no desc
-    </select>
+		
+		<select id="selectSearchList" resultMap="boardResultMap" parameterType="map">
+		  select
+		       b.board_no
+		     , b.board_title
+		     , b.board_content
+		     , m.mem_no
+		     , m.mem_name
+		     , b.board_count
+		     , to_char(b.board_regist_date, 'YYYY-MM-DD') as board_regist_date
+		     , to_char(b.board_modify_date, 'YYYY-MM-DD') as board_modify_date
+		     , b.board_status
+		     , b.dept_code
+		     , coalesce(a.attach_count, 0) as attach_count
+		  from board b
+		  join member m on (m.mem_no = b.mem_no)
+		  left join (
+		      select file_ref_no, count(*) as attach_count
+		      from attachment
+		      where file_ref_type = 'B'
+		      group by file_ref_no
+		  ) a on a.file_ref_no = b.board_no
+		  where b.board_status = 'Y'
+		    and b.dept_code = #{deptCode}
+		  <if test="condition == 'mem_name'">
+		    and m.mem_name like '%' || #{keyword} || '%'
+		  </if>
+		  <if test="condition == 'board_title'">
+		    and b.board_title like '%' || #{keyword} || '%'
+		  </if>
+		  <if test="condition == 'board_content'">
+		    and b.board_content like '%' || #{keyword} || '%'
+		  </if>
+		  order by b.board_no desc
+		</select>
 
+		
     <insert id="insertBoard">
         insert into board
           (
