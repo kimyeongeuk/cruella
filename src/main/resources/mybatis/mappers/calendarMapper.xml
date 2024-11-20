@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="calenderMapper">
+<mapper namespace="calendarMapper">
 
-<resultMap type="CalendarDto" id="selectCalenderResultMap">
+<resultMap type="CalendarDto" id="selectCalendarResultMap">
+	<result column="CAL_NO" property="calNo" />
 	<result column="CAL_TITLE" property="calTitle" />
 	<result column="CAL_CATEGORY" property="calCategory" />
 	<result column="CAL_STARTDATE" property="calStartDt" />
@@ -13,8 +14,9 @@
 
 
 <!-- 전체 일정 목록 조회하기 -->
-<select id="selectCalenderList" resultMap="selectCalenderResultMap">
-		SELECT CAL_TITLE
+<select id="selectCalendarList" resultMap="selectCalendarResultMap">
+		SELECT cal_no
+				 , CAL_TITLE
 		     , CAL_STARTDATE
 		     , CAL_ENDDATE
       FROM CALENDAR
@@ -42,5 +44,16 @@ INSERT
      , #{calRgb}
      )
 </insert>
+
+<update id="updateCalendar">
+	UPDATE CALENDAR
+     SET CAL_STARTDATE = #{calStartDt}
+       , CAL_ENDDATE = #{calEndDt}
+   WHERE CAL_NO = #{calNo}
+</update>
+
+
+
+
 
 </mapper>

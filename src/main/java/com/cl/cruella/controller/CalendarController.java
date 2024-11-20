@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,7 +29,7 @@ public class CalendarController {
 	@GetMapping("/calendar.do")
 	public String selectCalenderList(Model model) {
 		
-		List<CalendarDto> list = caldendarServiceImpl.selectCalenderList();
+		List<CalendarDto> list = caldendarServiceImpl.selectCalendarList();
 		
 		model.addAttribute("list", list);
 		
@@ -49,6 +48,21 @@ public class CalendarController {
 		int result = caldendarServiceImpl.insertCalendar(c);
 		return result;
 	}
+	
+	
+	
+	
+	// 캘린더 수정
+	@ResponseBody
+	@GetMapping(value="/updateCalendar.do", produces="application/json") // produces 쓰는 이유 : 값을 돌려줄 때 어쩌고 타입으로 필요한... 영욱님이 얘기하심..
+	public int updateCalendar(CalendarDto c) {
+		log.debug("###### controller 실행 c: {}", c);
+		int result = caldendarServiceImpl.updateCalendar(c);
+		return result;
+	}
+	
+	
+	
 	
 	
 }
