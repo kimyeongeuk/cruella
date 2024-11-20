@@ -38,13 +38,13 @@ public class MemoController {
 	// 김동규
 	@PostMapping("/insertMemo.do")
 	@ResponseBody
-	public String insertMemo(MemoDto memo) {
+	public int insertMemo(MemoDto memo) {
 		
 		//System.out.println(memo);
 		
-		memoService.insertMemo(memo);
+		int result = memoService.insertMemo(memo);
 		
-		return "success";
+		return result;
 		
 	}
 	
@@ -65,23 +65,24 @@ public class MemoController {
 	// 김동규
 	@PostMapping("/modifyMemo.do")
 	@ResponseBody
-	public String modifyMemo(MemoDto memo) {
+	public int modifyMemo(MemoDto memo) {
 		
 		MemoDto m = memoService.selectMemoByNo(memo.getMemoNo());
 		String before = m.getMemoContent(); 	// 수정 전 메모내용
 		
 		String after = memo.getMemoContent();  // 수정 후 메모내용
 		
-		// System.out.println( " 수정요청 전_____ " + m.getMemoContent());
-		// System.out.println(" 수정요청 후_____ " + memo.getMemoContent()); // 수정 후 메모내용
+		 System.out.println( " 수정요청 전_____ " + before);
+		 System.out.println(" 수정요청 후_____ " + after); // 수정 후 메모내용
 		
-		
+		int result = 0;
 		if(!before.equals(after)) {
 			
-			 memoService.modifyMemo(memo);
+			result = memoService.modifyMemo(memo);
 			
 		}
-		return "success";
+		
+		return result;
 		
 	}
 	
@@ -98,3 +99,14 @@ public class MemoController {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+

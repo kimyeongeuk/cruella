@@ -187,7 +187,7 @@ public class MemberController {
 		 model.addAttribute("email", email);
 		 
 		 return "/member/sentEmail";
-	 };
+	 }
 	 
 	 
 	 
