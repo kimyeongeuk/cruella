@@ -6,17 +6,14 @@ import java.util.List;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.service.MemberService;
@@ -35,6 +32,8 @@ public class MemberController {
 	
 	private final MemberService memberService;
 	private final JavaMailSender mailSender;
+	private final BCryptPasswordEncoder bcryptPwdEncoder;
+
 	
 	// 로그인(김동규)
 	@PostMapping("/signin.do")
@@ -43,13 +42,16 @@ public class MemberController {
 								 , HttpServletResponse response
 								 , HttpServletRequest request) throws IOException {	// memNo = '입력한 아이디', memPwd = '입력한 비밀번호'
 		
+		
 		MemberDto loginUser = memberService.selectMember(m);	
 		
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
+		System.out.println(m.getMemPwd()); 			// 111111
+		System.out.println(loginUser.getMemPwd());	// 
 		
-		if(loginUser != null) {	// 추후에 암호화된 비밀번호도 함께 비교할 예정
+		if(loginUser != null && bcryptPwdEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) {	// 추후에 암호화된 비밀번호도 함께 비교할 예정(완료)
 			
 			session.setAttribute("loginUser", loginUser); // 세션에 로그인 한 회원 정보 담기
 			
@@ -73,8 +75,9 @@ public class MemberController {
 	@PostMapping("/resetPwd.do")
 	public String newPwdCheck(String newPwd, String memNo, HttpServletResponse response) throws IOException {
 		
+		
 
-		int result = memberService.resetPwd(newPwd, memNo); // 비밀번호 변경 실행
+		int result = memberService.resetPwd(bcryptPwdEncoder.encode(newPwd), memNo); // 비밀번호 변경 실행
 		
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
@@ -138,7 +141,7 @@ public class MemberController {
 				 str += charSet[idx];
 		 		}
 
-			 memberService.updatePwd(email, str);	// 임시 비밀번호로 변경
+			 memberService.updatePwd(email, bcryptPwdEncoder.encode(str));	// 임시 비밀번호로 변경
 		     
 		 // 3) 메일 발송
 			 SimpleMailMessage message = new SimpleMailMessage();	
@@ -170,6 +173,11 @@ public class MemberController {
 		 return "/member/sentEmail";
 	 }
 	 
+	 // 출근 버튼 클릭시(김동규)
+	 @GetMapping("/checkIn")
+	 public void checkIn() {
+		 
+	 }
 	 
 	 
 	 
@@ -260,10 +268,23 @@ public class MemberController {
 	@PostMapping("/insert.do")
 	public String insertMember(MemberDto m, RedirectAttributes rd) {
 		
-		int result = memberService.insertMember(m);
+		m.setMemPwd( bcryptPwdEncoder.encode(m.getMemPwd()) );
 		
-		 return "/dashboard";
-
-	}
+		int result = memberService.insertMember(m);
+			
+		if(result > 0) {
+			rd.addFlashAttribute("alertMsg", "성공적으로 회원가입 되었습니다");
+			
+		}else {
+			rd.addFlashAttribute("alertMsg", "회원가입실패");
+	
+		}
+			 return "redirect:/member/employeelistview.do";
+	
+		}
+	
+	// 사원조회페이지로redirect(예빈)
+	@GetMapping("/employeelistview.do")
+	public void employeelistview() {}
 	 
 }

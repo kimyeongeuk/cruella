@@ -276,8 +276,8 @@
                   </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-center">
-                  <a href="javascript:;" class="btn btn-primary d-flex align-items-center me-4"
-                    ><i class="ti-xs me-1 ti ti-clock me-2"></i>출근
+                  <a href="javascript:;" class="btn btn-primary d-flex align-items-center me-4" onclick="fnCheckIn();">
+                  	<i class="ti-xs me-1 ti ti-clock me-2"></i>출근
                   </a>
                 </div>
               </div>
@@ -707,6 +707,26 @@
         const bootstrapModal = new bootstrap.Modal(modal);
         bootstrapModal.show();
       }
+    </script>
+    
+    <script>
+    	
+    	// 출근 버튼 클릭시 (김동규)
+    	function fnCheckIn(){
+    		
+    		const today = new Date();
+    		const time = today.toLocaleTimeString();
+    		
+    		console.log(today);
+    		console.log(time);
+    		
+    		$.ajax({
+    			url: '${contextPath}/member/checkIn',
+    			data
+    		})
+    		
+    		
+    	}
     </script>
 
 

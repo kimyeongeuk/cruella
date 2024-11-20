@@ -127,6 +127,30 @@
                               <option value="공문수신함">공문수신함</option>
                             </select>
                           </span>
+                          
+                          <script>
+                          $(document).ready(function(){
+                        	  $('#select_formType1').change(function(){
+                        		  
+                        		  var selectedValue = $(this).val();
+                        		  
+                        		  switch(selectedValue){
+                        		  	
+                        		  case "결재대기함" : location.href = "${contextPath}/app/box_standby.do"; break;
+                        		  case "결재진행함" : location.href = "${contextPath}/app/box_progress.do"; break;
+                        		  case "결재완료함" : location.href = "${contextPath}/app/box_complete.do"; break;
+                        		  case "결재반려함" : location.href = "${contextPath}/app/box_companion.do"; break;
+                        		  case "참조열람함" : location.href = "${contextPath}/app/box_view.do"; break;
+                        		  case "공문수신함" : location.href = "${contextPath}/app/box_official.do"; break;
+                        		  
+                        		  }
+                        		  
+                        		
+                        		  
+                        	  })
+                          })
+                          
+                          </script>
 
                          
 

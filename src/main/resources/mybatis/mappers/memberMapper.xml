@@ -54,7 +54,6 @@
 		 join department d using(dept_code)
      join position p using(pos_code)
 		where mem_no = #{memNo}
-		  and to_char(mem_pwd) = #{memPwd}
 	</select>
 
 	<!-- 비밀번호 변경(김동규) -->
@@ -155,12 +154,14 @@
 		)
 	</insert>
 	
+	<!-- 사번생성 (예빈) -->
 	<select id="selectMemNo" resultType="string"> 
 		select 'C' || to_char(sysdate, 'YYYY') || lpad(count(substr(mem_no, 1, 9)) + 1, 3, '0')
 from member
 where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 	</select>
-
+	
+	
 
 
 

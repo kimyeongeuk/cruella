@@ -74,6 +74,24 @@ public class StompController {
 		return messageDto;
 	}
 	
+	@MessageMapping("/allChats")
+	@SendTo("/sub/allChats")
+	public MessageDto broadcastMessage(@RequestBody MessageDto messageDto) throws ParseException {
+		
+		log.debug("messageDto : {}",messageDto);
+		
+	    String isoDate = messageDto.getMsgRegistDate();
+	    SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+	    isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+	    Date date = isoFormat.parse(isoDate);
+	    SimpleDateFormat desiredFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    desiredFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+	    String formattedDate = desiredFormat.format(date);
+	    messageDto.setMsgRegistDate(formattedDate);
+
+	    return messageDto;
+	}
+	
 	
 	
 }

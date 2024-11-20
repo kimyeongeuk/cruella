@@ -404,8 +404,7 @@
                                     // 선택된 값 가져오기
                                     var selectedValue = $(this).val();
                                     
-                                    // 멘토지적
-                                    location.href="${contextPath}/app/"
+                                    
                                     
                                     
                                     if (selectedValue === '기안서') {
