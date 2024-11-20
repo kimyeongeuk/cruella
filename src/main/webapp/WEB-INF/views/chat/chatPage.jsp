@@ -1249,21 +1249,22 @@
             
             client = getClient(chatNo, chatSocketClientList);
             console.log(client);
-            
-
-            client.connect({},function(frame){  // connect start
+            console.log(chatSocketClientList);
+						
+            //client.connect({},function(frame){  // connect start
 			//client.connectCallback = function(){
-              client.subscribe('/sub/' + chatNo, function(chat){ // subscribe start
-            	  
+            	
+               client.subscribe('/sub/' + chatNo, function(chat){ // subscribe start
                 var content = JSON.parse(chat.body);
                 var writer = content.memNo;
                 var msgType = content.msgType;
-                
+                console.log('컨텐츠');
+                console.log(content); 
                 const $chatArea = $(".chatarea");
                 
                 var str = msgPrint(writer, userNo, content.msgContent, content.msgRegistDate, content.msgCheck)
                 $('#chathistory').append(str);
-                $chatArea.scrollTop($('#chathistory').scrollHeight);
+                $chatArea.scrollTop($chatArea[0].scrollHeight);
                 
                 
                 
@@ -1281,7 +1282,7 @@
               }) // subscribe end
               
               
-            }); // connect end
+          //  }); // connect end
 
 
           });
@@ -1389,10 +1390,11 @@
             for(let i=0; i<chatNoList.length; i++){
             	let socket = new SockJS("${contextPath}/chatPage"); // 엔드포인트
                 let client = Stomp.over(socket);
-            	
-                client.connect({},function(frame){
-                	
-                }); 
+            		
+                 client.connect({},function(frame){
+                	 
+                 
+                });  
             	
             	let obj = {
             		chatNo: chatNoList[i],
@@ -1407,7 +1409,8 @@
     	
         function getClient(chatNo, chatSocketClientList){
             for(let i=0; i<chatSocketClientList.length; i++){
-              if(chatSocketClientList[i].chatNo == chatNo){
+
+            	if(chatSocketClientList[i].chatNo == chatNo){
                 return chatSocketClientList[i].client;
               }
             }

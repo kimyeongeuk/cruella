@@ -49,7 +49,7 @@ public class StompController {
 	@SendTo("/sub/{chatNo}")
 	public MessageDto message(@DestinationVariable String chatNo, @RequestBody MessageDto messageDto, @RequestBody MemberDto member) throws ParseException {
 		
-		
+		log.debug("메시지 잘왔니? {}",messageDto);
 		
 		if(messageDto.getMsgType().equals("message")) {
 			// 채팅방 인원수 확인
