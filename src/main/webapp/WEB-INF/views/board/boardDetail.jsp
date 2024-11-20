@@ -206,82 +206,58 @@
 								
 								<!-- Modal -->
 	              <div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">
-	                <div class="modal-dialog modal-dialog-scrollable" role="document">
-	                  <div class="modal-content">
-	                  
-	                    <div class="modal-header">
-	                      <div style="width: 100%;">
-	                        <div class="d-flex justify-content-between align-items-center" style="margin: 10px;">
-	                          <div class="avatar-wrapper d-flex align-items-center">
-	                            <div class="avatar me-2">
-	                              <img src="${contextPath}/resources/assets/img/avatars/1.png" alt class="rounded-circle" /> 
-	                            </div>
-	                            <div class="d-flex flex-column">
-	                              <span class="emp_name text_truncate" id="modal-author" style="color: black;"></span>
-	                            </div>
-	                            <div class="d-flex flex-column" style="margin-left: 20px;">
-	                              <span id="modal-date"></span>
-	                            </div>
-	                          </div>
-	                          <div class="d-flex justify-content-end align-items-center">
-	                            <div class="icon-wrapper">
-	                              <i class="ti ti-dots-vertical ti-md comment-icon" style="cursor: pointer;"></i>
-	                              <div class="action-box comment-action-box" style="display: none;">
-	                                <a href="javascript:void(0);"><i class="menu-icon tf-icons ti ti-edit"></i></a>
-	                                <a href="javascript:void(0);"><i class="menu-icon tf-icons ti ti-trash"></i></a>
-	                              </div>
-	                            </div>
-	                          </div>
-	                        </div>
-	                        <p id="modal-content" style="margin-left: 40px; margin-top: 20px; color: black;"></p>
-	                        <br><hr>
-	                      </div>
-	                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	                    </div>
-	                    
-	                    <div class="modal-body">
-	                      <div style="width: 100%;">
-	                        <div class="d-flex justify-content-between align-items-center" style="margin: 10px;">
-	                          <div class="avatar-wrapper d-flex align-items-center">
-	                            <div class="avatar me-2 d-flex justify-content-between">
-	                              <i class="menu-icon tf-icons ti ti-currency-leu" style="margin-right: auto; font-size: 40px; margin-top: -10px;"></i>
-	                              <img src="${contextPath}/resources/assets/img/avatars/1.png" alt class="rounded-circle" style="margin-left: auto;" /> 
-	                            </div>            
-	                            <div class="d-flex flex-column">
-	                              <span class="emp_name text_truncate" style="color: black; margin-left: 40px;">Jodan Strvenson</span>
-	                            </div>
-	                            <div class="d-flex flex-column" style="margin-left: 20px;">
-	                              <span>2024.11.05 23:06:31</span>
-	                            </div>
-	                          </div>
-	                          <div class="d-flex justify-content-end align-items-center">
-	                            <div class="icon-wrapper">
-	                              <i class="ti ti-dots-vertical ti-md comment-icon" style="cursor: pointer;"></i>
-	                              <div class="action-box comment-action-box" style="display: none;">
-	                                <a href="javascript:void(0);"><i class="menu-icon tf-icons ti ti-edit"></i></a>
-	                                <a href="javascript:void(0);"><i class="menu-icon tf-icons ti ti-trash"></i></a>
-	                              </div>
-	                            </div>
-	                          </div>
-	                        </div>
-	                        <p style="margin-left: 80px; margin-top: 20px; color: black;">안녕하세요</p>
-	                        <br><hr>
-	                      </div>
-	                                                         
-	                    </div>
-	                    <div class="modal-footer">
-	                      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-	                        <div class="input" style="flex-grow: 1;">
-	                          <textarea class="form-control" aria-label="With textarea" placeholder="답글을 입력해주세요." style="width: 100%; border: 0px; resize: none;"></textarea>
-	                        </div>  
-	                        <div>
-	                          <button id="regist" class="btn btn-sm btn-outline-secondary" style="text-align: center;">등록</button>
-	                        </div> 
-	                      </div>
-	                    </div>                    
-	                  </div>
-	                </div>
-	              </div>
+								  <div class="modal-dialog modal-dialog-scrollable" role="document">
+								    <div class="modal-content">
+								
+								      <div class="modal-header">
+								        <div style="width: 100%;">
+								          <div class="d-flex justify-content-between align-items-center" style="margin: 10px;">
+								            <div class="avatar-wrapper d-flex align-items-center">
+								              <div class="avatar me-2">
+								                <img src="${contextPath}/resources/assets/img/avatars/1.png" alt class="rounded-circle" />
+								              </div>
+								              <div class="d-flex flex-column">
+								                <span class="emp_name text_truncate" id="modal-author" style="color: black;"></span>
+								              </div>
+								              <div class="d-flex flex-column" style="margin-left: 20px;">
+								                <span id="modal-date"></span>
+								              </div>
+								            </div>
+								            <div class="d-flex justify-content-end align-items-center">
+								              <div class="icon-wrapper">
+								                <i class="ti ti-dots-vertical ti-md comment-icon" style="cursor: pointer; display: none;"></i>
+								                <div class="action-box comment-action-box" style="display: none;">
+								                  <a href="javascript:void(0);"><i class="menu-icon tf-icons ti ti-edit"></i></a>
+								                  <a href="javascript:void(0);"><i class="menu-icon tf-icons ti ti-trash"></i></a>
+								                </div>
+								              </div>
+								            </div>
+								          </div>
+								          <p id="modal-content" style="margin-left: 40px; margin-top: 20px; color: black;"></p>
+								          <br><hr>
+								        </div>
+								        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								      </div>
+								
+								      <div class="modal-body">
+								        <!-- 내용 추가 -->
+								      </div>
+								
+								      <div class="modal-footer">
+								        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+								          <div class="input" style="flex-grow: 1;">
+								            <textarea class="form-control" aria-label="With textarea" placeholder="답글을 입력해주세요." style="width: 100%; border: 0px; resize: none;"></textarea>
+								          </div>
+								          <div>
+								            <button id="regist" class="btn btn-sm btn-outline-secondary" style="text-align: center;">등록</button>
+								          </div>
+								        </div>
+								      </div>
+								
+								    </div>
+								  </div>
+								</div>
+
 								
               </div>
             </div>
@@ -308,17 +284,30 @@
 </body>
 <script>
 $(document).on('show.bs.modal', '#modalScrollable', function(event) {
-	  var button = $(event.relatedTarget); // 버튼 정보
-	  var replyId = button.data('reply-id');
-	  var replyContent = button.data('reply-content');
-	  var replyAuthor = button.data('reply-author');
-	  var replyDate = button.data('reply-date');
+  var button = $(event.relatedTarget); // 버튼 정보
+  var replyId = button.data('reply-id');
+  var replyContent = button.data('reply-content');
+  var replyAuthor = button.data('reply-author');
+  var replyDate = button.data('reply-date');
+  var replyMemNo = button.data('reply-memno');
 
-	  var modal = $(this);
-	  modal.find('#modal-author').text(replyAuthor);
-	  modal.find('#modal-date').text(replyDate);
-	  modal.find('#modal-content').text(replyContent);
-	});
+  console.log("replyMemNo:", replyMemNo);
+  console.log("loginUserMemNo:", loginUserMemNo);
+
+  var modal = $(this);
+  modal.find('#modal-author').text(replyAuthor);
+  modal.find('#modal-date').text(replyDate);
+  modal.find('#modal-content').text(replyContent);
+
+  // 작성자인 경우에만 ... 아이콘 보이게 설정
+  if (replyMemNo == loginUserMemNo) {
+    modal.find('.comment-icon').show();
+  } else {
+    modal.find('.comment-icon').hide();
+  }
+});
+
+
 
 $(document).ready(function(){
   fn_replyList();
@@ -356,16 +345,19 @@ $(document).ready(function(){
 
 var loginUserMemNo = "${loginUser.memNo}";
 
-function fn_replyList(){
+function fn_replyList() {
   $.ajax({
     url: '${contextPath}/board/rlist.do',
     data: { no: ${b.boardNo} },
-    success: function(resData){
+    success: function(resData) {
       console.log("Received data:", resData); // 서버로부터 받은 데이터 확인
       
       $("#rcount").text(resData.length); // 댓글 수 출력
       let tr = "";
       for(let i = 0; i < resData.length; i++){
+        console.log("loginUserMemNo:", loginUserMemNo);
+        console.log("replyMemNo:", resData[i].memNo); // 댓글 작성자의 memNo
+
         tr += "<tr><td colspan='3'>"
               + "<div class='d-flex justify-content-between align-items-center user-info'>"
               + "<div class='avatar-wrapper d-flex align-items-center'>"
@@ -397,17 +389,19 @@ function fn_replyList(){
 
         tr += "</div><br>"
               + "<span style='color: black; margin: 40px;'>" + resData[i].replyContent + "</span><br><br>"
-              + "<button type='button' class='btn btn-sm btn-outline-secondary' style='margin-left: 40px;' data-bs-toggle='modal' data-bs-target='#modalScrollable' data-reply-id='" + resData[i].replyNo + "' data-reply-content='" + resData[i].replyContent + "' data-reply-author='" + resData[i].memName + "' data-reply-date='" + resData[i].replyRegistDT + "'>답글 10</button>"
+              + "<button type='button' class='btn btn-sm btn-outline-secondary' style='margin-left: 40px;' data-bs-toggle='modal' data-bs-target='#modalScrollable' data-reply-id='" + resData[i].replyNo + "' data-reply-content='" + resData[i].replyContent + "' data-reply-author='" + resData[i].memName + "' data-reply-date='" + resData[i].replyRegistDT + "' data-reply-memno='" + resData[i].memNo + "'>답글 10</button>"
               + "</td></tr>";
       }
-      
-      $("#reply_area tbody").html(tr);                       
+
+      $("#reply_area tbody").html(tr);
     },
     error: function(xhr, status, error) {
       console.error("에러 발생:", status, error);
     }
   });
 }
+
+
 
 // 댓글 등록용 (ajax) 함수
 function fn_insertReply(){
