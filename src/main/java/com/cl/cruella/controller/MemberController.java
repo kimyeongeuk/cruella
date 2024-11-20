@@ -251,7 +251,6 @@ public class MemberController {
 	 @GetMapping("/signup.do")
 	 public void signup(Model model) {
 		 String memNo = memberService.memberNo();
-		 log.debug("log{}",memNo);
 		 model.addAttribute("memNo",memNo);
 	 }
 	 
@@ -261,7 +260,6 @@ public class MemberController {
 	@PostMapping("/insert.do")
 	public String insertMember(MemberDto m, RedirectAttributes rd) {
 		
-		log.debug("memberDto{}",m);
 		int result = memberService.insertMember(m);
 		
 		 return "/dashboard";
