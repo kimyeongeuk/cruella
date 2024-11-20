@@ -89,7 +89,7 @@ public class MemberController {
 		return "/";
 	}
 
-	
+	 // 사원등록페이지로딩시사번자동생성(이예빈)
 	 @GetMapping("/signup.do")
 	 public void signup(Model model) {
 		 String memNo = memberService.memberNo();
@@ -106,12 +106,7 @@ public class MemberController {
 		log.debug("memberDto{}",m);
 		int result = memberService.insertMember(m);
 		
-		if(result > 0) {
-			rd.addFlashAttribute("alertMsg", "사원등록이 완료되었습니다.");
-		}else {
-			rd.addFlashAttribute("alertMsg", "사원등록에 실패하였습니다.");
-		}
-		 return "member/dashboard";
+		 return "/dashboard";
 
 	}
 	
