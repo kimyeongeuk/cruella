@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wlMapper">
+
+	<resultMap id="workLogResultMap" type="WorkLogDto">
+		<result column="WL_NO" property="workNo" />
+		<result column="MEM_NO" property="memNo" />
+		<result column="WL_CLOCK_IN" property="clockInTime" />
+		<result column="WL_CLOCK_OUT" property="clockOutTime" />
+		<result column="WL_STATUS" property="status" />
+		<result column="WL_MODIFY_DATE" property="modifyDate" />
+		<result column="WL_TIME" property="workTime" />
+		<result column="WL_WORK_DATE" property="workDate" />
+	</resultMap>
+	
+	<!-- 출근 여부 조회 -->
+	<select id="checkStatus" resultMap="workLogResultMap">
+		select
+					 *
+			from work_log
+		 where trunc(wl_work_date) = trunc(sysdate)
+		   and wl_clock_out is null
+	</select>
+	
+	
+	<!-- 출근 -->
+	<insert id="clockIn">
+		insert
+		  into work_log
+		  (
+		  	wl_no
+		  , mem_no
+		  , wl_clock_in
+		  , wl_work_date
+		  )
+		  values
+		  (
+		  	seq_work.nextval
+		  , #{memNo}
+		  , #{clockInTime}
+		  , sysdate
+		  )
+	</insert>
+	
+
+</mapper>

@@ -276,7 +276,7 @@
                   </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-center">
-                  <a href="javascript:;" class="btn btn-primary d-flex align-items-center me-4" onclick="fnCheckIn();">
+                  <a class="btn btn-success d-flex align-items-center me-4" onclick="fnClockIn();">
                   	<i class="ti-xs me-1 ti ti-clock me-2"></i>출근
                   </a>
                 </div>
@@ -707,27 +707,67 @@
         const bootstrapModal = new bootstrap.Modal(modal);
         bootstrapModal.show();
       }
+
+	  		
+	  		
+	  	
     </script>
     
-    <script>
+		<script>
+	  		
+	  		window.onload = function(){
+	  			
+	  			checkClockInStatus();
+	      
+	  		}
+	  	
+	  		// 출근 등록여부 확인
+	  		function checkClockInStatus(){
+	  			
+	  			$.ajax({
+	  				url: '${contextPath}/wl/checkStatus.do',
+	  				type: 'POST',
+	  				data: {
+	  					memNo: '${loginUser.getMemNo()}',
+	  				},
+	  				success: function(res){
+	  					
+	  					if(res == 'YYY'){
+	  						
+	  					}
+	  					
+	  				}
+	  			})
+	  			
+	  		}
+	  		
+		  	// 출근 버튼 클릭시 (김동규)
+		  	function fnClockIn(){
+		  			
+		  		
+		  		const today = new Date();
+		  		const clockInTime = today.toLocaleTimeString();
+		  		
+		  		
+		  		$.ajax({
+		  			url: '${contextPath}/wl/clockIn.do',
+		  			type: 'POST',
+		  			data: {
+		  				memNo: '${loginUser.getMemNo()}',
+		  				clockInTime: clockInTime
+		  					},
+		  			success: function(res){
+		  				alert(res + ' 출근 등록이 완료되었습니다.');
+		  				
+		  				
+		  			}
+		  			
+		  			})
+		  		}
+		</script>
     	
-    	// 출근 버튼 클릭시 (김동규)
-    	function fnCheckIn(){
-    		
-    		const today = new Date();
-    		const time = today.toLocaleTimeString();
-    		
-    		console.log(today);
-    		console.log(time);
-    		
-    		$.ajax({
-    			url: '${contextPath}/member/checkIn',
-    			data
-    		})
-    		
-    		
-    	}
-    </script>
+
+  
 
 
 
