@@ -46,4 +46,9 @@ public class MemberServiceImpl implements MemberService {
 
 	}
 
+		@Override
+		public String memberNo() {
+			return memberDao.memberNo();
+		}
+
 }

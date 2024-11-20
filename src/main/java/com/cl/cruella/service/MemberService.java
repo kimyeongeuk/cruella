@@ -25,5 +25,8 @@ public interface MemberService {
 
 	// 회원등록
 	int insertMember(MemberDto m);
+	
+	// 사번등록
+	String memberNo();
 
 }

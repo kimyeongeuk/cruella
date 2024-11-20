@@ -23,6 +23,8 @@
 		<result column="sign_path" property="signPath" />
 		<result column="pos_name" property="posName" />
 		<result column="dept_name" property="deptName" />
+		<result column="salary" property="salary" />
+		
 	</resultMap>
 
 	<!-- 로그인(김동규) -->
@@ -132,13 +134,11 @@
 		, bank_name
 		, pos_code
 		, dept_code
+		, salary
 		)
 		values
 		(
-		(select 'c' || to_char(sysdate, 'YYYY') || lpad(max(substr(mem_no, 1, 9)) +
-		1, 3, '0')
-		from member
-		where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY'))
+		  #{memNo}
 		, #{memName}
 		, #{memPwd}
 		, #{phone}
@@ -151,9 +151,15 @@
 		, #{bankName}
 		, #{posCode}
 		, #{deptCode}
+		, #{salary}
 		)
 	</insert>
-
+	
+	<select id="selectMemNo" resultType="string"> 
+		select 'C' || to_char(sysdate, 'YYYY') || lpad(count(substr(mem_no, 1, 9)) + 1, 3, '0')
+from member
+where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
+	</select>
 
 
 

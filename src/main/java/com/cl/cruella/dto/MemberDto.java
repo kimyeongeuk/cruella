@@ -39,6 +39,7 @@ public class MemberDto {
 		private String deptCode;
 		private String posCode;
 		private String posName;
+		private int salary;
 		
 		
 		private String signPath;

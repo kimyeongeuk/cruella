@@ -118,7 +118,7 @@
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="memNo" class="form-label">사번</label>
-														<input class="form-control" type="text" id="memNo" name="memNo" readonly />
+														<input class="form-control" type="text" id="memNo" name="memNo" value="${ memNo }" readonly />
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="deptCode" class="form-label">부서</label> <select
