@@ -175,18 +175,8 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
-                    <div data-i18n="전사 일정">전사 일정</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="#" class="menu-link">
-                    <div data-i18n="팀 일정">팀 일정</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="#" class="menu-link">
-                    <div data-i18n="개인 일정">개인 일정</div>
+                  <a href="${ contextPath }/calendar/calendar.do" class="menu-link">
+                    <div data-i18n="일정 관리">일정 관리</div>
                   </a>
                 </li>
               </ul>

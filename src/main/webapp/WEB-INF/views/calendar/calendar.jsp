@@ -72,6 +72,7 @@
           editable: true, // default | false 이벤트 드래그 등의 편집여부를 설정함
           selectMirror: true, 
           textColor: 'black',
+          displayEventTime: false,
 
           // 블로그
           eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트
@@ -102,7 +103,7 @@
           {
             title: '${list.calTitle}',
             start: '${list.calStartDt}',
-            end: '${list.calEndDt}'
+            end: '${list.calEndDt}T23:00'
           },
           </c:forEach>
         ],
@@ -138,35 +139,12 @@
         $("#saveChanges").on("click", function () {
         	
         	
-        	
-        	var startDate = $("#start").val();  // 시작일
-            var endDate = $("#end").val();  // 종료일
-
-            // 종료일에 하루를 더해서 달력에 맞게 수정
-            var endDateModified = new Date(endDate);
-            endDateModified.setDate(endDateModified.getDate() + 1);  // 종료일에 하루를 더 추가
-
-            var eventData = {
-                title: $("#title").val(),
-                start: startDate,
-                end: endDateModified.toISOString().split('T')[0],  // 수정된 end 날짜를 YYYY-MM-DD 형식으로 변환
-                color: $("#color").val(),
-            };
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-          //var eventData = {
-           // title: $("#title").val(),
-           // start: $("#start").val(),
-          //  end: $("#end").val() +2,
-          //  color: $("#color").val(),
-         // };
-          
+          var eventData = {
+            title: $("#title").val(),
+            start: $("#start").val(),
+            end: $("#end").val() + 'T23:00',
+            color: $("#color").val(),
+          };
           
           
           //빈값입력시 오류
