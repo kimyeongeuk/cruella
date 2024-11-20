@@ -40,4 +40,9 @@ public class MemberServiceImpl implements MemberService {
 		memberDao.updatePwd(email, str);
 	}
 
+	@Override
+	public int insertMember(MemberDto m) {
+		return 0;
+	}
+
 }
