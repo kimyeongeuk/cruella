@@ -90,7 +90,7 @@ public class ChatController {
 	}
 	
 	
-	@PostMapping(value="/updateNewMsg.do",produces="application/json")
+	@GetMapping(value="/updateNewMsg.do",produces="application/json")
 	public void updateNewMsg(MessageDto message) {
 		
 		log.debug("messagedd체크체크췤: {}",message);

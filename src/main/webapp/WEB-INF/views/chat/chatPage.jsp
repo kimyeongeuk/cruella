@@ -253,6 +253,7 @@
 			                                <small class="text-muted">30분전</small>
 			                              </div>
 			                              <small class="chat-contact-status text-truncate">${ list.chatNewMsg }</small>
+			                              <input type="hidden" value="${ list.chatNo }" class="mewmsg">
 			                            </div>
 			                          </a>
 			                        </li>
@@ -277,6 +278,7 @@
 		                              </div>
 		                              <div class="d-flex justify-content-between align-items-center">
 		                              <small class="chat-contact-status text-truncate">${ list.chatNewMsg }</small>
+		                              <input type="hidden" value="${ list.chatNo }" class="mewmsg">
 		                              <div class="badge bg-danger rounded-pill ms-auto">5</div>
 		                              </div>
 		                            </div>
@@ -971,6 +973,7 @@
 				           var chatNo = null;
 				           var userNo = "${loginUser.memNo}"; // 로그인 유저 사번
 					         var userName = "${loginUser.memName}"; // 로그인 유저 이름
+					         var msgContent = null;
 									
 					         /*
 					         var today = new Date();
@@ -1000,7 +1003,17 @@
 			                    																																memNo: userNo,
 			                    																																msgContent: msg.value,
 			                    																																msgType:'message',
-			                    																																 msgRegistDate: new Date().toISOString()}));
+			                    																																msgRegistDate: new Date().toISOString()}));
+			                    msgContent = msg.value;
+			                    /*
+			                    $('.mewmsg').each(function() {
+			                        if ($(this).val() == chatNo) {
+			                            $(this).prev().html(msg.value);
+			                        }
+			                    });
+			                    */
+			                    
+			                    
 			                    /* 
 			          	          $.ajax({
 			                    	url:'${contextPath}/chat/updateNewMsg.do',
@@ -1027,34 +1040,43 @@
 								          
 								          /* console.log("socket", socket);
 								          console.log("client", client); */
-								          
-								          if(client != null){
-								        	  client.unsubscribe();
-								        	  client.disconnect();
-								          }
-								    	  
 								          chatNo = $(this).children().eq(0).val(); //해당 채팅방 번호
 								          
 								          
-								          socket = new SockJS("${contextPath}/chatPage"); // 엔드포인트
-								          client = Stomp.over(socket);
 								          
+								        /*   if(client != null){
+								        	  client.unsubscribe();
+								        	  client.disconnect();
+								        	  
+								          }  */
 								          
 								          
 								          /*
-								          if (subscription) {
-								              subscription.unsubscribe();  // 이전 채팅방 구독 취소
-								              console.log("이전 채팅방 구독이 취소되었습니다.");
-								          }
+								        	  if(msgContent!=null){
+				          	          $.ajax({
+					                    	url:'${contextPath}/chat/updateNewMsg.do',
+					                    	data:{chatNo:chatNo,memNo:userNo,msgContent:msgContent},
+					                    	success:function(res){
+					                    		console.log('ajax성공했습니다'+res);
+					                    	},
+					                    	error:function(res){
+					                    		console.log('에러입니다.');
+					                    	}
+					                    })
+								        	  
+								         	 }
+								    	  */
 								          
-								          if (!client || !client.connected) {
-								              socket = new SockJS("${contextPath}/chatPage");
-								              client = Stomp.over(socket);
-								          }
-								          */
+								         
+								          socket = new SockJS("${contextPath}/chatPage"); // 엔드포인트
+								          client = Stomp.over(socket);
+								          
+								          console.log('클라이언트',client);
+								          
+								          
 								          
 								          // connection이 되면 실행
-								          client.connect({},function(){ // connect start
+								          client.connect({},function(frame){ // connect start
 								            
 								            console.log("stomp Connection")
 
@@ -1063,10 +1085,10 @@
 								              var content = JSON.parse(chat.body);
 								              var writer = content.memNo;
 								              var msgType = content.msgType;
-								             
+								             console.log(content);
 								              var str = '';
 								              const $chatArea = $(".chatarea");
-								           
+								           		 
 									              if(writer == userNo){
 									                      str += '<li class="chat-message chat-message-right">';
 									                      str += '<div class="dropdown">';
@@ -1097,8 +1119,9 @@
 									                      str += '</div>';
 									                      str += '</div>';
 									                      str += '</li>';
-									                
-									                
+									                      
+										                  
+
 									              }else{
 									                      str += '<li class="chat-message">';
 									                      str += '<div class="d-flex overflow-hidden">';
@@ -1122,7 +1145,14 @@
 									                      str += '</div>';
 									                      str += '</div>';
 									                      str += '</li>';
+											        
+									                      
 									              }
+									              $('.mewmsg').each(function() {
+								                        if ($(this).val() == chatNo) {
+								                            $(this).prev().html(content.msgContent);
+								                        }
+								                    });
 								              
 								              
 								                $('#chathistory').append(str);
@@ -1132,11 +1162,14 @@
 								            
 								            // send(path,header,message)로 메시지 보내기
 								            // 웹소켓 실행되자마자 나올거
+								            /*
 								            client.send('/pub/'+chatNo,{},JSON.stringify({chatNo: chatNo, 
 								            																															memNo: userNo,
 								            																															memName:userName,
+								            																															msgContent:'하이영',
 								            																															msgType:"entry"
 								            																															}));
+								          */
 								            
 								          }); // connect end
 								          	
