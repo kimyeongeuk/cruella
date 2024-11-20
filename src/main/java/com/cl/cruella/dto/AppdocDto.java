@@ -35,6 +35,8 @@ public class AppdocDto { // 기안문서
 	private String reason; // 반려사유
 	
 	private String memName; // 기안자 이름
+	private String deptName; // 부서명
+	private String posName; // 직급명
 	
 //	연차신청서
 	private Date appDateStart; // 시작일

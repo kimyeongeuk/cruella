@@ -115,6 +115,26 @@ public class AppService {
 	
 	
 	
+//	상세페이지 필요한 데이터 조회
+	public AppdocDto detailPage(AppdocDto docNo) {
+		
+		AppdocDto app = appDao.detailPage(docNo);
+		
+		List<AppRovalDto> rovalList = appDao.detailPageRoval(docNo);
+		List<AttachDto> attachList = appDao.detailPageAttach(docNo);
+		
+		
+		app.setRovalList(rovalList);
+		app.setAttachList(attachList);
+		
+		
+		
+		return app;
+		
+	}
+	
+	
+	
 	
 }
 

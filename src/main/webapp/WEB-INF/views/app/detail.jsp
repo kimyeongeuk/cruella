@@ -46,24 +46,13 @@
 
             <!-- 양식영역 -->
             
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="nav-align-top">
-                    <ul class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
-                      <li class="nav-item">
-                        <a class="nav-link" href="${contextPath }/app/app_main.do" id="nav-link1">
-                          <i class="ti-sm ti ti-user-check me-1_5"></i> 결재작성
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link active" href="#" id="nav-link2">
-                          <i class="ti-sm ti ti-folder me-1_5"></i> 결재문서함
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+             
+                      <div style="display: flex; justify-content: center;">
+                        <button type="button" class="btn btn-success">결재</button>
+                        <span style="width: 200px;"></span>
+                        <button type="button" class="btn btn-warning">반려</button>
+                      </div>
+                        
 
 
                 <div class="col-12" style="margin-top: 20px;">
@@ -173,16 +162,43 @@
                     <table class="app_table_container">
                       <thead>
                         <tr>
-                          <td class="app_type"><span id="form_type_result">연&nbsp;&nbsp;차&nbsp;&nbsp;신&nbsp;&nbsp;청&nbsp;&nbsp;서</span></td>
+                          <td class="app_type">
+                          	<span id="form_type_result">
+                          		<c:choose>
+                          			<c:when test="${app.docType eq '기안서' }">
+                          				기&nbsp;&nbsp;안&nbsp;&nbsp;서
+                          			</c:when>
+                          			<c:when test="${app.docType eq '품의서' }">
+                          				품&nbsp;&nbsp;의&nbsp;&nbsp;서
+                          			</c:when>
+                          			<c:when test="${app.docType eq '연차신청서' }">
+                          				연&nbsp;&nbsp;차&nbsp;&nbsp;신&nbsp;&nbsp;청&nbsp;&nbsp;서
+                          			</c:when>
+                          			<c:when test="${app.docType eq '증명서신청서' }">
+                          				증&nbsp;&nbsp;명&nbsp;&nbsp;서&nbsp;&nbsp;신&nbsp;&nbsp;청&nbsp;&nbsp;서
+                          			</c:when>
+                          			<c:when test="${app.docType eq '지각사유서' }">
+                          				지&nbsp;&nbsp;각&nbsp;&nbsp;/&nbsp;&nbsp;불&nbsp;&nbsp;참&nbsp;&nbsp;사유서
+                          			</c:when>
+                          			<c:when test="${app.docType eq '요청서' }">
+                          				요&nbsp;&nbsp;청&nbsp;&nbsp;서
+                          			</c:when>
+                          		</c:choose>
+                          	
+                          	</span>
+                          </td>
                           <td class="line_div">
                             <span class="app_line_div">
 
-                               <span class="line_title"><b>결재선</b></span>
+							
+                              <span class="line_title"><b>결재선</b></span>
+                              <c:forEach var="a" items="${app.rovalList}">
                               <span class="line_user">
-                                <span>부서명</span>
+                                <span>${a.deptName}</span>
                                 <span class="signLine">서명</span>
-                                <span class="sign_date">이름</span>
+                                <span class="sign_date">${a.memName}</span>
                               </span>
+                              </c:forEach>
 
 
                             </span>
@@ -195,17 +211,17 @@
                     <table class="app_table_container">
                       <tr class="app_result_div">
                         <td class="dept_td">기안부서</td>
-                        <td class="dept_td_result">${m.deptName}</td>
+                        <td class="dept_td_result">${app.deptName }</td>
                         <td class="app_date">직급</td>
-                        <td class="app_date_result">${m.posName}</td>
+                        <td class="app_date_result">${app.posName }</td>
                         <td class="app_no">기안일</td>
-                        <td class="app_no_result"></td>
+                        <td class="app_no_result">${app.docDt }</td>
                         
                  
                         
-                        <!-- 타입, 기안자 사번 -->
+                        <%-- <!-- 타입, 기안자 사번 -->
                         <input type="hidden" name="docType" value="연차신청서">
-                        <input type="hidden" name="memNo" value="${m.memNo}">
+                        <input type="hidden" name="memNo" value="${m.memNo}"> --%>
                         
                       </tr>
                     </table>
@@ -215,12 +231,33 @@
                       <tr>
                         <td class="app_title_td" style="text-align: center; height: 40px;">기안자</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
-                          <span style="position: relative; left: 10px;" id="userNo_value" >${m.memName}</span>
-                          <span id="ref_list_div"></span>
+                          <span style="position: relative; left: 10px;" id="userNo_value" ></span>
+                          <span id="ref_list_div">${app.memName }</span>
                         </td>
                       </tr>
                     </table>
                     
+                    
+                    <c:if test="${app.docType eq '증명서신청서' }">
+                    <!-- 증명서일때 -->
+                    <table style="border-spacing: 0;">
+                      <tr>
+                        <td class="app_title_td" style="text-align: center; height: 40px;">발행날짜</td>
+                        <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
+
+                          <span class="date-range" style="position: relative;left: 10px;">
+                            
+                          </span>
+                        
+
+                        </td>
+                      </tr>
+                    </table>
+                    <!-- /증명서일때 -->
+                    </c:if>
+                    
+                    
+                    <c:if test="${app.docType eq '연차신청서' }">
                     <!-- 연차신청서일때 -->
                     <table style="border-spacing: 0;">
                       <tr>
@@ -230,6 +267,9 @@
                         </td>
                       </tr>
                     </table>
+                    
+                    
+                    
                      <style>
                             .date-range {
                               display: flex;
@@ -265,20 +305,22 @@
                       <tr>
                         <td class="app_title_td" style="text-align: center; height: 40px;">기간 및 일시</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
-							<span></span>
+							<span>
+								${app.appDateStart } ~ ${app.appDateEnd }
+							</span>
                           
                         </td>
                       </tr>
                     </table>
                     <!-- /연차신청서일때 -->
-                    
+                    </c:if>
                     
                     
                     <table style="border-spacing: 0;">
                       <tr>
                         <td class="app_title_td" style="text-align: center; height: 40px;">제목</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black;">
-                          <span>asdasda</span>
+                          <span>${app.docTitle }</span>
                             
                           <!-- 제목글자수 제한 조건을 걸거나 아니면 리스트 조회시 보이는 글자수 제한 걸기 -->
                         </td>
@@ -297,7 +339,7 @@
 
                                 <div class="card-body" style="height: 500px;">
 		
-									
+									${app.docContent }
 
 
                                 </div>
@@ -341,8 +383,7 @@
         <!-- </div> -->
 
 
-        
-       <button>버튼</button>
+     
 
 
 

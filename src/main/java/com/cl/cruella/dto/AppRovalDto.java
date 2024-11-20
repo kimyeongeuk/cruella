@@ -22,6 +22,8 @@ public class AppRovalDto {// 결재자
 	private String rvNo;  // 결재자 사번
 	private int docNo;    // 문서번호
 	private int appLevel; // 결재 순서
+	private String deptName; // 부서명
+	private String memName; // 결재자명
 	
 	//-------------------------------------------------------------------
 	private Date appDate; // 결재일 // 결재승인 및 반려 시 담김 // update 문

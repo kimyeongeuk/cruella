@@ -187,14 +187,18 @@
                     </tr>
 
 					<c:forEach var="a" items="${ list }">
-                    <tr>
+                    <tr class="detail_tr" onclick="location.href='${contextPath}/app/detail.do?docNo=${a.docNo}'">
                       <td></td>
                       <td><input type="checkbox" class="deleteCheck_box"></td>
                       <td><span class="name_box">${a.memName }</span></td>
                       <td></td>
                       <td style="text-align: center;"><span class="title_box">${a.docTitle}</span></td>
                       <td></td>
-                      <td><span class="appDate_box">${a.docDt }</span></td>
+                      <td>
+	                      <span class="appDate_box">${a.docDt }</span>
+	                      <input type="hidden" value="${a.docType}" >
+						  <input type="hidden" value="${a.docNo}" >
+                      </td>     
                       <td>
 	                      	<c:choose>
 	                      		<c:when test="${a.docImpo eq 'C'}">
@@ -310,14 +314,16 @@
 
 
   <script>
-                           
+      // 다수 페이징버튼          
      function goPage(pNum){
                         	   
        window.location.href = '${contextPath}/app/box_standby.do?page=' + pNum;
  	}
      
+     
      $(document).ready(function() {
     	    
+     // check박스 이벤트함수
     	    $('#all_checkBox').on('click', function() {
     	        $('.deleteCheck_box').prop('checked', this.checked);
     	    });
@@ -330,7 +336,52 @@
     	            $('#all_checkBox').prop('checked', false); 
     	        }
     	    });
+    	    
+    	    
+    	    
+   /* 	// 해당 행 클릭시 상세페이지로 이동 ajax
+   		$('.detail_tr').on('click',function(){
+   			
+   			var docNo = $(this).find('input[type="hidden"]').eq(0).val();
+   			var docType = $(this).find('input[type="hidden"]').eq(1).val();
+   			
+   			$.ajax({
+   				url: '${contextPath}/app/detail.do',
+   				data : {
+   					docNo : docNo,
+   					docType : docType
+   				},
+   				success:function(res){
+   					console.log(res)
+   				},
+   			})
+   		})
+    	     */
+    	    
+    	    
+    	    
+    	    
+    	    
+    	    
+    	    
+    	    
+    	    
+    	    
+    	    
+    	    
     	});
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
      
  </script>
 

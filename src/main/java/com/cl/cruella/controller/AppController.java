@@ -186,7 +186,13 @@ public class AppController {
 	
 //	결재문서함 상세조회
 	@GetMapping("/detail.do")
-	public void detailPage() {
+	public void detailPage(AppdocDto docNo,Model model) {
+		
+		AppdocDto appdoc = appService.detailPage(docNo);
+		
+		model.addAttribute("app",appdoc);
+		
+		
 		
 	}
 	

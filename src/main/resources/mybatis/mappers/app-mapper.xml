@@ -2,22 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="appMapper">
 
+
+
+
 <resultMap id="deptResultMap" type="DeptDto">
-	
-  		<result column="DEPT_CODE" property="deptCode"/>
-  		<result column="DEPT_NAME" property="deptName"/>
+	<result column="DEPT_CODE" property="deptCode"/>
+  	<result column="DEPT_NAME" property="deptName"/>
   	
-		
-		
 	<collection ofType="MemberDto" property="memList">
   		<result column="MEM_NO" property="memNo"/>
   		<result column="MEM_NAME" property="memName"/>
   		<result column="POS_CODE" property="posCode"/>
   		<result column="POS_NAME" property="posName"/>
   	</collection>
-		
-		
 </resultMap>
+
+
 
 
 <resultMap  id="deptDtoResultSmall" type="DeptDto">
@@ -30,7 +30,6 @@
 
 
 <resultMap  id="selectStandbyResult" type="AppdocDto">
-
 	<result column="mem_name" property="memName"/>
 	<result column="doc_no" property="docNo"/>
 	<result column="doc_type" property="docType"/>
@@ -39,8 +38,36 @@
 	<result column="doc_date" property="docDt"/>
 	<result column="doc_importance" property="docImpo"/>
 	<result column="doc_status" property="docStatus"/>
-	
 </resultMap>
+
+
+	  
+<resultMap  id="detailSelectAppdoc" type="AppdocDto">
+	<result column="mem_name" property="memName"/>
+	<result column="dept_name" property="deptName"/>
+	<result column="pos_name" property="posName"/>
+	<result column="doc_date" property="docDt"/>
+	<result column="doc_type" property="docType"/>
+	<result column="APP_DATE_START" property="appDateStart"/>
+	<result column="APP_DATE_END" property="appDateEnd"/>
+	<result column="APP_COE_DATE" property="appCoreDt"/>
+	<result column="doc_title" property="docTitle"/>
+	<result column="doc_content" property="docContent"/>
+</resultMap>
+
+
+
+<resultMap  id="detailSelectRoval" type="AppRovalDto">
+	<result column="dept_name" property="deptName"/>
+	<result column="mem_name" property="memName"/>
+	<result column="app_level" property="appLevel"/>
+</resultMap>
+
+
+
+
+
+
 
 	
 	
@@ -242,10 +269,12 @@ select
         m.mem_name as mem_name
         ,a.doc_no as doc_no
         ,a.doc_type as doc_type
-        ,CASE 
-    WHEN LENGTH(a.doc_title) > 15 THEN SUBSTR(a.doc_title, 1, 15) || '...'
-    ELSE a.doc_title
-  	END AS doc_title
+        ,
+         CASE 
+	     WHEN LENGTH(a.doc_title) > 15 THEN SUBSTR(a.doc_title, 1, 15) || '...'
+	     ELSE a.doc_title
+	  	 END as doc_title
+	  	 
         ,a.doc_content as doc_content
         ,a.doc_date as doc_date
         ,a.doc_importance as doc_importance
@@ -261,6 +290,71 @@ select
 </select>
 
 
+
+
+
+
+
+
+
+<!-- 상세페이지 -->
+<!-- 기안문서조회 (상세페이지용) -->
+<select id="appdocDetailSelectAll" resultMap="detailSelectAppdoc">
+ select 
+	   m.mem_name as mem_name
+	  ,d.dept_name as dept_name
+	  ,ad.doc_title as doc_title
+	  ,ad.doc_content as doc_content
+	  ,p.pos_name as pos_name
+	  ,ad.doc_date as doc_date
+	  ,ad.doc_type as doc_type
+	  ,af.APP_DATE_START as APP_DATE_START
+	  ,af.APP_DATE_END as APP_DATE_END
+	  ,ac.APP_COE_DATE as APP_COE_DATE      -- 발행날짜
+ from 
+ 	 member m
+ join 
+ 	 department d on (m.dept_code = d.dept_code)
+ join 
+      position p on (m.pos_code = p.pos_code)
+ join 
+ 	  app_doc ad on (m.mem_no = ad.mem_no)
+ left join 
+          app_form_ann af on(af.doc_no = ad.doc_no)
+ left join 
+          app_form_coe ac on(ad.doc_no = ac.doc_no)
+ 
+ where ad.doc_no = #{docNo}
+ and ad.status = 'Y'
+
+</select>
+
+
+<!-- 결재선조회 (상세페이지용) -->
+<select id="appdocDetailSelectRoval" resultMap="detailSelectRoval">
+select 
+      d.dept_name as dept_name
+      ,m.mem_name as mem_name
+      ,ar.APP_LEVEL as app_level
+from approval ar
+join member m on (m.mem_no = ar.mem_no)
+join department d on(m.dept_code = d.dept_code)
+where ar.doc_no = #{docNo}
+
+</select>
+
+<!-- 파일조회 (상세페이지용) -->
+<select id="appdocDetailSelectAttach" resultType="AttachDto">
+
+select 
+      FILE_PATH
+     ,FILE_SYSTEM_NAME
+     ,FILE_ORIGINAL_NAME
+ from attachment
+ where FILE_REF_TYPE = 'A'
+ and FILE_REF_NO = #{docNo}
+ 
+</select>
 
 
 
