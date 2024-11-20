@@ -89,26 +89,7 @@ public class MemberController {
 		return "/";
 	}
 
-	 // 사원등록페이지로딩시사번자동생성(이예빈)
-	 @GetMapping("/signup.do")
-	 public void signup(Model model) {
-		 String memNo = memberService.memberNo();
-		 log.debug("log{}",memNo);
-		 model.addAttribute("memNo",memNo);
-	 }
-	 
 
-	
-	// 사원등록(이예빈)
-	@PostMapping("/insert.do")
-	public String insertMember(MemberDto m, RedirectAttributes rd) {
-		
-		log.debug("memberDto{}",m);
-		int result = memberService.insertMember(m);
-		
-		 return "/dashboard";
-
-	}
 	
 
 	 @GetMapping("/myinfo.do")
@@ -191,5 +172,100 @@ public class MemberController {
 	 
 	 
 	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 // 사원등록페이지로딩시사번자동생성(이예빈)
+	 @GetMapping("/signup.do")
+	 public void signup(Model model) {
+		 String memNo = memberService.memberNo();
+		 log.debug("log{}",memNo);
+		 model.addAttribute("memNo",memNo);
+	 }
+	 
+
+	
+	// 사원등록(이예빈)
+	@PostMapping("/insert.do")
+	public String insertMember(MemberDto m, RedirectAttributes rd) {
+		
+		log.debug("memberDto{}",m);
+		int result = memberService.insertMember(m);
+		
+		 return "/dashboard";
+
+	}
 	 
 }
