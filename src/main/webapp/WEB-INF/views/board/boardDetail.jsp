@@ -10,85 +10,74 @@
 <title>Insert title here</title>
 <script src="${contextPath}/resources/assets/js/config.js"></script>
 <style>
-  .icon-wrapper {
-    position: relative;
-  }
-  .icon-wrapper .icon {
-    border-radius: 50%;
-    padding: 10px;
-    transition: background-color 0.3s;
-  }
-  .icon-wrapper .icon:hover {
-    background-color: #f0f0f0;
-    cursor: pointer;
-  }
-  .action-box {
-    display: none;
-    position: absolute;
-    top: 30px;
-    right: 0;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-  }
-  .action-box a {
-    display: block;
-    padding: 10px 20px;
-    color: black;
-    text-decoration: none;
-    border-bottom: 1px solid #ddd;
-  }
-  .action-box a:last-child {
-    border-bottom: none;
-  }
-  .action-box a:hover {
-    background-color: #f0f0f0;
-  }
-  .content-pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-  }
-  .attachment-list {
-    display: none;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    width: fit-content;
-    position: absolute;
-    z-index: 1000;
-  }
-  .attachment-toggle-wrapper {
-    position: relative;
-  }
-  .attachment-toggle-wrapper .attachment-list {
-    margin-top: 5px; /* Adjusts spacing between the toggle and list */
-  }
-  .action-replybox {
-    display: none;
-    position: absolute;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-  }
-  .action-replybox a {
-    display: block;
-    padding: 10px 20px;
-    color: black;
-    text-decoration: none;
-    border-bottom: 1px solid #ddd;
-  }
-  .action-replybox a:last-child {
-    border-bottom: none;
-  }
-  .action-replybox a:hover {
-    background-color: #f0f0f0;
-  }
+	.icon-wrapper {
+	  position: relative;
+	}
+	
+	.icon-wrapper .icon, .icon-wrapper .comment-icon, .icon-wrapper .modal-comment-icon {
+	  border-radius: 50%;
+	  padding: 10px;
+	  transition: background-color 0.3s, color 0.3s; /* 아이콘 색상 변화를 추가 */
+	}
+	
+	.icon-wrapper .icon:hover, .icon-wrapper .comment-icon:hover, .icon-wrapper .modal-comment-icon:hover {
+	  background-color: #f0f0f0;
+	  color: #555; /* 호버 시 아이콘 색상 변경 */
+	  cursor: pointer;
+	}
+	
+	.action-box, .action-replybox, .modal-action-box {
+	  display: none;
+	  position: absolute;
+	  background: white;
+	  border: 1px solid #ddd;
+	  border-radius: 5px;
+	  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+	  z-index: 1000;
+	}
+	
+	.action-box a, .action-replybox a, .modal-action-box a {
+	  display: block;
+	  padding: 10px 20px;
+	  color: black;
+	  text-decoration: none;
+	  border-bottom: 1px solid #ddd;
+	}
+	
+	.action-box a:last-child, .action-replybox a:last-child, .modal-action-box a:last-child {
+	  border-bottom: none;
+	}
+	
+	.action-box a:hover, .action-replybox a:hover, .modal-action-box a:hover {
+	  background-color: #f0f0f0;
+	}
+	
+	.content-pre {
+	  white-space: pre-wrap;
+	  word-wrap: break-word;
+	}
+	
+	.attachment-list {
+	  display: none;
+	  background: white;
+	  border: 1px solid #ddd;
+	  border-radius: 5px;
+	  padding: 10px;
+	  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+	  width: fit-content;
+	  position: absolute;
+	  z-index: 1000;
+	}
+	
+	.attachment-toggle-wrapper {
+	  position: relative;
+	}
+	
+	.attachment-toggle-wrapper .attachment-list {
+	  margin-top: 5px; /* Adjusts spacing between the toggle and list */
+	}
+	
+	
 </style>
 </head>
 <body>
@@ -208,7 +197,6 @@
 	              <div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">
 								  <div class="modal-dialog modal-dialog-scrollable" role="document">
 								    <div class="modal-content">
-								
 								      <div class="modal-header">
 								        <div style="width: 100%;">
 								          <div class="d-flex justify-content-between align-items-center" style="margin: 10px;">
@@ -225,10 +213,10 @@
 								            </div>
 								            <div class="d-flex justify-content-end align-items-center">
 								              <div class="icon-wrapper">
-								                <i class="ti ti-dots-vertical ti-md comment-icon" style="cursor: pointer; display: none;"></i>
-								                <div class="action-box comment-action-box" style="display: none;">
-								                  <a href="javascript:void(0);"><i class="menu-icon tf-icons ti ti-edit"></i></a>
-								                  <a href="javascript:void(0);"><i class="menu-icon tf-icons ti ti-trash"></i></a>
+								                <i class="ti ti-dots-vertical ti-md modal-comment-icon" style="cursor: pointer;" onclick="toggleModalActionBox(this)"></i>
+								                <div class="modal-action-box">
+								                  <a href="javascript:void(0);" onclick="modifyReplyModal()"><i class="menu-icon tf-icons ti ti-edit"></i></a>
+								                  <a href="javascript:void(0);" onclick="deleteReplyModal()"><i class="menu-icon tf-icons ti ti-trash"></i></a>
 								                </div>
 								              </div>
 								            </div>
@@ -240,8 +228,12 @@
 								      </div>
 								
 								      <div class="modal-body">
-								        <!-- 내용 추가 -->
-								      </div>
+											  <table id="reply_table" class="table">
+											    <tbody>
+											      <!-- AJAX를 통해 동적으로 대댓글을 추가할 영역 -->
+											    </tbody>
+											  </table>
+											</div>
 								
 								      <div class="modal-footer">
 								        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
@@ -258,7 +250,7 @@
 								  </div>
 								</div>
 
-								
+
               </div>
             </div>
           </div>
@@ -283,6 +275,21 @@
 <div class="drag-target"></div>
 </body>
 <script>
+//모달 내의 ... 아이콘 클릭 시 액션 박스를 토글하는 함수
+function toggleModalActionBox(icon) {
+  console.log("Icon clicked:", icon); // 클릭 이벤트 확인
+  var actionBox = icon.nextElementSibling;
+  console.log("Action Box:", actionBox); // 액션 박스 요소 확인
+  if (actionBox.style.display === 'none' || actionBox.style.display === '') {
+    actionBox.style.display = 'block';
+    console.log("Action Box displayed");
+  } else {
+    actionBox.style.display = 'none';
+    console.log("Action Box hidden");
+  }
+}
+
+// 모달이 열릴 때 설정
 $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   var button = $(event.relatedTarget); // 버튼 정보
   var replyId = button.data('reply-id');
@@ -301,11 +308,27 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
 
   // 작성자인 경우에만 ... 아이콘 보이게 설정
   if (replyMemNo == loginUserMemNo) {
-    modal.find('.comment-icon').show();
+    modal.find('.modal-comment-icon').show();
   } else {
-    modal.find('.comment-icon').hide();
+    modal.find('.modal-comment-icon').hide();
   }
 });
+
+// 모달에서 수정 클릭 시 동작
+function modifyReplyModal() {
+  console.log("Modify clicked"); // 수정 클릭 확인
+  var replyContent = $('#modal-content').text();
+  $('#reply_content').val(replyContent);
+  $('#modalScrollable').modal('hide'); // 모달 닫기
+}
+
+// 모달에서 삭제 클릭 시 동작
+function deleteReplyModal() {
+  console.log("Delete clicked"); // 삭제 클릭 확인
+  // 실제 삭제 로직 구현
+  alert('댓글 삭제');
+  $('#modalScrollable').modal('hide'); // 모달 닫기
+}
 
 
 
@@ -351,13 +374,10 @@ function fn_replyList() {
     data: { no: ${b.boardNo} },
     success: function(resData) {
       console.log("Received data:", resData); // 서버로부터 받은 데이터 확인
-      
+
       $("#rcount").text(resData.length); // 댓글 수 출력
       let tr = "";
-      for(let i = 0; i < resData.length; i++){
-        console.log("loginUserMemNo:", loginUserMemNo);
-        console.log("replyMemNo:", resData[i].memNo); // 댓글 작성자의 memNo
-
+      for (let i = 0; i < resData.length; i++) {
         tr += "<tr><td colspan='3'>"
               + "<div class='d-flex justify-content-between align-items-center user-info'>"
               + "<div class='avatar-wrapper d-flex align-items-center'>"
@@ -400,6 +420,7 @@ function fn_replyList() {
     }
   });
 }
+
 
 
 
