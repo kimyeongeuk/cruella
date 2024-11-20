@@ -17,6 +17,7 @@
     <script src="${ contextPath }/resources/assets/js/config.js"></script>
 </head>
 <body>
+
 <div class="layout-wrapper layout-content-navbar">
    <div class="layout-container">
    
