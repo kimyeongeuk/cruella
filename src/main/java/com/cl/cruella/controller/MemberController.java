@@ -6,17 +6,14 @@ import java.util.List;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.service.MemberService;
@@ -35,6 +32,8 @@ public class MemberController {
 	
 	private final MemberService memberService;
 	private final JavaMailSender mailSender;
+	private final BCryptPasswordEncoder bcryptPwdEncoder;
+
 	
 	// 로그인(김동규)
 	@PostMapping("/signin.do")
@@ -265,10 +264,23 @@ public class MemberController {
 	@PostMapping("/insert.do")
 	public String insertMember(MemberDto m, RedirectAttributes rd) {
 		
-		int result = memberService.insertMember(m);
+		m.setMemPwd( bcryptPwdEncoder.encode(m.getMemPwd()) );
 		
-		 return "/dashboard";
-
-	}
+		int result = memberService.insertMember(m);
+			
+		if(result > 0) {
+			rd.addFlashAttribute("alertMsg", "성공적으로 회원가입 되었습니다");
+			
+		}else {
+			rd.addFlashAttribute("alertMsg", "회원가입실패");
+	
+		}
+			 return "redirect:/member/employeelistview.do";
+	
+		}
+	
+	// 사원조회페이지로redirect(예빈)
+	@GetMapping("/employeelistview.do")
+	public void employeelistview() {}
 	 
 }

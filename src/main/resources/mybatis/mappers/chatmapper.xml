@@ -162,6 +162,7 @@ select count(chat_no) chat_count
 			 , MSG_MODIFY_DATE
   from message
  where chat_no = #{chatNo}
+ order by msg_no
 </select>
 
 <!-- 채팅 등록 -->
