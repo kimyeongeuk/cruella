@@ -519,9 +519,9 @@ $(function () {
     $('.app_line_div').html(
       '<span class="line_title"><b>결재선</b></span>'
       +'<span class="line_user">'
-       + '<span>직급</span>'
-        +'<span class="signLine">이름</span>'
-        +'<span class="sign_date">결재일</span>'
+       + '<span>부서명</span>'
+        +'<span class="signLine">서명</span>'
+        +'<span class="sign_date">이름</span>'
       +'</span>'
     );
 
@@ -542,19 +542,11 @@ $(function () {
       
        
         // 결재선
-		/*
-        var div = '<span class="line_user">'
-                + '<span>' + teamName + '</span>'
-                + '<span class="signLine">' + memName + '</span>'
-                + '<span class="app_line_date">결재일</span>'
-                + '<input type="hidden" value="' + memNo + '" id="mem_no_' + idcount + '">'
-                + '<input type="hidden" id="line_level_' + countLevel +'" value="' + countLevel + '">'
-                + '</span>';
-        */
+		 
 		var div = '<span class="line_user">'
 		                + '<span>' + teamName + '</span>'
-		                + '<span class="signLine">' + memName + '</span>'
-		                + '<span class="app_line_date">결재일</span>'
+		                + '<span class="signLine">서명</span>'
+		                + '<span class="app_line_date">' + memName + '</span>'
 		                + '<input type="hidden" value="' + memNo + '" name="rovalList[' + rovalIndex + '].rvNo">'
 		                + '<input type="hidden" name="rovalList[' + rovalIndex++ +'].appLevel" value="' + countLevel++ + '">'
 		        + '</span>';
@@ -595,9 +587,7 @@ $(function () {
 		 }else if($('#drag_line_div2 tr').length == 1){
 			$('#ref_list_div').html(div2);
 			
-		 }/*else if($('##drag_line_div2 span').text() == '드래그하여 추가할 수 있습니다.'){
-			$('#ref_list_div').html(defaultDiv);
-		 }*/
+		 }
 		
 		
 	});

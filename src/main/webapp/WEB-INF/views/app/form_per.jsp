@@ -753,12 +753,12 @@
                           <td class="line_div">
                             <span class="app_line_div">
 
-                              <!-- db에서 결재선 조회 -->
+                              
                               <span class="line_title"><b>결재선</b></span>
                               <span class="line_user">
-                                <span>직급</span>
-                                <span class="signLine">이름</span>
-                                <span class="sign_date">결재일</span>
+                                <span>부서명</span>
+                                <span class="signLine">서명</span>
+                                <span class="sign_date">이름</span>
                               </span>
 
 
@@ -1056,13 +1056,13 @@
                       <td class="line_div">
                         <span class="app_line_div">
                           
-                          <span class="line_title"><b>결재선</b></span>
+                           <!-- db에서 결재선 조회 -->
+                              <span class="line_title"><b>결재선</b></span>
                               <span class="line_user">
-                                <span>직급</span>
-                                <span class="signLine">이름</span>
-                                <span class="sign_date">결재일</span>
-                           	  </span>
-
+                                <span>부서명</span>
+                                <span class="signLine">서명</span>
+                                <span class="sign_date">이름</span>
+                              </span>
                         </span>
                       </td>
                     </tr>

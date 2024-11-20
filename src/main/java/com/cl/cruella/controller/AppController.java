@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -18,8 +19,10 @@ import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.dto.PageInfoDto;
 import com.cl.cruella.service.AppService;
 import com.cl.cruella.util.FileUtil;
+import com.cl.cruella.util.PagingUtil;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +36,7 @@ public class AppController {
 	
 	private final AppService appService;
 	private final FileUtil fileUtil;
-	
+	private final PagingUtil pagingUtil;
 	
 	
 	
@@ -148,8 +151,42 @@ public class AppController {
 	}
 	
 	
+	// 결재문서함 메인페이지
 	@GetMapping("/box_main.do")
-	public void boxpdPage(){
+	public void boxpdPage(){}
+	
+	
+	
+	
+	
+	
+	
+	// 결재대기함 조회
+	@GetMapping("/box_standby.do")
+	public void box_standbyPage(@RequestParam(value="page", defaultValue="1") int currentPage
+								,HttpSession session
+								,Model model) {
+		
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		
+		int listCount = appService.selectStandbyCount(memNo);
+		
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
+		
+		List<AppdocDto> list = appService.selectStandby(memNo,pi);
+		
+		model.addAttribute("list",list);
+		model.addAttribute("pi",pi);
+		
+	}
+	
+	
+	
+	
+	
+//	결재문서함 상세조회
+	@GetMapping("/detail.do")
+	public void detailPage() {
 		
 	}
 	

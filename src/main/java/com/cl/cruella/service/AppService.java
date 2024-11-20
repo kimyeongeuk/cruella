@@ -10,6 +10,7 @@ import com.cl.cruella.dto.AppRovalDto;
 import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.DeptDto;
+import com.cl.cruella.dto.PageInfoDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -94,6 +95,21 @@ public class AppService {
 		
 		return result;
 		
+		
+	}
+	
+	
+//	결재대기함 카운트
+	public int selectStandbyCount(String memNo) {
+		 int result = appDao.selectStandbyCount(memNo);
+		 return result;
+	}
+	
+	
+//	결재대기함 조회
+	public List<AppdocDto> selectStandby(String memNo,PageInfoDto pi){
+		List<AppdocDto> list = appDao.selectStandby(memNo,pi);
+		return list;
 		
 	}
 	

@@ -2,6 +2,7 @@ package com.cl.cruella.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +11,7 @@ import com.cl.cruella.dto.AppRovalDto;
 import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.DeptDto;
+import com.cl.cruella.dto.PageInfoDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -61,6 +63,21 @@ public class AppDao {
 	 // 증명서신청서
 	 public int insertFormCoe(AppdocDto ad) {
 		 return sqlSession.insert("appMapper.insertFormCoe",ad);
+	 }
+	 
+	 
+	 
+	 
+	 
+	 // 결재대기함 (listCount용)
+	 public int selectStandbyCount(String memNo) {
+		 return sqlSession.selectOne("appMapper.selectStandbyCount",memNo);
+	 }
+	 
+	 // 결재대기함 리스트 조회
+	 public List<AppdocDto> selectStandby(String memNo,PageInfoDto pi){
+		 RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit() ,pi.getBoardLimit());
+		 return sqlSession.selectList("appMapper.selectStandby",memNo,rowBounds);
 	 }
 	
 	

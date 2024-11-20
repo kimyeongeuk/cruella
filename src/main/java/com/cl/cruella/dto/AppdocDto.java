@@ -20,6 +20,7 @@ import lombok.ToString;
 public class AppdocDto { // 기안문서
 	
 	
+	
 	private int docNo; // 문서번호
 	private String memNo; // 기안자 사번
 	private String docType; // 문서종류
@@ -32,6 +33,8 @@ public class AppdocDto { // 기안문서
 	private int docOrder; // 결재순서
 	private String status; // 존재 여부 : Y , N
 	private String reason; // 반려사유
+	
+	private String memName; // 기안자 이름
 	
 //	연차신청서
 	private Date appDateStart; // 시작일

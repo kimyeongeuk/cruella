@@ -27,6 +27,21 @@
 	<result column="mem_no" property="memNo"/>
 </resultMap>
 
+
+
+<resultMap  id="selectStandbyResult" type="AppdocDto">
+
+	<result column="mem_name" property="memName"/>
+	<result column="doc_no" property="docNo"/>
+	<result column="doc_type" property="docType"/>
+	<result column="doc_title" property="docTitle"/>
+	<result column="doc_content" property="docContent"/>
+	<result column="doc_date" property="docDt"/>
+	<result column="doc_importance" property="docImpo"/>
+	<result column="doc_status" property="docStatus"/>
+	
+</resultMap>
+
 	
 	
 <!-- jstree 조직도 조회문 -->
@@ -203,6 +218,47 @@ values
 
 </insert>
 
+
+
+<!-- 결재대기함 리스트 갯수 조회 -->
+<select id="selectStandbyCount" resultType="_int">
+select 
+     count(*)
+from member m
+    join app_doc a on(m.mem_no = a.mem_no)
+    join approval r on (a.doc_no = r.doc_no)
+    where r.mem_no = #{memNo} -- 결재선/현재로그인한 사번
+    and a.doc_order = r.app_level
+    and r.app_status = '대기'
+
+</select>
+
+
+
+
+<!-- 결재대기함 리스트 조회 -->
+<select id="selectStandby" resultMap="selectStandbyResult">
+select 
+        m.mem_name as mem_name
+        ,a.doc_no as doc_no
+        ,a.doc_type as doc_type
+        ,CASE 
+    WHEN LENGTH(a.doc_title) > 15 THEN SUBSTR(a.doc_title, 1, 15) || '...'
+    ELSE a.doc_title
+  	END AS doc_title
+        ,a.doc_content as doc_content
+        ,a.doc_date as doc_date
+        ,a.doc_importance as doc_importance
+        ,a.doc_status as doc_status
+    from member m
+    join app_doc a on(m.mem_no = a.mem_no)
+    join approval r on (a.doc_no = r.doc_no)
+    where r.mem_no = #{memNo} -- 결재선/현재로그인한 사번
+    and a.doc_order = r.app_level
+    and r.app_status = '대기'
+    order by a.doc_date desc
+
+</select>
 
 
 
