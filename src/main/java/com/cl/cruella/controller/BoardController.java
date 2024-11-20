@@ -194,9 +194,7 @@ public class BoardController {
 	@ResponseBody
 	@GetMapping(value="/rlist.do", produces="application/json")
 	public List<ReplyDto> replyList(int no) {
-	    System.out.println("게시글 번호: " + no);
 	    List<ReplyDto> replies = boardService.selectReplyList(no);
-	    System.out.println("가져온 댓글 목록: " + replies);
 	    return replies;
 	}
 	

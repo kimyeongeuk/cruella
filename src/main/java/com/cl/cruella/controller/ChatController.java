@@ -54,7 +54,7 @@ public class ChatController {
 	
 	// 사원 상세 정보
 	@ResponseBody
-	@GetMapping(value="/userInfo.do",produces="application/json")
+	@GetMapping(value="/userInfo.do",produces="application/json0 ")
 	public Map<String,Object>  userInfo(String memNo,Model model) {
 		
 		log.debug(memNo);

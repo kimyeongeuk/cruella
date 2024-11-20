@@ -76,8 +76,7 @@
 	.attachment-toggle-wrapper .attachment-list {
 	  margin-top: 5px; /* Adjusts spacing between the toggle and list */
 	}
-	
-	
+		
 </style>
 </head>
 <body>
@@ -175,8 +174,10 @@
                 <div style="display: flex; justify-content: center; margin-top: 20px;">
                   <button id="back" class="btn btn-label-secondary" style="text-align: center;" onclick="boardList();">목록</button>
                 </div>
-                <div id="editReplyModal" class="modal" tabindex="-1">
-								  <div class="modal-dialog">
+                
+                <!-- 모달: editReplyModal -->
+								<div class="modal fade" id="editReplyModal" tabindex="-1" aria-hidden="true">
+								  <div class="modal-dialog modal-dialog-centered" role="document">
 								    <div class="modal-content">
 								      <div class="modal-header">
 								        <h5 class="modal-title">댓글 수정</h5>
@@ -186,8 +187,8 @@
 								        <textarea id="editReplyContent" class="form-control" rows="3"></textarea>
 								      </div>
 								      <div class="modal-footer">
+								        <button type="button" class="btn btn-primary" onclick="updateReply()">수정</button>
 								        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-								        <button type="button" class="btn btn-primary" onclick="updateReply()">저장</button>
 								      </div>
 								    </div>
 								  </div>
@@ -215,8 +216,8 @@
 								              <div class="icon-wrapper">
 								                <i class="ti ti-dots-vertical ti-md modal-comment-icon" style="cursor: pointer;" onclick="toggleModalActionBox(this)"></i>
 								                <div class="modal-action-box">
-								                  <a href="javascript:void(0);" onclick="modifyReplyModal()"><i class="menu-icon tf-icons ti ti-edit"></i></a>
-								                  <a href="javascript:void(0);" onclick="deleteReplyModal()"><i class="menu-icon tf-icons ti ti-trash"></i></a>
+								                  <a href="javascript:void(0);" onclick="modifyReply(replyId,replyContent)"><i class="menu-icon tf-icons ti ti-edit"></i></a>
+								                  <a href="javascript:void(0);" onclick="deleteReply(replyId)"><i class="menu-icon tf-icons ti ti-trash"></i></a>
 								                </div>
 								              </div>
 								            </div>
@@ -289,7 +290,7 @@ function toggleModalActionBox(icon) {
   }
 }
 
-// 모달이 열릴 때 설정
+//모달이 열릴 때 설정
 $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   var button = $(event.relatedTarget); // 버튼 정보
   var replyId = button.data('reply-id');
@@ -298,9 +299,13 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   var replyDate = button.data('reply-date');
   var replyMemNo = button.data('reply-memno');
 
-  console.log("replyMemNo:", replyMemNo);
-  console.log("loginUserMemNo:", loginUserMemNo);
-
+  console.log("댓글작성자코드:", replyMemNo);
+  console.log("로그인유저코드:", loginUserMemNo);
+  console.log("댓글번호:", replyId);
+  console.log("댓글내용:", replyContent);
+  console.log("댓글작성자:", replyAuthor);
+  console.log("댓글작성일:", replyDate);
+  
   var modal = $(this);
   modal.find('#modal-author').text(replyAuthor);
   modal.find('#modal-date').text(replyDate);
@@ -312,24 +317,11 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   } else {
     modal.find('.modal-comment-icon').hide();
   }
+
+  // 수정 및 삭제 버튼에 데이터 할당
+  modal.find('.modal-action-box a:eq(0)').attr('onclick', "modifyReply(" + replyId + ", '" + replyContent + "')");
+  modal.find('.modal-action-box a:eq(1)').attr('onclick', "deleteReply(" + replyId + ")");
 });
-
-// 모달에서 수정 클릭 시 동작
-function modifyReplyModal() {
-  console.log("Modify clicked"); // 수정 클릭 확인
-  var replyContent = $('#modal-content').text();
-  $('#reply_content').val(replyContent);
-  $('#modalScrollable').modal('hide'); // 모달 닫기
-}
-
-// 모달에서 삭제 클릭 시 동작
-function deleteReplyModal() {
-  console.log("Delete clicked"); // 삭제 클릭 확인
-  // 실제 삭제 로직 구현
-  alert('댓글 삭제');
-  $('#modalScrollable').modal('hide'); // 모달 닫기
-}
-
 
 
 $(document).ready(function(){
@@ -474,6 +466,7 @@ let currentReplyNo;
 function modifyReply(replyNo, content) {
   currentReplyNo = replyNo;
   document.getElementById('editReplyContent').value = content;
+  $('#modalScrollable').modal('hide'); // modalScrollable 모달 닫기
   $('#editReplyModal').modal('show');
 }
 
@@ -502,7 +495,7 @@ function updateReply() {
   });
 }
 
-// 댓글 삭제 함수
+//댓글 삭제 함수
 function deleteReply(replyNo) {
   if (confirm('정말로 삭제하시겠습니까?')) {
     $.ajax({
@@ -512,6 +505,7 @@ function deleteReply(replyNo) {
       success: function(response) {
         if (response.status === "SUCCESS") {
           alert("댓글이 삭제되었습니다.");
+          $('#modalScrollable').modal('hide'); // 모달 닫기
           fn_replyList(); // 댓글 목록 갱신
         } else {
           alert("댓글 삭제에 실패하였습니다. 다시 시도해주세요.");
