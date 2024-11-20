@@ -72,8 +72,8 @@ public class MemoController {
 		
 		String after = memo.getMemoContent();  // 수정 후 메모내용
 		
-		 System.out.println( " 수정요청 전_____ " + before);
-		 System.out.println(" 수정요청 후_____ " + after); // 수정 후 메모내용
+		 // System.out.println( " 수정요청 전_____ " + before);
+		 // System.out.println(" 수정요청 후_____ " + after); // 수정 후 메모내용
 		
 		int result = 0;
 		if(!before.equals(after)) {

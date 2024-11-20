@@ -40,28 +40,27 @@
    	 overflow-y: scroll;
    	 }
    	 #teamListDiv{
-   	 max-height: 442px;
+   	 max-height: 345px;
    	 overflow-y: auto;
    	 }
-		 #memoDiv::-webkit-scrollbar {
+		 #memoDiv, #teamListDiv::-webkit-scrollbar {
 		  width: 10px;  /* 세로 스크롤바의 너비 */
 		  height: 8px; /* 가로 스크롤바의 높이 */
 		 }
 		
-		 #memoDiv::-webkit-scrollbar-track {
+		 #memoDiv, #teamListDiv::-webkit-scrollbar-track {
 		  background-color: #f1f1f1; /* 트랙 배경색 */
 		  border-radius: 10px; /* 트랙 모서리 둥글게 */
 		 }
 		
-		/* 스크롤바의 손잡이 (사용자가 드래그할 부분) */
-		#memoDiv::-webkit-scrollbar-thumb {
+			/* 스크롤바의 손잡이 (사용자가 드래그할 부분) */
+			#memoDiv, #teamListDiv::-webkit-scrollbar-thumb {
 		    background-color: #7367f0; /* 손잡이 색 */
 		    border-radius: 10px;     /* 손잡이 모서리 둥글게 */
 		    border: 2px solid #f1f1f1; /* 손잡이의 테두리 색 (트랙과 구분됨) */
 		}
-		
-		/* 스크롤바 손잡이 위에 마우스를 올렸을 때 */
-		#memoDiv::-webkit-scrollbar-thumb:hover {
+			/* 스크롤바 손잡이 위에 마우스를 올렸을 때 */
+			#memoDiv, #teamListDiv::-webkit-scrollbar-thumb:hover {
 		    background-color: #564EB5; /* 손잡이 색을 다르게 */
 		}
    </style>

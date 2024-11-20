@@ -170,6 +170,11 @@ public class MemberController {
 		 return "/member/sentEmail";
 	 }
 	 
+	 // 출근 버튼 클릭시(김동규)
+	 @GetMapping("/checkIn")
+	 public void checkIn() {
+		 
+	 }
 	 
 	 
 	 
