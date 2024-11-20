@@ -164,6 +164,7 @@
                 </div>
                 <br>
                 <hr>
+                
                 <div style="display: flex; align-items: center; justify-content: space-between;">
                   <table id="reply_area" class="table" align="center">
                     <thead>
@@ -226,7 +227,6 @@
 <div class="drag-target"></div>
 </body>
 <script>
-
 $(document).ready(function(){
   fn_replyList();
 
@@ -240,6 +240,24 @@ $(document).ready(function(){
     if (!$(e.target).closest('.icon-wrapper').length) {
       $('.action-replybox').hide();
     }
+  });
+
+  // attachment-toggle 클릭 시 첨부파일 목록 표시
+  $(document).on('click', '#attachment-toggle', function(e) {
+    e.stopPropagation();
+    $('#attachment-list').toggle();
+  });
+
+  // 클릭 시 외부 영역 클릭하면 첨부파일 목록 숨기기
+  $(document).on('click', function(e) {
+    if (!$(e.target).closest('.attachment-toggle-wrapper').length) {
+      $('#attachment-list').hide();
+    }
+  });
+
+  // 클릭 이벤트 전파 중지 (첨부파일 리스트 내에서)
+  $('#attachment-list').on('click', function(e) {
+    e.stopPropagation();
   });
 });
 
@@ -270,7 +288,7 @@ function fn_replyList(){
         if (loginUserMemNo == resData[i].memNo) {
           tr += "<div class='d-flex justify-content-end align-items-center'>"
                 + "<div class='icon-wrapper'>"
-                + "<i class='ti ti-dots-vertical ti-md icon' style='cursor: pointer;'></i>"
+                + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
                 + "<div class='action-replybox'>"
                 + "<form id='rfrm' action='' method='post'>"
                 + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
@@ -404,33 +422,71 @@ function boardList() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const icon = document.querySelector('.icon');
-  const actionBox = document.querySelector('.action-box');
-  const attachmentToggle = document.getElementById('attachment-toggle');
-  const attachmentList = document.getElementById('attachment-list');
+  // 이벤트 위임을 사용하여 동적으로 생성된 요소를 처리
+  document.body.addEventListener('click', (e) => {
+    // 게시글의 .icon 클릭 처리
+    if (e.target.matches('.icon')) {
+      const actionBox = e.target.closest('.icon-wrapper').querySelector('.action-box');
+      if (actionBox) {
+        actionBox.style.display = actionBox.style.display === 'none' || !actionBox.style.display ? 'block' : 'none';
+        hideOtherBoxes('.action-box', actionBox);
+      }
+    }
 
-  icon.addEventListener('click', () => {
-    actionBox.style.display = actionBox.style.display === 'none' || !actionBox.style.display ? 'block' : 'none';
-  });
+    // 댓글의 .comment-icon 클릭 처리
+    if (e.target.matches('.comment-icon')) {
+      const replyBox = e.target.closest('.icon-wrapper').querySelector('.action-replybox');
+      if (replyBox) {
+        replyBox.style.display = replyBox.style.display === 'none' || !replyBox.style.display ? 'block' : 'none';
+        hideOtherBoxes('.action-replybox', replyBox);
+      }
+    }
 
-  document.addEventListener('click', (e) => {
-    if (!icon.contains(e.target) && !actionBox.contains(e.target)) {
-      actionBox.style.display = 'none';
+    // attachment-toggle 클릭 처리
+    if (e.target.matches('#attachment-toggle')) {
+      e.stopPropagation();
+      const attachmentList = document.getElementById('attachment-list');
+      attachmentList.style.display = attachmentList.style.display === 'none' || !attachmentList.style.display ? 'block' : 'none';
+      hideOtherBoxes('.attachment-list', attachmentList);
     }
   });
 
-  attachmentToggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    attachmentList.style.display = attachmentList.style.display === 'none' || !attachmentList.style.display ? 'block' : 'none';
+  // 외부 클릭 이벤트 처리 (모든 action-box, action-replybox 및 attachment-list 숨기기)
+  document.addEventListener('click', (e) => {
+    document.querySelectorAll('.action-box').forEach(box => {
+      if (!box.contains(e.target) && !e.target.matches('.icon')) {
+        box.style.display = 'none';
+      }
+    });
+
+    document.querySelectorAll('.action-replybox').forEach(box => {
+      if (!box.contains(e.target) && !e.target.matches('.comment-icon')) {
+        box.style.display = 'none';
+      }
+    });
+
+    const attachmentList = document.getElementById('attachment-list');
+    if (attachmentList && !attachmentList.contains(e.target) && e.target.id !== 'attachment-toggle') {
+      attachmentList.style.display = 'none';
+    }
   });
 
-  document.addEventListener('click', () => {
-    attachmentList.style.display = 'none';
-  });
+  // 클릭 이벤트 전파 중지 (첨부파일 리스트 내에서)
+  const attachmentList = document.getElementById('attachment-list');
+  if (attachmentList) {
+    attachmentList.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  }
 
-  attachmentList.addEventListener('click', (e) => {
-    e.stopPropagation();
-  });
+  // 다른 상자 숨기기 함수
+  function hideOtherBoxes(selector, currentBox) {
+    document.querySelectorAll(selector).forEach(box => {
+      if (box !== currentBox) {
+        box.style.display = 'none';
+      }
+    });
+  }
 });
 
 </script>
