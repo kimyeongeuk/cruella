@@ -73,25 +73,80 @@
 										<!-- Account -->
 										<div class="card-body">
 											<div style="text-align: center;">
-												<img src="${ contextPath }/assets/img/avatars/1.png" alt="user-avatar"
-													class="d-block w-px-140 h-px-140 rounded mx-auto"
-													id="uploadedAvatar"
-													style="margin-bottom: 20px; align-items: center;"
-													height="120px" />
+                        <img
+                          src="${contextPath}/assets/img/avatars/1.png"
+                          alt="user-avatar"
+                          class="d-block w-px-140 h-px-140 rounded mx-auto"
+                          id="uploadedAvatar" 
+                          style="margin-bottom: 20px; align-items: center;"
+                          height="120px" 
+                          />
 												<div class="button-wrapper">
-													<label for="upload" class="btn btn-primary me-3 mb-4"
-														tabindex="0"> <span class="d-none d-sm-block">첨부파일
-															업로드</span> <i class="ti ti-upload d-block d-sm-none"></i> <input
-														type="file" id="upload" class="account-file-input" hidden
-														accept="image/png, image/jpeg" />
-													</label>
+	                         <label for="upload" class="btn btn-primary me-3 mb-4" tabindex="0">
+	                           <span class="d-none d-sm-block">첨부파일 업로드</span>
+	                           <i class="ti ti-upload d-block d-sm-none"></i>
+	                           <input
+	                             type="file"
+	                             id="upload"
+	                             class="account-file-input"
+	                             hidden
+	                             accept="image/png, image/jpeg" 
+	                            />
+	                         </label>
 													<button type="button"
 														class="btn btn-label-secondary account-image-reset mb-4">
 														<i class="ti ti-refresh-dot d-block d-sm-none"></i> <span
 															class="d-none d-sm-block">Reset</span>
 													</button>
-
 												</div>
+												
+												<script>
+													$(document).ready(function() {
+														$('#upload').on("change", function(evt) {
+															const file = evt.target.files[0]; // 사용자가 선택한 파일
+															
+															
+															console.log(file );
+															
+															if(file){
+																// 선택된 파일 업로드전 미리보기
+																const reader = new FileReader();
+																reader.onload = function(r) {
+																	$('#uploadedAvatar').attr("src", r.target.result); // 이미지 변경
+																};
+																reader.readAsDataURL(file);
+																
+																
+																let formData = new FormData();
+																formData.append("uploadFile", file);
+																
+																$.ajax({
+																	url: '${contextPath}/member/updateProfile.do',
+																	type: 'post',
+																	data: formData,
+																	processData: false,
+																	contentType: false,
+																	success: function (res) {
+																		if(res == "SUCCESS"){
+																			location.reload();
+																		}else {
+																			alert('이미지변경실패');
+																			
+																		}
+																		
+																	}
+																})
+															}
+															
+														})
+													})
+													
+													
+													
+													
+													
+												</script>
+												
 											</div>
 										</div>
 										<h5 class="pb-4 border-bottom mb-4"></h5>

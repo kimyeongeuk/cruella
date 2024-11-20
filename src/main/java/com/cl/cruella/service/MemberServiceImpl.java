@@ -51,4 +51,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.memberNo();
 		}
 
+	@Override
+	public int updateProfileImg(MemberDto m) {
+		return memberDao.updateProfileImg(m);
+	}
+
 }

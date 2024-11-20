@@ -161,6 +161,13 @@ from member
 where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 	</select>
 	
+	<!-- 사원 프로필이미지 수정 -->
+	<update id="updateProfileImg">
+		update
+					member
+			set profile_url = #{profileURL}
+		where mem_no = #{memNo}
+	</update>	
 	
 
 

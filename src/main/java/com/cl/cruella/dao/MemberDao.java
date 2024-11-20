@@ -55,4 +55,8 @@ public class MemberDao {
 	public String memberNo() {
 		return sqlSession.selectOne("memberMapper.selectMemNo");
 	}
+
+	public int updateProfileImg(MemberDto m) {
+		return sqlSession.update("memberMapper.updateProfileImg", m);
+	}
 }

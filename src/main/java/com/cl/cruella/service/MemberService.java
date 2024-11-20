@@ -29,4 +29,7 @@ public interface MemberService {
 	// 사번등록
 	String memberNo();
 
+	// 프로필이미지업로드 
+	int updateProfileImg(MemberDto m);
+
 }
