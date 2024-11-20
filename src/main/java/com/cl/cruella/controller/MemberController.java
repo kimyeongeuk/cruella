@@ -111,7 +111,7 @@ public class MemberController {
 		}else {
 			rd.addFlashAttribute("alertMsg", "사원등록에 실패하였습니다.");
 		}
-		 return "redirect:/";
+		 return "member/dashboard";
 
 	}
 	
