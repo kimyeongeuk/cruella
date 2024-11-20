@@ -75,8 +75,9 @@ public class MemberController {
 	@PostMapping("/resetPwd.do")
 	public String newPwdCheck(String newPwd, String memNo, HttpServletResponse response) throws IOException {
 		
+		
 
-		int result = memberService.resetPwd(newPwd, memNo); // 비밀번호 변경 실행
+		int result = memberService.resetPwd(bcryptPwdEncoder.encode(newPwd), memNo); // 비밀번호 변경 실행
 		
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
@@ -140,7 +141,7 @@ public class MemberController {
 				 str += charSet[idx];
 		 		}
 
-			 memberService.updatePwd(email, str);	// 임시 비밀번호로 변경
+			 memberService.updatePwd(email, bcryptPwdEncoder.encode(str));	// 임시 비밀번호로 변경
 		     
 		 // 3) 메일 발송
 			 SimpleMailMessage message = new SimpleMailMessage();	
