@@ -33,9 +33,9 @@
         color: rgb(45, 45, 45);
       }
 
-			.select2-selection__rendered{
-				display:none;
-			}
+         .select2-selection__rendered{
+            display:none;
+         }
 
     </style>
 
@@ -75,10 +75,10 @@
           displayEventTime: false,
           
           
-	        
-			
-			
-			
+           
+         
+         
+         
           
           
           
@@ -97,7 +97,7 @@
         },
         /*
         select: function(arg) { // 캘린더에서 드래그로 이벤트를 생성할 수 있다
-        	
+           
           var title = prompt('일정 입력');
           if (title) {
             calendar.addEvent({
@@ -115,81 +115,136 @@
           
         // 이벤트 조회
         events: [ 
-					<c:forEach var="list" items="${list}"> // List로 불러오는거는 for문으로!
+               <c:forEach var="list" items="${list}"> // List로 불러오는거는 for문으로!
           {
-						id: '${list.calNo}',
+                  id: '${list.calNo}',
             title: '${list.calTitle}',
             start: '${list.calStartDt}',
             end: '${list.calEndDt}T23:00',
             <c:if test="${list.calStartDt eq list.calEndDt}">
-		          allDay: true
-		        </c:if>
+                allDay: true
+              </c:if>
           },
           
           </c:forEach>
         ],
-					
+               
         
         
         
-		        // 이벤트 수정 (드래그로로 일정 이동시 수정하기)
-		        
-		        eventDrop: function(info) {
-        	
-        	 //console.log("Event ID (calNo): ", info); 
-        	
-        	
-        	
-        	
-        	 console.log(info);
-       		 if(confirm("'"+ info.event.title + "' 일정을 수정하시겠습니까? ") ){
-       			 
-       			var events = new Array(); // Json 데이터를 받기 위한 배열 선언
-   	       	var obj = new Object();
-       			
-         		// 수정된 날짜를 obj에 추가
+              // 이벤트 수정 (드래그로로 일정 이동시 수정하기)
+              
+              eventDrop: function(info) {
+           
+            //console.log("Event ID (calNo): ", info); 
+           
+           
+           
+           
+            console.log(info);
+              if(confirm("'"+ info.event.title + "' 일정을 수정하시겠습니까? ") ){
+                 
+                var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                var obj = new Object();
+                
+               // 수정된 날짜를 obj에 추가
             obj.title = info.event._def.title;
 
             // 시작일과 종료일을 YYYY-MM-DD 형식으로 변환하여 추가
             obj.start = info.event.startStr.split('T')[0];  // 수정된 시작일 (YYYY-MM-DD)
             obj.end = info.event.endStr.split('T')[0] + "T23:00";      // 수정된 종료일 (YYYY-MM-DD)
-       			
-	
-   	       	 //obj.title = info.event._def.title;
-   	       	 //obj.start = info.event._instance.range.start;
-   	       	 //obj.end = info.event._instance.range.end;
-   	       	 events.push(obj);
-   	       	 
-   	       		 $.ajax({
-   	       			 url: '${contextPath}/calendar/updateCalendar.do',
-   	       			 type: 'GET',
-   	       			 data: {
-   	       				 
-   	       					calStartDt: obj.start,  // 수정된 시작 날짜
-   	                calEndDt: info.event.endStr.split('T')[0],      // 수정된 종료 날짜
-   	                calNo: info.event.id    // 수정하려는 이벤트의 ID
-   	       				 
-   	       				 //calStartDt: info.event.start.toISOString().split('T')[0],
-   	               //calEndDt: info.event.end.toISOString().split('T')[0],
-   	               //calNo: info.event.id
-   	       			 },
-   	       			 success: function(res) {
-   	       				 if(res > 0){
-   	       					 alert('일정이 수정되었습니다.');
-   	       				 }else{
-   	       					 alert('일정 수정에 실패했습니다. 다시 시도해주세요.');
-   	       				 }
-          			 },
-      		 })
-       			 
-       		 }else{
-       			 
-       		 } 
-	       	 
+                
+   
+                 //obj.title = info.event._def.title;
+                 //obj.start = info.event._instance.range.start;
+                 //obj.end = info.event._instance.range.end;
+                 events.push(obj);
+                 
+                 	console.log("================================")
+                 	console.log(info.event.end);
+                 	console.log(info.event.endStr);
+                  console.log(info.event.endStr.split('T')[0]);
+                 	console.log("================================")
+
+                 	$.ajax({
+                       url: '${contextPath}/calendar/updateCalendar.do',
+                       type: 'GET',
+                       data: {
+                          
+			                      calStartDt: obj.start,  // 수정된 시작 날짜
+			                      calEndDt: info.event.end == null ? obj.start : info.event.endStr.split('T')[0],      // 수정된 종료 날짜
+			                      calNo: info.event.id    // 수정하려는 이벤트의 ID
+                          
+                          //calStartDt: info.event.start.toISOString().split('T')[0],
+		                      //calEndDt: info.event.end.toISOString().split('T')[0],
+		                      //calNo: info.event.id
+                       },
+                       success: function(res) {
+                          if(res > 0){
+                             alert('일정이 수정되었습니다.');
+                          }else{
+                             alert('일정 수정에 실패했습니다. 다시 시도해주세요.');
+                          }
+                    },
+             })
+                 
+              }else{
+                 
+              } 
+              
 
           }, // 콤마 필수!!!
           
-  		// /이벤트 수정 (드래그로 일정 이동시 수정하기)
+        // /이벤트 수정 (드래그로 일정 이동시 수정하기)
+          
+          
+          
+          
+          
+					// 이벤트 선택해서 삭제하기
+          
+          eventClick: function(info){
+        	  if(confirm("'" + info.event.title +"' 일정을 삭제하시겠습니까?") ){
+        		  // 확인 클릭시
+        		var delCalNo = info.event.id; // 삭제할 이벤트 ID
+
+        		 
+        			  $.ajax({
+        				  url: '${contextPath}/calendar/deleteCalendar.do',
+        				  type: 'GET',
+        				  data: {
+        					  	calNo: delCalNo
+        				  },
+        				  success: function(res) {
+        	       				 if(res > 0){
+        	       					 info.event.remove();
+        	       					 alert('일정이 삭제되었습니다.');
+
+        	       				 }else{
+        	       					 alert('일정 삭제에 실패했습니다. 다시 시도해주세요.');
+        	       				 }
+               			 },
+        			  })
+        		  
+        	  }
+          },
+          
+          
+          // /이벤트 선택해서 삭제하기
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
           
           
           
@@ -197,16 +252,16 @@
           
 
           select: function(evt){ // 날짜 셀 클릭시 실행되는 펑션
-        	  
-        	  
-        	  console.log("==================등록====================");
-	     			console.log(evt.start, "||", new Date(evt.start), "||", new Date(evt.start).toISOString().split('T')[0]);
-	     			console.log(evt.startStr, "||", new Date(evt.startStr), "||", new Date(evt.startStr).toISOString().split('T')[0]);
-	     			console.log()
-	     			console.log("======================================");
-        	  
-        	  
-        	  
+             
+             
+             console.log("==================등록====================");
+                 console.log(evt.start, "||", new Date(evt.start), "||", new Date(evt.start).toISOString().split('T')[0]);
+                 console.log(evt.startStr, "||", new Date(evt.startStr), "||", new Date(evt.startStr).toISOString().split('T')[0]);
+                 console.log()
+                 console.log("======================================");
+             
+             
+             
             console.log(evt); // {startStr:'시작날짜', endStr:'끝날짜'} 가 들어있다. 즉, 셀 드래그로 선택시 첫 날짜는 startStr에, 마지막 날짜는 endStr에 담긴다.
 
             //alert('sss');
@@ -240,8 +295,8 @@
         
         // 일정추가하는 모달창 이벤트
         $("#saveChanges").on("click", function () {
-        	
-        	
+           
+           
           var eventData = {
             title: $("#title").val(),
             start: $("#start").val(),
@@ -261,12 +316,15 @@
             //끝나는 날짜가 시작하는 날짜보다 값이 크면 안됨
           } else if ($("#start").val() > $("#end").val()) {
             alert("날짜를 바르게 입력하세요.");
-          } else {
-            	
-              // 이벤트 추가
+          } else if($("#start").val() === $("#end").val()){
+      	  	eventData.allDay = true; // allDay true속성 추가
+            calendar.addEvent(eventData);
+            $("#exampleModal").modal("hide");              
+          }else{
               calendar.addEvent(eventData);
-              $("#exampleModal").modal("hide");
-            }
+              $("#exampleModal").modal("hide");   
+          }
+
 
         
           
@@ -279,11 +337,11 @@
                type: 'POST',
                //contentType: 'application/json',  // JSON 형식으로 보내기
                data: {
-             	  calTitle: $('#title').val(),  // jQuery를 사용하여 실제 값 가져오기
-           	    calStartDt: $('#start').val(),
-           	    calEndDt: $('#end').val(),
-           	    calCategory: $('#calCategory').val(),  // 선택된 카테고리 값을 가져오기
-           	    calRgb: $('#color').val()  // 선택된 색상을 가져오기
+                  calTitle: $('#title').val(),  // jQuery를 사용하여 실제 값 가져오기
+                  calStartDt: $('#start').val(),
+                  calEndDt: $('#end').val(),
+                  calCategory: $('#calCategory').val(),  // 선택된 카테고리 값을 가져오기
+                  calRgb: $('#color').val()  // 선택된 색상을 가져오기
                },
                success: function(res) {
                  if (res > 0) {  // 성공적으로 일정이 추가되었을 때
