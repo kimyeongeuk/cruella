@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.BoardDto;
 import com.cl.cruella.dto.PageInfoDto;
+import com.cl.cruella.dto.ReplyDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -77,7 +78,23 @@ public class BoardDao {
 	    return sqlSession.delete("boardMapper.deleteSelectBoard", params);
 	}
 
-
+	public List<ReplyDto> selectReplyList(int boardNo){
+		return sqlSession.selectList("boardMapper.selectReplyList", boardNo);
+	}
 	
+	public int insertReply(ReplyDto r) {
+		return sqlSession.insert("boardMapper.insertReply", r);
+	}
+
+	public int deleteReplyCompletely(int replyNo) {
+		return sqlSession.delete("boardMapper.deleteReplyCompletely", replyNo);
+	}
+
+	public int updateReply(int replyNo, String content) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("replyNo", replyNo);
+        params.put("content", content);
+        return sqlSession.update("boardMapper.updateReply", params);
+    }
 	
 }

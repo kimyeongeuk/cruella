@@ -241,7 +241,8 @@
 													<c:choose>
 														<c:when test="${ list.chatCount eq 2 }">
 			                        <li class="chat-contact-list-item mb-1 chat-list-form">
-			                        	<input type="hidden" value="${ list.chatNo }">
+			                        	<input type="hidden" value="${ list.chatNo }" class="chatlistno">
+			                        	
 			                          <a class="d-flex align-items-center">
 			                            <div class="flex-shrink-0 avatar avatar-offline">
 			                              <img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />
@@ -663,7 +664,7 @@
 													
                      			 $('.chat-list-form').on('click', function() {
 													    let a = '';
-													    
+													    const $chatArea = $(".chatarea");
 													    $.ajax({
 													        url: '${contextPath}/chat/list.do',
 													        data: { chatNo: $(this).children().eq(0).val(), memNo:'${loginUser.memNo}' },
@@ -701,18 +702,6 @@
 														            	a += '</div>';
 														            	a += '</div>';
 														            	a += '</li>';
-														            	
-														            	
-														            	
-
-														            	
-														            	
-														            	
-														            	
-														            	
-														            	
-														            	
-														            	
 														            }else{
 														            	a += '<li class="chat-message">';
 														            	a += '<div class="d-flex overflow-hidden">';
@@ -741,11 +730,21 @@
 												                          
 														            }
 														        	}
-													        	
+													        		
 													        			$('#chathistory').html(a);
 																		    $('#chatMain').css('display', 'none');
 																		    $('#chatList').css('display', 'block');
-																		    $('#chathistory').scrollTop( $('#chathistory')[0].scrollHeight )
+																		
+																		    
+																		    
+																		    
+																		    
+																		    
+																		    
+																		    
+																		    
+																		    
+																		    
 													 			
 																}
 													    });
@@ -790,7 +789,7 @@
                         </div>
 
 
-                      <div class="chat-history-body">
+                      <div class="chat-history-body chatarea">
                         <ul class="list-unstyled chat-history" id="chathistory">
 
                           <li class="chat-message chat-message-right">
@@ -923,7 +922,7 @@
 
                       <!-- 채팅 입력 칸  -->
                       <div class="chat-history-footer shadow-xs" >
-                        <form class="form-send-message d-flex justify-content-between align-items-center" id="chatinput">
+                        <div class="form-send-message d-flex justify-content-between align-items-center" id="chatinput">
                           <input
                             class="form-control message-input border-0 me-4 shadow-none" 
                              id="inputchatform"/>
@@ -933,11 +932,11 @@
                                 class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
                               <input type="file" id="attach-doc" hidden />
                             </label>
-                            <button class="btn btn-primary d-flex send-msg-btn" type="button" id="sendmessage">
+                            <button class="btn btn-primary d-flex send-msg-btn sendmessage" type="button" id="sendmessage">
                               <span class="align-middle d-md-inline-block d-none" style="flex: none;">전송</span>
                             </button>
                           </div>
-                        </form>
+                        </div>
                       </div> 
 
                       <!-- 채팅 잠금 화면 
@@ -961,58 +960,195 @@
                     -->
 
                   </div>
-									<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script> -->
+									<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
                   <!-- 채팅 기록 끝 -->
 
 									<script>
+									
+									 //var subscription = null;
+				           var socket = null;
+				           var client = null;
+				           var chatNo = null;
+				           var userNo = "${loginUser.memNo}"; // 로그인 유저 사번
+					         var userName = "${loginUser.memName}"; // 로그인 유저 이름
+									
+					         /*
+					         var today = new Date();
+					         var year = today.getFullYear();
+					         var month = ('0' + (today.getMonth() + 1)).slice(-2);
+					         var day = ('0' + today.getDate()).slice(-2);
+									 var hours = today.getHours(); // 시
+									 var minutes = today.getMinutes();  // 분
+									 var seconds = today.getSeconds(); 
+					        
+					         
+					         let time = new Date();   
+									 let hours = time.getHours(); // 시
+									 let minutes = time.getMinutes();  // 분
+									 let seconds = time.getSeconds(); 
+									 timeaa = hours + ":" + minutes + ":" + seconds;
+									 console.log(timeaa)
+										*/
+									 $(document).ready(function(){
+					         
+			
+											// 구독된 사람들에게 채팅메세지 발송
+			                $(".sendmessage").on("click", function(){
+			                	
+			                    var msg = document.getElementById("inputchatform");            
+			                    client.send('/pub/'+chatNo, {}, JSON.stringify({chatNo: chatNo,
+			                    																																memNo: userNo,
+			                    																																msgContent: msg.value,
+			                    																																msgType:'message',
+			                    																																 msgRegistDate: new Date().toISOString()}));
+			                    /* 
+			          	          $.ajax({
+			                    	url:'${contextPath}/chat/updateNewMsg.do',
+			                    	data:{chatNo:chatNo,memNo:userNo,msgContent:msg.value},
+			                    	type:'post',
+			                    	success:function(res){
+			                    		console.log(res);
+			                    	},
+			                    	error:function(res){
+			                    		console.log('에러입니다.');
+			                    	}
+			                    }) */
+			                    msg.value = ''; 
+			                    
+			                });
 										
-									$(document).ready(function(){
-							
-											var chatNo = 
-											var chat
-											
-											var socket = new SockJS("${contextPath}/chatPage"); // 엔드포인트
-											var client = Stomp.over(socket);
-											
-											// connection이 되면 실행
-											client.connect({},function(){
-												
-												console.log("stomp Connection")
+										
+										
+											$('.chat-list-form').on('click',function(){ // 채팅방 click event start
+								     		
+								     		  //subscription = null;
+								          //socket = null;
+								          //client = null;
+								          
+								          /* console.log("socket", socket);
+								          console.log("client", client); */
+								          
+								          if(client != null){
+								        	  client.unsubscribe();
+								        	  client.disconnect();
+								          }
+								    	  
+								          chatNo = $(this).children().eq(0).val(); //해당 채팅방 번호
+								          
+								          
+								          socket = new SockJS("${contextPath}/chatPage"); // 엔드포인트
+								          client = Stomp.over(socket);
+								          
+								          
+								          
+								          /*
+								          if (subscription) {
+								              subscription.unsubscribe();  // 이전 채팅방 구독 취소
+								              console.log("이전 채팅방 구독이 취소되었습니다.");
+								          }
+								          
+								          if (!client || !client.connected) {
+								              socket = new SockJS("${contextPath}/chatPage");
+								              client = Stomp.over(socket);
+								          }
+								          */
+								          
+								          // connection이 되면 실행
+								          client.connect({},function(){ // connect start
+								            
+								            console.log("stomp Connection")
 
-												// subscribe(path,callback)로 메시지 받기 ?? callback 첫번째 파라미터의 body로 메시지의 내용이 들어옴
-												client.subscribe('/sub/' + chatNo, function(chat){
-													var content = JSON.parse(chat.body);
-													
-													var writer = content.writer;
-													var str = '';
-													
-													if(writer === 로그인한유저){
-														맞으면 오른쪽에 메시지 나오게
-													}else{
-														아니면 왼쪽에 메시지 나오게
-													}
-												
-												)};
-												
-												// send(path,header,message)로 메시지 보내기
-												client.send('/pub/chat/enter',{},JSON.stringify({ChatNo: 채팅방번호, memNo: 작성자번호}))
-												
-												});
-											
-												$('#sendmessage').on('click',function(e){
-													var msg = document.getElementById("inputchatform");
-													
-													console.log(작성자이름 + ":" + msg.value);
-													stomp.send('/pub/chat/message',{},JSON.stringify({chatNo: 채팅방번호,msgContent: msg.value, memNo:작성자번호}));
-													msg.value='';
-													
-												});
-											
-											
-											
-											});
-											
+								            // subscribe(path,callback)로 메시지 받기 ?? callback 첫번째 파라미터의 body로 메시지의 내용이 들어옴
+								            client.subscribe('/sub/'+chatNo, function(chat){ // subscribe start
+								              var content = JSON.parse(chat.body);
+								              var writer = content.memNo;
+								              var msgType = content.msgType;
+								             
+								              var str = '';
+								              const $chatArea = $(".chatarea");
+								           
+									              if(writer == userNo){
+									                      str += '<li class="chat-message chat-message-right">';
+									                      str += '<div class="dropdown">';
+									                      str += '<button class="btn btn-sm btn-icon btn-text-secondary text-secondary rounded-pill dropdown-toggle hide-arrow waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="true" id="chat-header-actions">'
+									                      str += '<i class="ti ti-dots-vertical ti-md"></i>';
+									                      str += '</button>';
+									                      str += '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">';
+									                      str += '<a class="dropdown-item noticeInsert waves-effect" id="noticeInsert">공지사항 등록</a>';
+									                      str += '<a class="dropdown-item messageModify waves-effect" id="messageModify">수정</a>';
+									                      str += '<a class="dropdown-item messageDelete waves-effect" id="messageDelete">삭제</a>';
+									                      str += '</div>';
+									                      str += '</div>';
+									                      str += '<div class="d-flex overflow-hidden">';
+									                      str += '<div class="" style="display: block;  text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center; width: 50px;">(수정됨)</div>'
+									                      str += '<div class="me-2" style="text-align: center; color: black; font-size: 13px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center; margin-left: 8px;">'+ content.msgCheck +'</div>'
+	
+									                      str += '<div class="chat-message-wrapper flex-grow-1 w-50">';
+									                      str += '<div class="chat-message-text">';
+									                      str += '<p class="mb-0 chatContent chatContent" id="chatContent">'+ content.msgContent +'</p>';
+									                      str += '</div>';
+									                      str += '<div class="text-end text-muted mt-1">';
+									                      str += '<small>'+ content.msgRegistDate +'</small>';
+									                      str += '</div>';
+									                      str += '</div>';
+									                      str += '<div class="user-avatar flex-shrink-0 ms-4">';
+									                      str += '<div class="avatar avatar-sm" data-target="#app-chat-sidebar-left" data-bs-toggle="sidebar" data-overlay="app-overlay-ex">';
+									                      str += '<img src="${ contextPath }/resources/assets/img/avatars/1.png" alt="Avatar" class="rounded-circle" />';
+									                      str += '</div>';
+									                      str += '</div>';
+									                      str += '</li>';
+									                
+									                
+									              }else{
+									                      str += '<li class="chat-message">';
+									                      str += '<div class="d-flex overflow-hidden">';
+									                      str += '<div class="user-avatar flex-shrink-0 me-4">';
+									                      str += '<div class="avatar avatar-sm" data-target="#app-chat-sidebar-right" data-bs-toggle="sidebar" data-overlay="app-overlay-ex">';
+									                      str += '<img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />';
+									                      str += '</div>';
+									                      str += '</div>';
+									                      str += '<div class="chat-message-wrapper flex-grow-1">';
+									                      str += '<div class="chat-message-text">';
+									                      str += '<p class="mb-0">'+ content.msgContent +'</p>';
+									                      str += '</div>';
+									                      str += '<div class="text-muted mt-1">';
+									                      str += '<small>'+ content.msgRegistDate +'</small>';
+									                      str += '</div>';
+									                      str += '</div>';
+									                      str += '<div class="me-2" style="text-align: center; color: black; font-size: 13px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center;">';
+									                      str += '</div>';
+									                      str += '<div style="text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center;">';
+									                      str += '(수정됨)';
+									                      str += '</div>';
+									                      str += '</div>';
+									                      str += '</li>';
+									              }
+								              
+								              
+								                $('#chathistory').append(str);
+								                $chatArea.scrollTop($chatArea[0].scrollHeight)
+								            
+								            }) // subscribe end
+								            
+								            // send(path,header,message)로 메시지 보내기
+								            // 웹소켓 실행되자마자 나올거
+								            client.send('/pub/'+chatNo,{},JSON.stringify({chatNo: chatNo, 
+								            																															memNo: userNo,
+								            																															memName:userName,
+								            																															msgType:"entry"
+								            																															}));
+								            
+								          }); // connect end
+								          	
+																
 
+								       }); // 채팅방 click event end
+											
+								      
+									})
+										
+								          
+								     	
 										
 								
 									

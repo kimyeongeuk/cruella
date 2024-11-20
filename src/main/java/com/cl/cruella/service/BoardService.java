@@ -5,8 +5,8 @@ import java.util.Map;
 
 import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.BoardDto;
-import com.cl.cruella.dto.CommentDto;
 import com.cl.cruella.dto.PageInfoDto;
+import com.cl.cruella.dto.ReplyDto;
 
 
 public interface BoardService {
@@ -40,14 +40,19 @@ public interface BoardService {
 	int deleteSelectedPosts(List<Integer> boardNos);
 	
 	// 댓글 목록 조회
-	List<CommentDto> selectCommentList(int boardNo);
+	List<ReplyDto> selectReplyList(int boardNo);
 	
 	// 댓글 등록 
-	int insertComment(CommentDto r);
+	int insertReply(ReplyDto r);
 	
 	// 댓글 완전삭제 (스케줄러에 의해 작동)
-	int deleteCommentCompletely();
+	int deleteReplyCompletely(int replyNo);
 	
+	// 댓글 수정
+	int updateReply(int replyNo, String content);
+	    
+	
+
 	
 
 }

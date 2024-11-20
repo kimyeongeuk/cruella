@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cl.cruella.dto.MemoDto;
 import com.cl.cruella.service.MemoService;
@@ -28,11 +27,9 @@ public class MemoController {
 	@ResponseBody
 	public List<MemoDto> memoList(String memNo) {
 		
-		 // System.out.println(memNo);
 		
 		List<MemoDto> list = memoService.selectMemoList(memNo);	// 사번을 활용 -> 모든 메모 정보 조회
 		
-		 // System.out.println(list);
 		
 		return list;
 	}
@@ -40,19 +37,15 @@ public class MemoController {
 	// 메모 작성
 	// 김동규
 	@PostMapping("/insertMemo.do")
-	public String insertMemo(MemoDto memo, RedirectAttributes rdAttributes) {
+	@ResponseBody
+	public String insertMemo(MemoDto memo) {
 		
-		// System.out.println(memo);
+		//System.out.println(memo);
 		
-		int result = memoService.insertMemo(memo);
+		memoService.insertMemo(memo);
 		
-		if(result > 0) {
-			rdAttributes.addFlashAttribute("alertMsg", "새로운 메모 등록 완료");
-		}else {
-			rdAttributes.addFlashAttribute("alertMsg", "메모 등록 실패. 다시 시도해주세요.");
-		}
+		return "success";
 		
-		return "redirect:/member/myinfo.do";
 	}
 	
 	// 메모 조회 (메모번호로)
@@ -71,9 +64,9 @@ public class MemoController {
 	// 메모 수정
 	// 김동규
 	@PostMapping("/modifyMemo.do")
+	@ResponseBody
 	public String modifyMemo(MemoDto memo) {
 		
-		// System.out.println(memo);
 		MemoDto m = memoService.selectMemoByNo(memo.getMemoNo());
 		String before = m.getMemoContent(); 	// 수정 전 메모내용
 		
@@ -85,21 +78,23 @@ public class MemoController {
 		
 		if(!before.equals(after)) {
 			
-			int result = memoService.modifyMemo(memo);
+			 memoService.modifyMemo(memo);
 			
 		}
-		return "redirect:/member/myinfo.do"; 
+		return "success";
 		
 	}
 	
+	// 메모삭제
+	// 김동규
 	@PostMapping("/deleteMemo.do")
+	@ResponseBody
 	public String deleteMemo(int memoNo) {
 		
-		// System.out.println(memoNo);
 		
 		memoService.deleteMemo(memoNo);
 		
-		return "redirect:/member/myinfo.do";
+		return "success";
 	}
 
 }

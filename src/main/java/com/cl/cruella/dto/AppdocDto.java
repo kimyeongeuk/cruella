@@ -1,6 +1,7 @@
 package com.cl.cruella.dto;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -43,7 +44,7 @@ public class AppdocDto { // 기안문서
 	private List<AppRovalDto> rovalList;
 	
 //	참조자 리스트
-	private List<AppRefDto> refList;
+	private List<AppRefDto> refList = new ArrayList<>();
 	
 //	파일첨부 리스트
 	private List<AttachDto> attachList;

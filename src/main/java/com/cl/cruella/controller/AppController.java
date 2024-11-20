@@ -1,6 +1,9 @@
 package com.cl.cruella.controller;
 
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,22 +12,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cl.cruella.dto.AppdocDto;
+import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.service.AppService;
+import com.cl.cruella.util.FileUtil;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/app")
 public class AppController {
 	
 	private final AppService appService;
+	private final FileUtil fileUtil;
 	
 	
 	
@@ -48,8 +56,8 @@ public class AppController {
 	@GetMapping("/form_robin.do")
 	public void formRobinPage(Model model,HttpSession session) {
 		String userNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
-		DeptDto d = appService.formDraftPage(userNo);
-		model.addAttribute("d",d);
+		DeptDto m = appService.formDraftPage(userNo);
+		model.addAttribute("m",m);
 		
 	}
 	
@@ -102,13 +110,46 @@ public class AppController {
 	}
 	
 	
-//	기안작성 insert
-	@ResponseBody
-	@PostMapping(value="/ajaxInsert.do", produces="application/json")
-	public void ajaxAppInsert(AppdocDto ad, MultipartFile uploadFile) {
+	
+//	전자결재작성 insert
+	@PostMapping("/appInsert.do")
+	public String appInsert(AppdocDto ad, List<MultipartFile> uploadFile,RedirectAttributes rdAttributes) {
+		
+		List<AttachDto> list = new ArrayList<>();
+		
+		for(MultipartFile file : uploadFile) {
+			if(file != null && !file.isEmpty()) { // 파일이 존재할 경우
+				Map<String, String> map = fileUtil.fileupload(file,"appdocFolder");
+				list.add(AttachDto.builder()
+								  .filePath(map.get("filePath"))
+								  .originalName(map.get("originalName"))
+								  .filesystemName(map.get("filesystemName"))
+								  .build());
+			}
+		}
+		
+		int result = appService.insertApp(ad,list);
+		
+		if(result > 0) {
+			log.debug("전자결재 신청 성공");
+			rdAttributes.addFlashAttribute("alertMsg", "성공적으로 결재 되었습니다.");
+			
+		}else {
+			log.debug("실패");
+			rdAttributes.addFlashAttribute("alertMsg", "전자결재 실패하였습니다.");
+			
+		}
+		
+		
+		return "redirect:/app/app_main.do";
 		
 		
 		
+	}
+	
+	
+	@GetMapping("/box_main.do")
+	public void boxpdPage(){
 		
 	}
 	

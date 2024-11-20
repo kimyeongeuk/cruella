@@ -33,7 +33,9 @@
         color: rgb(45, 45, 45);
       }
 
-
+			.select2-selection__rendered{
+				display:none;
+			}
 
     </style>
 
@@ -94,7 +96,7 @@
           calendar.unselect()
         },
 
-        // 이벤트 
+        // 이벤트 조회
         events: [ 
 					<c:forEach var="list" items="${list}"> // List로 불러오는거는 for문으로!
           {
@@ -119,7 +121,7 @@
 
              // 종료일에서 하루를 빼는 코드 (String -1 int 는 안되기때문에 Date로 형변환 후 처리하고 다시 String으로 만들어서 #end input에 담아야한다)
             var endDate = new Date(evt.endStr);  // 종료일을 Date 객체로 변환
-            endDate.setDate(endDate.getDate() - 1);  // 하루를 빼기
+            endDate.setDate(endDate.getDate() -1);  // 하루를 빼기
 
             var endDateString = endDate.toISOString().split('T')[0];  // YYYY-MM-DD 형식으로 변환
             $("#end").val(endDateString);  // 종료일 -1일을 'end' input에 입력  
@@ -129,34 +131,115 @@
           }
         });
 
-            // 일정추가하는 모달창 이벤트
-          $("#saveChanges").on("click", function () {
-            var eventData = {
-              title: $("#title").val(),
-              start: $("#start").val(),
-              end: $("#end").val(),
-              color: $("#color").val(),
-            };
-            //빈값입력시 오류
-            if (
-              eventData.title == "" ||
-              eventData.start == "" ||
-              eventData.end == ""
-            ) {
-              alert("입력하지 않은 부분이 있습니다.");
+        
+        
+        
+        // 일정추가하는 모달창 이벤트
+        $("#saveChanges").on("click", function () {
+        	
+        	
+        	
+        	var startDate = $("#start").val();  // 시작일
+            var endDate = $("#end").val();  // 종료일
 
-              //끝나는 날짜가 시작하는 날짜보다 값이 크면 안됨
-            } else if ($("#start").val() > $("#end").val()) {
-              alert("날짜를 바르게 입력하세요.");
-            } else {
+            // 종료일에 하루를 더해서 달력에 맞게 수정
+            var endDateModified = new Date(endDate);
+            endDateModified.setDate(endDateModified.getDate() + 1);  // 종료일에 하루를 더 추가
+
+            var eventData = {
+                title: $("#title").val(),
+                start: startDate,
+                end: endDateModified.toISOString().split('T')[0],  // 수정된 end 날짜를 YYYY-MM-DD 형식으로 변환
+                color: $("#color").val(),
+            };
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+          //var eventData = {
+           // title: $("#title").val(),
+           // start: $("#start").val(),
+          //  end: $("#end").val() +2,
+          //  color: $("#color").val(),
+         // };
+          
+          
+          
+          //빈값입력시 오류
+          if (
+            eventData.title == "" ||
+            eventData.start == "" ||
+            eventData.end == ""
+          ) {
+            alert("입력하지 않은 부분이 있습니다.");
+
+            //끝나는 날짜가 시작하는 날짜보다 값이 크면 안됨
+          } else if ($("#start").val() > $("#end").val()) {
+            alert("날짜를 바르게 입력하세요.");
+          } else {
+            	
               // 이벤트 추가
               calendar.addEvent(eventData);
               $("#exampleModal").modal("hide");
-              $("#title").val("");
-              $("#start").val("");
-              $("#end").val("");
-              $("#color").val("");
             }
+
+        
+          
+        
+          
+        
+          
+          
+       // db에 일정 insert
+       
+      
+       
+       
+       
+          
+          // DB에 일정 추가 AJAX 요청
+             $.ajax({
+               url: '${contextPath}/calendar/insertCalendar.do',  // 서버 URL
+               type: 'POST',
+               //contentType: 'application/json',  // JSON 형식으로 보내기
+               data: {
+             	  calTitle: $('#title').val(),  // jQuery를 사용하여 실제 값 가져오기
+           	    calStartDt: $('#start').val(),
+           	    calEndDt: $('#end').val(),
+           	    calCategory: $('#calCategory').val(),  // 선택된 카테고리 값을 가져오기
+           	    calRgb: $('#color').val()  // 선택된 색상을 가져오기
+               },
+               success: function(res) {
+                 if (res > 0) {  // 성공적으로 일정이 추가되었을 때
+                   alert('일정이 추가되었습니다.');
+                   $('#dayclickmodal').modal('hide');  // 모달 닫기
+
+                 } else {
+                   alert('일정 추가에 실패했습니다. 다시 시도해주세요.');
+                 }
+               },
+              
+             });
+
+             // 모달 닫기 및 폼 초기화
+                                
+                   $("#exampleModal").modal("hide");
+                   $("#title").val("");
+                   $("#start").val("");
+                   $("#end").val("");
+                   $("#color").val("");
+           
+             
+             
+             // /db에 일정 insert
+             
+        
+            
+            
           });
 
         calendar.render();
@@ -175,6 +258,14 @@
               <link href="
               https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.css
               " rel="stylesheet">
+    
+    
+    
+    
+    
+  
+    
+    
     
     
     
@@ -215,32 +306,32 @@
 
 
                         <div class="app-calendar-events-filter text-heading" style="display:flex; flex-direction: row;">
-                          <div class="form-check form-check-success mb-5 ms-2">
+                          <div class="form-check form-check-secondary mb-5 ms-2">
                             <input
                               class="form-check-input input-filter"
                               type="checkbox"
                               id="select-personal"
                               data-value="personal"
                               checked />
-                            <label class="form-check-label" for="select-personal" style=" width:50px;">행사</label>
+                            <label class="form-check-label" for="select-personal" style=" width:70px;">전사 일정</label>
                           </div>
-                          <div class="form-check form-check-info mb-5 ms-2">
+                          <div class="form-check form-check-secondary mb-5 ms-2">
                             <input
                               class="form-check-input input-filter"
                               type="checkbox"
                               id="select-business"
                               data-value="business"
                               checked />
-                            <label class="form-check-label" for="select-business" style=" width:50px;">워크샵</label>
+                            <label class="form-check-label" for="select-business" style=" width:50px;">팀 일정</label>
                           </div>
-                          <div class="form-check form-check-warning mb-5 ms-2">
+                          <div class="form-check form-check-secondary mb-5 ms-2">
                             <input
                               class="form-check-input input-filter"
                               type="checkbox"
                               id="select-family"
                               data-value="family"
                               checked />
-                            <label class="form-check-label" for="select-family" style=" width:80px;">창립기념일</label>
+                            <label class="form-check-label" for="select-family" style=" width:80px;">개인 일정</label>
                           </div>
                           
                         </div>
@@ -269,7 +360,7 @@
     <!-- day 클릭시 모달 -->
     <div class="modal fade" id="dayclickmodal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
-        <div class="modal-content" style="height: 550px;">
+        <div class="modal-content" style="height: 620px;">
           <div class="modal-body">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="text-center mb-6">
@@ -278,8 +369,20 @@
 
               
               <div class="col-12 text-center" style="height:160px;">
+
+                <label for="calCategory" style="float:left;">일정 종류</label>
+                  <select
+                    id="calCategory"
+                    name="calCategory"
+                    class="select2 form-select"
+                    data-allow-clear="true" >
+                    <option class="optionHover" value="선택" disabled selected style="display: none;">선택</option>
+                    <option class="optionHover" value="전사 일정" class="optionHover">전사 일정</option>
+                    <option class="optionHover" value="팀 일정" class="optionHover">팀 일정</option>
+                    <option class="optionHover" value="개인 일정" class="optionHover">개인 일정</option>
+                  </select>
                 
-                <label for="title" style="float:left;">일정명</label>
+                <label for="title" style="float:left; margin-top: 20px;">일정명</label>
                   <input
                     id="title"
                     name="title"
@@ -306,23 +409,32 @@
     
 
 
+                    
+                  
 
-                <label for="color" style="float:left;">배경색</label>
+                  <label for="color" style="float:left;">배경색</label>
+
+
                   <select
                     id="color"
                     name="color"
                     class="select2 form-select"
                     data-allow-clear="true">
-                    <option class="optionHover" value="선택" disabled selected style="display: none;">선택</option>
-                    <option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;">연빨강</option>
-                    <option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165);">연주황</option>
-                    <option value="rgb(255, 245, 191)" class="optionHover" style="background-color: rgb(255, 245, 191);">연노랑</option>
-                    <option value="rgb(207, 253, 226)" class="optionHover" style="background-color: rgb(207, 253, 226);">연초록</option>
-                    <option value="rgb(200, 247, 255)" class="optionHover" style="background-color: rgb(202, 240, 247);">연파랑</option>
-                    <option value="rgb(201, 206, 255)" class="optionHover" style="background-color: rgb(201, 206, 255);">연남색</option>
-                    <option value="rgb(238, 212, 255)" class="optionHover" style="background-color: rgb(238, 212, 255);">연보라</option>
+                    
+                    <option value="rgb(128, 108, 199)" class="companyCal" style="background-color: rgb(128, 108, 199);" selected>전사 일정</option>
+
+                    <option value="rgb(28, 134, 221)" class="teamCal" style="background-color: rgb(28, 134, 221);" selected>팀 일정</option>
+
+                    <option class="personalCal" value="선택" disabled selected style="display: none;">선택</option>
+                    <option value="rgb(253, 191, 191)" class="personalCal" style="background-color: rgb(253, 191, 191); color:transparent;">연빨강</option>
+                    <option value="rgb(255, 201, 165)" class="personalCal" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>
+                    <option value="rgb(255, 245, 191)" class="personalCal" style="background-color: rgb(255, 245, 191); color:transparent;">연노랑</option>
+                    <option value="rgb(207, 253, 226)" class="personalCal" style="background-color: rgb(207, 253, 226); color:transparent;">연초록</option>
+                    <option value="rgb(200, 247, 255)" class="personalCal" style="background-color: rgb(202, 240, 247); color:transparent;">연파랑</option>
+                    <option value="rgb(201, 206, 255)" class="personalCal" style="background-color: rgb(201, 206, 255); color:transparent;">연남색</option>
+                    <option value="rgb(238, 212, 255)" class="personalCal" style="background-color: rgb(238, 212, 255); color:transparent;">연보라</option>
                   </select>
-                  
+
 
 
 
@@ -388,7 +500,44 @@
    <!-- layout wrapper 닫기 -->
    </div>
    
-   
+   <script>
+      
+
+      
+            $(document).ready(function() {
+                // #calCategory select에서 change 이벤트 발생 시
+                $('#calCategory').change(function() {
+                    // id="calCategory"에 들어있는 value 값 가져오기 ( val 은 jquery문 )
+                    const selectedValue = $(this).val();
+
+                    $('#color').html("");
+
+                    let a = "";
+                    if(selectedValue === '전사 일정'){
+                      a = '<option value="rgb(128, 108, 199)" class="optionHover" style="background-color: rgb(128, 108, 199);">전사 일정</option>'
+                    }else if(selectedValue === '팀 일정'){
+                      a = '<option value="rgb(12, 114, 197)" class="optionHover" style="background-color: rgb(12, 114, 197);">팀 일정</option>'
+                    }else{ // '개인 일정'
+                      a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;" selected>연빨강</option>';
+                      a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
+                      a += '<option value="rgb(255, 245, 191)" class="optionHover" style="background-color: rgb(255, 245, 191); color:transparent;">연노랑</option>'; 
+                      a += '<option value="rgb(207, 253, 226)" class="optionHover" style="background-color: rgb(207, 253, 226); color:transparent;">연초록</option>';      
+                      a += '<option value="rgb(200, 247, 255)" class="optionHover" style="background-color: rgb(202, 240, 247); color:transparent;">연파랑</option>';     
+                      a += '<option value="rgb(201, 206, 255)" class="optionHover" style="background-color: rgb(201, 206, 255); color:transparent;">연남색</option>';     
+                      a += '<option value="rgb(238, 212, 255)" class="optionHover" style="background-color: rgb(238, 212, 255); color:transparent;">연보라</option>';    
+                    }
+
+                    $('#color').html(a); // jQuery문으로 innerHTML에 넣는 구문이 .html이다.
+
+
+
+                });
+            });
+
+
+
+
+    </script>
    
    
    

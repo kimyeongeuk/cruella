@@ -1,5 +1,6 @@
 package com.cl.cruella.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -50,6 +51,19 @@ public class ChatServiceImpl implements ChatService{
 	public List<MessageDto> messageList(int chatNo) {
 		return chatDao.messageList(chatNo);
 	}
+	
+	public int chatCount(int chatNo) {
+		return chatDao.chatCount(chatNo);
+	}
+	public int insertMessage(MessageDto messageDto) {
+		
+		return chatDao.insertMessage(messageDto);
+
+	}
+	public int updateNewMsg(MessageDto messageDto) {
+		return chatDao.updateNewMsg(messageDto);
+	}
+
 
 
 }

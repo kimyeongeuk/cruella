@@ -213,8 +213,6 @@
                   </div>
                   
                   <!-- 메모등록 모달 -->
-                  <form action="${ contextPath }/memo/insertMemo.do" method="post">
-                  <input type="hidden" name="memNo" value="${ loginUser.getMemNo() }">
 	                  <div class="modal fade" id="insertMemoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                    <div class="modal-dialog">
 	                        <div class="modal-content" style="width: 450px; height: 450px;">
@@ -226,17 +224,14 @@
 	                               <textarea id="insertMemoInput" name="memoContent"></textarea>
 	                            </div>
 	                            <div class="modal-footer justify-content-center">
-	                                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_memo_insert">등록</button>
+	                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_memo_insert" onclick="fnInsertMemo();">등록</button>
 	                                <button type="button" class="btn btn-primary" id="btn_memo_cancel">취소</button>
 	                            </div>
 	                        </div>
 	                    </div>
 	                  </div>
-                  </form>
                   
                   <!-- 메모 조회 및 수정 모달 -->
-                  <form action="${ contextPath }/memo/modifyMemo.do" method="post">
-                  <input type="hidden" name="memNo" value="${ loginUser.getMemNo() }">
                   <input type="hidden" name="memoNo" id="modifyMemoNo" value="">
 	                  <div class="modal fade" id="selectMemoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	                    <div class="modal-dialog">
@@ -249,13 +244,12 @@
 	                               <textarea id="insertMemoInput_edit" name="memoContent"></textarea>
 	                            </div>
 	                            <div class="modal-footer justify-content-center">
-	                                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_memo_insert">수정</button>
+	                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_memo_insert" onclick="fnModifyMemo();">수정</button>
 	                                <button type="button" class="btn btn-primary" id="btn_memo_cancel">취소</button>
 	                            </div>
 	                        </div>
 	                    </div>
 	                  </div>
-                  </form>
 									
 
 
@@ -795,20 +789,60 @@
     	
     }
     
+    // 메모 등록
+    function fnInsertMemo(){
+		
+    	let memNo = '${loginUser.getMemNo()}';
+    	let memoContent = $('#insertMemoInput').val();
+    	
+    	$.ajax({
+    		url: '${contextPath}/memo/insertMemo.do',
+    		type: 'POST',
+    		data: {
+    			memNo: memNo,
+    			memoContent: memoContent
+    		},
+    		success: function(res){
+	    		fnMemoList(); // 등록 후 전체 리스트 조회 실행
+    			
+    		}
+    	})
+    	
+    }
+    
     // 메모 삭제
     function fnDeleteMemo(memoNo){
+    	
     	
     	$.ajax({
     		url: '${contextPath}/memo/deleteMemo.do',
     		type: 'POST',
     		data: {memoNo: memoNo},
     		success: function(res) {
-    	    	fnMemoList();	// 삭제 후 전체 리스트 조회 재실행
+    			fnMemoList();	// 삭제 후 전체 리스트 조회 재실행
+    	    	
     		}
     		
     	})
+    }
+    
+    // 메모 수정
+    function fnModifyMemo(){
     	
+    	let memNo = '${loginUser.getMemNo()}';
+    	let memoNo = $('#modifyMemoNo').val();
     	
+    	$.ajax({
+    		url: '${contextPath}/memo/modify.do',
+    		type: 'POST',
+    		data: {
+    			memNo: memNo,
+    			memoNo: memoNo
+    			},
+    		success: function(res){
+    			fnMemoList();	// 수정 후 전체 리스트 조회 재실행
+    		}
+    	})
     }
     
     // 소속팀 전체 리스트 조회

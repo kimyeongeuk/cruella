@@ -78,9 +78,22 @@
               			location.href="${contextPath}/app/app_main.do";
               		})
               		
+              		var today = new Date();
+            	    var year = today.getFullYear();
+            	    var month = today.getMonth() + 1; // 월은 0부터 시작하므로 +1
+            	    var day = today.getDate();
+            	    var count = 0;
+
+            	    month = month < 10 ? '0' + month : month;
+            	    day = day < 10 ? '0' + day : day;
+
+            	    var formatDate = year + '/' + month + '/' + day;
+            	    
+            	    
+            	    
+            	    $('.app_no_result').html(formatDate);
+              		
               	})
-              
-              
               </script>
 
 
@@ -339,7 +352,7 @@
                                   </thead>
 
                                   <tbody id="drag_line_div2" class="aa2">
-                                    <tr style="height: 50px;">
+                                    <tr style="height: 50px;" class="noref">
                                       <td><span style="color: #aea9a9;">드래그하여 추가할 수 있습니다.</span></td>
                                     </tr>
                                   </tbody>
@@ -382,8 +395,7 @@
             <!-- 양식영역 -->
 
 
-            <form action="">
-              <div style="width: 100%; height:700px;">
+              <form id="enroll-doc" action="${contextPath}/app/appInsert.do" enctype="multipart/form-data" method="post" style="width: 100%; height:700px;">
 
 
                 <div class="col-12" style="margin-top: 20px;">
@@ -506,7 +518,6 @@
                                 });
                                 
                                 
-                                
                             });
                             </script>
                             
@@ -522,10 +533,7 @@
                     
                     
                        <!-- 결재요청 모달창 -->
-                     <form action="" method="post" >
                             <span>
-
-                             
                               <div class="modal fade" id="exLargeModal_list" tabindex="-1" aria-hidden="true"
                                 style="display: none;">
                                 <div class="modal-dialog modal-xl" role="document" style="width: 400px;">
@@ -559,7 +567,7 @@
                                               </td>
                                             </tr>
 
-																						<!-- 중요도 선택 -->
+											<!-- 중요도 선택 -->
                                             <table style="position: relative; top: 40px;">
                                               <tr>
                                                 <td style="font-weight: 700;">중요도</td>
@@ -583,6 +591,8 @@
                                                 </td>
                                               </tr>
                                             </table>
+                                            
+                                            <input type="hidden" name="docImpo"  id="info_result_div">
 
                                             <script>
                                               $(document).ready(function() {
@@ -769,29 +779,15 @@
                         <td class="app_no">기안일</td>
                         <td class="app_no_result"></td>
                         
+                        <!-- 타입, 기안자 사번 -->
+                        <input type="hidden" name="docType" value="기안서">
+                        <input type="hidden" name="memNo" value="${m.memNo}">
+                        
                       </tr>
                     </table>
                     
                     <script>
-                    $(document).ready(function(){
-                    	
-                    	
-                    		var today = new Date();
-                    	    var year = today.getFullYear();
-                    	    var month = today.getMonth() + 1; // 월은 0부터 시작하므로 +1
-                    	    var day = today.getDate();
-                    	    var count = 0;
-
-                    	    month = month < 10 ? '0' + month : month;
-                    	    day = day < 10 ? '0' + day : day;
-
-                    	    var formatDate = year + '/' + month + '/' + day;
-                    	    
-                    	    
-                    	    
-                    	    $('.app_no_result').html(formatDate);
-                    	
-                    })
+                    
                     </script>
 
                     <table style="border-spacing: 0;">
@@ -799,7 +795,7 @@
                         <td class="app_title_td" style="text-align: center; height: 40px;">기안자</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
                           <span style="position: relative; left: 10px;" id="userNo_value" >${m.memName}</span>
-                          
+                          <span id="ref_list_div"></span>
                         </td>
                       </tr>
                     </table>
@@ -811,8 +807,8 @@
                         <td class="app_title_td" style="text-align: center; height: 40px;">제목</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
                           <input type="text" class="form-control" id="defaultFormControlInput" placeholder="제목을 입력하세요."
-                            aria-describedby="defaultFormControlHelp" name="docTitle"/>
-                            <input type="hidden" value="${m.memNo}" name="memNo">
+                            aria-describedby="defaultFormControlHelp" name="docTitle" />
+                            
                           <!-- 제목글자수 제한 조건을 걸거나 아니면 리스트 조회시 보이는 글자수 제한 걸기 -->
                         </td>
                       </tr>
@@ -828,13 +824,13 @@
                             <div class="col-12">
                               <div class="card">
 
-                                <div class="card-body">
+                                <div class="card-body" >
 		
-																	<!-- 내용부분  -->
+								 <!-- 내용부분  -->
                                   <div id="full-editor" style="height: 500px;" name="docContent">
-                                    <!-- <p id="editor_content_div">
-                                      
-                                    </p> -->
+                                  
+                                  
+                                    
                                   </div>
 
 
@@ -853,15 +849,14 @@
                       <div class="card-body">
                         <div class="mb-4">
                         <!-- 파일 -->
-                          <input class="form-control" type="file" id="formFileMultiple" name="uploadfile" multiple />
+                          <input class="form-control" type="file" id="formFileMultiple" name="uploadFile" multiple />
+                           <br>&nbsp; * 각 첨부파일 사이즈는 10MB 이하, 총 100MB 이하여야 됩니다.
                         </div>
 
                       </div>
                     </div>
                     <!-- /file input -->
-
-
-            </form>
+					<input type="hidden" name="docContent" id="docContentInput" />
 
 
 
@@ -882,49 +877,157 @@
 
 
 
+        
 	<!-- 결재요청 확인버튼 클릭시 발생이벤트 -->
 				<script>
 				
 					$('#last_app_btn').on('click', function() {
 						
+						
 						if($('#defaultFormControlInput').val() == ""){
 							alert('제목을 입력해주세요')
+							return;
 						}else if($('.ql-editor').text() == ""){
 							alert('내용을 입력해주세요')
+							return;
+						}else if($('#drag_line_div span').text() == "드래그하여 추가할 수 있습니다."){
+							alert('결재선을 지정해주세요')
+							return;
 						}
 						
-						let formData = new FormData();
-						formData.append("docTitle",);
+						// 내용 보내기
+						var appContent = $('.ql-editor').html(); 
+						   $('#docContentInput').val(appContent);
+						    
+						  // 중요도 체크한 결과값 보내기
+						var checkResult = $('.checkBox_result:checked').val();
+						$('#info_result_div').val(checkResult);
 						
 						
+						    $("#enroll-doc").submit();
 						
 					
-						$.ajax({
-							url : '${contextPath}/app/ajaxInsert.do',
-							type: 'post',
-							data : formdata,
-							processData : false, 
-							// 파일전송시 기술(필수) : false 선언시 formDate를 string으로 변환하지 않음 
-							contentType : false, 
-							// 파일전송시 기술(필수) : false 선언시 multipart/form-data로 전송하게 함
-							success:function(res){
-								
-								if(res>1){
-									alert('성공적으로 작성 하였습니다');
-								}
-							}
-						}) 
 
 					})
 					
 				</script>
+        
+        
+
+        <script>
+
+
+          $(document).ready(function () {
+
+        	  
+            $('.app_buttons').on('click', function () {
+
+
+              $('#app_title_result_div').html($('#defaultFormControlInput').val());
+              $('#full-editor_result').html($('.ql-editor').html()); // 에디터 내용 담을때 클래스 저걸로!
+            })
+          })
+
+
+          
+
+          // 미리보기 결재선라인 결과값 대입 함수
+          $(document).ready(function () {
+
+            $('#form_type_result_div').html($("#form_type_result").html());
+            $('#line_user_result').html($(".line_user").html());
+
+
+
+
+            // 대분류 카테고리 선택시 소분류 카테고리 생성 함수
+            $('#select_formType1').change(function () {
+
+              let result = $(this).val(); // 지금 선택한 select 결과값
+
+              console.log(result);
+
+
+              switch (result) {
+
+                case '일반기안': $('#select_small_type_1').css('display', 'block');
+                  $('#select_small_type_2').css('display', 'none');
+                  $('#select_small_type_3').css('display', 'none'); break;
+
+                case '인사': $('#select_small_type_2').css('display', 'block');
+                  $('#select_small_type_1').css('display', 'none');
+                  $('#select_small_type_3').css('display', 'none'); break;
+
+
+                case '공문': $('#select_small_type_3').css('display', 'block');
+                  $('#select_small_type_1').css('display', 'none');
+                  $('#select_small_type_2').css('display', 'none'); break;
+
+                default: $('#select_small_type_3').css('display', 'none');
+                  $('#select_small_type_1').css('display', 'none');
+                  $('#select_small_type_2').css('display', 'none'); break;
+
+
+              }
+            })
+
+
+
+          })
+
+
+
+        </script>
+
+        <script>
+
+          // 결재선,참조선 이벤트함수
+          $(document).ready(function () {
+
+            $('#app_line_result2').on('click', function () {
+
+              $('#app_line_div2').css('display', 'block')
+              $('#app_line_div1').css('display', 'none')
+
+            })
+
+            $('#app_line_result1').on('click', function () {
+
+              $('#app_line_div1').css('display', 'block')
+              $('#app_line_div2').css('display', 'none')
+
+            })
+
+
+          })
+
+
+        </script>
+
+		</form> <!-- 최종 form 태그 -->
+        <!-- Session End -->
 
 
 
 
 
 
-				<!-- 미리보기 모달 -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- 미리보기 모달 -->
         <div class="modal fade" id="exLargeModal2" tabindex="-1" aria-hidden="true">
           <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -945,15 +1048,13 @@
 
                       <td class="line_div">
                         <span class="app_line_div">
-                          <span class="line_title">결재선</span>
                           
-
                           <span class="line_title"><b>결재선</b></span>
                               <span class="line_user">
                                 <span>직급</span>
                                 <span class="signLine">이름</span>
                                 <span class="sign_date">결재일</span>
-                              </span>
+                           	  </span>
 
                         </span>
                       </td>
@@ -1038,115 +1139,6 @@
             </div>
           </div>
         </div>
-        
-        
-        
-
-
-
-
-
-        <script>
-
-
-          $(document).ready(function () {
-
-            $('.app_buttons').on('click', function () {
-
-
-              $('#app_title_result_div').html($('#defaultFormControlInput').val());
-              $('#full-editor_result').html($('.ql-editor').html()); // 에디터 내용 담을때 클래스 저걸로!
-            })
-          })
-
-
-
-
-
-          // 미리보기 결재선라인 결과값 대입 함수
-
-          $(document).ready(function () {
-
-            $('#form_type_result_div').html($("#form_type_result").html());
-            $('#line_user_result').html($(".line_user").html());
-
-
-
-
-            // 대분류 카테고리 선택시 소분류 카테고리 생성 함수
-            $('#select_formType1').change(function () {
-
-              let result = $(this).val(); // 지금 선택한 select 결과값
-
-              console.log(result);
-
-
-              switch (result) {
-
-                case '일반기안': $('#select_small_type_1').css('display', 'block');
-                  $('#select_small_type_2').css('display', 'none');
-                  $('#select_small_type_3').css('display', 'none'); break;
-
-                case '인사': $('#select_small_type_2').css('display', 'block');
-                  $('#select_small_type_1').css('display', 'none');
-                  $('#select_small_type_3').css('display', 'none'); break;
-
-
-                case '공문': $('#select_small_type_3').css('display', 'block');
-                  $('#select_small_type_1').css('display', 'none');
-                  $('#select_small_type_2').css('display', 'none'); break;
-
-                default: $('#select_small_type_3').css('display', 'none');
-                  $('#select_small_type_1').css('display', 'none');
-                  $('#select_small_type_2').css('display', 'none'); break;
-
-
-              }
-            })
-
-
-
-
-
-
-          })
-
-
-
-
-
-
-        </script>
-
-        <script>
-
-          // 결재선,참조선 이벤트함수
-          $(document).ready(function () {
-
-            $('#app_line_result2').on('click', function () {
-
-              $('#app_line_div2').css('display', 'block')
-              $('#app_line_div1').css('display', 'none')
-
-            })
-
-            $('#app_line_result1').on('click', function () {
-
-              $('#app_line_div1').css('display', 'block')
-              $('#app_line_div2').css('display', 'none')
-
-            })
-
-
-          })
-
-
-        </script>
-
-
-        <!-- Session End -->
-
-
 
 
    <!-- 푸터 시작 -->

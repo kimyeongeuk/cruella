@@ -59,7 +59,7 @@
 												class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
 												
 										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-money me-1_5"></i> 급여내역확인 </a></li>
+												class="ti-sm ti ti-users me-1_5"></i> 급여내역확인 </a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
 												class="ti-sm ti ti-users me-1_5"></i> 조직도 </a></li>
@@ -76,7 +76,7 @@
               <div
                 class="faq-header d-flex flex-column justify-content-center align-items-center h-px-100 position-relative" style="margin-bottom: 10px;">
                 <img
-                  src="../../assets/img/pages/header.png"
+                  src="${ contextPath }/assets/img/pages/header.png"
                   class="scaleX-n1-rtl faq-banner-img z-n1 rounded"
                   alt="background image" />
                 <div class="input-wrapper mt-4 input-group input-group-merge px-lg-5">

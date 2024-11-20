@@ -22,9 +22,10 @@ public class MessageDto {
 	 private int chatNo;
 	 private String memNo;
 	 private String msgContent;
-	 private Date msgRegistDate;
-	 private String msgCheck;
+	 private String  msgRegistDate;
+	 private int msgCheck;
 	 private String msgStatus;
 	 private Date msgModifyDate;
+	 private String msgType;
 
 }

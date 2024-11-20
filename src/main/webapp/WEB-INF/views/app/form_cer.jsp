@@ -55,7 +55,7 @@
               </a>
             
 
-              <a type="button" data-bs-toggle="modal" data-bs-target="#exLargeModal" class="app_buttons">
+              <a type="button" data-bs-toggle="modal" data-bs-target="#exLargeModal" class="app_buttons" id="treeView_list">
                 <span class="ti ti-checkbox"></span>
                 <span>결재정보</span>
               </a>
@@ -78,9 +78,22 @@
               			location.href="${contextPath}/app/app_main.do";
               		})
               		
+              		var today = new Date();
+            	    var year = today.getFullYear();
+            	    var month = today.getMonth() + 1; // 월은 0부터 시작하므로 +1
+            	    var day = today.getDate();
+            	    var count = 0;
+
+            	    month = month < 10 ? '0' + month : month;
+            	    day = day < 10 ? '0' + day : day;
+
+            	    var formatDate = year + '/' + month + '/' + day;
+            	    
+            	    
+            	    
+            	    $('.app_no_result').html(formatDate);
+              		
               	})
-              
-              
               </script>
 
 
@@ -262,7 +275,6 @@
 
 
 
-
                           </div>
                         </div>
                       </div>
@@ -318,6 +330,8 @@
                                   <th><i class="ti ti-trash"></i></th>
                                 </tr>
                               </thead>
+                              
+                              
                             </table>
 
 
@@ -338,7 +352,7 @@
                                   </thead>
 
                                   <tbody id="drag_line_div2" class="aa2">
-                                    <tr style="height: 50px;">
+                                    <tr style="height: 50px;" class="noref">
                                       <td><span style="color: #aea9a9;">드래그하여 추가할 수 있습니다.</span></td>
                                     </tr>
                                   </tbody>
@@ -380,9 +394,8 @@
 
             <!-- 양식영역 -->
 
-		<!-- form -->
-            <form action="">
-              <div style="width: 100%; height:700px;">
+
+              <form id="enroll-doc" action="${contextPath}/app/appInsert.do" enctype="multipart/form-data" method="post" style="width: 100%; height:700px;">
 
 
                 <div class="col-12" style="margin-top: 20px;">
@@ -440,7 +453,7 @@
                                 <option value="증명서">
                                   증명서
                                 </option>
-                               <!--  <option value="인사발령">
+                                <!-- <option value="인사발령">
                                   인사발령 요청서
                                 </option> -->
                               </select>
@@ -460,7 +473,6 @@
                             </span>
                             
                             
-                             
                             <script>
                             $(document).ready(function() {
                             	
@@ -506,24 +518,22 @@
                                 });
                                 
                                 
-                                
                             });
                             </script>
                             
                             
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-
-                            <!-- 결재요청 모달창 -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    
+                    
+                       <!-- 결재요청 모달창 -->
                             <span>
-
-                             
                               <div class="modal fade" id="exLargeModal_list" tabindex="-1" aria-hidden="true"
                                 style="display: none;">
                                 <div class="modal-dialog modal-xl" role="document" style="width: 400px;">
@@ -533,7 +543,7 @@
                                       <div style="width: 100%; padding: 15px;">
                                         <h4 class="modal-title" id="exampleModalLabel4">결재요청</h4>
                                         <span>
-                                          <pre style="position: relative; top: 16px;">최종요청을 하기 전에 다시 한번 확인바랍니다.</pre>
+                                          <pre style="position: relative; top: 16px; color:red;">최종요청을 하기 전에 다시 한번 확인바랍니다.</pre>
                                         </span>
                                       </div>
 
@@ -551,34 +561,38 @@
                                               <th style="font-weight: 700;">
                                                 <span>결재문서명</span>
                                               </th>
+                                              <!-- 문서종류 선택 -->
                                               <td style=" width: 145px; text-align: center; font-weight: 700;">
-                                                <span>기안서</span>
+                                                <span name="">증명서신청서</span>
                                               </td>
                                             </tr>
 
+											<!-- 중요도 선택 -->
                                             <table style="position: relative; top: 40px;">
                                               <tr>
                                                 <td style="font-weight: 700;">중요도</td>
                                                 <td>
                                                   <span style="margin-left: 30px;">
-                                                    <input type="checkbox" value="C" id="C">
+                                                    <input type="checkbox" value="C" id="C" class="checkBox_result" checked>
                                                     <label for="C" style="font-weight: 700;">일반</label>
                                                   </span>
                                                 </td>
                                                 <td> 
                                                   <span style="margin-left: 30px;">
-                                                    <input type="checkbox" value="E" id="E">
+                                                    <input type="checkbox" value="E" id="E" class="checkBox_result">
                                                     <label for="E" style="font-weight: 700;">긴급</label>
                                                   </span>
                                                 </td>
                                                 <td>
                                                   <span style="margin-left: 30px;">
-                                                    <input type="checkbox" value="I" id="I">
+                                                    <input type="checkbox" value="I" id="I" class="checkBox_result">
                                                     <label for="I" style="font-weight: 700;">중요</label>
                                                   </span>
                                                 </td>
                                               </tr>
                                             </table>
+                                            
+                                            <input type="hidden" name="docImpo"  id="info_result_div">
 
                                             <script>
                                               $(document).ready(function() {
@@ -607,41 +621,33 @@
                                         취소
                                       </button>
                                       <button type="button" class="btn btn-primary waves-effect waves-light"
-                                      data-bs-dismiss="modal">
+                                      data-bs-dismiss="modal" id="last_app_btn">
                                         확인
                                       </button>
                                     </div>
                                   </div>
 
-
                                 </div>
                               </div>
-
-
-
                             </span>
+                            
+                            
+                            
+                            
+                            
                             <!-- /결재요청 모달 -->
 
 
-
-
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     
                     <style>
                       * {
@@ -763,7 +769,7 @@
                       </thead>
                     </table>
 
-                   <!-- db 조회해서 담기 -->
+                    <!-- db 조회해서 담기 -->
                     <table class="app_table_container">
                       <tr class="app_result_div">
                         <td class="dept_td">기안부서</td>
@@ -772,67 +778,35 @@
                         <td class="app_date_result">${m.posName}</td>
                         <td class="app_no">기안일</td>
                         <td class="app_no_result"></td>
+                        
+                        <!-- 타입, 기안자 사번 -->
+                        <input type="hidden" name="docType" value="증명서신청서">
+                        <input type="hidden" name="memNo" value="${m.memNo}">
+                        
                       </tr>
                     </table>
                     
-                     <script>
-                    $(document).ready(function(){
-                    	
-                    	
-                    		var today = new Date();
-                    	    var year = today.getFullYear();
-                    	    var month = today.getMonth() + 1; // 월은 0부터 시작하므로 +1
-                    	    var day = today.getDate();
-                    	    var count = 0;
-
-                    	    month = month < 10 ? '0' + month : month;
-                    	    day = day < 10 ? '0' + day : day;
-
-                    	    var formatDate = year + '/' + month + '/' + day;
-                    	    
-                    	    
-                    	    
-                    	    $('.app_no_result').html(formatDate);
-                    	
-                    })
+                    <script>
+                    
                     </script>
 
                     <table style="border-spacing: 0;">
                       <tr>
                         <td class="app_title_td" style="text-align: center; height: 40px;">기안자</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
-                          <span style="position: relative; left: 10px;">${m.memName}</span>
+                          <span style="position: relative; left: 10px;" id="userNo_value" >${m.memName}</span>
+                          <span id="ref_list_div"></span>
                         </td>
                       </tr>
                     </table>
-
+                    
                     <table style="border-spacing: 0;">
                       <tr>
                         <td class="app_title_td" style="text-align: center; height: 40px;">발행날짜</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
 
-
-                          <style>
-                            .date-range {
-                              display: flex;
-                              align-items: center;
-                            }
-
-                            .start-date,
-                            .end-date {
-                              padding: 8px;
-                              margin: 0 5px;
-                              border: 1px solid #ccc;
-                              border-radius: 4px;
-                              font-size: 14px;
-                            }
-
-                           
-                          </style>
-
-                          <span class="date-range">
-                            <input type="date" class="start-date" id="start-date">
-                            
+                          <span class="date-range" style="position: relative;left: 10px;">
+                            <input type="date" class="start-date" id="start-date" name="appCoreDt">
                           </span>
                         
 
@@ -840,76 +814,72 @@
                       </tr>
                     </table>
 
-                  
+
 
                     <table style="border-spacing: 0;">
                       <tr>
                         <td class="app_title_td" style="text-align: center; height: 40px;">제목</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
                           <input type="text" class="form-control" id="defaultFormControlInput" placeholder="제목을 입력하세요."
-                            aria-describedby="defaultFormControlHelp" />
+                            aria-describedby="defaultFormControlHelp" name="docTitle" />
+                            
+                          <!-- 제목글자수 제한 조건을 걸거나 아니면 리스트 조회시 보이는 글자수 제한 걸기 -->
                         </td>
                       </tr>
                     </table>
 
 
 
+					
+                 <table>
+                   <tr>
+                    <td style="border: 1px solid black;width: 169px; text-align: center;">비고</td>
+                    <td>
+                    <div style="border: 1px solid black;">
+                      <div class="content-wrapper">
+                        <div class="container-xxl flex-grow-1 container-p-y">
+                          <div class="row">
 
-                    <table>
-                      <tr>
-                        <td style="border: 1px solid black;width: 169px; text-align: center;">비고</td>
-                        <td>
-                          <div style="border: 1px solid black;">
-                            <div class="content-wrapper">
-                              <div class="container-xxl flex-grow-1 container-p-y">
-                                <div class="row">
-      
-                                  <!-- Full Editor -->
-                                  <div class="col-12">
-                                    <div class="card">
-      
-                                      <div class="card-body">
-      
-                                        <div id="full-editor" style="height: 500px;">
-                                          <!-- <p id="editor_content_div">
-                                            
-                                          </p> -->
-                                        </div>
-      
-      
-                                      </div>
-                                    </div>
+                            <!-- Full Editor -->
+                            <div class="col-12">
+                              <div class="card">
+
+                                <div class="card-body" >
+		
+								 <!-- 내용부분  -->
+                                  <div id="full-editor" style="height: 500px;" name="docContent">
+                                  
+                                  
+                                    
                                   </div>
-                                  <!-- /Full Editor -->
+
+
                                 </div>
                               </div>
                             </div>
+                            <!-- /Full Editor -->
                           </div>
-                        </td>
-                      </tr>
-                    </table>
-
-
-                    
-
-
-
-
+                        </div>
+                      </div>
+                    </div>
+                    </td>
+                   </tr>
+                 </table>
 
                     <!-- file input -->
                     <div class="card" style="border: 1px solid; border-radius: 0;">
                       <h5 class="card-header"></h5>
                       <div class="card-body">
                         <div class="mb-4">
-                          <input class="form-control" type="file" id="formFileMultiple" multiple />
+                        <!-- 파일 -->
+                          <input class="form-control" type="file" id="formFileMultiple" name="uploadFile" multiple />
+                           <br>&nbsp; * 각 첨부파일 사이즈는 10MB 이하, 총 100MB 이하여야 됩니다.
                         </div>
 
                       </div>
                     </div>
                     <!-- /file input -->
-
-
-            </form>
+					<input type="hidden" name="docContent" id="docContentInput" />
 
 
 
@@ -930,11 +900,157 @@
 
 
 
+        
+	<!-- 결재요청 확인버튼 클릭시 발생이벤트 -->
+				<script>
+				
+					$('#last_app_btn').on('click', function() {
+						
+						
+						if($('#defaultFormControlInput').val() == ""){
+							alert('제목을 입력해주세요')
+							return;
+						}else if($('.ql-editor').text() == ""){
+							alert('내용을 입력해주세요')
+							return;
+						}else if($('#drag_line_div span').text() == "드래그하여 추가할 수 있습니다."){
+							alert('결재선을 지정해주세요')
+							return;
+						}
+						
+						// 내용 보내기
+						var appContent = $('.ql-editor').html(); 
+						   $('#docContentInput').val(appContent);
+						    
+						  // 중요도 체크한 결과값 보내기
+						var checkResult = $('.checkBox_result:checked').val();
+						$('#info_result_div').val(checkResult);
+						
+						
+						    $("#enroll-doc").submit();
+						
+					
+
+					})
+					
+				</script>
+        
+        
+
+        <script>
+
+
+          $(document).ready(function () {
+
+        	  
+            $('.app_buttons').on('click', function () {
+
+
+              $('#app_title_result_div').html($('#defaultFormControlInput').val());
+              $('#full-editor_result').html($('.ql-editor').html()); // 에디터 내용 담을때 클래스 저걸로!
+            })
+          })
+
+
+          
+
+          // 미리보기 결재선라인 결과값 대입 함수
+          $(document).ready(function () {
+
+            $('#form_type_result_div').html($("#form_type_result").html());
+            $('#line_user_result').html($(".line_user").html());
 
 
 
 
-        <!-- 미리보기 모달 -->
+            // 대분류 카테고리 선택시 소분류 카테고리 생성 함수
+            $('#select_formType1').change(function () {
+
+              let result = $(this).val(); // 지금 선택한 select 결과값
+
+              console.log(result);
+
+
+              switch (result) {
+
+                case '일반기안': $('#select_small_type_1').css('display', 'block');
+                  $('#select_small_type_2').css('display', 'none');
+                  $('#select_small_type_3').css('display', 'none'); break;
+
+                case '인사': $('#select_small_type_2').css('display', 'block');
+                  $('#select_small_type_1').css('display', 'none');
+                  $('#select_small_type_3').css('display', 'none'); break;
+
+
+                case '공문': $('#select_small_type_3').css('display', 'block');
+                  $('#select_small_type_1').css('display', 'none');
+                  $('#select_small_type_2').css('display', 'none'); break;
+
+                default: $('#select_small_type_3').css('display', 'none');
+                  $('#select_small_type_1').css('display', 'none');
+                  $('#select_small_type_2').css('display', 'none'); break;
+
+
+              }
+            })
+
+
+
+          })
+
+
+
+        </script>
+
+        <script>
+
+          // 결재선,참조선 이벤트함수
+          $(document).ready(function () {
+
+            $('#app_line_result2').on('click', function () {
+
+              $('#app_line_div2').css('display', 'block')
+              $('#app_line_div1').css('display', 'none')
+
+            })
+
+            $('#app_line_result1').on('click', function () {
+
+              $('#app_line_div1').css('display', 'block')
+              $('#app_line_div2').css('display', 'none')
+
+            })
+
+
+          })
+
+
+        </script>
+
+		</form> <!-- 최종 form 태그 -->
+        <!-- Session End -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- 미리보기 모달 -->
         <div class="modal fade" id="exLargeModal2" tabindex="-1" aria-hidden="true">
           <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -955,16 +1071,13 @@
 
                       <td class="line_div">
                         <span class="app_line_div">
-                          <span class="line_title">결재선</span>
-
-                          <span class="line_user">
-
-                            <!-- 양식 result값 대입 -->
-                            <span>대표이사</span>
-                            <span class="signLine"></span>
-                            <span class="sign_date"></span>
-
-                          </span>
+                          
+                          <span class="line_title"><b>결재선</b></span>
+                              <span class="line_user">
+                                <span>직급</span>
+                                <span class="signLine">이름</span>
+                                <span class="sign_date">결재일</span>
+                           	  </span>
 
                         </span>
                       </td>
@@ -977,11 +1090,11 @@
                 <table class="app_table_container" style="width: 100%;">
                   <tr class="app_result_div">
                     <td class="dept_td">기안부서</td>
-                    <td class="dept_td_result">인사팀</td>
-                    <td class="app_date">기안일</td>
-                    <td class="app_date_result">24/12/01</td>
-                    <td class="app_no">문서번호</td>
-                    <td class="app_no_result">12</td>
+                    <td class="dept_td_result">${m.deptName}</td>
+                    <td class="app_date">직급</td>
+                    <td class="app_date_result">${m.posName}</td>
+                    <td class="app_no">기안일</td>
+                    <td class="app_no_result"></td>
                   </tr>
                 </table>
 
@@ -989,10 +1102,37 @@
                   <tr>
                     <td class="app_title_td" style="text-align: center; height: 40px;">기안자</td>
                     <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
-                      <span style="position: relative; left: 10px;">박시우</span>
+                      <span style="position: relative; left: 10px;">${m.memName}</span>
                     </td>
                   </tr>
                 </table>
+                
+                <table style="border-spacing: 0; width:100%;">
+                      <tr>
+                        <td class="app_title_td" style="text-align: center; height: 40px;">발행날짜</td>
+                        <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
+
+                          <span class="date-range" style="position: relative;left: 10px;" id="date-range_result">
+                            
+                          </span>
+                          
+                          <script>
+                          $(document).ready(function(){
+                        	  
+                        	  $('#start-date').on('change', function() {
+                                  $('#date-range_result').html($('#start-date').val());
+                                  
+                              });
+                          })
+                          
+                          </script>
+                        
+
+                        </td>
+                      </tr>
+                    </table>
+                
+                
 
 
 
@@ -1049,124 +1189,6 @@
             </div>
           </div>
         </div>
-
-
-
-
-
-        <script>
-
-
-          $(document).ready(function () {
-
-            $('.app_buttons').on('click', function () {
-
-
-              $('#app_title_result_div').html($('#defaultFormControlInput').val());
-              $('#full-editor_result').html($('.ql-editor').html()); // 에디터 내용 담을때 클래스 저걸로!
-            })
-          })
-
-
-
-
-          // 결재선 추가 테스트용
-          function dd() {
-
-            let div = '<span class="line_user">'
-              + '<span>' + $('') + '</span>'
-              + '<span class="signLine">' + $('') + '</span>'
-              + '<span>' + $('') + '</span>'
-              + '</span>';
-
-            $('.app_line_div').append(div);
-          }
-
-
-          // 미리보기 결재선라인 결과값 대입 함수
-
-          $(document).ready(function () {
-
-            $('#form_type_result_div').html($("#form_type_result").html());
-            $('#line_user_result').html($(".line_user").html());
-
-
-
-
-            // 대분류 카테고리 선택시 소분류 카테고리 생성 함수
-            $('#select_formType1').change(function () {
-
-              let result = $(this).val(); // 지금 선택한 select 결과값
-
-              console.log(result);
-
-
-              switch (result) {
-
-                case '일반기안': $('#select_small_type_1').css('display', 'block');
-                  $('#select_small_type_2').css('display', 'none');
-                  $('#select_small_type_3').css('display', 'none'); break;
-
-                case '인사': $('#select_small_type_2').css('display', 'block');
-                  $('#select_small_type_1').css('display', 'none');
-                  $('#select_small_type_3').css('display', 'none'); break;
-
-
-                case '공문': $('#select_small_type_3').css('display', 'block');
-                  $('#select_small_type_1').css('display', 'none');
-                  $('#select_small_type_2').css('display', 'none'); break;
-
-                default: $('#select_small_type_3').css('display', 'none');
-                  $('#select_small_type_1').css('display', 'none');
-                  $('#select_small_type_2').css('display', 'none'); break;
-
-
-              }
-            })
-
-
-
-
-
-
-          })
-
-
-
-
-
-
-        </script>
-
-        <script>
-
-          // 결재선,참조선 이벤트함수
-          $(document).ready(function () {
-
-            $('#app_line_result2').on('click', function () {
-
-              $('#app_line_div2').css('display', 'block')
-              $('#app_line_div1').css('display', 'none')
-
-            })
-
-            $('#app_line_result1').on('click', function () {
-
-              $('#app_line_div1').css('display', 'block')
-              $('#app_line_div2').css('display', 'none')
-
-            })
-
-
-          })
-
-
-        </script>
-
-
-        <!-- Session End -->
-
-
 
 
    <!-- 푸터 시작 -->

@@ -1,5 +1,6 @@
 package com.cl.cruella.dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -44,6 +45,15 @@ public class ChatDao {
 
 	public List<MessageDto> messageList(int chatNo) {
 		return sqlSession.selectList("chatMapper.messageList",chatNo);
+	}
+
+	public int insertMessage(MessageDto messageDto) {
+		return sqlSession.insert("chatMapper.insertMessage",messageDto);
+	}
+
+
+	public int updateNewMsg(MessageDto messageDto) {
+		return sqlSession.update("chatMapper.updateNewMsg",messageDto);
 	}
 	
 

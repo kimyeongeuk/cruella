@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cl.cruella.dao.BoardDao;
 import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.BoardDto;
-import com.cl.cruella.dto.CommentDto;
 import com.cl.cruella.dto.PageInfoDto;
+import com.cl.cruella.dto.ReplyDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -91,11 +91,6 @@ public class BoardServiceImpl implements BoardService{
 	public List<AttachDto> selectDelAttach(String[] delFileNo) {
 		return delFileNo == null ? new ArrayList<>() 
 				 : boardDao.selectDelAttach(delFileNo);
-	}
-
-	@Override
-	public List<CommentDto> selectCommentList(int boardNo) {
-		return null;
 	}	
 
 	@Override
@@ -124,14 +119,23 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int insertComment(CommentDto r) {
-		return 0;
+	public List<ReplyDto> selectReplyList(int boardNo) {
+		return boardDao.selectReplyList(boardNo);
 	}
 
 	@Override
-	public int deleteCommentCompletely() {
-		return 0;
+	public int insertReply(ReplyDto r) {
+		return boardDao.insertReply(r);
 	}
 
-
+	@Override
+	public int deleteReplyCompletely(int replyNo) {
+		return boardDao.deleteReplyCompletely(replyNo);
+	}
+	
+	@Override
+    public int updateReply(int replyNo, String content) {
+        return boardDao.updateReply(replyNo, content);
+    }	    
+	
 }

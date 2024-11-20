@@ -26,6 +26,7 @@ public class CalendarDto {
 	private String calModifyDt;
 	private String calCategory;
 	private String memNo;
+	private String calRgb;
 	
 	
 }

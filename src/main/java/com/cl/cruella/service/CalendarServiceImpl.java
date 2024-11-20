@@ -16,8 +16,13 @@ public class CalendarServiceImpl implements CalendarService {
 	private final CalendarDao calendarDao;
 	
 	@Override
-	public List<CalendarDto> companyCalenderList() {
-		return calendarDao.companyCalenderList();
+	public List<CalendarDto> selectCalenderList() {
+		return calendarDao.selectCalenderList();
+	}
+
+	@Override
+	public int insertCalendar(CalendarDto c) {
+		return calendarDao.insertCalendar(c);
 	}
 
 }
