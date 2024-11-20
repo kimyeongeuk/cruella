@@ -247,7 +247,7 @@
 			                            <div class="flex-shrink-0 avatar avatar-offline">
 			                              <img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />
 			                            </div>
-			                            <div class="chat-contact-info flex-grow-1 ms-4">
+			                            <div class="chat-contact-info flex-grow-1 ms-4 test1">
 			                              <div class="d-flex justify-content-between align-items-center">
 			                                <h6 class="chat-contact-name text-truncate fw-normal m-0">${ list.chatTitle }</h6>
 			                                <small class="text-muted">30분전</small>
@@ -276,7 +276,7 @@
 		                                <h6 class="chat-contact-name text-truncate m-0 fw-normal">${ list.chatTitle }</h6>
 		                                <small class="text-muted">2024-11-08</small>
 		                              </div>
-		                              <div class="d-flex justify-content-between align-items-center">
+		                              <div class="d-flex justify-content-between align-items-center test1">
 		                              <small class="chat-contact-status text-truncate">${ list.chatNewMsg }</small>
 		                              <input type="hidden" value="${ list.chatNo }" class="mewmsg">
 		                              <div class="badge bg-danger rounded-pill ms-auto">5</div>
@@ -888,19 +888,10 @@
                               </div>
                             </div>
                           </li>
-
-
-
-
-                          
- 
-
-                          
-
-                          
-
                         </ul>
                       </div>
+                      
+                      
 
                       <!-- 채팅 수정 칸 -->
                       <div class="chat-history-footer shadow-xs modifyDisplay" style="position: absolute; width: 95.5%; z-index: 1; display:none" id="modifyDisplay">
@@ -968,11 +959,6 @@
 									<script>
 									
 									 //var subscription = null;
-				           var socket = null;
-				           var client = null;
-				           var chatNo = null;
-				           var userNo = "${loginUser.memNo}"; // 로그인 유저 사번
-					         var userName = "${loginUser.memName}"; // 로그인 유저 이름
 					         var msgContent = null;
 									
 					         /*
@@ -994,98 +980,78 @@
 										*/
 									 $(document).ready(function(){
 					         
-			
+						           var chatNo = null;
+						           var userNo = "${loginUser.memNo}"; // 로그인 유저 사번
+							         var userName = "${loginUser.memName}"; // 로그인 유저 이름
+						           var socket = new SockJS("${contextPath}/chatPage");;
+						           var client = Stomp.over(socket);
+											 var sub = [];
 											// 구독된 사람들에게 채팅메세지 발송
 			                $(".sendmessage").on("click", function(){
 			                	
 			                    var msg = document.getElementById("inputchatform");            
-			                    client.send('/pub/'+chatNo, {}, JSON.stringify({chatNo: chatNo,
-			                    																																memNo: userNo,
-			                    																																msgContent: msg.value,
-			                    																																msgType:'message',
-			                    																																msgRegistDate: new Date().toISOString()}));
-			                    msgContent = msg.value;
-			                    /*
-			                    $('.mewmsg').each(function() {
-			                        if ($(this).val() == chatNo) {
-			                            $(this).prev().html(msg.value);
-			                        }
-			                    });
-			                    */
-			                    
-			                    
-			                    /* 
-			          	          $.ajax({
-			                    	url:'${contextPath}/chat/updateNewMsg.do',
-			                    	data:{chatNo:chatNo,memNo:userNo,msgContent:msg.value},
-			                    	type:'post',
-			                    	success:function(res){
-			                    		console.log(res);
-			                    	},
-			                    	error:function(res){
-			                    		console.log('에러입니다.');
-			                    	}
-			                    }) */
+			                    client.send('/pub/'+chatNo, {}, JSON.stringify({	chatNo: chatNo,
+	           																																memNo: userNo,
+	           																																msgContent: msg.value,
+	           																																msgType:'message',
+	           																																msgRegistDate: new Date().toISOString()
+	           																																}));
+				                  client.send('/pub/allChats', {}, JSON.stringify({
+			                        																							chatNo: chatNo,
+																										                        memNo: userNo,
+																										                        msgContent: msg.value,
+																										                        msgType: 'message',
+																										                        msgRegistDate: new Date().toISOString()
+																										                        }));
+
 			                    msg.value = ''; 
 			                    
 			                });
-										
-										
-										
+											
+									 		//	socket = new SockJS("${contextPath}/chatPage");
+										  //  client = Stomp.over(socket);
+				
+										  
+										    client.connect({}, function () {
+															
+										        
+	
+										        // 모든 채팅방 메시지 구독
+										        client.subscribe('/sub/allChats', function (chat) {
+										            content = JSON.parse(chat.body);
+										            chatNo = content.chatNo;
+										            
+										            console.log(content);
+
+										        });
+											 }); // 모든 채팅방 구독
+										   
+
+
 											$('.chat-list-form').on('click',function(){ // 채팅방 click event start
-								     		
-								     		  //subscription = null;
-								          //socket = null;
-								          //client = null;
-								          
-								          /* console.log("socket", socket);
-								          console.log("client", client); */
 								          chatNo = $(this).children().eq(0).val(); //해당 채팅방 번호
+													if(client != null){
+														client.unsubscribe;
+														client.disconnect;
+													}
+								       //   socket = new SockJS("${contextPath}/chatPage"); // 엔드포인트
+								        //  client = Stomp.over(socket);
 								          
-								          
-								          
-								        /*   if(client != null){
-								        	  client.unsubscribe();
-								        	  client.disconnect();
-								        	  
-								          }  */
-								          
-								          
-								          /*
-								        	  if(msgContent!=null){
-				          	          $.ajax({
-					                    	url:'${contextPath}/chat/updateNewMsg.do',
-					                    	data:{chatNo:chatNo,memNo:userNo,msgContent:msgContent},
-					                    	success:function(res){
-					                    		console.log('ajax성공했습니다'+res);
-					                    	},
-					                    	error:function(res){
-					                    		console.log('에러입니다.');
-					                    	}
-					                    })
-								        	  
-								         	 }
-								    	  */
-								          
-								         
-								          socket = new SockJS("${contextPath}/chatPage"); // 엔드포인트
-								          client = Stomp.over(socket);
-								          
-								          console.log('클라이언트',client);
 								          
 								          
 								          
 								          // connection이 되면 실행
-								          client.connect({},function(frame){ // connect start
-								            
+								        //  client.connect({},function(frame){  // connect start
+								        	  
+								             
 								            console.log("stomp Connection")
-
 								            // subscribe(path,callback)로 메시지 받기 ?? callback 첫번째 파라미터의 body로 메시지의 내용이 들어옴
-								            client.subscribe('/sub/'+chatNo, function(chat){ // subscribe start
+	
+								            	client.subscribe('/sub/'+chatNo, function(chat){ // subscribe start
 								              var content = JSON.parse(chat.body);
 								              var writer = content.memNo;
 								              var msgType = content.msgType;
-								             console.log(content);
+								             
 								              var str = '';
 								              const $chatArea = $(".chatarea");
 								           		 
@@ -1119,8 +1085,6 @@
 									                      str += '</div>';
 									                      str += '</div>';
 									                      str += '</li>';
-									                      
-										                  
 
 									              }else{
 									                      str += '<li class="chat-message">';
@@ -1145,19 +1109,26 @@
 									                      str += '</div>';
 									                      str += '</div>';
 									                      str += '</li>';
-											        
+									                      
 									                      
 									              }
-									              $('.mewmsg').each(function() {
-								                        if ($(this).val() == chatNo) {
-								                            $(this).prev().html(content.msgContent);
-								                        }
-								                    });
-								              
+									              
+										            
+										            
+										            $('.mewmsg').each(function () {
+								                		console.log('테스트 : '+$(this).val());
+								                		console.log('테스트2 :'+chatNo);
+								                if ($(this).val() == chatNo) {
+								                    $(this).prev().html(content.msgContent); 
+								                }
+								                
+								                
+								                
+								            });
 								              
 								                $('#chathistory').append(str);
 								                $chatArea.scrollTop($chatArea[0].scrollHeight)
-								            
+	
 								            }) // subscribe end
 								            
 								            // send(path,header,message)로 메시지 보내기
@@ -1171,14 +1142,18 @@
 								            																															}));
 								          */
 								            
-								          }); // connect end
+								        //  }); // connect end
 								          	
 																
 
-								       }); // 채팅방 click event end
+											 }); // 채팅방 click event end
+											 
+											 
+
+								
 											
 								      
-									})
+									});
 										
 								          
 								     	
