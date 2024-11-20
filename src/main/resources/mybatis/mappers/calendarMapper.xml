@@ -52,6 +52,11 @@ INSERT
    WHERE CAL_NO = #{calNo}
 </update>
 
+<delete id="deleteCalender">
+	DELETE 
+    FROM CALENDAR
+   WHERE CAL_NO = #{calNo}
+</delete>
 
 
 

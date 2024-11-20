@@ -30,4 +30,7 @@ public class CalendarServiceImpl implements CalendarService {
 		return calendarDao.updateCalendar(c);
 	}
 
+	public int deleteCalender(CalendarDto c) {
+		return calendarDao.deleteCalender(c);
+	}
 }

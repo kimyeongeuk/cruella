@@ -22,14 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 
 public class CalendarController {
 
-	private final CalendarServiceImpl caldendarServiceImpl;
+	private final CalendarServiceImpl calendarServiceImpl;
 	
 	
 	// 캘린더 조회
 	@GetMapping("/calendar.do")
 	public String selectCalenderList(Model model) {
 		
-		List<CalendarDto> list = caldendarServiceImpl.selectCalendarList();
+		List<CalendarDto> list = calendarServiceImpl.selectCalendarList();
 		
 		model.addAttribute("list", list);
 		
@@ -45,11 +45,9 @@ public class CalendarController {
 	@PostMapping("/insertCalendar.do")
 	public int insertCalendar(CalendarDto c) {
 //		log.debug("log{}",c);
-		int result = caldendarServiceImpl.insertCalendar(c);
+		int result = calendarServiceImpl.insertCalendar(c);
 		return result;
 	}
-	
-	
 	
 	
 	// 캘린더 수정
@@ -57,9 +55,20 @@ public class CalendarController {
 	@GetMapping(value="/updateCalendar.do", produces="application/json") // produces 쓰는 이유 : 값을 돌려줄 때 어쩌고 타입으로 필요한... 영욱님이 얘기하심..
 	public int updateCalendar(CalendarDto c) {
 		log.debug("###### controller 실행 c: {}", c);
-		int result = caldendarServiceImpl.updateCalendar(c);
+		int result = calendarServiceImpl.updateCalendar(c);
 		return result;
 	}
+	
+	
+	// 캘린더 삭제
+	
+	@ResponseBody
+	@GetMapping("/deleteCalendar.do")
+	public int deleteCalender(CalendarDto c) {
+		int result = calendarServiceImpl.deleteCalender(c);
+		return result;
+	}
+	
 	
 	
 	
