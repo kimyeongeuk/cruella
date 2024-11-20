@@ -48,11 +48,6 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.selectBoard(boardNo);
 	}
 
-	@Override
-	public int deleteBoard(int boardNo) {
-		return boardDao.deleteBoard(boardNo);
-	}
-
 	@Transactional
 	@Override
 	public int updateBoard(BoardDto b, String[] delFileNo) {
@@ -114,11 +109,6 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int deleteSelectedPosts(List<Integer> boardNos) {
-	    return boardDao.deleteSelectedPosts(boardNos);
-	}
-
-	@Override
 	public List<ReplyDto> selectReplyList(int boardNo) {
 		return boardDao.selectReplyList(boardNo);
 	}
@@ -136,6 +126,29 @@ public class BoardServiceImpl implements BoardService{
 	@Override
     public int updateReply(int replyNo, String content) {
         return boardDao.updateReply(replyNo, content);
-    }	    
+    }	  
+	
+	@Override
+    public int deleteBoard(int boardNo) {
+        // 게시글에 연결된 댓글 먼저 삭제
+        List<Integer> boardNos = new ArrayList<>();
+        boardNos.add(boardNo);
+        boardDao.deleteCommentsByBoardNos(boardNos);
+        // 게시글 삭제
+        return boardDao.deleteBoard(boardNo);
+    }
+
+    @Override
+    public int deleteSelectedPosts(List<Integer> boardNos) {
+        // 댓글 삭제
+        boardDao.deleteCommentsByBoardNos(boardNos);
+        // 게시글 삭제
+        return boardDao.deleteSelectedPosts(boardNos);
+    }
+
+    @Override
+    public void deleteCommentsByBoardNos(List<Integer> boardNos) {
+        boardDao.deleteCommentsByBoardNos(boardNos);
+    }
 	
 }

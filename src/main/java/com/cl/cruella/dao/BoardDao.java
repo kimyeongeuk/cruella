@@ -56,10 +56,6 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.selectSearchListCount", search);
 	}
 
-	public int deleteBoard(int boardNo) {
-		return sqlSession.update("boardMapper.deleteBoard", boardNo);
-	}
-
 	public int updateBoard(BoardDto b) {
 		return sqlSession.update("boardMapper.updateBoard", b);
 	}
@@ -70,12 +66,6 @@ public class BoardDao {
 
 	public List<AttachDto> selectDelAttach(String[] delFileNo) {
 		return sqlSession.selectList("boardMapper.selectDelAttach", delFileNo);
-	}
-
-	public int deleteSelectedPosts(List<Integer> boardNos) {
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("boardNos", boardNos);
-	    return sqlSession.delete("boardMapper.deleteSelectBoard", params);
 	}
 
 	public List<ReplyDto> selectReplyList(int boardNo){
@@ -95,6 +85,22 @@ public class BoardDao {
         params.put("replyNo", replyNo);
         params.put("content", content);
         return sqlSession.update("boardMapper.updateReply", params);
+    }
+	
+	public int deleteBoard(int boardNo) {
+        return sqlSession.update("boardMapper.deleteBoard", boardNo);
+    }
+
+    public int deleteSelectedPosts(List<Integer> boardNos) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("boardNos", boardNos);
+        return sqlSession.delete("boardMapper.deleteSelectBoard", params);
+    }
+
+    public void deleteCommentsByBoardNos(List<Integer> boardNos) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("boardNos", boardNos);
+        sqlSession.delete("boardMapper.deleteCommentsByBoardNos", params);
     }
 	
 }

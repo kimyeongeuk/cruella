@@ -29,15 +29,9 @@ public interface BoardService {
 	// 게시글 상세 - 게시글 조회
 	BoardDto selectBoard(int boardNo);
 	
-	// 게시글 삭제
-	int deleteBoard(int boardNo);
-	
 	// 게시글 수정
 	List<AttachDto> selectDelAttach(String[] delFileNo);
 	int updateBoard(BoardDto b, String[] delFileNo);
-	
-	// 게시글 선택 삭제
-	int deleteSelectedPosts(List<Integer> boardNos);
 	
 	// 댓글 목록 조회
 	List<ReplyDto> selectReplyList(int boardNo);
@@ -50,7 +44,13 @@ public interface BoardService {
 	
 	// 댓글 수정
 	int updateReply(int replyNo, String content);
-	    
+	
+	// 게시글 삭제
+    int deleteBoard(int boardNo);
+    int deleteSelectedPosts(List<Integer> boardNos);
+    
+    // 댓글 삭제 메서드
+    void deleteCommentsByBoardNos(List<Integer> boardNos);
 	
 
 	

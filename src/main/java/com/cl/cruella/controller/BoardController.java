@@ -132,18 +132,6 @@ public class BoardController {
 	    return "board/boardModify";
 	}
 
-	@PostMapping("/boardDelete.do")
-	public String remove(@RequestParam("no") int no, RedirectAttributes rdAttributes) {
-	    int result = boardService.deleteBoard(no);
-	    
-	    if(result > 0) {
-	        rdAttributes.addFlashAttribute("alertMsg", "성공적으로 삭제되었습니다.");
-	    } else {
-	        rdAttributes.addFlashAttribute("alertMsg", "게시글 삭제에 실패하였습니다.");
-	    }
-	    
-	    return "redirect:/board/boardList.do";
-	}
 
 	@PostMapping("/boardUpdate.do")
 	public String modify(BoardDto board 		// 번호,제목,내용
@@ -183,12 +171,7 @@ public class BoardController {
 		return "redirect:/board/boardDetail.do?no=" + board.getBoardNo();
 		
 	}
-	
-	@PostMapping("/deleteSelectedPosts.do")
-	public String deleteSelectedPosts(@RequestParam("boardNos") List<Integer> boardNos) {
-	    boardService.deleteSelectedPosts(boardNos);
-	    return "redirect:/board/boardList.do";
-	}
+
 
 	@GetMapping("/boardSearch.do")
 	public String search(@RequestParam(value="page", defaultValue="1") int currentPage
@@ -248,5 +231,25 @@ public class BoardController {
         result.put("status", updateResult > 0 ? "SUCCESS" : "FAIL");
         return result;
     }
+	
+	@PostMapping("/boardDelete.do")
+	public String remove(@RequestParam("no") int no, RedirectAttributes rdAttributes) {
+	    int result = boardService.deleteBoard(no);
+	    
+	    if (result > 0) {
+	        rdAttributes.addFlashAttribute("alertMsg", "성공적으로 삭제되었습니다.");
+	    } else {
+	        rdAttributes.addFlashAttribute("alertMsg", "게시글 삭제에 실패하였습니다.");
+	    }
+	    
+	    return "redirect:/board/boardList.do";
+	}
+
+	@PostMapping("/deleteSelectedPosts.do")
+	public String deleteSelectedPosts(@RequestParam("boardNos") List<Integer> boardNos) {
+	    boardService.deleteSelectedPosts(boardNos);
+	    return "redirect:/board/boardList.do";
+	}
+
 	
 }
