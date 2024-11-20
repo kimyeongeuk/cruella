@@ -54,7 +54,6 @@
 		 join department d using(dept_code)
      join position p using(pos_code)
 		where mem_no = #{memNo}
-		  and to_char(mem_pwd) = #{memPwd}
 	</select>
 
 	<!-- 비밀번호 변경(김동규) -->

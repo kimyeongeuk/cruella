@@ -42,13 +42,16 @@ public class MemberController {
 								 , HttpServletResponse response
 								 , HttpServletRequest request) throws IOException {	// memNo = '입력한 아이디', memPwd = '입력한 비밀번호'
 		
+		
 		MemberDto loginUser = memberService.selectMember(m);	
 		
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
+		System.out.println(m.getMemPwd()); 			// 111111
+		System.out.println(loginUser.getMemPwd());	// 
 		
-		if(loginUser != null) {	// 추후에 암호화된 비밀번호도 함께 비교할 예정
+		if(loginUser != null && bcryptPwdEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) {	// 추후에 암호화된 비밀번호도 함께 비교할 예정(완료)
 			
 			session.setAttribute("loginUser", loginUser); // 세션에 로그인 한 회원 정보 담기
 			
