@@ -765,7 +765,9 @@
     function fnOpenMemoModal(){
       var memoModal = new bootstrap.Modal(document.getElementById("insertMemoModal"));
 
+			
       memoModal.show();
+
     }
     
     
@@ -803,7 +805,10 @@
     			memoContent: memoContent
     		},
     		success: function(res){
-	    		fnMemoList(); // 등록 후 전체 리스트 조회 실행
+    			
+    				$('#insertMemoInput').val('');
+    				
+		    		fnMemoList(); // 등록 후 전체 리스트 조회 실행
     			
     		}
     	})
@@ -831,13 +836,15 @@
     	
     	let memNo = '${loginUser.getMemNo()}';
     	let memoNo = $('#modifyMemoNo').val();
-    	
+    	let memoContent = $('#insertMemoInput_edit').val();
+
     	$.ajax({
-    		url: '${contextPath}/memo/modify.do',
+    		url: '${contextPath}/memo/modifyMemo.do',
     		type: 'POST',
     		data: {
     			memNo: memNo,
-    			memoNo: memoNo
+    			memoNo: memoNo,
+    			memoContent: memoContent
     			},
     		success: function(res){
     			fnMemoList();	// 수정 후 전체 리스트 조회 재실행
