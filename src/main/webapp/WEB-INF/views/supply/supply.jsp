@@ -15,6 +15,20 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <script src="${ contextPath }/resources/assets/js/config.js"></script>
+    
+    
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
@@ -32,6 +46,8 @@
       <!-- nav 끗 -->
 
 
+
+
    <div class="content-wrapper">
    <!-- 세션 시작 -->
     <div class="container-xxl flex-grow-1 container-p-y" style="margin-top: 35px;">
@@ -40,18 +56,19 @@
     <!-- select - option 등으로 필터링, 오더링 넣기 -->
               <div class="btn-group">
                 <button
+                	id="categoryId"
                   type="button"
-                  class="btn btn-label-secondary dropdown-toggle"
+                  class="btn btn-label-secondary dropdown-toggle whoareyou"
                   data-bs-toggle="dropdown"
                   aria-expanded="false">
                   카테고리별 조회
                 </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="javascript:void(0);">전체</a></li>
-                  <li><a class="dropdown-item" href="javascript:void(0);">전자기기</a></li>
-                  <li><a class="dropdown-item" href="javascript:void(0);">사무용품</a></li>
-                  <li><a class="dropdown-item" href="javascript:void(0);">기타</a></li>
-                </ul>
+                <ul class="dropdown-menu whoareyou" >
+							    <li><a class="dropdown-item whoareyou" href="javascript:void(0);" onclick="updateButtonText(this)">전체</a></li>
+							    <li><a class="dropdown-item whoareyou" href="javascript:void(0);" onclick="updateButtonText(this)">전자기기</a></li>
+							    <li><a class="dropdown-item whoareyou" href="javascript:void(0);" onclick="updateButtonText(this)">사무용품</a></li>
+							    <li><a class="dropdown-item whoareyou" href="javascript:void(0);" onclick="updateButtonText(this)">기타</a></li>
+							  </ul>
               </div>
 
 
@@ -343,12 +360,12 @@
                         <th style="text-align:center;">지급 현황<!-- 지원팀만 이 열이 보이게 --></th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tbodyId">
                       
                       <c:choose>
 									<c:when test="${ empty list }">
 										<tr style="height:55px;">
-											<td colspan="${ loginUser.deptCode != 'S3' ? 6 : 5 }">조회된 비품이 없습니다.</td>
+											<td colspan="${ loginUser.deptCode != 'S3' ? 6 : 5 }" style="text-align:center;">조회된 비품이 없습니다.</td>
 										</tr>
 									</c:when>
 									<c:otherwise>
@@ -448,6 +465,65 @@
     
     </div>
    <!-- 세션 끝 -->
+
+
+	    <script>
+	  // 버튼에 선택된 항목 텍스트를 업데이트하는 함수
+	  function updateButtonText(element) {
+	    const button = element.closest('.btn-group').querySelector('button');
+	    button.innerHTML = element.innerHTML;
+	  }
+	  
+	  
+	  
+		</script>	
+
+
+
+
+	<script>
+	
+	// 카테고리별 select 하는 버튼 change 이벤트
+	  
+	  $(document).ready(function(){
+		  $('.whoareyou').change(function(){
+			  
+		       console.log($(this).val());  // 값이 출력될 것
+			  
+			  
+			  $.ajax({
+				  url: '${contextPath}/supply/supply.do',
+				  type: 'GET',
+				  data: {
+					  supplyCategory: $(this).val()
+				  },
+				  success: function(res){
+					  
+					  let a = "";
+					  
+					  
+					  
+				  }
+			  })
+			  
+			  
+		  })
+	  })
+	
+	
+	</script>
+	
+
+
+
+
+
+
+
+
+
+
+
 
 
 
