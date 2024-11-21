@@ -403,9 +403,9 @@ where ar.doc_no = #{docNo}
 <select id="appdocDetailSelectAttach" resultType="AttachDto">
 
 select 
-      FILE_PATH
-     ,FILE_SYSTEM_NAME
-     ,FILE_ORIGINAL_NAME
+      FILE_PATH as filePath
+     ,FILE_SYSTEM_NAME as filesystemName
+     ,FILE_ORIGINAL_NAME as originalName
  from attachment
  where FILE_REF_TYPE = 'A'
  and FILE_REF_NO = #{docNo}

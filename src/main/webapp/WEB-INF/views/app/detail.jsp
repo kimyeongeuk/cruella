@@ -372,7 +372,14 @@
                         <div class="mb-4">
                         <!-- 파일 -->
                         
-                        
+                        	<div>
+                        	<c:forEach var="a" items="${app.attachList}">
+                        		<a href="${contextPath}${a.filePath}/${a.filesystemName}"  download="${a.originalName}">
+                        			${a.originalName}
+                        		</a>
+                        		<br>
+                        	</c:forEach>
+                        	</div>
                           
                         </div>
 
