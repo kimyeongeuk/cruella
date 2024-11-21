@@ -14,6 +14,7 @@
         <result column="board_status" property="boardStatus" />
         <result column="dept_code" property="deptCode" />
         <result column="mem_name" property="memName" />
+        <result column="reply_count" property="replyCount" />
         <collection resultMap="attachResultMap" property="attachList" />
     </resultMap>
     
@@ -46,31 +47,36 @@
 		</select>
 		
 		<select id="selectBoardList" parameterType="map" resultMap="boardResultMap">
-		    select
-		         b.board_no
-		       , b.board_title
-		       , b.board_content
-		       , m.mem_no
-		       , m.mem_name
-		       , b.board_count
-		       , to_char(b.board_regist_date, 'YYYY-MM-DD') as board_regist_date
-		       , to_char(b.board_modify_date, 'YYYY-MM-DD') as board_modify_date
-		       , b.board_status
-		       , b.dept_code
-		       , coalesce(a.attach_count, 0) as attach_count
-		    from board b
-		    join member m on (m.mem_no = b.mem_no)
-		    left join (
-		        select file_ref_no, count(*) as attach_count
-		        from attachment
-		        where file_ref_type = 'B'
-		        group by file_ref_no
-		    ) a on a.file_ref_no = b.board_no
-		    where b.board_status = 'Y'
-		      and b.dept_code = #{deptCode}
-		    order by b.board_no desc
+		    SELECT
+		        b.board_no,
+		        b.board_title,
+		        b.board_content,
+		        m.mem_no,
+		        m.mem_name,
+		        b.board_count,
+		        TO_CHAR(b.board_regist_date, 'YYYY-MM-DD') AS board_regist_date,
+		        TO_CHAR(b.board_modify_date, 'YYYY-MM-DD') AS board_modify_date,
+		        b.board_status,
+		        b.dept_code,
+		        COALESCE(a.attach_count, 0) AS attach_count,
+		        COALESCE(r.reply_count, 0) AS reply_count
+		    FROM board b
+		    JOIN member m ON (m.mem_no = b.mem_no)
+		    LEFT JOIN (
+		        SELECT file_ref_no, COUNT(*) AS attach_count
+		        FROM attachment
+		        WHERE file_ref_type = 'B'
+		        GROUP BY file_ref_no
+		    ) a ON a.file_ref_no = b.board_no
+		    LEFT JOIN (
+		        SELECT board_no, COUNT(*) AS reply_count
+		        FROM reply
+		        GROUP BY board_no
+		    ) r ON r.board_no = b.board_no
+		    WHERE b.board_status = 'Y'
+		      AND b.dept_code = #{deptCode}
+		    ORDER BY b.board_no DESC
 		</select>
-
 
 		<select id="selectSearchListCount" resultType="int" parameterType="map">
 		    select count(*)
@@ -91,28 +97,34 @@
 
 		
 		<select id="selectSearchList" resultMap="boardResultMap" parameterType="map">
-		  select
-		       b.board_no
-		     , b.board_title
-		     , b.board_content
-		     , m.mem_no
-		     , m.mem_name
-		     , b.board_count
-		     , to_char(b.board_regist_date, 'YYYY-MM-DD') as board_regist_date
-		     , to_char(b.board_modify_date, 'YYYY-MM-DD') as board_modify_date
-		     , b.board_status
-		     , b.dept_code
-		     , coalesce(a.attach_count, 0) as attach_count
-		  from board b
-		  join member m on (m.mem_no = b.mem_no)
-		  left join (
-		      select file_ref_no, count(*) as attach_count
-		      from attachment
-		      where file_ref_type = 'B'
-		      group by file_ref_no
-		  ) a on a.file_ref_no = b.board_no
-		  where b.board_status = 'Y'
-		    and b.dept_code = #{deptCode}
+		  SELECT
+		        b.board_no,
+		        b.board_title,
+		        b.board_content,
+		        m.mem_no,
+		        m.mem_name,
+		        b.board_count,
+		        TO_CHAR(b.board_regist_date, 'YYYY-MM-DD') AS board_regist_date,
+		        TO_CHAR(b.board_modify_date, 'YYYY-MM-DD') AS board_modify_date,
+		        b.board_status,
+		        b.dept_code,
+		        COALESCE(a.attach_count, 0) AS attach_count,
+		        COALESCE(r.reply_count, 0) AS reply_count
+		    FROM board b
+		    JOIN member m ON (m.mem_no = b.mem_no)
+		    LEFT JOIN (
+		        SELECT file_ref_no, COUNT(*) AS attach_count
+		        FROM attachment
+		        WHERE file_ref_type = 'B'
+		        GROUP BY file_ref_no
+		    ) a ON a.file_ref_no = b.board_no
+	   LEFT JOIN (
+	        SELECT board_no, COUNT(*) AS reply_count
+	        FROM reply
+	        GROUP BY board_no
+		   	) r ON r.board_no = b.board_no
+			  WHERE b.board_status = 'Y'
+			    AND b.dept_code = #{deptCode}
 		  <if test="condition == 'mem_name'">
 		    and m.mem_name like '%' || #{keyword} || '%'
 		  </if>
@@ -263,6 +275,25 @@
 		   	 and reply_type = 0
 		   order by reply_no desc
 		</select>
+	
+		<select id="selectRreplyList" parameterType="map" resultMap="replyResultMap">
+		    SELECT
+		         r.reply_no,
+		         r.board_no,
+		         r.mem_no,
+		         m.mem_name,
+		         r.reply_content,
+		         r.reply_type,
+		         r.reply_ref,
+		         TO_CHAR(r.reply_regist_date, 'YYYY-MM-DD HH24:MI') AS reply_regist_date,
+		         TO_CHAR(r.reply_modify_date, 'YYYY-MM-DD HH24:MI') AS reply_modify_date
+		    FROM reply r
+		    JOIN member m ON (m.mem_no = r.mem_no)
+		    WHERE r.board_no = #{boardNo}
+		      AND r.reply_ref = #{replyNo}
+		      AND reply_type = 1
+		    ORDER BY r.reply_no DESC
+		</select>	
 	
 		<insert id="insertReply">
 		    insert into reply

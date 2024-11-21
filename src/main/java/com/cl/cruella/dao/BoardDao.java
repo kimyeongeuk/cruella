@@ -68,8 +68,15 @@ public class BoardDao {
 		return sqlSession.selectList("boardMapper.selectDelAttach", delFileNo);
 	}
 
-	public List<ReplyDto> selectReplyList(int boardNo){
-		return sqlSession.selectList("boardMapper.selectReplyList", boardNo);
+	public List<ReplyDto> selectReplyList(int boardNo) {
+	    return sqlSession.selectList("boardMapper.selectReplyList", boardNo);
+	}
+
+	public List<ReplyDto> selectReplyList(int boardNo, int replyNo) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("boardNo", boardNo);
+	    params.put("replyNo", replyNo);
+	    return sqlSession.selectList("boardMapper.selectRreplyList", params);
 	}
 	
 	public int insertReply(ReplyDto r) {

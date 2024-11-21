@@ -30,6 +30,7 @@ public class BoardDto {
 	private int attachCount;
 	private String memName;
 	private List<AttachDto> attachList;
+	private int replyCount;
 
 }
 

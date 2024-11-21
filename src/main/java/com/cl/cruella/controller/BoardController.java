@@ -180,7 +180,7 @@ public class BoardController {
 		// Map<String,String> search ==> {condition=user_id|board_title|board_content, keyword=란}
 		
 		int listCount = boardService.selectSearchListCount(search);
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
 		List<BoardDto> list = boardService.selectSearchList(search, pi);
 		
 		model.addAttribute("pi", pi);
@@ -195,6 +195,14 @@ public class BoardController {
 	@GetMapping(value="/rlist.do", produces="application/json")
 	public List<ReplyDto> replyList(int no) {
 	    List<ReplyDto> replies = boardService.selectReplyList(no);
+	    return replies;
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/rrlist.do", produces="application/json")
+	public List<ReplyDto> replyList(int bno, int nno) {
+	    List<ReplyDto> replies = boardService.selectReplyList(bno, nno);
+	    System.out.println(replies);
 	    return replies;
 	}
 	
