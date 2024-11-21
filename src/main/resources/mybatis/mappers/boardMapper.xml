@@ -273,7 +273,7 @@
 		    join member m on (m.mem_no = r.mem_no)
 		   where r.board_no = #{boardNo}
 		   	 and reply_type = 0
-		   order by reply_no desc
+		   order by reply_no asc
 		</select>
 	
 		<select id="selectRreplyList" parameterType="map" resultMap="replyResultMap">
@@ -292,7 +292,7 @@
 		    WHERE r.board_no = #{boardNo}
 		      AND r.reply_ref = #{replyNo}
 		      AND reply_type = 1
-		    ORDER BY r.reply_no DESC
+		    ORDER BY r.reply_no ASC
 		</select>	
 	
 		<insert id="insertReply">
