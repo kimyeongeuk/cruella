@@ -122,87 +122,107 @@
                     </c:if>
                   </div>
                 </div>    
+                
                 <div class="card-datatable table-responsive pt-3">
-                  <table class="datatables-basic table text-center">
-                    <thead>
-                      <tr>                  
-						            <c:choose>
-						              <c:when test="${loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4'}">
-						                <th style="width: 5%;"><input type="checkbox" id="selectAll" /></th>
-						                <th style="width: 15%;">카테고리</th>
-		                        <th style="width: 15%;">작성자</th>
-		                        <th style="width: 40%;">제목</th>
-		                        <th style="width: 15%;">작성일</th>
-		                        <th style="width: 10%;">조회수</th>					                
-						              </c:when>
-						              <c:otherwise>
-						                <th style="width: 15%;">카테고리</th>
-		                        <th style="width: 15%;">작성자</th>
-		                        <th style="width: 45%;">제목</th>
-		                        <th style="width: 15%;">작성일</th>
-		                        <th style="width: 10%;">조회수</th>
-						              </c:otherwise>
-						            </c:choose>							                     
-                      </tr>
-                    </thead>						  
-									  <tbody>
-										  <c:choose>
-										    <c:when test="${empty list}">
-										      <tr>
-										        <td colspan="6">조회된 게시글이 없습니다.</td>
-										      </tr>
-										    </c:when>
-										    <c:otherwise>
-										      <c:forEach var="board" items="${list}">
-										        <tr data-boardno="${board.boardNo}">							          
-									            <c:choose>
-									              <c:when test="${loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4'}">
-									                <td><input type="checkbox" class="item-checkbox" /></td>
-									                <td>팀</td>
-												          <td>${board.memName}</td>
-												          <c:choose>
-												            <c:when test="${board.attachCount != 0}">
-												              <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle} (${board.replyCount})
-												                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip">
-												                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-												                  <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
-												                </svg>
-												              </td>
-												            </c:when>
-												            <c:otherwise>
-												              <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle} (${board.replyCount})</td>
-												            </c:otherwise>
-												          </c:choose>
-												          <td>${board.boardRegistDT}</td>
-												          <td>${board.boardCount}</td>
-									              </c:when>
-									              <c:otherwise>
-									                <td>팀</td>
-												          <td>${board.memName}</td>
-												          <c:choose>
-												            <c:when test="${board.attachCount != 0}">
-												              <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle} (${board.replyCount})
-												                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip">
-												                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-												                  <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
-												                </svg>
-												              </td>
-												            </c:when>
-												            <c:otherwise>
-												              <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle} (${board.replyCount})</td>
-												            </c:otherwise>
-												          </c:choose>
-												          <td>${board.boardRegistDT}</td>
-												          <td>${board.boardCount}</td>
-									              </c:otherwise>
-									            </c:choose>        
-										        </tr>
-										      </c:forEach>
-										    </c:otherwise>
-										  </c:choose>
-										</tbody>
-									</table>
-								</div>	
+								  <table class="datatables-basic table text-center">
+								    <thead>
+								      <tr>                  
+								        <c:choose>
+								          <c:when test="${loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4'}">
+								            <th style="width: 5%;"><input type="checkbox" id="selectAll" /></th>
+								            <th style="width: 15%;">카테고리</th>
+								            <th style="width: 15%;">작성자</th>
+								            <th style="width: 40%;">제목</th>
+								            <th style="width: 15%;">작성일</th>
+								            <th style="width: 10%;">조회수</th>                            
+								          </c:when>
+								          <c:otherwise>
+								            <th style="width: 15%;">카테고리</th>
+								            <th style="width: 15%;">작성자</th>
+								            <th style="width: 45%;">제목</th>
+								            <th style="width: 15%;">작성일</th>
+								            <th style="width: 10%;">조회수</th>
+								          </c:otherwise>
+								        </c:choose>                                     
+								      </tr>
+								    </thead>                          
+								    <tbody>
+								      <c:choose>
+								        <c:when test="${empty list}">
+								          <tr>
+								            <td colspan="6">조회된 게시글이 없습니다.</td>
+								          </tr>
+								        </c:when>
+								        <c:otherwise>
+								          <c:forEach var="board" items="${list}">
+								            <tr data-boardno="${board.boardNo}">                        
+								              <c:choose>
+								                <c:when test="${loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4'}">
+								                  <td><input type="checkbox" class="item-checkbox" /></td>
+								                  <td>팀</td>
+								                  <td>${board.memName}</td>
+								                  <c:choose>
+								                    <c:when test="${board.attachCount != 0}">
+								                      <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle} 
+								                        <c:choose>
+								                          <c:when test="${board.replyCount > 0}">(${board.replyCount})</c:when>
+								                          <c:otherwise>&nbsp;</c:otherwise>
+								                        </c:choose>
+								                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip">
+								                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+								                          <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
+								                        </svg>
+								                      </td>
+								                    </c:when>
+								                    <c:otherwise>
+								                      <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle} 
+								                        <c:choose>
+								                          <c:when test="${board.replyCount > 0}">(${board.replyCount})</c:when>
+								                          <c:otherwise>&nbsp;</c:otherwise>
+								                        </c:choose>
+								                      </td>
+								                    </c:otherwise>
+								                  </c:choose>
+								                  <td>${board.boardRegistDT}</td>
+								                  <td>${board.boardCount}</td>
+								                </c:when>
+								                <c:otherwise>
+								                  <td>팀</td>
+								                  <td>${board.memName}</td>
+								                  <c:choose>
+								                    <c:when test="${board.attachCount != 0}">
+								                      <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle} 
+								                        <c:choose>
+								                          <c:when test="${board.replyCount > 0}">(${board.replyCount})</c:when>
+								                          <c:otherwise>&nbsp;</c:otherwise>
+								                        </c:choose>
+								                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip">
+								                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+								                          <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
+								                        </svg>
+								                      </td>
+								                    </c:when>
+								                    <c:otherwise>
+								                      <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle} 
+								                        <c:choose>
+								                          <c:when test="${board.replyCount > 0}">(${board.replyCount})</c:when>
+								                          <c:otherwise>&nbsp;</c:otherwise>
+								                        </c:choose>
+								                      </td>
+								                    </c:otherwise>
+								                  </c:choose>
+								                  <td>${board.boardRegistDT}</td>
+								                  <td>${board.boardCount}</td>
+								                </c:otherwise>
+								              </c:choose>        
+								            </tr>
+								          </c:forEach>
+								        </c:otherwise>
+								      </c:choose>
+								    </tbody>
+								  </table>
+								</div>
+                	
 								
 								<!-- 페이징 바 -->
 	              <div class="card-body">

@@ -113,6 +113,7 @@
     <!-- nav layout page 닫기 -->
    </div>
    <!-- layout-container 닫기 -->
+   </div>
 </div>
 <div class="layout-overlay layout-menu-toggle"></div>
 <div class="drag-target"></div>

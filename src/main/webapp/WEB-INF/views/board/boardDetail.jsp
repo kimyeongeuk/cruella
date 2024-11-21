@@ -76,6 +76,14 @@
 	.attachment-toggle-wrapper .attachment-list {
 	  margin-top: 5px; /* Adjusts spacing between the toggle and list */
 	}
+	.content-wrapper {
+    overflow: visible;
+  }
+  
+  .content pre {
+    white-space: pre-wrap; /* 줄 바꿈을 적용하여 내용이 길어질 경우 자동으로 줄 바꿈 */
+    word-wrap: break-word; /* 긴 단어가 있을 경우 자동으로 줄 바꿈 */
+  }
 		
 </style>
 </head>
@@ -147,9 +155,11 @@
                     <br>
                   </c:otherwise>
                 </c:choose>                          
-                <div class="content">
-                  <pre style="font-size: 16px; color:black; font-family: 'Noto Sans KR', sans-serif;">${b.boardContent}</pre>
-                </div>
+                <div class="content-wrapper" style="overflow: visible;">
+								  <div class="content">
+								    <pre style="font-size: 16px; color: black; font-family: 'Noto Sans KR', sans-serif;">${b.boardContent}</pre>
+								  </div>
+								</div>
                 <br>
                 <hr>
                 
@@ -487,7 +497,7 @@ function fn_rreplyList(replyId) {
                           + "<textarea id='rreply_content' class='form-control' aria-label='With textarea' placeholder='답글을 입력해주세요.' style='width: 100%; border: 0px; resize: none;'></textarea>"
                           + "</div>"
                           + "<div>"
-                          + "<button id='regist' class='btn btn-sm btn-outline-secondary' style='text-align: center;' onclick='fn_insertRreply(" + replyId + ");'>등록</button>"
+                          + "<button id='regist' class='btn btn-sm btn-outline-secondary' style='text-align: center; margin-left: 10px;' onclick='fn_insertRreply(" + replyId + ");'>등록</button>"
                           + "</div>";
 
       // reply_div HTML 업데이트
