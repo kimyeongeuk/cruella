@@ -180,7 +180,7 @@ public class BoardController {
 		// Map<String,String> search ==> {condition=user_id|board_title|board_content, keyword=란}
 		
 		int listCount = boardService.selectSearchListCount(search);
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
 		List<BoardDto> list = boardService.selectSearchList(search, pi);
 		
 		model.addAttribute("pi", pi);

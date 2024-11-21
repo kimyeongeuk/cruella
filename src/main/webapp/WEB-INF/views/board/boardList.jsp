@@ -152,7 +152,7 @@
 						            <td>${board.memName}</td>
 						            <c:choose>
 						              <c:when test="${board.attachCount != 0}">
-						                <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle}
+						                <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle} (${board.replyCount})
 						                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip">
 						                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
 						                    <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
@@ -160,7 +160,7 @@
 						                </td>
 						              </c:when>
 						              <c:otherwise>
-						                <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle}</td>
+						                <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle} (${board.replyCount})</td>
 						              </c:otherwise>
 						            </c:choose>
 						            <td>${board.boardRegistDT}</td>
