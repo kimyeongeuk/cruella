@@ -202,7 +202,6 @@ public class BoardController {
 	@GetMapping(value="/rrlist.do", produces="application/json")
 	public List<ReplyDto> replyList(int bno, int nno) {
 	    List<ReplyDto> replies = boardService.selectReplyList(bno, nno);
-	    System.out.println(replies);
 	    return replies;
 	}
 	
@@ -219,9 +218,6 @@ public class BoardController {
 	public String rreplyInsert(ReplyDto r, HttpSession session) {
 	    r.setMemNo(String.valueOf(((MemberDto)session.getAttribute("loginUser")).getMemNo()));
 	    r.setReplyType(1); // 대댓글(replyType=1) 설정
-	    System.out.println(r);
-	    System.out.println("대댓글 내용: " + r.getReplyContent());
-	    System.out.println("대댓글 참조: " + r.getReplyRef());
 	    int result = boardService.insertRreply(r);
 	    return result > 0 ? "SUCCESS" : "FAIL";
 	}

@@ -33,6 +33,6 @@ public interface MemberService {
 	int updateProfileImg(MemberDto m);
 
 	// 전자서명 저장
-	int saveSignPath(byte imageBytes);
+	int saveSignPath(MemberDto m);
 	
 }

@@ -3,6 +3,7 @@ package com.cl.cruella.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,14 @@ public class MemberController {
 		
 		if(loginUser != null && bcryptPwdEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) {	// 추후에 암호화된 비밀번호도 함께 비교할 예정(완료)
 			
+			String signPath = loginUser.getSignPath();
+			
+			String dataUrl = "data:image/png;base64," + signPath;
+			
+			loginUser.setSignPath(dataUrl); // 전자서명 경로 재인코딩
+			
 			session.setAttribute("loginUser", loginUser); // 세션에 로그인 한 회원 정보 담기
+			
 			
 			if(loginUser.getStatus().equals("A")) {	// 비밀번호 변경이 필요한 회원일 경우 변경 화면으로 (첫 로그인, 임시 비번 발급)
 				return "/member/resetPwd";
@@ -180,18 +188,30 @@ public class MemberController {
 	 }
 	 
 	 // 전자서명 저장(김동규)
-	 @PostMapping("/saveSign")
-	 public void saveSign(MemberDto m) {
+	 @PostMapping("/saveSign.do")
+	 @ResponseBody
+	 public String saveSign(MemberDto m, HttpSession session) {
 		 
 		 // Base64 데이터 추출
 		 String base64Data = m.getSignPath().split(",")[1];
+
 		 
-		 // Base64 디코딩
-		 byte[] imageBytes = Base64.getDecoder().decode(base64Data);
-		 
-		 // m.setSignPath(imageBytes);
+		 m.setSignPath(base64Data);
 		 	
-		 // int result = memberService.saveSignPath(imageBytes);
+		 int result = memberService.saveSignPath(m);
+		 
+		 if(result > 0) {
+			 
+	         // 세션의 loginUser의 signPath 업데이트
+	         MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+	         loginUser.setSignPath("data:image/png;base64," + base64Data);
+	         session.setAttribute("loginUser", loginUser);
+		 
+			 return "YYY";
+		 }else {
+			 return "NNN";
+		 }
+		 
 	 }
 	 
 	 // 출근 버튼 클릭시(김동규)

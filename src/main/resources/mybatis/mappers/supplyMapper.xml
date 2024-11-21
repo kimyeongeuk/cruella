@@ -12,13 +12,28 @@
 	<result column="SUP_REPAIR" property="supRepair" />
 	<result column="SUP_REPAIR_DETAIL" property="supRepairDetail" />
 	<result column="SUP_TYPE" property="supType" />
+	<result column="LEFTSUPPLY" property="leftSupply" />
+	<result column="REPAIRSUPPLY" property="repairSupply" />
+	<result column="WORKSUPPLY" property="workSupply" />
 </resultMap>
 
 
 <!-- 비품 전체 목록 조회하기 -->
 <select id="selectSupplyList" resultMap="selectSupplyResultMap">
-	SELECT *
-	 FROM SUPPLIES
+	SELECT 
+    SUP_CATEGORY, 
+    SUP_TYPE,
+    COUNT(CASE WHEN SUP_STATUS = 'N' THEN 1 END) AS LEFTSUPPLY,
+    COUNT(CASE WHEN SUP_REPAIR = 'Y' THEN 1 END) AS REPAIRSUPPLY,
+    COUNT(CASE WHEN SUP_REPAIR = 'Y' AND SUP_STATUS != 'N' THEN 1 END) AS WORKSUPPLY
+FROM 
+    SUPPLIES
+GROUP BY 
+    SUP_CATEGORY, 
+    SUP_TYPE
+ORDER BY 
+    SUP_CATEGORY, 
+    SUP_TYPE
 </select>
 
 

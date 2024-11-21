@@ -34,7 +34,7 @@
 
    <div class="content-wrapper">
    <!-- 세션 시작 -->
-    <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="container-xxl flex-grow-1 container-p-y" style="margin-top: 35px;">
      <!-- 이쪽에 세션정보 넣어야합니다 -->
     
     <!-- select - option 등으로 필터링, 오더링 넣기 -->
@@ -344,94 +344,31 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr style="height:55px;">
-                        <td style="text-align:center; width:150px;">전자기기</td>
-                        <td style="text-align:center;"> 컴퓨터 본체 &nbsp;
-                          <button type="button" class="btn rounded-pill btn-outline-primary btn btn-sm">정보</button>
-                        </td>
-                        <td style="text-align:center;"> 23 </td>
-                        <td style="text-align:center;"> 22 </td>
-                        <td style="text-align:center;"> 1 </td>
-                        <td style="text-align:center;">
-                          <button type="button" class="btn rounded-pill btn-outline-info btn btn-sm">상세보기</button>
-                        </td>
-                      </tr>
-
-
-
-                      <tr style="height:55px;">
-                        <td style="text-align:center; width:150px;">전자기기</td>
-                        <td style="text-align:center;"> 노트북 &nbsp;
-                          <button type="button" class="btn rounded-pill btn-outline-primary btn btn-sm">정보</button>
-                        </td>
-                        <td style="text-align:center;"> 21 </td>
-                        <td style="text-align:center;"> 20 </td>
-                        <td style="text-align:center;"> 1 </td>
-                        <td style="text-align:center;">
-                          <button type="button" class="btn rounded-pill btn-outline-info btn btn-sm">상세보기</button>
-                        </td>
-                      </tr>
-                      <tr style="height:55px;">
-                        <td style="text-align:center; width:150px;">전자기기</td>
-                        <td style="text-align:center;"> 마우스 &nbsp;
-                          <button type="button" class="btn rounded-pill btn-outline-primary btn btn-sm">정보</button>
-                        </td>
-                        <td style="text-align:center;"> 33 </td>
-                        <td style="text-align:center;"> 33 </td>
-                        <td style="text-align:center;"> 0 </td>
-                        <td style="text-align:center;">
-                          <button type="button" class="btn rounded-pill btn-outline-info btn btn-sm">상세보기</button>
-                        </td>
-                      </tr>
-                      <tr style="height:55px;">
-                        <td style="text-align:center; width:150px;">전자기기</td>
-                        <td style="text-align:center;"> 결제 단말기 &nbsp;
-                          <button type="button" class="btn rounded-pill btn-outline-primary btn btn-sm">정보</button>
-                        </td>
-                        <td style="text-align:center;"> 17 </td>
-                        <td style="text-align:center;"> 17 </td>
-                        <td style="text-align:center;"> 0 </td>
-                        <td style="text-align:center;">
-                          <button type="button" class="btn rounded-pill btn-outline-info btn btn-sm">상세보기</button>
-                        </td>
-                      </tr>
-                      <tr style="height:55px;">
-                        <td style="text-align:center; width:150px;">전자기기</td>
-                        <td style="text-align:center;"> 키보드 &nbsp;
-                          <button type="button" class="btn rounded-pill btn-outline-primary btn btn-sm">정보</button>
-                        </td>
-                        <td style="text-align:center;"> 31 </td>
-                        <td style="text-align:center;"> 30 </td>
-                        <td style="text-align:center;"> 1 </td>
-                        <td style="text-align:center;">
-                          <button type="button" class="btn rounded-pill btn-outline-info btn btn-sm">상세보기</button>
-                        </td>
-                      </tr>
-                      <tr style="height:55px;">
-                        <td style="text-align:center; width:150px;">전자기기</td>
-                        <td style="text-align:center;"> 복합기 &nbsp;
-                          <button type="button" class="btn rounded-pill btn-outline-primary btn btn-sm">정보</button>
-                        </td>
-                        <td style="text-align:center;"> 5 </td>
-                        <td style="text-align:center;"> 5 </td>
-                        <td style="text-align:center;"> 0 </td>
-                        <td style="text-align:center;">
-                          <button type="button" class="btn rounded-pill btn-outline-info btn btn-sm">상세보기</button>
-                        </td>
-                      </tr>
-                      <tr style="height:55px;">
-                        <td style="text-align:center; width:150px;">전자기기</td>
-                        <td style="text-align:center;"> 빔 프로젝터 &nbsp;
-                          <button type="button" class="btn rounded-pill btn-outline-primary btn btn-sm">정보</button>
-                        </td>
-                        <td style="text-align:center;"> 1 </td>
-                        <td style="text-align:center;"> 1 </td>
-                        <td style="text-align:center;"> 0 </td>
-                        <td style="text-align:center;">
-                          <button type="button" class="btn rounded-pill btn-outline-info btn btn-sm">상세보기</button>
-                        </td>
-                      </tr>
                       
+                      <c:choose>
+									<c:when test="${ empty list }">
+										<tr style="height:55px;">
+											<td colspan="${ loginUser.deptCode != 'S3' ? 6 : 5 }">조회된 비품이 없습니다.</td>
+										</tr>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="s" items="${ list }">
+											<tr style="height:55px;" onclick="location.href='${contextPath}/supply/supply.do?no=${s.supNo}'">
+												<td style="text-align:center; width:150px;">${ s.supCategory }</td>
+                        <td style="text-align:center;"> ${ s.supType } &nbsp;
+                          <button type="button" class="btn rounded-pill btn-outline-primary btn btn-sm">정보</button>
+                        </td>
+                        <td style="text-align:center;"> ${ s.leftSupply } </td>
+                        <td style="text-align:center;"> ${ s.repairSupply } </td>
+                        <td style="text-align:center;"> ${ s.workSupply } </td>
+                        <td style="text-align:center;">
+                          <button type="button" class="btn rounded-pill btn-outline-info btn btn-sm">상세보기</button>
+                        </td>
+											</tr>
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>
+								
                     </tbody>
                   </table>
 

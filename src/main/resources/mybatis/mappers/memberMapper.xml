@@ -175,8 +175,8 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 	<update id="saveSignPath">
 		update
 				   member
-			 set sign_path = #{imageBytes}
-				   
+			 set sign_path = #{signPath}
+		 where mem_no = #{memNo}
 	</update>
 	
 
