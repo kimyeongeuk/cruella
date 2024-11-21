@@ -57,8 +57,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int saveSignPath(byte imageBytes) {
-		return memberDao.saveSignPath(imageBytes);
+	public int saveSignPath(MemberDto m) {
+		return memberDao.saveSignPath(m);
 	}
 
 }

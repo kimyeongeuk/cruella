@@ -60,8 +60,8 @@ public class MemberDao {
 		return sqlSession.update("memberMapper.updateProfileImg", m);
 	}
 	
-	public int saveSignPath(byte imageBytes) {
-		return sqlSession.update("memberMapper.saveSignPath", imageBytes);
+	public int saveSignPath(MemberDto m) {
+		return sqlSession.update("memberMapper.saveSignPath", m);
 	}
 }
 

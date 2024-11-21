@@ -338,6 +338,21 @@
                   <!-- 전자서명 스크립트 -->
                   <script>
 
+                  
+                  function fnLoadSign(){
+                	  
+                	  const signPath = '${loginUser.getSignPath()}';
+                	  
+                	  
+                	  $('#sign_image').attr('src', signPath);
+                	  
+                  }
+                  	
+												
+												
+											$(document).ready(function(){
+												
+												
                         const canvas = document.getElementById("canvas");
                         const context = canvas.getContext("2d");  
                         let drawing = false;
@@ -367,14 +382,17 @@
 
                       $('#clear_btn').on('click',function(){
                         context.clearRect(0, 0, canvas.width, canvas.height);
-                      })
+                      });
 
+                      
                       $('#sign_save_btn').on('click',function(){
+                    	  
                         const signPath = canvas.toDataURL();
-                        console.log(signatureDataURL);
-                        $('#sign_image').attr('src', signatureDataURL);
                         
-                        const memNo = ${loginUser.getMemNo()};
+                        $('#sign_image').attr('src', signPath);
+                        
+                        const memNo = '${loginUser.getMemNo()}';
+                        
                         
                         // DB에 저장(김동규)
                         $.ajax({
@@ -385,15 +403,22 @@
                         		memNo: memNo
                         		},
                         	success: function(res){
-                        		alert('전자서명이 등록되었습니다.');
-                        	}error: function(){
-                        		alert('전자서명 등록에 실패했습니다. 다시 시도해주세요.');
+                        		if(res == 'YYY'){
+	                        		alert('전자서명이 등록되었습니다.');
+
+	                        		window.reload();
+                        		}else{
+	                        		alert('전자서명 등록에 실패했습니다. 다시 시도해주세요.');
+                        		}
                         	}
                         })
                         
                         
-                      })
+                      });
                       
+                      
+                      
+									})
                       
 
                   </script>
@@ -751,7 +776,9 @@
     	
     	fnMemoList();	//   메모 전체 리스트 조회
     	fnTeamList(); // 소속팀 전체 리스트 조회
-    	
+    	//console.log('${loginUser.getSignPath()}');
+    	fnLoadSign(); // 전자서명 조회
+			    	
     }
     
     // 메모 전체 리스트 조회(김동규)
