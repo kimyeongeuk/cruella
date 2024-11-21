@@ -61,6 +61,7 @@
 	<result column="dept_name" property="deptName"/>
 	<result column="mem_name" property="memName"/>
 	<result column="app_level" property="appLevel"/>
+	<result column="mem_no" property="rvNo"/>
 </resultMap>
 
 
@@ -285,9 +286,63 @@ select
     where r.mem_no = #{memNo} -- 결재선/현재로그인한 사번
     and a.doc_order = r.app_level
     and r.app_status = '대기'
+    and a.status = 'Y'
     order by a.doc_date desc
 
 </select>
+
+
+<select id="selectViewCount" resultType="_int">
+
+select 
+      count(*)
+    from member m
+    join app_doc a on(m.mem_no = a.mem_no)
+    join app_ref ar on (a.mem_no = m.mem_no)
+    where a.doc_no = ar.doc_no
+    and a.status = 'Y'
+    and ar.mem_no = #{memNo}
+    order by a.doc_date desc
+</select>
+
+<!-- 참조열람함 리스트 조회 -->
+<select id="selectView" resultMap="selectStandbyResult">
+select 
+        m.mem_name as mem_name
+        ,a.doc_no as doc_no
+        ,a.doc_type as doc_type
+        ,
+         CASE 
+	     WHEN LENGTH(a.doc_title) > 15 THEN SUBSTR(a.doc_title, 1, 15) || '...'
+	     ELSE a.doc_title
+	  	 END as doc_title
+         
+        ,a.doc_content as doc_content
+        ,a.doc_date as doc_date
+        ,a.doc_importance as doc_importance
+        ,a.doc_status as doc_status
+    from member m
+    join app_doc a on(m.mem_no = a.mem_no)
+    join app_ref ar on (a.mem_no = m.mem_no)
+    where a.doc_no = ar.doc_no
+    and a.status = 'Y'
+    and ar.mem_no = #{memNo}
+    order by a.doc_date desc
+
+</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -336,6 +391,7 @@ select
       d.dept_name as dept_name
       ,m.mem_name as mem_name
       ,ar.APP_LEVEL as app_level
+      ,ar.mem_no as mem_no
 from approval ar
 join member m on (m.mem_no = ar.mem_no)
 join department d on(m.dept_code = d.dept_code)
@@ -355,6 +411,14 @@ select
  and FILE_REF_NO = #{docNo}
  
 </select>
+
+
+
+
+
+
+
+
 
 
 

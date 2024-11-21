@@ -163,7 +163,7 @@ public class AppController {
 	
 	// 결재대기함 조회
 	@GetMapping("/box_standby.do")
-	public void box_standbyPage(@RequestParam(value="page", defaultValue="1") int currentPage
+	public void boxStandbyPage(@RequestParam(value="page", defaultValue="1") int currentPage
 								,HttpSession session
 								,Model model) {
 		
@@ -180,21 +180,46 @@ public class AppController {
 		
 	}
 	
+	// 참조열람함 조회
+	@GetMapping("/box_view.do")
+	public void boxViewPage(@RequestParam(value="page", defaultValue="1") int currentPage
+						,HttpSession session
+						,Model model) {
+		
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		
+		int listCount = appService.selectViewCount(memNo);
+		
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
+		
+		List<AppdocDto> list = appService.selectView(memNo,pi);
+		
+		model.addAttribute("list",list);
+		model.addAttribute("pi",pi);
+		
+	}
+	
 	
 	
 	
 	
 //	결재문서함 상세조회
 	@GetMapping("/detail.do")
-	public void detailPage(AppdocDto docNo,Model model) {
+	public void detailPage(AppdocDto docNo,Model model,HttpSession session) {
 		
 		AppdocDto appdoc = appService.detailPage(docNo);
 		
-		model.addAttribute("app",appdoc);
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
 		
+		
+		model.addAttribute("app",appdoc);
+		model.addAttribute("memNo",memNo);
 		
 		
 	}
+	
+	
+	
 	
 	
 	

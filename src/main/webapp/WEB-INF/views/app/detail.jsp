@@ -47,9 +47,9 @@
             <!-- 양식영역 -->
             
              
-                      <div style="display: flex; justify-content: center;">
+                      <div style="display: flex; justify-content: right;">
                         <button type="button" class="btn btn-success">결재</button>
-                        <span style="width: 200px;"></span>
+                        <span style="width: 52px;"></span>
                         <button type="button" class="btn btn-warning">반려</button>
                       </div>
                         
@@ -192,10 +192,24 @@
 
 							
                               <span class="line_title"><b>결재선</b></span>
+                              
                               <c:forEach var="a" items="${app.rovalList}">
                               <span class="line_user">
                                 <span>${a.deptName}</span>
-                                <span class="signLine">서명</span>
+                                <span class="signLine">
+                                  <img class="signImg_div" style="display:none;width: 100px; height: 100px;">
+                                 <c:choose>
+                                	<c:when test="${a.rvNo eq memNo}">
+                                	
+                                		<button type="button" class="signbtn_div btn btn-dark">서명</button>
+                                		
+                                	</c:when>
+                                	<c:otherwise>
+                                		서명
+                                	</c:otherwise>
+                                 </c:choose>
+                                
+                                </span>
                                 <span class="sign_date">${a.memName}</span>
                               </span>
                               </c:forEach>
@@ -232,7 +246,7 @@
                         <td class="app_title_td" style="text-align: center; height: 40px;">기안자</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
                           <span style="position: relative; left: 10px;" id="userNo_value" ></span>
-                          <span id="ref_list_div">${app.memName }</span>
+                          <span id="ref_list_div" style="position: relative; left: 8px;">${app.memName }</span>
                         </td>
                       </tr>
                     </table>
@@ -305,7 +319,7 @@
                       <tr>
                         <td class="app_title_td" style="text-align: center; height: 40px;">기간 및 일시</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
-							<span>
+							<span style="position: relative; left: 12px;">
 								${app.appDateStart } ~ ${app.appDateEnd }
 							</span>
                           
@@ -320,7 +334,7 @@
                       <tr>
                         <td class="app_title_td" style="text-align: center; height: 40px;">제목</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black;">
-                          <span>${app.docTitle }</span>
+                          <span style="position: relative;left: 12px;">${app.docTitle }</span>
                             
                           <!-- 제목글자수 제한 조건을 걸거나 아니면 리스트 조회시 보이는 글자수 제한 걸기 -->
                         </td>
@@ -357,6 +371,8 @@
                       <div class="card-body">
                         <div class="mb-4">
                         <!-- 파일 -->
+                        
+                        
                           
                         </div>
 
@@ -382,6 +398,29 @@
 
         <!-- </div> -->
 
+
+<script>
+	
+$(document).ready(function(){
+	
+	  $('.signbtn_div').on('click', function(){
+	        
+	        
+	      
+	        const sign = '${loginUser.signPath}';
+	       
+	        $(this).closest('.line_user')
+	             .find('.signImg_div')
+	             .css('display', 'block') 
+	             .attr('src', sign); 
+	        
+	        $(this).remove();
+	    });
+	
+})
+		
+
+</script>
 
      
 

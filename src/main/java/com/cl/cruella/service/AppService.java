@@ -115,6 +115,29 @@ public class AppService {
 	
 	
 	
+	
+//	참조열람함 카운트
+	public int selectViewCount(String memNo) {
+		 int result = appDao.selectViewCount(memNo);
+		 return result;
+	}
+//	참조열람함 조회
+	public List<AppdocDto> selectView(String memNo,PageInfoDto pi){
+		List<AppdocDto> list = appDao.selectView(memNo,pi);
+		return list;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 //	상세페이지 필요한 데이터 조회
 	public AppdocDto detailPage(AppdocDto docNo) {
 		

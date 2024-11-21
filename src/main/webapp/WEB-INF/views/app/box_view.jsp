@@ -118,11 +118,11 @@
                               class="select form-select form-select-lg select2-hidden-accessible"
                               style="width: 240px;">
                               <option value="선택">선택해주세요</option>
-                              <option value="결재대기함" selected>결재대기함</option>
+                              <option value="결재대기함">결재대기함</option>
                               <option value="결재진행함">결재진행함</option>
                               <option value="결재완료함">결재완료함</option>
                               <option value="결재반려함">결재반려함</option>
-                              <option value="참조열람함">참조열람함</option>
+                              <option value="참조열람함" selected>참조열람함</option>
                               <option value="공문수신함">공문수신함</option>
                             </select>
                           </span>
@@ -172,7 +172,7 @@
                     </style>
                     
                     
-                	<tr >
+                	<tr>
                       <th></th>
                       <th><input type="checkbox" id="all_checkBox"></th>
                       <th><span class="header_title"><b>기안자</b></span></th>
@@ -220,11 +220,11 @@
                       	
                       </td>
                       <td>
-                       <c:if test="${a.docStatus eq 'A'}">
-                      	<span class="status_box" style="color:#F89914;">
-                      		대기
+                       
+                      	<span class="status_box" style="color:#70C3FF;">
+                      		참조
                       	</span>
-                       </c:if>
+                       
                       </td>
                     </tr> 
                     </c:forEach>
@@ -258,7 +258,7 @@
                             
                             <li class="page-item prev ${ pi.currentPage == 1 ? 'disabled' : '' }">
                               <a class="page-link" 
-                              		href="${ contextPath }/app/box_standby.do?page=${pi.currentPage-1}">
+                              		href="${ contextPath }/app/box_view.do?page=${pi.currentPage-1}">
                                 <i class="ti ti-chevron-left ti-sm"></i>
                               </a>
                             </li>
@@ -268,7 +268,7 @@
                             <!-- 페이징 숫자 / for문돌려서 생성 -->
                             <li class="page-item ${pi.currentPage == i ? 'active' : '' }">
                               <a class="page-link" 
-                              	href="${ contextPath }/app/box_standby.do?page=${i}">${ i }</a>
+                              	href="${ contextPath }/app/box_view.do?page=${i}">${ i }</a>
                             </li>
                             </c:forEach>
                            
@@ -276,7 +276,7 @@
                             <!-- 페이징 다음버튼 -->
                             <li class="page-item next ${ pi.currentPage == pi.maxPage ? 'disabled' : '' }">
                               <a class="page-link" 
-                              		href="${ contextPath }/app/box_standby.do?page=${pi.currentPage+1}">
+                              		href="${ contextPath }/app/box_view.do?page=${pi.currentPage+1}">
                                 <i class="ti ti-chevron-right ti-sm"></i>
                               </a>
                             </li>
@@ -317,7 +317,7 @@
       // 다수 페이징버튼          
      function goPage(pNum){
                         	   
-       window.location.href = '${contextPath}/app/box_standby.do?page=' + pNum;
+       window.location.href = '${contextPath}/app/box_ref.do?page=' + pNum;
  	}
      
      
@@ -338,10 +338,7 @@
     	    });
     	    
     	    
-    	    
-    	    
-    	    
-    	    
+   
     	    $('#select_formType1').change(function(){
       		  
       		  var selectedValue = $(this).val();
@@ -360,12 +357,6 @@
       		
       		  
       	  })
-    	    
-    	    
-    	    
-   
-    	    
-    	    
     	    
     	    
     	    

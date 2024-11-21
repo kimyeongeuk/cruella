@@ -79,6 +79,27 @@ public class AppDao {
 		 RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit() ,pi.getBoardLimit());
 		 return sqlSession.selectList("appMapper.selectStandby",memNo,rowBounds);
 	 }
+	 // 참조열람함 (listCount용)
+	 public int selectViewCount(String memNo) {
+		 return sqlSession.selectOne("appMapper.selectViewCount",memNo);
+	 }
+	 
+	 // 참조열람함 리스트 조회
+	 public List<AppdocDto> selectView(String memNo,PageInfoDto pi){
+		 RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit() ,pi.getBoardLimit());
+		 return sqlSession.selectList("appMapper.selectView",memNo,rowBounds);
+	 }
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 	 
 	 
 	 
