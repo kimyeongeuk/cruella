@@ -26,6 +26,10 @@ public class SupplyDto {
 	private String supType;
 
 	
+	private int leftSupply;
+	private int repairSupply;
+	private int workSupply;
+	
 	
 	
 }
