@@ -199,6 +199,14 @@ public class BoardController {
 	}
 	
 	@ResponseBody
+	@GetMapping(value="/rrlist.do", produces="application/json")
+	public List<ReplyDto> replyList(int bno, int nno) {
+	    List<ReplyDto> replies = boardService.selectReplyList(bno, nno);
+	    System.out.println(replies);
+	    return replies;
+	}
+	
+	@ResponseBody
 	@PostMapping("/rinsert.do")
 	public String replyInsert(ReplyDto r, HttpSession session) {
 		r.setMemNo( String.valueOf( ((MemberDto)session.getAttribute("loginUser")).getMemNo() ) );

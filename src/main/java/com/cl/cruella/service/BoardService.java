@@ -36,6 +36,9 @@ public interface BoardService {
 	// 댓글 목록 조회
 	List<ReplyDto> selectReplyList(int boardNo);
 	
+	// 대댓글 목록 조회
+	List<ReplyDto> selectReplyList(int boardNo, int replyNo);
+		
 	// 댓글 등록 
 	int insertReply(ReplyDto r);
 	

@@ -112,6 +112,11 @@ public class BoardServiceImpl implements BoardService{
 	public List<ReplyDto> selectReplyList(int boardNo) {
 		return boardDao.selectReplyList(boardNo);
 	}
+	
+	@Override
+	public List<ReplyDto> selectReplyList(int boardNo, int replyNo) {
+		return boardDao.selectReplyList(boardNo, replyNo);
+	}
 
 	@Override
 	public int insertReply(ReplyDto r) {

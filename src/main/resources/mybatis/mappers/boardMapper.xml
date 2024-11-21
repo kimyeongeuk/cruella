@@ -276,6 +276,25 @@
 		   order by reply_no desc
 		</select>
 	
+		<select id="selectRreplyList" parameterType="map" resultMap="replyResultMap">
+		    SELECT
+		         r.reply_no,
+		         r.board_no,
+		         r.mem_no,
+		         m.mem_name,
+		         r.reply_content,
+		         r.reply_type,
+		         r.reply_ref,
+		         TO_CHAR(r.reply_regist_date, 'YYYY-MM-DD HH24:MI') AS reply_regist_date,
+		         TO_CHAR(r.reply_modify_date, 'YYYY-MM-DD HH24:MI') AS reply_modify_date
+		    FROM reply r
+		    JOIN member m ON (m.mem_no = r.mem_no)
+		    WHERE r.board_no = #{boardNo}
+		      AND r.reply_ref = #{replyNo}
+		      AND reply_type = 1
+		    ORDER BY r.reply_no DESC
+		</select>	
+	
 		<insert id="insertReply">
 		    insert into reply
 		    (

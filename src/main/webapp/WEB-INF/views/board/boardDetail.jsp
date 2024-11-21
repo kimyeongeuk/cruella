@@ -223,7 +223,6 @@
 								            </div>
 								          </div>
 								          <p id="modal-content" style="margin-left: 40px; margin-top: 20px; color: black;"></p>
-								          <br><hr>
 								        </div>
 								        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 								      </div>
@@ -290,9 +289,8 @@ function toggleModalActionBox(icon) {
   }
 }
 
-//모달이 열릴 때 설정
 $(document).on('show.bs.modal', '#modalScrollable', function(event) {
-  var button = $(event.relatedTarget); // 버튼 정보
+  var button = $(event.relatedTarget);
   var replyId = button.data('reply-id');
   var replyContent = button.data('reply-content');
   var replyAuthor = button.data('reply-author');
@@ -305,26 +303,29 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   console.log("댓글내용:", replyContent);
   console.log("댓글작성자:", replyAuthor);
   console.log("댓글작성일:", replyDate);
-  
+
   var modal = $(this);
   modal.find('#modal-author').text(replyAuthor);
   modal.find('#modal-date').text(replyDate);
   modal.find('#modal-content').text(replyContent);
 
-  // 작성자인 경우에만 ... 아이콘 보이게 설정
   if (replyMemNo == loginUserMemNo) {
     modal.find('.modal-comment-icon').show();
   } else {
     modal.find('.modal-comment-icon').hide();
   }
 
-  // 수정 및 삭제 버튼에 데이터 할당
-  modal.find('.modal-action-box a:eq(0)').attr('onclick', "modifyReply(" + replyId + ", '" + replyContent + "')");
-  modal.find('.modal-action-box a:eq(1)').attr('onclick', "deleteReply(" + replyId + ")");
+  modal.find('.modal-action-box a:eq(0)').attr('onclick', `modifyReply(${replyId}, '${replyContent}')`);
+  modal.find('.modal-action-box a:eq(1)').attr('onclick', `deleteReply(${replyId})`);
+
+  // 대댓글 목록을 불러옵니다.
+  fn_rreplyList(replyId);
+  console.log("fn_rreplyList 호출됨");
 });
 
 
-$(document).ready(function(){
+
+$(document).ready(function() {
   fn_replyList();
 
   // 아이콘 클릭 시 액션 박스 표시
@@ -355,6 +356,12 @@ $(document).ready(function(){
   // 클릭 이벤트 전파 중지 (첨부파일 리스트 내에서)
   $('#attachment-list').on('click', function(e) {
     e.stopPropagation();
+  });
+
+  // 댓글 답글 버튼 클릭 시 대댓글 목록 로드
+  $(document).on('click', '.reply-button', function() {
+    var replyId = $(this).data('reply-id');
+    fn_rreplyList(replyId);
   });
 });
 
@@ -401,7 +408,7 @@ function fn_replyList() {
 
         tr += "</div><br>"
               + "<span style='color: black; margin: 40px;'>" + resData[i].replyContent + "</span><br><br>"
-              + "<button type='button' class='btn btn-sm btn-outline-secondary' style='margin-left: 40px;' data-bs-toggle='modal' data-bs-target='#modalScrollable' data-reply-id='" + resData[i].replyNo + "' data-reply-content='" + resData[i].replyContent + "' data-reply-author='" + resData[i].memName + "' data-reply-date='" + resData[i].replyRegistDT + "' data-reply-memno='" + resData[i].memNo + "'>답글 10</button>"
+              + "<button type='button' class='btn btn-sm btn-outline-secondary reply-button' style='margin-left: 40px;' data-bs-toggle='modal' data-bs-target='#modalScrollable' data-reply-id='" + resData[i].replyNo + "' data-reply-content='" + resData[i].replyContent + "' data-reply-author='" + resData[i].memName + "' data-reply-date='" + resData[i].replyRegistDT + "' data-reply-memno='" + resData[i].memNo + "'>답글</button>"
               + "</td></tr>";
       }
 
@@ -413,7 +420,64 @@ function fn_replyList() {
   });
 }
 
+function fn_rreplyList(replyId) {
+  $.ajax({
+    url: '${contextPath}/board/rrlist.do',
+    data: { bno: ${b.boardNo}, nno: replyId },
+    success: function(resData) {
+      console.log("Received data:", resData); // 서버로부터 받은 데이터 확인
 
+      // 대댓글 수 출력
+      $("#rrcount").text(resData.length);
+
+      let tr = "";
+      for (let i = 0; i < resData.length; i++) {
+         tr += "<tr><td colspan='3'>"
+               + "<div class='d-flex justify-content-between align-items-center user-info'>"
+               + "<div class='avatar-wrapper d-flex align-items-center'>"
+               + "<div class='avatar me-2 d-flex justify-content-between'>"
+               + "<i class='menu-icon tf-icons ti ti-currency-leu' style='margin-right: auto; font-size: 40px; margin-top: -10px;'></i>"
+               + "<img src='${contextPath}/resources/assets/img/avatars/1.png' alt='Avatar' class='rounded-circle' />"
+               + "</div>"
+               + "<div class='d-flex flex-column'>"
+               + "<span class='emp_name text_truncate' style='color: black; margin-left: 40px;'>" + resData[i].memName + "</span>"
+               + "</div>"
+               + "<div class='d-flex flex-column' style='margin-left: 20px;'>"
+               + "<span>" + resData[i].replyRegistDT + "</span>"
+               + "</div></div>";
+
+         // 댓글 작성자가 로그인한 사용자와 같은지 확인
+         if (loginUserMemNo == resData[i].memNo) {
+           tr += "<div class='d-flex justify-content-end align-items-center'>"
+                 + "<div class='icon-wrapper'>"
+                 + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
+                 + "<div class='action-replybox'>"
+                 + "<form id='rfrm' action='' method='post'>"
+                 + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
+                 + "<a href='#' onclick='modifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
+                 + "<i class='menu-icon tf-icons ti ti-edit'></i></a>"
+                 + "<a href='#' onclick='deleteReply(" + resData[i].replyNo + ")'>"
+                 + "<i class='menu-icon tf-icons ti ti-trash'></i></a>"
+                 + "</form>"
+                 + "</div></div></div>";
+         } else {
+           tr += "<br>";
+         }
+
+         tr += "</div><br>"
+               + "<span style='color: black; margin: 40px;'>" + resData[i].replyContent + "</span><br><br>"
+               + "</td></tr>";
+       }
+
+      // HTML 업데이트
+      $("#reply_table tbody").html(tr); 
+      console.log("Updated HTML:", $("#reply_table tbody").html()); // HTML 업데이트 확인
+    },
+    error: function(xhr, status, error) {
+      console.error("에러 발생:", status, error);
+    }
+  });
+}
 
 
 // 댓글 등록용 (ajax) 함수
