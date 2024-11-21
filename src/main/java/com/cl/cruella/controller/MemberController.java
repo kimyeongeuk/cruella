@@ -349,6 +349,20 @@ public class MemberController {
 		
 	}
 	
+	// 회원정보수정/탈퇴 (이예빈)
+	@GetMapping("/modifydelete.do")
+	public void modifydelete() {}
+	
+	// 출퇴근조회(이예빈)
+	@GetMapping("/checkinrecordview.do")
+	public void checkinrecodeview() {}
+	
+	// 근무시간조회(이예빈)
+	@GetMapping("/workhoursview.do")
+	public void workhoursview() {}
+
+	
+	
 
 	 
 }

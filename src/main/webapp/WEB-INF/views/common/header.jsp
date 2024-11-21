@@ -214,38 +214,41 @@
                 <div data-i18n="인사관리">인사관리</div>
               </a>
               <ul class="menu-sub">
+                <c:if test="${ loginUser.deptCode eq 'S2'}">
                 <li class="menu-item">
+                
                   <a href="${ contextPath }/member/signup.do" class="menu-link">
-                    <div data-i18n="직원 등록">직원 등록</div>
+                    <div data-i18n="직원 등록">직원 등록</div> 
+                  </a>
+                </li>
+                </c:if>
+                <li class="menu-item">
+                  <a href="${ contextPath }/member/employeelistview.do" class="menu-link">
+                    <div data-i18n="직원 조회">직원 조회</div> 
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
-                    <div data-i18n="직원 조회">직원 조회</div>
+                  <a href="${ contextPath }/member/checkinrecordview.do" class="menu-link">
+                    <div data-i18n="출근기록조회">출근 기록 조회</div> 
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
-                    <div data-i18n="출근기록조회">출근 기록 조회</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="${ contextPath }/member/workhoursview.do" class="menu-link">
                     <div data-i18n="근무시간조회">근무시간 조회</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="" class="menu-link">
                     <div data-i18n="급여지급">급여지급</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="" class="menu-link">
                     <div data-i18n="급여내역확인">급여 내역 확인</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="${ contextPath }/member/signup.do" class="menu-link">
                     <div data-i18n="조직도">조직도</div>
                   </a>
                 </li>

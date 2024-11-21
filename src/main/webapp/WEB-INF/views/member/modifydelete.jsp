@@ -107,20 +107,20 @@
                           </div>
                           <h5 class="pb-4 border-bottom mb-4"></h5>
                           <div class="card-body pt-4">
-                            <form id="formAccountSettings" method="GET" onsubmit="return false">
+                            <form id="formAccountSettings" action="${ contextPath }/member/update.do" method="post" >
                               <div class="row">
                                 <div class="mb-4 col-md-6">
-                                  <label for="name" class="form-label">이름</label>
+                                  <label for="memName" class="form-label">이름</label>
                                   <input
                                     class="form-control"
                                     type="text"
-                                    id="name"
-                                    name="name"
+                                    id="memName"
+                                    name="memName"
                                     placeholder="수정가능"
                                  />
                                 </div>
                                 <div class="mb-4 col-md-6">
-                                  <label for="accountNumber" class="form-label">계좌번호</label>
+                                  <label for="account" class="form-label">계좌번호</label>
                                   <div style="display: flex; gap: 10px;">
                                       <select class="form-select" style="flex: 1;">
                                           <option value="">선택</option>
@@ -128,22 +128,22 @@
                                           <option value="">신한</option>
                                           <option value="">우리</option>
                                       </select>
-                                      <input class="form-control" type="text" name="accountNumber" id="accountNumber" placeholder="수정가능" style="flex: 3;" />
+                                      <input class="form-control" type="text" name="account" id="account" placeholder="수정가능" style="flex: 3;" />
                                   </div>
                               </div>
                                 <div class="mb-4 col-md-6">
-                                  <label for="employeeNumber" class="form-label">사번</label>
+                                  <label for="memNo" class="form-label">사번</label>
                                   <input
                                     class="form-control"
                                     type="text"
-                                    id="employeeNumber"
-                                    name="employeeNumber" 
+                                    id="memNo"
+                                    name="memNo" 
                                     placeholder="수정불가능"
                                     readonly/>
                                 </div>
                                 <div class="mb-4 col-md-6">
-                                  <label for="rank" class="form-label">부서</label>
-                                  <select id="rank" class="select2 form-select">
+                                  <label for="deptCode" class="form-label">부서</label>
+                                  <select id="deptCode" name="deptCode" class="select form-select">
                                     <option value="">인사</option>
                                     <option value="">영업총괄</option>
                                     <option value="">지원</option>
@@ -158,20 +158,20 @@
                                   </select>
                                 </div>
                                 <div class="mb-4 col-md-6">
-                                  <label class="form-label" for="password">비밀번호</label>
+                                  <label class="form-label" for="memPwd">비밀번호</label>
                                   <div class="input-group input-group-merge">
                                     <input
                                       type="text"
-                                      id="password"
-                                      name="password"
+                                      id="memPwd"
+                                      name="memPwd"
                                       class="form-control"
                                       placeholder="수정불가능"
                                       readonly />
                                   </div>
                                 </div>
                                 <div class="mb-4 col-md-6">
-                                  <label for="positionrank" class="form-label">직급</label>
-                                  <select id="positionrank" class="select2 form-select">
+                                  <label for="posCode" class="form-label">직급</label>
+                                  <select id="posCode" name="posCode" class="select form-select">
                                     <option value="">선택</option>
                                     <option value="">점장</option>
                                     <option value="">부점장</option>
@@ -196,19 +196,19 @@
                                     value="수정가능"/>
                                 </div>
                                 <div class="mb-4 col-md-6">
-                                  <label class="joiningDate" for="country">입사날짜</label>
-                                  <input class="form-control" type="text" id="joinDate" name="joinDate" placeholder="수정불가능" readonly/>
+                                  <label class="hireDate" for="country">입사날짜</label>
+                                  <input class="form-control" type="date" id="hireDate" name="hireDate" placeholder="수정불가능" readonly/>
                                 </div>
                                 <div class="mb-4 col-md-6">
                                   <label for="language" class="form-label">주소</label>
                                   <input class="form-control" type="text" id="address" name="address" placeholder="수정불가능" readonly />
                                 </div>
                                 <div class="mb-4 col-md-6">
-                                  <label for="timeZones" class="form-label">주민등록번호</label>
-                                  <input class="form-control" type="text" id="idNo" name="idNo" placeholder="수정불가능" readonly />
+                                  <label for="memSSN" class="form-label">주민등록번호</label>
+                                  <input class="form-control" type="text" id="memSSN" name="memSSN" placeholder="수정불가능" readonly />
                                 </div>
                                 <div class="mb-4 col-md-6">
-                                  <label for="currency" class="form-label">전화번호</label>
+                                  <label for="phone" class="form-label">전화번호</label>
                                   <input class="form-control" type="text" id="phone" name="phone" placeholder="수정불가능" readonly />
                                 </div>
                               </div>
@@ -259,11 +259,6 @@
    
    
    
-   <script>
-    $(document).ready(function() {
-        $('#rank').select2();
-        $('#positionrank').select2();
-    });
-</script>
+
 </body>
 </html>

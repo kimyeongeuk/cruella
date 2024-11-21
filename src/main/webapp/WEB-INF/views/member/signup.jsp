@@ -227,7 +227,7 @@
 															placeholder="YYYY/MM/DD"  required />
 													</div>
 													<div class="mb-4 col-md-6">
-														<label for="language" class="form-label">주소</label> <input
+														<label for="address" class="form-label">주소</label> <input
 															class="form-control" type="text" id="address" name="address"
 															placeholder="Address"  required />
 													</div>
