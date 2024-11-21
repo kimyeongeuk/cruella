@@ -61,4 +61,14 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.saveSignPath(m);
 	}
 
+	@Override
+	public List<MemberDto> selecMemberList(MemberDto m) {
+		return null;
+	}
+
+	@Override
+	public int selectAll() {
+		return 0;
+	}
+
 }
