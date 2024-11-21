@@ -179,7 +179,19 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		 where mem_no = #{memNo}
 	</update>
 	
-
+	<!-- 직원조회리스트 (이예빈) -->
+	<select id="memberList" resultMap="memberResultMap">
+		select 
+					 mem_no
+				 , mem_name
+				 , DEPT_CODE
+				 , POS_CODE
+				 , email
+		  from member
+		  order by mem_no
+			
+	
+	</select>
 
 
 </mapper>
