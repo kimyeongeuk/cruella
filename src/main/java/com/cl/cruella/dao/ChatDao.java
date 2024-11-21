@@ -2,6 +2,7 @@ package com.cl.cruella.dao;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -54,6 +55,18 @@ public class ChatDao {
 
 	public int updateNewMsg(MessageDto messageDto) {
 		return sqlSession.update("chatMapper.updateNewMsg",messageDto);
+	}
+
+	public int startChat(Map<String, Object> map) {
+		return sqlSession.insert("chatMapper.startChat",map);
+	}
+
+	public int insertChatList(String memNo) {
+		return sqlSession.insert("chatMapper.insertChatList",memNo);
+	}
+
+	public String checkChatList(List<String> list) {
+		return sqlSession.selectOne("chatMapper.checkChatList",list);
 	}
 	
 

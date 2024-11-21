@@ -2,6 +2,7 @@ package com.cl.cruella.service;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,22 @@ public class ChatServiceImpl implements ChatService{
 	}
 	public int updateNewMsg(MessageDto messageDto) {
 		return chatDao.updateNewMsg(messageDto);
+	}
+	public int startChat(Map<String, Object> map) {
+		int result = chatDao.startChat(map);
+			if(result >0) {
+				List<String> list = (List<String>)map.get("list");
+				for(int i =0;i<list.size();i++) {
+					result = chatDao.insertChatList(list.get(i));
+				}
+			}
+			
+		
+		
+		return result;
+	}
+	public String checkChatList(List<String> list) {
+		return chatDao.checkChatList(list);
 	}
 
 

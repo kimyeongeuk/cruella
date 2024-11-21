@@ -49,7 +49,6 @@ public class StompController {
 	@SendTo("/sub/{chatNo}")
 	public MessageDto message(@DestinationVariable String chatNo, @RequestBody MessageDto messageDto, @RequestBody MemberDto member) throws ParseException {
 		
-		log.debug("메시지 잘왔니? {}",messageDto);
 		
 		if(messageDto.getMsgType().equals("message")) {
 			// 채팅방 인원수 확인
@@ -74,22 +73,10 @@ public class StompController {
 		return messageDto;
 	}
 	
-	@MessageMapping("/allChats")
-	@SendTo("/sub/allChats")
-	public MessageDto broadcastMessage(@RequestBody MessageDto messageDto) throws ParseException {
+	@MessageMapping("/chat/enter")
+	public void broadcastMessage(@RequestBody MessageDto messageDto) throws ParseException {
 		
-		log.debug("messageDto : {}",messageDto);
 		
-	    String isoDate = messageDto.getMsgRegistDate();
-	    SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-	    isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-	    Date date = isoFormat.parse(isoDate);
-	    SimpleDateFormat desiredFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	    desiredFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-	    String formattedDate = desiredFormat.format(date);
-	    messageDto.setMsgRegistDate(formattedDate);
-
-	    return messageDto;
 	}
 	
 	

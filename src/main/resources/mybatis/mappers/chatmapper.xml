@@ -208,4 +208,53 @@ select count(chat_no) chat_count
 </update>
 
 
+<insert id="startChat">
+
+	insert
+		into	chat
+					(
+						CHAT_NO
+					,	CHAT_TITLE
+					,	CHAT_REGIST_DATE
+					,	CHAT_CREATER
+					)
+					values
+					(
+						seq_chat.nextval
+					,	#{inviteName}
+					,	SYSDATE
+					,	#{memNo}
+					)							
+</insert>
+
+
+<insert id="insertChatList">
+	insert
+		into	chat_List
+					(
+						CHAT_NO
+					, MEM_NO
+					)
+					values
+					(
+						seq_chat.currval
+					,	#{memNo}
+					)
+</insert>
+
+<select id="checkChatList" resultType="string">
+	SELECT count(CHAT_NO)
+		FROM chat_list
+	 WHERE MEM_NO IN 
+		<foreach collection="list" item="memNo" open="(" separator="," close=")">
+	   	#{memNo}
+	 	</foreach>
+     and cl_type = 'P'
+	 GROUP BY CHAT_NO
+  HAVING COUNT(DISTINCT MEM_NO) = 2
+</select>
+
+
+
+
 </mapper>

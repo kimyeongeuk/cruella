@@ -354,10 +354,10 @@
 		
 		                      <div class="d-flex mt-6">
 		                        <button
-		                          class="btn btn-primary w-100"
+		                          class="btn btn-primary w-100 chatStart"
 		                          data-bs-toggle="sidebar"
 		                          data-overlay
-		                          data-target="#app-chat-sidebar-right">
+		                          >
 		                          채팅 시작
 		                        </button>
 		                      </div>
@@ -803,6 +803,8 @@
                         </li>
 
 
+
+
                         <li class="mb-1">
                           <a class="d-flex align-items-center" style="margin: 20px;">
                             <div class="flex-shrink-0 avatar avatar-online">
@@ -821,190 +823,6 @@
                             </button>
                           </a>
                         </li>
-
-
-                        <li class="mb-1">
-                          <a class="d-flex align-items-center" style="margin: 20px;">
-                            <div class="flex-shrink-0 avatar avatar-online">
-                              <img src="${ contextPath }/resources/assets/img/avatars/12.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="chat-contact-name text-truncate m-0 fw-normal">매너남</h6>
-                              </div>
-                              <div class="d-flex justify-content-between align-items-center">
-                              </div>
-                             
-                            </div>
-                            <button class="btn btn-icon  btn-primary" onclick="toggleButton(this)">
-                              <i class="ti ti-user-x"></i> 
-                            </button>
-                          </a>
-                        </li>
-
-
-
-                        <li class="mb-1">
-                          <a class="d-flex align-items-center" style="margin: 20px;">
-                            <div class="flex-shrink-0 avatar avatar-online">
-                              <img src="${ contextPath }/resources/assets/img/avatars/11.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="chat-contact-name text-truncate m-0 fw-normal">매너남</h6>
-                              </div>
-                              <div class="d-flex justify-content-between align-items-center">
-                              </div>
-                             
-                            </div>
-                            <button class="btn btn-icon  btn-primary" onclick="toggleButton(this)">
-                              <i class="ti ti-user-x"></i>
-                            </button>
-                          </a>
-                        </li>
-
-
-
-                        <li class="mb-1">
-                          <a class="d-flex align-items-center" style="margin: 20px;">
-                            <div class="flex-shrink-0 avatar avatar-online">
-                              <img src="${ contextPath }/resources/assets/img/avatars/10.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="chat-contact-name text-truncate m-0 fw-normal">매너남</h6>
-                              </div>
-                              <div class="d-flex justify-content-between align-items-center">
-                              </div>
-                             
-                            </div>
-                            <button class="btn btn-icon  btn-primary" onclick="toggleButton(this)">
-                              <i class="ti ti-user-x"></i>
-                            </button>
-                          </a>
-                        </li>
-
-
-                        <li class="mb-1">
-                          <a class="d-flex align-items-center" style="margin: 20px;">
-                            <div class="flex-shrink-0 avatar avatar-online">
-                              <img src="${ contextPath }/resources/assets/img/avatars/9.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="chat-contact-name text-truncate m-0 fw-normal">매너남</h6>
-                              </div>
-                              <div class="d-flex justify-content-between align-items-center">
-                              </div>
-                             
-                            </div>
-                            <button class="btn btn-icon  btn-primary" onclick="toggleButton(this)">
-                              <i class="ti ti-user-x"></i>
-                            </button>
-                          </a>
-                        </li>
-
-
-                        <li class="mb-1">
-                          <a class="d-flex align-items-center" style="margin: 20px;">
-                            <div class="flex-shrink-0 avatar avatar-online">
-                              <img src="${ contextPath }/resources/assets/img/avatars/8.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="chat-contact-name text-truncate m-0 fw-normal">매너남</h6>
-                              </div>
-                              <div class="d-flex justify-content-between align-items-center">
-                              </div>
-                             
-                            </div>
-                            <button class="btn btn-icon  btn-primary" onclick="toggleButton(this)">
-                              <i class="ti ti-user-x"></i>
-                            </button>
-                          </a>
-                        </li>
-
-
-                        <li class="mb-1">
-                          <a class="d-flex align-items-center" style="margin: 20px;">
-                            <div class="flex-shrink-0 avatar avatar-online">
-                              <img src="${ contextPath }/resources/assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="chat-contact-name text-truncate m-0 fw-normal">매너남</h6>
-                              </div>
-                              <div class="d-flex justify-content-between align-items-center">
-                              </div>
-                             
-                            </div>
-                            <button class="btn btn-icon  btn-primary" onclick="toggleButton(this)">
-                              <i class="ti ti-user-x"></i>
-                            </button>
-                          </a>
-                        </li>
-
-
-                        <li class="mb-1">
-                          <a class="d-flex align-items-center" style="margin: 20px;">
-                            <div class="flex-shrink-0 avatar avatar-online">
-                              <img src="${ contextPath }/resources/assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="chat-contact-name text-truncate m-0 fw-normal">매너남</h6>
-                              </div>
-                              <div class="d-flex justify-content-between align-items-center">
-                              </div>
-                             
-                            </div>
-                            <button class="btn btn-icon  btn-primary" onclick="toggleButton(this)">
-                              <i class="ti ti-user-x"></i>
-                            </button>
-                          </a>
-                        </li>
-
-
-                        <li class="mb-1">
-                          <a class="d-flex align-items-center" style="margin: 20px;">
-                            <div class="flex-shrink-0 avatar avatar-online">
-                              <img src="${ contextPath }/resources/assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="chat-contact-name text-truncate m-0 fw-normal">매너남</h6>
-                              </div>
-                              <div class="d-flex justify-content-between align-items-center">
-                              </div>
-                             
-                            </div>
-                            <button class="btn btn-icon  btn-primary" onclick="toggleButton(this)">
-                              <i class="ti ti-user-x"></i> 
-                            </button>
-                          </a>
-                        </li>
-
-
-                        <li class="mb-1">
-                          <a class="d-flex align-items-center" style="margin: 20px;">
-                            <div class="flex-shrink-0 avatar avatar-online">
-                              <img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />
-                            </div>
-                            <div class="chat-contact-info flex-grow-1 ms-4">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="chat-contact-name text-truncate m-0 fw-normal">매너남</h6>
-                              </div>
-                              <div class="d-flex justify-content-between align-items-center">
-                              </div>
-                             
-                            </div>
-                            <button class="btn btn-icon" style="background: #d5d1ff;" onclick="toggleButton(this)">
-                              <i class="ti ti-user-check"></i> 
-                            </button>
-                          </a>
-                        </li>
-
-
 
 
 
@@ -1147,12 +965,14 @@
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script>
-    
+      var inviteMem = null;
+      var inviteName = null;
 
       $(document).ready(function(){
 				
         // 사원 클릭시 start
         $('.userInFo').on('click',function(){
+        	inviteMem = $(this).children().eq(0).val();
           $.ajax({
             url:'${contextPath}/chat/userInfo.do',
             data:{
@@ -1160,7 +980,8 @@
                 $(this).children().eq(0).val()
             },
             success:function(res){
-              console.log(res.m);
+              console.log(res);
+              inviteName = res.m.memName;
               $('#userNameInfo').html(res.m.memName);
               $('#deptName').html(res.m.deptCode);
               $('#statusmessage').html(res.cp.cpMessage);
@@ -1185,6 +1006,35 @@
           $('#app-chat-sidebar-right-setting').css('display','none'); // 채팅방 사이드바 메뉴 사라지게
         })
         // 채팅방 나가기 클릭시 end
+        
+        
+        // 사원 목록 클릭후 채팅 시작 클릭 시 실행
+        
+           $('.chatStart').on('click',function(){
+        	   $.ajax({
+        		url:'${contextPath}/chat/start.do',
+        		data:{memNo:'${loginUser.memNo}',inviteNo:inviteMem,inviteName:inviteName},
+        		success:function(res){
+        			console.log(res);
+        			if(res == 1){
+        			location.reload();        				
+        			}else{
+        				alert('이미 존재하는 채팅방 입니다.');
+        			}
+        		}
+        	})
+        	
+        })
+        	
+        	
+        
+        
+        
+        
+        
+        
+        
+        
         
         
 
@@ -1260,7 +1110,7 @@
                 }, 50);
 		              
 				        // 채팅방 입장시 작동될 코드
-				        client.send('/pub/'+activeChat, {}, JSON.stringify({chatNo:content.chatNo, msgContent:content.msgContent, memNo:content.memNo}))
+				        client.send('/pub/chat/enter', {}, JSON.stringify({chatNo:activeChat, memNo:userNo}))
                 
               }
             });
@@ -1308,7 +1158,7 @@
           str += '</div>';
           str += '</div>';
           str += '<div class="d-flex overflow-hidden">';
-          str += '<div class="" style="display: block;  text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center; width: 50px;">(수정됨)</div>'
+          str += '<div class="" style="display: none;  text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center; width: 50px;">(수정됨)</div>'
           str += '<div class="me-2" style="text-align: center; color: black; font-size: 13px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center; margin-left: 8px;">'+ msgCheck +'</div>'
 
           str += '<div class="chat-message-wrapper flex-grow-1 w-50">';
@@ -1344,7 +1194,7 @@
           str += '</div>';
           str += '<div class="me-2" style="text-align: center; color: black; font-size: 13px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center;">';
           str += '</div>';
-          str += '<div style="text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center;">';
+          str += '<div style="text-align: center; display: none; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center;">';
           str += '(수정됨)';
           str += '</div>';
           str += '</div>';

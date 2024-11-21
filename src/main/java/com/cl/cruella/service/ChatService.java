@@ -1,6 +1,7 @@
 package com.cl.cruella.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cl.cruella.dto.ChatDto;
 import com.cl.cruella.dto.ChatProfileDto;
@@ -21,6 +22,9 @@ public interface ChatService {
 	ChatProfileDto chatProFileInfo(String memNo);
 	// 채팅방 메시지 목록 가져오기
 	List<MessageDto> messageList(int chatNo);
-	
+	// 채팅 시작
+	int startChat(Map<String,Object> map);
+	// 채팅방 중복검사
+	String checkChatList(List<String> list);
 	
 }

@@ -1,5 +1,6 @@
 package com.cl.cruella.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +8,6 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -54,7 +54,7 @@ public class ChatController {
 	
 	// 사원 상세 정보
 	@ResponseBody
-	@GetMapping(value="/userInfo.do",produces="application/json0 ")
+	@GetMapping(value="/userInfo.do",produces="application/json ")
 	public Map<String,Object>  userInfo(String memNo,Model model) {
 		
 		// 해당 인원의 정보
@@ -63,7 +63,6 @@ public class ChatController {
 		ChatProfileDto cp = chatServiceImpl.chatProFileInfo(memNo);
 		
 
-		
 		Map<String,Object> map = new HashMap<>();
 		map.put("m", m);
 		map.put("cp", cp);
@@ -100,7 +99,35 @@ public class ChatController {
 		
 	}
 	
-	
+	@ResponseBody
+	@GetMapping(value="/start.do",produces="application/json")
+	public String startChat(String memNo,String inviteNo,String inviteName) {
+		log.debug("맴넘:{}",memNo);
+		log.debug("초대넘:{}",inviteNo);
+		log.debug("초대이름 : {}",inviteName);
+		
+		Map<String,Object> map = new HashMap<>();
+		
+		List<String> list = new ArrayList<>();
+		
+		list.add(memNo);
+		list.add(inviteNo);
+		
+		map.put("memNo", memNo);
+		map.put("inviteNo", inviteNo);
+		map.put("inviteName",inviteName);
+		map.put("list", list);
+		
+		String result = chatServiceImpl.checkChatList(list);
+		
+		System.out.println(result);
+		if(result == null) {
+			result = String.valueOf(chatServiceImpl.startChat(map));
+		}
+		
+		return result;
+		
+	}
 	
 	
 	
