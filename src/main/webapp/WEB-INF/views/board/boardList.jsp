@@ -56,22 +56,6 @@
                 <div class="d-flex align-items-center">
                   <div>
                     <span class="fs-4">팀게시판</span>
-                    <span class="text-primary ms-4">
-                      <c:choose>
-                        <c:when test="${loginUser.deptCode eq 'S1'}">영업총괄팀</c:when>
-                        <c:when test="${loginUser.deptCode eq 'S2'}">인사팀</c:when>
-                        <c:when test="${loginUser.deptCode eq 'S3'}">지원팀</c:when>
-                        <c:when test="${loginUser.deptCode eq 'T1'}">남성의류팀</c:when>
-                        <c:when test="${loginUser.deptCode eq 'T2'}">여성의류팀</c:when>
-                        <c:when test="${loginUser.deptCode eq 'T3'}">식품팀</c:when>
-                        <c:when test="${loginUser.deptCode eq 'T4'}">스포츠팀</c:when>
-                        <c:when test="${loginUser.deptCode eq 'T5'}">뷰티팀</c:when>
-                        <c:when test="${loginUser.deptCode eq 'T6'}">명품팀</c:when>
-                        <c:when test="${loginUser.deptCode eq 'T7'}">문화센터팀</c:when>
-                        <c:when test="${loginUser.deptCode eq 'T8'}">디지털 및 가전팀</c:when>
-                        <c:otherwise>기타부서팀</c:otherwise>
-                      </c:choose>
-                    </span>
                   </div>
 
                   <c:choose>
@@ -159,7 +143,24 @@
 								              <c:choose>
 								                <c:when test="${loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4'}">
 								                  <td><input type="checkbox" class="item-checkbox" /></td>
-								                  <td>팀</td>
+								                  <td>
+								                  	<span class="text-primary">
+								                      <c:choose>
+								                        <c:when test="${loginUser.deptCode eq 'S1'}">영업총괄팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'S2'}">인사팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'S3'}">지원팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T1'}">남성의류팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T2'}">여성의류팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T3'}">식품팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T4'}">스포츠팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T5'}">뷰티팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T6'}">명품팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T7'}">문화센터팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T8'}">디지털 및 가전팀</c:when>
+								                        <c:otherwise>기타부서팀</c:otherwise>
+								                      </c:choose>
+								                    </span>
+								                  </td>
 								                  <td>${board.memName}</td>
 								                  <c:choose>
 								                    <c:when test="${board.attachCount != 0}">
@@ -187,7 +188,24 @@
 								                  <td>${board.boardCount}</td>
 								                </c:when>
 								                <c:otherwise>
-								                  <td>팀</td>
+								                  <td>
+								                  	<span class="text-primary">
+								                      <c:choose>
+								                        <c:when test="${loginUser.deptCode eq 'S1'}">영업총괄팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'S2'}">인사팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'S3'}">지원팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T1'}">남성의류팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T2'}">여성의류팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T3'}">식품팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T4'}">스포츠팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T5'}">뷰티팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T6'}">명품팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T7'}">문화센터팀</c:when>
+								                        <c:when test="${loginUser.deptCode eq 'T8'}">디지털 및 가전팀</c:when>
+								                        <c:otherwise>기타부서팀</c:otherwise>
+								                      </c:choose>
+								                    </span>
+								                  </td>
 								                  <td>${board.memName}</td>
 								                  <c:choose>
 								                    <c:when test="${board.attachCount != 0}">
