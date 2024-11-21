@@ -93,14 +93,13 @@
                   <div class="nav-align-top">
                     <ul class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
                       <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0);">
+                        <a class="nav-link" href="${contextPath}/member/myinfo.do">
                           <i class="ti-sm ti ti-user-check me-1_5"></i> 내 정보
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link active" href="pages-profile-teams.html"
-                          ><i class="ti-sm ti ti-users me-1_5"></i> 근태관리</a
-                        >
+                        <a class="nav-link active" href="${contextPath}/member/myinfo_workLog.do">
+                        <i class="ti-sm ti ti-users me-1_5"></i> 근태관리</a>
                       </li>
                     </ul>
                   </div>

@@ -105,7 +105,14 @@
 
 		<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
-            <a href="${ contextPath }" class="app-brand-link">
+                <a href="<c:choose>
+                <c:when test="${loginUser == null}">
+                    ${contextPath}
+                </c:when>
+                <c:otherwise>
+                    ${contextPath}/dashboard
+                </c:otherwise>
+              </c:choose>" class="app-brand-link">
               <img src="${ contextPath }/resources/assets/img/mainlogo.png ">
               <span class="app-brand-text demo menu-text fw-bold">Cruella</span>
             </a>
