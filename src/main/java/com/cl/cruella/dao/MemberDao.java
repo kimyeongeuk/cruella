@@ -59,4 +59,10 @@ public class MemberDao {
 	public int updateProfileImg(MemberDto m) {
 		return sqlSession.update("memberMapper.updateProfileImg", m);
 	}
+	
+	public int saveSignPath(byte imageBytes) {
+		return sqlSession.update("memberMapper.saveSignPath", imageBytes);
+	}
 }
+
+

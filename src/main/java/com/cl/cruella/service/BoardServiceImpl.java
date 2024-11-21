@@ -124,6 +124,11 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
+    public int insertRreply(ReplyDto r) {
+        return boardDao.insertRreply(r);
+    }
+	
+	@Override
 	public int deleteReplyCompletely(int replyNo) {
 		return boardDao.deleteReplyCompletely(replyNo);
 	}
@@ -156,4 +161,8 @@ public class BoardServiceImpl implements BoardService{
         boardDao.deleteCommentsByBoardNos(boardNos);
     }
 	
+    @Override
+    public int getRreplyCount(int replyNo) {
+        return boardDao.getRreplyCount(replyNo);
+    }
 }

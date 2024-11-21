@@ -82,6 +82,10 @@ public class BoardDao {
 	public int insertReply(ReplyDto r) {
 		return sqlSession.insert("boardMapper.insertReply", r);
 	}
+	
+	public int insertRreply(ReplyDto r) {
+	    return sqlSession.insert("boardMapper.insertRreply", r);
+	}
 
 	public int deleteReplyCompletely(int replyNo) {
 		return sqlSession.delete("boardMapper.deleteReplyCompletely", replyNo);
@@ -110,4 +114,7 @@ public class BoardDao {
         sqlSession.delete("boardMapper.deleteCommentsByBoardNos", params);
     }
 	
+    public int getRreplyCount(int replyNo) {
+        return sqlSession.selectOne("boardMapper.getRreplyCount", replyNo);
+    }
 }

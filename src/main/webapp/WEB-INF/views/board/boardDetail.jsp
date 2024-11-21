@@ -195,7 +195,7 @@
 								</div>
 								
 								<!-- Modal -->
-	              <div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">
+								<div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">
 								  <div class="modal-dialog modal-dialog-scrollable" role="document">
 								    <div class="modal-content">
 								      <div class="modal-header">
@@ -228,28 +228,21 @@
 								      </div>
 								
 								      <div class="modal-body">
-											  <table id="reply_table" class="table">
-											    <tbody>
-											      <!-- AJAX를 통해 동적으로 대댓글을 추가할 영역 -->
-											    </tbody>
-											  </table>
-											</div>
-								
-								      <div class="modal-footer">
-								        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-								          <div class="input" style="flex-grow: 1;">
-								            <textarea class="form-control" aria-label="With textarea" placeholder="답글을 입력해주세요." style="width: 100%; border: 0px; resize: none;"></textarea>
-								          </div>
-								          <div>
-								            <button id="regist" class="btn btn-sm btn-outline-secondary" style="text-align: center;">등록</button>
-								          </div>
-								        </div>
+								        <table id="reply_table" class="table">
+								          <tbody>
+								            <!-- AJAX를 통해 동적으로 대댓글을 추가할 영역 -->
+								          </tbody>
+								        </table>
 								      </div>
 								
+								      <div class="modal-footer">
+								        <div id="reply_div" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+
+								        </div>
+								      </div>
 								    </div>
 								  </div>
 								</div>
-
 
               </div>
             </div>
@@ -289,44 +282,10 @@ function toggleModalActionBox(icon) {
   }
 }
 
-$(document).on('show.bs.modal', '#modalScrollable', function(event) {
-  var button = $(event.relatedTarget);
-  var replyId = button.data('reply-id');
-  var replyContent = button.data('reply-content');
-  var replyAuthor = button.data('reply-author');
-  var replyDate = button.data('reply-date');
-  var replyMemNo = button.data('reply-memno');
-
-  console.log("댓글작성자코드:", replyMemNo);
-  console.log("로그인유저코드:", loginUserMemNo);
-  console.log("댓글번호:", replyId);
-  console.log("댓글내용:", replyContent);
-  console.log("댓글작성자:", replyAuthor);
-  console.log("댓글작성일:", replyDate);
-
-  var modal = $(this);
-  modal.find('#modal-author').text(replyAuthor);
-  modal.find('#modal-date').text(replyDate);
-  modal.find('#modal-content').text(replyContent);
-
-  if (replyMemNo == loginUserMemNo) {
-    modal.find('.modal-comment-icon').show();
-  } else {
-    modal.find('.modal-comment-icon').hide();
-  }
-
-  modal.find('.modal-action-box a:eq(0)').attr('onclick', `modifyReply(${replyId}, '${replyContent}')`);
-  modal.find('.modal-action-box a:eq(1)').attr('onclick', `deleteReply(${replyId})`);
-
-  // 대댓글 목록을 불러옵니다.
-  fn_rreplyList(replyId);
-  console.log("fn_rreplyList 호출됨");
-});
 
 
-
-$(document).ready(function() {
-  fn_replyList();
+$(document).ready(function(){
+  fn_replyList(); // 페이지 로드 시 댓글 목록 불러오기
 
   // 아이콘 클릭 시 액션 박스 표시
   $(document).on('click', '.icon', function() {
@@ -356,12 +315,6 @@ $(document).ready(function() {
   // 클릭 이벤트 전파 중지 (첨부파일 리스트 내에서)
   $('#attachment-list').on('click', function(e) {
     e.stopPropagation();
-  });
-
-  // 댓글 답글 버튼 클릭 시 대댓글 목록 로드
-  $(document).on('click', '.reply-button', function() {
-    var replyId = $(this).data('reply-id');
-    fn_rreplyList(replyId);
   });
 });
 
@@ -406,10 +359,14 @@ function fn_replyList() {
           tr += "<br>";
         }
 
+        // 여기에서 fn_getRreplyCount 함수를 호출하여 답글 수를 가져옴
         tr += "</div><br>"
               + "<span style='color: black; margin: 40px;'>" + resData[i].replyContent + "</span><br><br>"
-              + "<button type='button' class='btn btn-sm btn-outline-secondary reply-button' style='margin-left: 40px;' data-bs-toggle='modal' data-bs-target='#modalScrollable' data-reply-id='" + resData[i].replyNo + "' data-reply-content='" + resData[i].replyContent + "' data-reply-author='" + resData[i].memName + "' data-reply-date='" + resData[i].replyRegistDT + "' data-reply-memno='" + resData[i].memNo + "'>답글</button>"
+              + "<button type='button' class='btn btn-sm btn-outline-secondary' style='margin-left: 40px;' data-bs-toggle='modal' data-bs-target='#modalScrollable' data-reply-id='" + resData[i].replyNo + "' data-reply-content='" + resData[i].replyContent + "' data-reply-author='" + resData[i].memName + "' data-reply-date='" + resData[i].replyRegistDT + "' data-reply-memno='" + resData[i].memNo + "'>답글 <span id='reply-count-" + resData[i].replyNo + "'>(0)</span></button>"
               + "</td></tr>";
+
+        // 답글 수를 가져와서 버튼에 표시
+        fn_getRreplyCount(resData[i].replyNo);
       }
 
       $("#reply_area tbody").html(tr);
@@ -420,58 +377,14 @@ function fn_replyList() {
   });
 }
 
-function fn_rreplyList(replyId) {
+// 답글 수를 가져오는 함수
+function fn_getRreplyCount(replyId) {
   $.ajax({
-    url: '${contextPath}/board/rrlist.do',
-    data: { bno: ${b.boardNo}, nno: replyId },
+    url: '${contextPath}/board/rrcount.do', // 대댓글 수를 반환하는 엔드포인트
+    data: { replyNo: replyId },
     success: function(resData) {
-      console.log("Received data:", resData); // 서버로부터 받은 데이터 확인
-
-      // 대댓글 수 출력
-      $("#rrcount").text(resData.length);
-
-      let tr = "";
-      for (let i = 0; i < resData.length; i++) {
-         tr += "<tr><td colspan='3'>"
-               + "<div class='d-flex justify-content-between align-items-center user-info'>"
-               + "<div class='avatar-wrapper d-flex align-items-center'>"
-               + "<div class='avatar me-2 d-flex justify-content-between'>"
-               + "<i class='menu-icon tf-icons ti ti-currency-leu' style='margin-right: auto; font-size: 40px; margin-top: -10px;'></i>"
-               + "<img src='${contextPath}/resources/assets/img/avatars/1.png' alt='Avatar' class='rounded-circle' />"
-               + "</div>"
-               + "<div class='d-flex flex-column'>"
-               + "<span class='emp_name text_truncate' style='color: black; margin-left: 40px;'>" + resData[i].memName + "</span>"
-               + "</div>"
-               + "<div class='d-flex flex-column' style='margin-left: 20px;'>"
-               + "<span>" + resData[i].replyRegistDT + "</span>"
-               + "</div></div>";
-
-         // 댓글 작성자가 로그인한 사용자와 같은지 확인
-         if (loginUserMemNo == resData[i].memNo) {
-           tr += "<div class='d-flex justify-content-end align-items-center'>"
-                 + "<div class='icon-wrapper'>"
-                 + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
-                 + "<div class='action-replybox'>"
-                 + "<form id='rfrm' action='' method='post'>"
-                 + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
-                 + "<a href='#' onclick='modifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
-                 + "<i class='menu-icon tf-icons ti ti-edit'></i></a>"
-                 + "<a href='#' onclick='deleteReply(" + resData[i].replyNo + ")'>"
-                 + "<i class='menu-icon tf-icons ti ti-trash'></i></a>"
-                 + "</form>"
-                 + "</div></div></div>";
-         } else {
-           tr += "<br>";
-         }
-
-         tr += "</div><br>"
-               + "<span style='color: black; margin: 40px;'>" + resData[i].replyContent + "</span><br><br>"
-               + "</td></tr>";
-       }
-
-      // HTML 업데이트
-      $("#reply_table tbody").html(tr); 
-      console.log("Updated HTML:", $("#reply_table tbody").html()); // HTML 업데이트 확인
+      console.log("Received reply count:", resData); // 서버로부터 받은 대댓글 수 확인
+      $("#reply-count-" + replyId).text("(" + resData + ")");
     },
     error: function(xhr, status, error) {
       console.error("에러 발생:", status, error);
@@ -504,6 +417,149 @@ function fn_insertReply(){
   });
 }
 
+function fn_insertRreply(replyId) {
+  var replyContent = $("#rreply_content").val();
+  console.log("등록하는 대댓글 내용:", replyContent); // 콘솔 로그 추가
+  console.log("등록하는 대댓글 참조:", replyId); // 콘솔 로그 추가
+
+  $.ajax({
+    url: '${contextPath}/board/rrinsert.do',
+    type: 'post',
+    data: {
+      replyContent: replyContent,
+      boardNo: ${b.boardNo},
+      replyRef: replyId
+    },
+    success: function(resData){
+      console.log("Insert result:", resData); // 응답 결과 확인
+      console.log("등록된 대댓글 내용:", replyContent); // 콘솔 로그 추가
+      console.log("등록된 대댓글 참조:", replyId); // 콘솔 로그 추가
+      if (resData === "SUCCESS") {
+        fn_rreplyList(replyId); // 대댓글 목록 새로고침
+        $("#rreply_content").val(""); // 입력 필드 초기화
+      } else {
+        alert("대댓글 작성 실패");
+      }
+    },
+    error: function(xhr, status, error) {
+      console.error("에러 발생:", status, error);
+    }
+  });
+}
+
+function fn_rreplyList(replyId) {
+  $.ajax({
+    url: '${contextPath}/board/rrlist.do',
+    data: { bno: ${b.boardNo}, nno: replyId },
+    success: function(resData) {
+      console.log("Received data:", resData); // 서버로부터 받은 데이터 확인
+
+      $("#rrcount").text(resData.length); // 대댓글 수 출력
+
+      let tr = "";
+      for (let i = 0; i < resData.length; i++) {
+        tr += "<tr><td colspan='3'>"
+              + "<div class='d-flex justify-content-between align-items-center user-info'>"
+              + "<div class='avatar-wrapper d-flex align-items-center'>"
+              + "<div class='avatar me-2 d-flex justify-content-between'>"
+              + "<i class='menu-icon tf-icons ti ti-currency-leu' style='margin-right: auto; font-size: 40px; margin-top: -10px;'></i>"
+              + "<img src='${contextPath}/resources/assets/img/avatars/1.png' alt='Avatar' class='rounded-circle' />"
+              + "</div>"
+              + "<div class='d-flex flex-column'>"
+              + "<span class='emp_name text_truncate' style='color: black; margin-left: 40px;'>" + resData[i].memName + "</span>"
+              + "</div>"
+              + "<div class='d-flex flex-column' style='margin-left: 20px;'>"
+              + "<span>" + resData[i].replyRegistDT + "</span>"
+              + "</div></div>";
+
+        // 댓글 작성자가 로그인한 사용자와 같은지 확인
+        if (loginUserMemNo == resData[i].memNo) {
+          tr += "<div class='d-flex justify-content-end align-items-center'>"
+                + "<div class='icon-wrapper'>"
+                + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
+                + "<div class='action-replybox'>"
+                + "<form id='rfrm' action='' method='post'>"
+                + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
+                + "<a href='#' onclick='modifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
+                + "<i class='menu-icon tf-icons ti ti-edit'></i></a>"
+                + "<a href='#' onclick='deleteReply(" + resData[i].replyNo + ")'>"
+                + "<i class='menu-icon tf-icons ti ti-trash'></i></a>"
+                + "</form>"
+                + "</div></div></div>";
+        } else {
+          tr += "<br>";
+        }
+
+        tr += "</div><br>"
+              + "<span style='color: black; margin: 40px;'>" + resData[i].replyContent + "</span><br><br>"
+              + "</td></tr>";
+      }
+
+      // reply_table HTML 업데이트
+      $("#reply_table tbody").html(tr);
+
+      // reply_div HTML 내용
+      let replyDivContent = "<div class='input' style='flex-grow: 1;'>"
+                          + "<textarea id='rreply_content' class='form-control' aria-label='With textarea' placeholder='답글을 입력해주세요.' style='width: 100%; border: 0px; resize: none;'></textarea>"
+                          + "</div>"
+                          + "<div>"
+                          + "<button id='regist' class='btn btn-sm btn-outline-secondary' style='text-align: center;' onclick='fn_insertRreply(" + replyId + ");'>등록</button>"
+                          + "</div>";
+
+      // reply_div HTML 업데이트
+      $("#reply_div").html(replyDivContent);
+
+      console.log("Updated HTML:", $("#reply_table tbody").html()); // HTML 업데이트 확인
+    },
+    error: function(xhr, status, error) {
+      console.error("에러 발생:", status, error);
+    }
+  });
+}
+
+$(document).on('show.bs.modal', '#modalScrollable', function(event) {
+  var button = $(event.relatedTarget);
+  var replyId = button.data('reply-id');
+  var replyContent = button.data('reply-content');
+  var replyAuthor = button.data('reply-author');
+  var replyDate = button.data('reply-date');
+  var replyMemNo = button.data('reply-memno');
+
+  console.log("댓글작성자코드:", replyMemNo);
+  console.log("로그인유저코드:", loginUserMemNo);
+  console.log("댓글번호:", replyId);
+  console.log("댓글내용:", replyContent);
+  console.log("댓글작성자:", replyAuthor);
+  console.log("댓글작성일:", replyDate);
+
+  var modal = $(this);
+  modal.find('#modal-author').text(replyAuthor);
+  modal.find('#modal-date').text(replyDate);
+  modal.find('#modal-content').text(replyContent);
+
+  // 작성자인 경우에만 ... 아이콘 보이게 설정
+  if (replyMemNo == loginUserMemNo) {
+    modal.find('.modal-comment-icon').show();
+  } else {
+    modal.find('.modal-comment-icon').hide();
+  }
+
+  // 수정 및 삭제 버튼에 데이터 할당
+  modal.find('.modal-action-box a:eq(0)').attr('onclick', `modifyReply(${replyId}, '${replyContent}')`);
+  modal.find('.modal-action-box a:eq(1)').attr('onclick', `deleteReply(${replyId})`);
+
+  // 등록 버튼에 replyId 할당
+  modal.find('#regist').attr('onclick', `fn_insertRreply(${replyId})`);
+
+  // 대댓글 목록을 불러옵니다.
+  fn_rreplyList(replyId);
+  console.log("fn_rreplyList 호출됨");
+});
+
+$(document).on('hide.bs.modal', '#modalScrollable', function() {
+    console.log("모달 닫힘: 댓글 목록 새로고침");
+    fn_replyList(); // 댓글 목록 새로고침
+});
 
 //게시글 수정
 function modifyBoardPost(boardNo) {

@@ -43,25 +43,32 @@
    	 max-height: 345px;
    	 overflow-y: auto;
    	 }
-		 #memoDiv, #teamListDiv::-webkit-scrollbar {
+		 #memoDiv::-webkit-scrollbar,
+		 #teamListDiv::-webkit-scrollbar {
 		  width: 10px;  /* 세로 스크롤바의 너비 */
 		  height: 8px; /* 가로 스크롤바의 높이 */
 		 }
 		
-		 #memoDiv, #teamListDiv::-webkit-scrollbar-track {
+		 #memoDiv::-webkit-scrollbar-track,
+		 #teamListDiv::-webkit-scrollbar-track {
 		  background-color: #f1f1f1; /* 트랙 배경색 */
 		  border-radius: 10px; /* 트랙 모서리 둥글게 */
 		 }
 		
 			/* 스크롤바의 손잡이 (사용자가 드래그할 부분) */
-			#memoDiv, #teamListDiv::-webkit-scrollbar-thumb {
+			#memoDiv::-webkit-scrollbar-thumb,
+			#teamListDiv::-webkit-scrollbar-thumb {
 		    background-color: #7367f0; /* 손잡이 색 */
 		    border-radius: 10px;     /* 손잡이 모서리 둥글게 */
 		    border: 2px solid #f1f1f1; /* 손잡이의 테두리 색 (트랙과 구분됨) */
 		}
 			/* 스크롤바 손잡이 위에 마우스를 올렸을 때 */
-			#memoDiv, #teamListDiv::-webkit-scrollbar-thumb:hover {
+			#memoDiv::-webkit-scrollbar-thumb:hover,
+			#teamListDiv::-webkit-scrollbar-thumb:hover {
 		    background-color: #564EB5; /* 손잡이 색을 다르게 */
+		}
+		.selected{
+			color: #7367f0;
 		}
    </style>
 </head>
@@ -139,8 +146,8 @@
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="pages-profile-teams.html"
-                          ><i class="ti-sm ti ti-users me-1_5"></i> 근태관리
+                        <a class="nav-link" href="${contextPath}/member/myinfo_workLog.do">
+                        	<i class="ti-sm ti ti-users me-1_5"></i> 근태관리
                         </a>
                       </li>
                     </ul>
@@ -224,7 +231,7 @@
 	                            </div>
 	                            <div class="modal-footer justify-content-center">
 	                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_memo_insert" onclick="fnInsertMemo();">등록</button>
-	                                <button type="button" class="btn btn-primary" id="btn_memo_cancel">취소</button>
+	                                <button type="button" class="btn btn-primary" id="btn_memo_cancel" data-bs-dismiss="modal">취소</button>
 	                            </div>
 	                        </div>
 	                    </div>
@@ -244,7 +251,7 @@
 	                            </div>
 	                            <div class="modal-footer justify-content-center">
 	                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_memo_insert" onclick="fnModifyMemo();">수정</button>
-	                                <button type="button" class="btn btn-primary" id="btn_memo_cancel">취소</button>
+	                                <button type="button" class="btn btn-primary" id="btn_memo_cancel" data-bs-dismiss="modal">취소</button>
 	                            </div>
 	                        </div>
 	                    </div>
@@ -363,11 +370,31 @@
                       })
 
                       $('#sign_save_btn').on('click',function(){
-                        const signatureDataURL = canvas.toDataURL();
+                        const signPath = canvas.toDataURL();
                         console.log(signatureDataURL);
                         $('#sign_image').attr('src', signatureDataURL);
                         
+                        const memNo = ${loginUser.getMemNo()};
+                        
+                        // DB에 저장(김동규)
+                        $.ajax({
+                        	url: '${contextPath}/member/saveSign.do',
+                        	type: 'POST',
+                        	data: {
+                        		signPath: signPath,
+                        		memNo: memNo
+                        		},
+                        	success: function(res){
+                        		alert('전자서명이 등록되었습니다.');
+                        	}error: function(){
+                        		alert('전자서명 등록에 실패했습니다. 다시 시도해주세요.');
+                        	}
+                        })
+                        
+                        
                       })
+                      
+                      
 
                   </script>
                   <!-- /전자서명 등록영역 -->
@@ -500,9 +527,9 @@
                             <div style="display: flex; margin-top: 30px; margin-left: 20px;">
                               <i class="ti ti-news ti-lg"></i>
                               <p style="margin-right: 50px; margin-left: 15px; font-size: 18px;">공지사항</p>
-                              <a style="color: blue;" href="#">전체</a>
+                              <span style="cursor: pointer;" class="selected">전체</span>
                               &nbsp;&nbsp;/&nbsp;&nbsp;
-                              <a href="#">인사관리팀</a>
+                              <span style="cursor: pointer;" onclick="fnSelectTeamNotice();">${ loginUser.deptName }</span>
                             </div>
                             <div style="position: relative; top: 20px; left: 200px; display: flex; gap: 30px;">
                               <div>
@@ -796,6 +823,15 @@
     	let memNo = '${loginUser.getMemNo()}';
     	let memoContent = $('#insertMemoInput').val();
     	
+    	// 작성된 내용이 없을경우 등록하지않고 모달창 종료
+    	if (!memoContent) {
+    		 
+ 	       $('#selectMemoModal').modal('hide');
+ 	        
+ 	       return;
+ 	       
+    	   }
+    	
     	$.ajax({
     		url: '${contextPath}/memo/insertMemo.do',
     		type: 'POST',
@@ -893,6 +929,18 @@
     		
     	})
     }
+    
+    // 팀 공지사항 리스트 조회(팀명 클릭)
+    function fnSelectTeamNotice(){
+    	
+    	const memNo = '${loginUser.memNo}';
+    	
+    	$.ajax({
+    		
+    	})
+    	
+    }
+    
     
     
    

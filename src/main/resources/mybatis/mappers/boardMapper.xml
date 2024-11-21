@@ -273,7 +273,7 @@
 		    join member m on (m.mem_no = r.mem_no)
 		   where r.board_no = #{boardNo}
 		   	 and reply_type = 0
-		   order by reply_no desc
+		   order by reply_no asc
 		</select>
 	
 		<select id="selectRreplyList" parameterType="map" resultMap="replyResultMap">
@@ -292,7 +292,7 @@
 		    WHERE r.board_no = #{boardNo}
 		      AND r.reply_ref = #{replyNo}
 		      AND reply_type = 1
-		    ORDER BY r.reply_no DESC
+		    ORDER BY r.reply_no ASC
 		</select>	
 	
 		<insert id="insertReply">
@@ -320,6 +320,30 @@
 		    )
 		</insert>
 
+		<insert id="insertRreply">
+		    insert into reply
+		    (
+		        reply_no,
+		        reply_content,
+		        board_no,
+		        mem_no,
+		        reply_type,
+		        reply_regist_date,
+		        reply_modify_date,
+		        reply_ref
+		    )
+		    values
+		    (
+		        seq_rno.nextval,
+		        #{replyContent},
+		        #{boardNo},
+		        #{memNo},
+		        1, 
+		        SYSDATE,
+		        SYSDATE,
+		        #{replyRef} 
+		    )
+		</insert>
 
 		<delete id="deleteReplyCompletely">
 		    delete from reply
@@ -354,6 +378,10 @@
 		        #{boardNo}
 		    </foreach>
 		</delete>
+		
+		<select id="getRreplyCount" resultType="int" parameterType="int">
+		    SELECT COUNT(*) FROM reply WHERE reply_ref = #{replyNo}
+		</select>
 		
 
 </mapper>

@@ -42,6 +42,9 @@ public interface BoardService {
 	// 댓글 등록 
 	int insertReply(ReplyDto r);
 	
+	// 대댓글 등록
+	int insertRreply(ReplyDto r);
+
 	// 댓글 완전삭제 (스케줄러에 의해 작동)
 	int deleteReplyCompletely(int replyNo);
 	
@@ -55,7 +58,8 @@ public interface BoardService {
     // 댓글 삭제 메서드
     void deleteCommentsByBoardNos(List<Integer> boardNos);
 	
-
+    // 대댓글 수 조회
+    int getRreplyCount(int replyNo);
 	
 
 }
