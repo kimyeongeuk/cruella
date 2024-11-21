@@ -299,7 +299,7 @@
                                         <div class="col mb-4">
 
                                           <!-- 서명 그리는 영역 -->
-                                          <canvas id="canvas" width="515" height="400" style="border: 2px solid #000;"></canvas>
+                                          <canvas id="canvas" width="515" height="400" style="border: 3px solid #000;"></canvas>
 
                                         </div>
                                       </div>
