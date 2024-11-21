@@ -32,4 +32,7 @@ public interface MemberService {
 	// 프로필이미지업로드 
 	int updateProfileImg(MemberDto m);
 
+	// 전자서명 저장
+	int saveSignPath(byte imageBytes);
+	
 }

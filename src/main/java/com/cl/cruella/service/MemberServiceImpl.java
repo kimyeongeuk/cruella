@@ -56,4 +56,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.updateProfileImg(m);
 	}
 
+	@Override
+	public int saveSignPath(byte imageBytes) {
+		return memberDao.saveSignPath(imageBytes);
+	}
+
 }

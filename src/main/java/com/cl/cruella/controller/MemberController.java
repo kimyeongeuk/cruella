@@ -3,6 +3,7 @@ package com.cl.cruella.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -178,6 +179,21 @@ public class MemberController {
 		 return "/member/sentEmail";
 	 }
 	 
+	 // 전자서명 저장(김동규)
+	 @PostMapping("/saveSign")
+	 public void saveSign(MemberDto m) {
+		 
+		 // Base64 데이터 추출
+		 String base64Data = m.getSignPath().split(",")[1];
+		 
+		 // Base64 디코딩
+		 byte[] imageBytes = Base64.getDecoder().decode(base64Data);
+		 
+		 // m.setSignPath(imageBytes);
+		 	
+		 // int result = memberService.saveSignPath(imageBytes);
+	 }
+	 
 	 // 출근 버튼 클릭시(김동규)
 	 @GetMapping("/checkIn")
 	 public void checkIn() {
@@ -185,7 +201,8 @@ public class MemberController {
 	 }
 	 
 
-	 
+	 @GetMapping("/myinfo_workLog.do")
+	 public void myinfoWorkLog() {}
 	 
 	 
 	 

@@ -98,6 +98,7 @@
           and mem_no != #{memNo}
 	</select>
 	
+	<!-- 등록된 메일 여부 확인(김동규) -->
 	<select id="checkEmail" resultMap="memberResultMap">
 		select
 					 mem_no
@@ -106,6 +107,7 @@
 		 where email = #{mail}
 	</select>
 	
+	<!-- 임시 비밀번호로 변경(김동규) -->
 	<update id="updatePwd" parameterType="map">
 		update
 				   member
@@ -167,7 +169,15 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 					member
 			set profile_url = #{profileURL}
 		where mem_no = #{memNo}
-	</update>	
+	</update>
+	
+	<!-- 전자서명 저장 (김동규) -->
+	<update id="saveSignPath">
+		update
+				   member
+			 set sign_path = #{imageBytes}
+				   
+	</update>
 	
 
 
