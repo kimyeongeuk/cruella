@@ -15,6 +15,37 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <script src="${ contextPath }/resources/assets/js/config.js"></script>
+    
+    
+    
+    
+    
+     <!-- Vendors CSS -->
+    <link rel="stylesheet" href="../../assets/vendor/libs/node-waves/node-waves.css" />
+
+    <link rel="stylesheet" href="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/typeahead-js/typeahead.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/select2/select2.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/@form-validation/form-validation.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/quill/typography.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/quill/katex.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/quill/editor.css" />
+
+    <!-- Page CSS -->
+
+    <link rel="stylesheet" href="../../assets/vendor/css/pages/app-ecommerce.css" />
+    <link rel="stylesheet" href="../../assets/vendor/css/pages/page-faq.css" />
+    
+    
+    
+    
+    
+   
+    
+    
 </head>
 <body>
 
@@ -37,45 +68,69 @@
    <!-- 세션 시작 -->
     <div class="container-xxl flex-grow-1 container-p-y">
      <!-- 이쪽에 세션정보 넣어야합니다 -->
-    
-              <div class="row">
+     
+     
+    		 <div class="row">
                 <div class="col-md-12">
                   <div class="nav-align-top">
                     <ul class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
 
-										<li class="nav-item"><a class="nav-link" href="#"> <i
-												class="ti-sm ti ti-user-check me-1_5"></i> 직원등록</a></li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">
+                          <i class="ti-sm ti ti-user-check me-1_5"></i> 직원 등록
+                        </a>
+                      </li>
 
-										<li class="nav-item"><a class="nav-link active" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 직원조회 </a></li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#"
+                          ><i class="ti-sm ti ti-users me-1_5"></i> 직원 조회
+                        </a>
+                      </li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 출근기록조회 </a></li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#"
+                          ><i class="ti-sm ti ti-users me-1_5"></i> 출퇴근 기록관리
+                        </a>
+                      </li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 근무시간조회 </a></li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#"
+                          ><i class="ti-sm ti ti-users me-1_5"></i> 근무시간 조회
+                        </a>
+                      </li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#"
+                          ><i class="ti-sm ti ti-users me-1_5"></i> 조직도 관리
+                        </a>
+                      </li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여내역확인 </a></li>
+                      <li class="nav-item">
+                        <a class="nav-link active" href="#"
+                          ><i class="ti-sm ti ti-users me-1_5"></i> 급여 지급
+                        </a>
+                      </li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 조직도 </a></li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#"
+                          ><i class="ti-sm ti ti-money me-1_5"></i> 급여명세서 조회/발급
+                        </a>
+                      </li>
 
                     </ul>
                   </div>
                 </div>
               </div>
               
+              
+             
               <div
-                class="faq-header d-flex flex-column justify-content-center align-items-center h-px-100 position-relative" style="margin-bottom: 10px;">
+                class="faq-header d-flex flex-column justify-content-center align-items-center " style="margin-bottom: 10px;">
                 <img
-                  src="${ contextPath }/assets/img/pages/header.png"
-                  class="scaleX-n1-rtl faq-banner-img z-n1 rounded"
-                  alt="background image" />
-                <div class="input-wrapper mt-4 input-group input-group-merge px-lg-5">
+                  src="${contextPath }/assets/img/pages/header.png"
+                  class=""
+                  alt="background image" style="width: 100%; height: 102px;"/>
+                <div class="input-wrapper mt-4 input-group input-group-merge" style="position: relative; bottom: 84px;background: white; width: 52%;">
                   <span class="input-group-text" id="basic-addon1"><i class="ti ti-search"></i></span>
                   <input
                     type="text"
@@ -88,7 +143,7 @@
               <!--/상단 검색바-->
 
               <!--검색내용-->
-              <div class="card" style="padding: 30px;">
+              <div class="card" style="padding: 30px; padding: 30px;position: relative; bottom: 50px;">
                 <h5 class="card-header">사원목록 </h5>
                 <div class="table-responsive text-nowrap">
                   <table class="table" style="text-align: center;">
@@ -122,7 +177,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-
+                    <tbody class="table-border-bottom-0">
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -141,7 +196,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-
+                    <tbody class="table-border-bottom-0">
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -160,7 +215,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-
+                    <tbody class="table-border-bottom-0">
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -179,7 +234,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-
+                    <tbody class="table-border-bottom-0">
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -198,7 +253,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-
+                    <tbody class="table-border-bottom-0">
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -217,7 +272,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
- 
+                    <tbody class="table-border-bottom-0">
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -236,7 +291,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-
+                    <tbody class="table-border-bottom-0">
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -255,7 +310,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-
+                    <tbody class="table-border-bottom-0">
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -274,7 +329,7 @@
                         <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
                         
                       </tr>
-                      
+                    <tbody class="table-border-bottom-0">
                       <tr>
                         <td>
                           <span class="fw-medium">이예빈</span>
@@ -359,12 +414,19 @@
                 </div>
               </div>
             <!--/검색내용-->
-    
+
+            
+    		
+         
+         
+         
     
     
     
     </div>
    <!-- 세션 끝 -->
+   
+  
 
 
 
@@ -388,6 +450,19 @@
     <div class="drag-target"></div>
    <!-- layout wrapper 닫기 -->
    </div>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
    
    
    

@@ -18474,7 +18474,7 @@ button.list-group-item-gray.active {
   .px-lg-50 {
     padding-right: 0.125rem !important;
     padding-left: 0.125rem !important;
-  }
+  } 
   .px-lg-1 {
     padding-right: 0.25rem !important;
     padding-left: 0.25rem !important;
@@ -18495,10 +18495,10 @@ button.list-group-item-gray.active {
     padding-right: 1rem !important;
     padding-left: 1rem !important;
   }
-  .px-lg-5 {
+  /* .px-lg-5 {
     padding-right: 1.25rem !important;
     padding-left: 1.25rem !important;
-  }
+  } */
   .px-lg-6 {
     padding-right: 1.5rem !important;
     padding-left: 1.5rem !important;

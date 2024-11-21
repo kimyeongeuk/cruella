@@ -270,15 +270,11 @@
 <script>
 //모달 내의 ... 아이콘 클릭 시 액션 박스를 토글하는 함수
 function toggleModalActionBox(icon) {
-  console.log("Icon clicked:", icon); // 클릭 이벤트 확인
   var actionBox = icon.nextElementSibling;
-  console.log("Action Box:", actionBox); // 액션 박스 요소 확인
   if (actionBox.style.display === 'none' || actionBox.style.display === '') {
     actionBox.style.display = 'block';
-    console.log("Action Box displayed");
   } else {
     actionBox.style.display = 'none';
-    console.log("Action Box hidden");
   }
 }
 
@@ -324,9 +320,7 @@ function fn_replyList() {
   $.ajax({
     url: '${contextPath}/board/rlist.do',
     data: { no: ${b.boardNo} },
-    success: function(resData) {
-      console.log("Received data:", resData); // 서버로부터 받은 데이터 확인
-
+    success: function(resData) {    
       $("#rcount").text(resData.length); // 댓글 수 출력
       let tr = "";
       for (let i = 0; i < resData.length; i++) {
@@ -383,7 +377,6 @@ function fn_getRreplyCount(replyId) {
     url: '${contextPath}/board/rrcount.do', // 대댓글 수를 반환하는 엔드포인트
     data: { replyNo: replyId },
     success: function(resData) {
-      console.log("Received reply count:", resData); // 서버로부터 받은 대댓글 수 확인
       $("#reply-count-" + replyId).text("(" + resData + ")");
     },
     error: function(xhr, status, error) {
@@ -403,7 +396,6 @@ function fn_insertReply(){
       boardNo: ${b.boardNo}
     },
     success: function(resData){
-      console.log("Insert result:", resData); // 응답 결과 확인
       if(resData === "SUCCESS"){
         fn_replyList();
         $("#reply_content").val("");
@@ -419,9 +411,6 @@ function fn_insertReply(){
 
 function fn_insertRreply(replyId) {
   var replyContent = $("#rreply_content").val();
-  console.log("등록하는 대댓글 내용:", replyContent); // 콘솔 로그 추가
-  console.log("등록하는 대댓글 참조:", replyId); // 콘솔 로그 추가
-
   $.ajax({
     url: '${contextPath}/board/rrinsert.do',
     type: 'post',
@@ -431,9 +420,6 @@ function fn_insertRreply(replyId) {
       replyRef: replyId
     },
     success: function(resData){
-      console.log("Insert result:", resData); // 응답 결과 확인
-      console.log("등록된 대댓글 내용:", replyContent); // 콘솔 로그 추가
-      console.log("등록된 대댓글 참조:", replyId); // 콘솔 로그 추가
       if (resData === "SUCCESS") {
         fn_rreplyList(replyId); // 대댓글 목록 새로고침
         $("#rreply_content").val(""); // 입력 필드 초기화
@@ -452,8 +438,6 @@ function fn_rreplyList(replyId) {
     url: '${contextPath}/board/rrlist.do',
     data: { bno: ${b.boardNo}, nno: replyId },
     success: function(resData) {
-      console.log("Received data:", resData); // 서버로부터 받은 데이터 확인
-
       $("#rrcount").text(resData.length); // 대댓글 수 출력
 
       let tr = "";
@@ -508,8 +492,6 @@ function fn_rreplyList(replyId) {
 
       // reply_div HTML 업데이트
       $("#reply_div").html(replyDivContent);
-
-      console.log("Updated HTML:", $("#reply_table tbody").html()); // HTML 업데이트 확인
     },
     error: function(xhr, status, error) {
       console.error("에러 발생:", status, error);
@@ -524,14 +506,6 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   var replyAuthor = button.data('reply-author');
   var replyDate = button.data('reply-date');
   var replyMemNo = button.data('reply-memno');
-
-  console.log("댓글작성자코드:", replyMemNo);
-  console.log("로그인유저코드:", loginUserMemNo);
-  console.log("댓글번호:", replyId);
-  console.log("댓글내용:", replyContent);
-  console.log("댓글작성자:", replyAuthor);
-  console.log("댓글작성일:", replyDate);
-
   var modal = $(this);
   modal.find('#modal-author').text(replyAuthor);
   modal.find('#modal-date').text(replyDate);
@@ -553,11 +527,9 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
 
   // 대댓글 목록을 불러옵니다.
   fn_rreplyList(replyId);
-  console.log("fn_rreplyList 호출됨");
 });
 
 $(document).on('hide.bs.modal', '#modalScrollable', function() {
-    console.log("모달 닫힘: 댓글 목록 새로고침");
     fn_replyList(); // 댓글 목록 새로고침
 });
 
