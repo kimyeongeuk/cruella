@@ -57,7 +57,6 @@ public class ChatController {
 	@GetMapping(value="/userInfo.do",produces="application/json0 ")
 	public Map<String,Object>  userInfo(String memNo,Model model) {
 		
-		log.debug(memNo);
 		// 해당 인원의 정보
 		MemberDto m = chatServiceImpl.memberInfo(memNo);
 		// 해당 인원의 프로필 정보
@@ -89,14 +88,15 @@ public class ChatController {
 		return map;
 	}
 	
-	
+	@ResponseBody
 	@GetMapping(value="/updateNewMsg.do",produces="application/json")
-	public void updateNewMsg(MessageDto message) {
+	public int updateNewMsg(MessageDto message) {
 		
 		log.debug("messagedd체크체크췤: {}",message);
 		
 		int result = chatServiceImpl.updateNewMsg(message);
 		
+		return result;
 		
 	}
 	

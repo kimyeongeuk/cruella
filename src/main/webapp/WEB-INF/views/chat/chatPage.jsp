@@ -567,7 +567,7 @@
 
 
                       
-                        <div class="chat-history-header noticeContent" style="position: absolute; width: 100%; z-index: 1; background-color: #ffffffad;" id="noticeContent" >
+                        <div class="chat-history-header noticeContent" style="position: absolute; width: 100%; z-index: 1; background-color: #ffffffad; display:none" id="noticeContent">
                               <div class="d-flex overflow-hidden align-items-center">
                                 <div class="chat-contact-info flex-grow-1">
                                   <h6 class="m-0 fw-normal noticeMessage" style="font-weight: 900;" id="noticeMessage">공지사항 내용이 들어갈 자리</h6>  
@@ -579,7 +579,7 @@
                         </div>
 
 
-                      <div class="chat-history-body chatarea">
+                      <div class="chat-history-body chatarea" id="chatarea">
                         <ul class="list-unstyled chat-history" id="chathistory">
 
                           <li class="chat-message chat-message-right">
@@ -1031,26 +1031,6 @@
 
 
 
-                  <!-- 테스트!@#!@#!@#!@#12 -->
- <!-- 테스트!@#!@#!@#!@#12 -->
-   <!-- 테스트!@#!@#!@#!@#12 -->
-     <!-- 테스트!@#!@#!@#!@#12 -->
-
-
-      <!-- 테스트!@#!@#!@#!@#12 -->
-        <!-- 테스트!@#!@#!@#!@#12 -->
-
-         <!-- 테스트!@#!@#!@#!@#12 -->
-           <!-- 테스트!@#!@#!@#!@#12 -->
-             <!-- 테스트!@#!@#!@#!@#12 -->
-               <!-- 테스트!@#!@#!@#!@#12 -->
-
-                <!-- 테스트!@#!@#!@#!@#12 -->
-
-
-
-
-
 
                   <!-- 채팅방 인원 목록 -->
                   <div class="col app-chat-sidebar-right app-sidebar overflow-hidden" id="app-chat-sidebar-userlist">
@@ -1211,10 +1191,51 @@
 	     var chatNo = null;
 	     var userNo = "${loginUser.memNo}"; // 로그인 유저 사번
 	     var userName = "${loginUser.memName}"; // 로그인 유저 이름
+	   	 var socket = new SockJS("${contextPath}/chatPage");
+	     var client = Stomp.over(socket);
+	     var activeChat = null;
 	     
+			client.connect({}, function (frame) {
+			    console.log("STOMP 연결됨");
+			
+			    // 모든 채팅방 구독
+			    chatNoList.forEach(function (chatNo) {
+			        client.subscribe('/sub/' + chatNo, function (chat) {
+			            var content = JSON.parse(chat.body);
+									
+			            if(activeChat == chatNo){
+				            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck);
+				            $('#chathistory').append(str);
+				            $(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
+				            	
+			            }
+							        $('.mewmsg').each(function () { // 미리보기 ajax 시작
+							    		console.log('테스트 : '+$(this).val());
+							    		console.log('채팅방 번호 :'+chatNo);
+							    		
+									    if ($(this).val() == content.chatNo) { 
+									    	
+									    		$.ajax({ 
+									    			url:'${contextPath}/chat/updateNewMsg.do',
+									    			data:{chatNo:content.chatNo,msgContent:content.msgContent},
+									    			success:function(res){
+									    				console.log('성공');
+									    			}
+									    		})
+									    		
+									        $(this).prev().html(content.msgContent); 
+								    	} 
+				
+										}); // 미리보기 ajax 끝
+			        });
+			        
+			        
+			    }); // 모든 구독 끝
+			});
 
         // 채팅방 목록 클릭시 start 	
         $('.chat-list-form').on('click', function() {
+        	activeChat = $(this).children().eq(0).val(); // 활성화된 채팅방 번호 넣기
         	
             // AJAX 메세지 조회 출력 start
             let a = '';
@@ -1232,77 +1253,43 @@
                 $('#chathistory').html(a);
                 $('#chatMain').css('display', 'none');
                 $('#chatList').css('display', 'block');
-                    
+                $(".chatarea").scrollTop(0);
+                //$(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
+                setTimeout(function() {
+                    $(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
+                }, 50);
+		              
+				        // 채팅방 입장시 작동될 코드
+				        client.send('/pub/'+activeChat, {}, JSON.stringify({chatNo:content.chatNo, msgContent:content.msgContent, memNo:content.memNo}))
+                
               }
             });
             // AJAX 메세지 조회 출력 end
 
-            // 웹소켓 활용 실시간채팅 start
-            chatNo = $(this).children().eq(0).val(); //해당 채팅방 번호
-			
-            /*
-            if(client != null){
-              client.unsubscribe();
-              client.disconnect();
-            } 
-            */
-            
-            client = getClient(chatNo, chatSocketClientList);
-            console.log(client);
-            console.log(chatSocketClientList);
-						
-            //client.connect({},function(frame){  // connect start
-			//client.connectCallback = function(){
-            	
-               client.subscribe('/sub/' + chatNo, function(chat){ // subscribe start
-                var content = JSON.parse(chat.body);
-                var writer = content.memNo;
-                var msgType = content.msgType;
-                console.log('컨텐츠');
-                console.log(content); 
-                const $chatArea = $(".chatarea");
-                
-                var str = msgPrint(writer, userNo, content.msgContent, content.msgRegistDate, content.msgCheck)
-                $('#chathistory').append(str);
-                $chatArea.scrollTop($chatArea[0].scrollHeight);
-                
-                
-                
-                // 최신메세지 채팅방 출력 
-                $('.mewmsg').each(function () {
-                    console.log('테스트 : '+$(this).val());
-                    console.log('테스트2 :'+chatNo);
-                    if ($(this).val() == chatNo) {
-                        $(this).prev().html(content.msgContent); 
-                    }
-                });
-              
-                
 
-              }) // subscribe end
-              
-              
-          //  }); // connect end
+          });  // 채팅방 목록 클릭시 end 
 
-
-          });
-          // 채팅방 목록 클릭시 end 
-
-
+          
           // 구독된 사람들에게 채팅메세지 발송
-          $(".sendmessage").on("click", function(){
-            var msg = document.getElementById("inputchatform");        
-            let client = getClient(chatNo, chatSocketClientList);
-            client.send('/pub/'+chatNo, {}, JSON.stringify({	chatNo: chatNo,
-                                                            memNo: userNo,
-                                                            msgContent: msg.value,
-                                                            msgType:'message',
-                                                            msgRegistDate: new Date().toISOString()
-                                                          }));
+			          $("#inputchatform").on("keydown", function(evt){
+			      			if(evt.keyCode == 13){
+			      				if(!evt.shiftKey){
+					            var msg = document.getElementById("inputchatform"); 
+					            client.send('/pub/'+activeChat, {}, JSON.stringify({chatNo: activeChat,
+					                                                            memNo: userNo,
+					                                                            msgContent: msg.value,
+					                                                            msgType:'message',
+					                                                            msgRegistDate: new Date().toISOString()
+					                                                          }));
+					            msg.value = '';
+			      				}
+			      			}
+			
 
-            msg.value = '';
-            
-        });
+			            
+			            
+			        });
+
 
       })
       
@@ -1363,6 +1350,8 @@
           str += '</div>';
           str += '</li>';
         }
+   	  	
+
    	  	return str;
       }
 
@@ -1384,26 +1373,29 @@
     <script>
     	var chatNoList = [];
     	var chatSocketClientList = []; // [{chatNo:방번호, socket:소켓객체, client:client객체}, ]
-	    
+    	var socket = new SockJS("${contextPath}/chatPage.do");
+    	var client = Stomp.over(socket);
+    	
     	$(document).ready(function(){
     		// 모든 채팅방 구독해두기 
             for(let i=0; i<chatNoList.length; i++){
-            	let socket = new SockJS("${contextPath}/chatPage"); // 엔드포인트
-                let client = Stomp.over(socket);
+            	// let socket = new SockJS("${contextPath}/chatPage"); // 엔드포인트
+                //let client = Stomp.over(socket);
             		
-                 client.connect({},function(frame){
-                	 
+                 //client.connect({},function(frame){
+                	 //console.log('클라이언트 연결연결경ㄴ결');
                  
-                });  
+                //});  
             	
             	let obj = {
             		chatNo: chatNoList[i],
-            		socket: socket,
-            		client: client
+            		//socket: socket,
+            		//client: client
             	};
             	
             	chatSocketClientList.push(obj);
             }
+    			
     	})
         
     	
