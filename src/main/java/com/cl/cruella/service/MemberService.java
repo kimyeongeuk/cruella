@@ -35,4 +35,9 @@ public interface MemberService {
 	// 전자서명 저장
 	int saveSignPath(MemberDto m);
 	
+	// 사원목록조회
+	List<MemberDto> selecMemberList(MemberDto m);
+
+	int selectAll();
+	
 }

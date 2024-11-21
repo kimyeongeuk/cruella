@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.service.BoardService;
 import com.cl.cruella.service.MemberService;
 import com.cl.cruella.util.FileUtil;
 
@@ -329,7 +330,9 @@ public class MemberController {
 	
 	// 사원조회페이지로redirect(예빈)
 	@GetMapping("/employeelistview.do")
-	public void employeelistview() {}
+	public void employeelistview(@RequestParam(value = "page", defaultValue = "1") int current, Model model) {
+		int listCount = memberService.selectAll();
+	}
 	
 	@PostMapping("/updateProfile.do")
 	public String modifyProfile(@RequestParam("uploadFile") MultipartFile uploadFile, HttpSession session) {
