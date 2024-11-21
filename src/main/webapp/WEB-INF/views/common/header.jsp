@@ -196,7 +196,7 @@
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="${ contextPath }/supply/supply.do" class="menu-link">
                     <div data-i18n="비품 관리">비품 관리</div>
                   </a>
                 </li>

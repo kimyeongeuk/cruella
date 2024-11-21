@@ -15,7 +15,7 @@
 
 <!-- 전체 일정 목록 조회하기 -->
 <select id="selectCalendarList" resultMap="selectCalendarResultMap">
-		SELECT cal_no
+		SELECT CAL_NO
 				 , CAL_TITLE
 		     , CAL_STARTDATE
 		     , CAL_ENDDATE
