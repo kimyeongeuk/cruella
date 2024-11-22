@@ -126,7 +126,7 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 		log.debug("현재 채팅방에서 나간 회원 : {}",session.getAttributes().get("loginUser"));
 		*/
 		
-		 sessionList.remove(session);
+		 map.remove(session);
 		
 		//for(WebSocketSession sss : sessionList) {
 			//String msg = "exit|"+ ((MemberDto)session.getAttributes().get("loginUser")).getUserId()+"님이 퇴장하였습니다.";
