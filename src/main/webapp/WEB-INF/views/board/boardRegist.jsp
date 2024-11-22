@@ -66,7 +66,7 @@
 							            <label for="formFile" class="form-label">첨부파일</label>
 							            <input class="form-control" type="file" id="formFile" name="uploadFiles" multiple />
 							            <br>
-							            <div id="file-container" style="margin-top: 10px;"></div>
+							            <div id="file-container"></div>
 							            <br>							            
 							            <div id="board-editor"></div>                
 							            <br>
@@ -154,7 +154,7 @@
                            reader.onload = function(e) {
                               const img = document.createElement('img');
                               img.src = e.target.result;
-                              img.style.maxWidth = '200px';
+                              img.style.maxWidth = '120px';
                               img.style.height = 'auto';
                               fileDiv.appendChild(img);
                            };
