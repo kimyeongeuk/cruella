@@ -86,7 +86,7 @@
 
     <!-- nav 시작 -->
       <jsp:include page="/WEB-INF/views/common/nav.jsp" />
-      <!-- nav 끗 -->
+    <!-- nav 끝 -->
 
 
    <div class="content-wrapper">
