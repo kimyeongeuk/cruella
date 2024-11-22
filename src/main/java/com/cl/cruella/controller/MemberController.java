@@ -23,7 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cl.cruella.dto.BoardDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
-import com.cl.cruella.service.BoardService;
 import com.cl.cruella.service.MemberService;
 import com.cl.cruella.service.WorkLogService;
 import com.cl.cruella.util.FileUtil;
@@ -46,7 +45,6 @@ public class MemberController {
 	private final BCryptPasswordEncoder bcryptPwdEncoder;
 	private final FileUtil fileUtil;
 	private final PagingUtil pagingUtil;
-	private final BoardService boardService;
 
 	
 	// 로그인(김동규)
@@ -235,29 +233,33 @@ public class MemberController {
 	 public void myinfoWorkLog() {}
 	 
 	 // 내정보 - 팀게시판리스트 조회
-	 @PostMapping("/boardList.do")
-	 @ResponseBody
-     public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session) {
-		 
+	 @GetMapping("/boardList.do")
+     public String list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session) {
          MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+         if (loginUser == null) {
+             return "redirect:/member/signin.do"; // 로그인 페이지로 리디렉션
+         }
 
-         String deptCode = loginUser.getDeptCode();
-        
+         String loggedInDeptCode = loginUser.getDeptCode();
+         if (loggedInDeptCode == null) {
+             model.addAttribute("error", "부서 코드가 설정되지 않았습니다.");
+             return "errorPage"; // 에러 페이지로 리디렉션
+         }
 
-         int listCount = boardService.selectBoardListCount(deptCode);
+         int listCount = boardService.selectBoardListCount(loggedInDeptCode);
 
          PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
 
          Map<String, Object> params = new HashMap<>();
          params.put("pi", pi);
-         params.put("deptCode", deptCode);
+         params.put("deptCode", loggedInDeptCode);
 
          List<BoardDto> list = boardService.selectBoardList(params);
-         params.put("list", list);
 
-         
+         model.addAttribute("pi", pi);
+         model.addAttribute("list", list);
 
-         return params;
+         return "board/boardList";
      }
 	 
 	 
@@ -423,7 +425,7 @@ public class MemberController {
 		
 	}
 	
-	// 회원정보수정/탈퇴 (이예빈)
+	// 회원정보수정페이지 이동 (이예빈)
 	@GetMapping("/modifydelete.do")
 	public String modifyDelete(@RequestParam("memNo") String memNo, Model model) {
 	    // 1. memNo로 해당 사원 정보 조회
@@ -436,6 +438,9 @@ public class MemberController {
 	    return "member/modifydelete";
 	}
 
+	@PostMapping("/updateMember.do")
+	public void updateMember() {}
+	
 	
 	
 	
