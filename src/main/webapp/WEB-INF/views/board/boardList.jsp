@@ -26,6 +26,12 @@
   .select, .text, #searchBtn {
     margin-right: 10px; /* 요소 간의 간격을 조정 */
   }
+  .title {
+  	max-width: 500px;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	white-space: nowrap;
+  }
 </style>
 
 </head>
@@ -154,44 +160,44 @@
 								        </c:choose>
 								      </tr>
 								    </thead>
-								    <tbody>								     				      
+								    <tbody>
 								      <c:choose>
-											  <c:when test="${empty list}">
-											    <!-- 게시글이 없을 경우 -->
-											    <tr>
-											      <td colspan="6">조회된 게시글이 없습니다.</td>
-											    </tr>
-											  </c:when>
-											  <c:otherwise>
-											  	<c:set var="count" value="1" />
-											    <c:forEach var="board" items="${list}">
-											      <!-- 역순 넘버링 계산 -->
-											      <c:set var="reverseCount" value="${pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1)}" />
-											      <tr data-boardno="${board.boardNo}">
-											        <c:choose>
-											          <c:when test="${loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4'}">
-											            <td><input type="checkbox" class="item-checkbox" /></td>
-											          </c:when>
-											        </c:choose>
-											        <td>${reverseCount}</td> <!-- 역순 번호 -->
-											        <td>${board.memName}</td>
-											        <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>
-											          ${board.boardTitle}
-											          <c:if test="${board.attachCount != 0}">
-											            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip">
-											              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-											              <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
-											            </svg>
-											          </c:if>
-											        </td>
-											        <td>${board.boardRegistDT}</td>
-											        <td>${board.boardCount}</td>
-											        <td>${board.replyCount}</td>
-											      </tr>
-											      <c:set var="count" value="${count + 1}" />
-											    </c:forEach>
-											  </c:otherwise>
-											</c:choose>							      
+								        <c:when test="${empty list}">
+								          <!-- 게시글이 없을 경우 -->
+								          <tr>
+								            <td colspan="6">조회된 게시글이 없습니다.</td>
+								          </tr>
+								        </c:when>
+								        <c:otherwise>
+								          <c:set var="count" value="1" />
+								          <c:forEach var="board" items="${list}">
+								            <!-- 역순 넘버링 계산 -->
+								            <c:set var="reverseCount" value="${pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1)}" />
+								            <tr data-boardno="${board.boardNo}">
+								              <c:choose>
+								                <c:when test="${loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4'}">
+								                  <td><input type="checkbox" class="item-checkbox" /></td>
+								                </c:when>
+								              </c:choose>
+								              <td>${reverseCount}</td> <!-- 역순 번호 -->
+								              <td>${board.memName}</td>
+								              <td class="title" style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>
+								                ${board.boardTitle}
+								                <c:if test="${board.attachCount != 0}">
+								                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip">
+								                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+								                    <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
+								                  </svg>
+								                </c:if>
+								              </td>
+								              <td>${board.boardRegistDT}</td>
+								              <td>${board.boardCount}</td>
+								              <td>${board.replyCount}</td>
+								            </tr>
+								            <c:set var="count" value="${count + 1}" />
+								          </c:forEach>
+								        </c:otherwise>
+								      </c:choose>
 								    </tbody>
 								  </table>
 								</div>
