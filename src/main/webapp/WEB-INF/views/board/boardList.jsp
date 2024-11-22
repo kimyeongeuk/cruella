@@ -54,15 +54,35 @@
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="container card py-5">
                 <div class="d-flex align-items-center">
-                  <div>
-                    <span class="fs-4">팀게시판</span>
+                  <div style="margin: 20px;">
+                    <span class="text-primary" style="font-size: 20px;">
+                      <c:choose>
+                        <c:when test="${loginUser.deptCode eq 'S1'}">영업총괄팀 </c:when>
+                        <c:when test="${loginUser.deptCode eq 'S2'}">인사팀 </c:when>
+                        <c:when test="${loginUser.deptCode eq 'S3'}">지원팀 </c:when>
+                        <c:when test="${loginUser.deptCode eq 'T1'}">남성의류팀 </c:when>
+                        <c:when test="${loginUser.deptCode eq 'T2'}">여성의류팀 </c:when>
+                        <c:when test="${loginUser.deptCode eq 'T3'}">식품팀 </c:when>
+                        <c:when test="${loginUser.deptCode eq 'T4'}">스포츠팀 </c:when>
+                        <c:when test="${loginUser.deptCode eq 'T5'}">뷰티팀 </c:when>
+                        <c:when test="${loginUser.deptCode eq 'T6'}">명품팀 </c:when>
+                        <c:when test="${loginUser.deptCode eq 'T7'}">문화센터팀 </c:when>
+                        <c:when test="${loginUser.deptCode eq 'T8'}">디지털 및 가전팀 </c:when>
+                        <c:otherwise>기타부서팀</c:otherwise>
+                      </c:choose>
+                      게시판
+                    </span>                   
                   </div>
 
                   <c:choose>
                     <c:when test="${ loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4' }">
                       <div class="ms-5">
-                        <button id="create" class="btn btn-primary" style="width: 100px;" onclick="regist();">+ 글작성</button>            
-                        <i class="menu-icon tf-icons ti ti-trash ms-2" style="cursor: pointer;" onclick="deleteSelectedPosts();"></i>
+                        <button id="create" class="btn btn-primary waves-effect waves-light" onclick="regist();">
+                        	<span class="ti-xs ti ti-edit me-2"></span>작성
+                        </button>  
+                        <button id="create" class="btn btn-danger" onclick="deleteSelectedPosts();">
+                        	<span class="ti-xs ti ti-trash me-2"></span>삭제
+                        </button>      	 
                       </div>
                     </c:when>
                     <c:otherwise></c:otherwise>
@@ -81,7 +101,9 @@
                         <input type="hidden" name="deptCode" value="${loginUser.deptCode}">
                         <input type="text" class="form-control" name="keyword" value="${search.keyword}">
                       </div>
-                      <button type="submit" id="searchBtn" class="btn btn-primary ms-2" style="width: 90px;">+ 검색</button>
+                      <button type="submit" id="searchBtn" class="btn btn-primary">
+                     		<svg  xmlns="http://www.w3.org/2000/svg"  width="16"  height="16"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-search me-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>검색
+                      </button>   
                     </form>
                     <c:if test="${not empty search}">
                       <script>
@@ -110,137 +132,70 @@
                 <div class="card-datatable table-responsive pt-3">
 								  <table class="datatables-basic table text-center">
 								    <thead>
-								      <tr>                  
+								      <tr>
 								        <c:choose>
 								          <c:when test="${loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4'}">
 								            <th style="width: 5%;"><input type="checkbox" id="selectAll" /></th>
-								            <th style="width: 15%;">카테고리</th>
+								            <th style="width: 10%;">번호</th>
+								            <th style="width: 15%;">작성자</th>
+								            <th style="width: 35%;">제목</th>
+								            <th style="width: 15%;">작성일</th>
+								            <th style="width: 10%;">조회수</th>
+								            <th style="width: 10%;">댓글수</th>
+								          </c:when>
+								          <c:otherwise>
+								            <th style="width: 10%;">번호</th>
 								            <th style="width: 15%;">작성자</th>
 								            <th style="width: 40%;">제목</th>
 								            <th style="width: 15%;">작성일</th>
-								            <th style="width: 10%;">조회수</th>                            
-								          </c:when>
-								          <c:otherwise>
-								            <th style="width: 15%;">카테고리</th>
-								            <th style="width: 15%;">작성자</th>
-								            <th style="width: 45%;">제목</th>
-								            <th style="width: 15%;">작성일</th>
 								            <th style="width: 10%;">조회수</th>
+								            <th style="width: 10%;">댓글수</th>
 								          </c:otherwise>
-								        </c:choose>                                     
+								        </c:choose>
 								      </tr>
-								    </thead>                          
-								    <tbody>
+								    </thead>
+								    <tbody>								     				      
 								      <c:choose>
-								        <c:when test="${empty list}">
-								          <tr>
-								            <td colspan="6">조회된 게시글이 없습니다.</td>
-								          </tr>
-								        </c:when>
-								        <c:otherwise>
-								          <c:forEach var="board" items="${list}">
-								            <tr data-boardno="${board.boardNo}">                        
-								              <c:choose>
-								                <c:when test="${loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4'}">
-								                  <td><input type="checkbox" class="item-checkbox" /></td>
-								                  <td>
-								                  	<span class="text-primary">
-								                      <c:choose>
-								                        <c:when test="${loginUser.deptCode eq 'S1'}">영업총괄팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'S2'}">인사팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'S3'}">지원팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T1'}">남성의류팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T2'}">여성의류팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T3'}">식품팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T4'}">스포츠팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T5'}">뷰티팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T6'}">명품팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T7'}">문화센터팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T8'}">디지털 및 가전팀</c:when>
-								                        <c:otherwise>기타부서팀</c:otherwise>
-								                      </c:choose>
-								                    </span>
-								                  </td>
-								                  <td>${board.memName}</td>
-								                  <c:choose>
-								                    <c:when test="${board.attachCount != 0}">
-								                      <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle} 
-								                        <c:choose>
-								                          <c:when test="${board.replyCount > 0}">(${board.replyCount})</c:when>
-								                          <c:otherwise>&nbsp;</c:otherwise>
-								                        </c:choose>
-								                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip">
-								                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-								                          <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
-								                        </svg>
-								                      </td>
-								                    </c:when>
-								                    <c:otherwise>
-								                      <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle} 
-								                        <c:choose>
-								                          <c:when test="${board.replyCount > 0}">(${board.replyCount})</c:when>
-								                          <c:otherwise>&nbsp;</c:otherwise>
-								                        </c:choose>
-								                      </td>
-								                    </c:otherwise>
-								                  </c:choose>
-								                  <td>${board.boardRegistDT}</td>
-								                  <td>${board.boardCount}</td>
-								                </c:when>
-								                <c:otherwise>
-								                  <td>
-								                  	<span class="text-primary">
-								                      <c:choose>
-								                        <c:when test="${loginUser.deptCode eq 'S1'}">영업총괄팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'S2'}">인사팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'S3'}">지원팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T1'}">남성의류팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T2'}">여성의류팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T3'}">식품팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T4'}">스포츠팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T5'}">뷰티팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T6'}">명품팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T7'}">문화센터팀</c:when>
-								                        <c:when test="${loginUser.deptCode eq 'T8'}">디지털 및 가전팀</c:when>
-								                        <c:otherwise>기타부서팀</c:otherwise>
-								                      </c:choose>
-								                    </span>
-								                  </td>
-								                  <td>${board.memName}</td>
-								                  <c:choose>
-								                    <c:when test="${board.attachCount != 0}">
-								                      <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle} 
-								                        <c:choose>
-								                          <c:when test="${board.replyCount > 0}">(${board.replyCount})</c:when>
-								                          <c:otherwise>&nbsp;</c:otherwise>
-								                        </c:choose>
-								                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip">
-								                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-								                          <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
-								                        </svg>
-								                      </td>
-								                    </c:when>
-								                    <c:otherwise>
-								                      <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>${board.boardTitle} 
-								                        <c:choose>
-								                          <c:when test="${board.replyCount > 0}">(${board.replyCount})</c:when>
-								                          <c:otherwise>&nbsp;</c:otherwise>
-								                        </c:choose>
-								                      </td>
-								                    </c:otherwise>
-								                  </c:choose>
-								                  <td>${board.boardRegistDT}</td>
-								                  <td>${board.boardCount}</td>
-								                </c:otherwise>
-								              </c:choose>        
-								            </tr>
-								          </c:forEach>
-								        </c:otherwise>
-								      </c:choose>
+											  <c:when test="${empty list}">
+											    <!-- 게시글이 없을 경우 -->
+											    <tr>
+											      <td colspan="6">조회된 게시글이 없습니다.</td>
+											    </tr>
+											  </c:when>
+											  <c:otherwise>
+											  	<c:set var="count" value="1" />
+											    <c:forEach var="board" items="${list}">
+											      <!-- 역순 넘버링 계산 -->
+											      <c:set var="reverseCount" value="${pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1)}" />
+											      <tr data-boardno="${board.boardNo}">
+											        <c:choose>
+											          <c:when test="${loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4'}">
+											            <td><input type="checkbox" class="item-checkbox" /></td>
+											          </c:when>
+											        </c:choose>
+											        <td>${reverseCount}</td> <!-- 역순 번호 -->
+											        <td>${board.memName}</td>
+											        <td style="cursor: pointer;" onclick='location.href = "${contextPath}/board/${loginUser.memNo eq board.memNo ? "boardDetail.do" : "increase.do"}?no=${board.boardNo}";'>
+											          ${board.boardTitle}
+											          <c:if test="${board.attachCount != 0}">
+											            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip">
+											              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+											              <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
+											            </svg>
+											          </c:if>
+											        </td>
+											        <td>${board.boardRegistDT}</td>
+											        <td>${board.boardCount}</td>
+											        <td>${board.replyCount}</td>
+											      </tr>
+											      <c:set var="count" value="${count + 1}" />
+											    </c:forEach>
+											  </c:otherwise>
+											</c:choose>							      
 								    </tbody>
 								  </table>
 								</div>
-                	
+                          	
 								
 								<!-- 페이징 바 -->
 	              <div class="card-body">
