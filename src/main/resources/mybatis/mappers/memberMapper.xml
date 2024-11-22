@@ -189,7 +189,6 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		select
 					count(*)
 		 from member
-		where mem_no = #{memNo}
 	</select>
 	
 	<!-- 직원조회리스트 (이예빈) 	-->

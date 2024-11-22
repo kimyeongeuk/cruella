@@ -383,7 +383,6 @@ public class MemberController {
 	    // 4. 모델에 데이터 추가
 	    model.addAttribute("pi", pi); // 페이징 정보
 	    model.addAttribute("list", list); // 사원 목록
-
 	    // 5. 뷰 이름 반환
 	    return "member/employeelistview"; // employee/employeelistview.jsp
 	}
