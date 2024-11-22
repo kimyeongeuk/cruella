@@ -144,6 +144,12 @@
 	    <artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 		
+		<!-- json.org -->
+		<dependency>
+		  <groupId>org.json</groupId>
+		  <artifactId>json</artifactId>
+		  <version>20230227</version>
+		</dependency>
 		
 	</dependencies>
 
