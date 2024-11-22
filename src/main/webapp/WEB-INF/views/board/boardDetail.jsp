@@ -373,6 +373,7 @@ function fn_replyList() {
     	    fn_getRreplyCount(resData[i].replyNo);
     	}
 
+
       $("#reply_area tbody").html(tr);
     },
     error: function(xhr, status, error) {
@@ -485,7 +486,7 @@ function fn_rreplyList(replyId) {
     	    }
 
     	    tr += "</div><br>"
-    	        + "<div style='margin-left: 30px; white-space: pre-wrap; color: black; word-break: break-all;'>" + resData[i].replyContent + "</div><br>"
+    	        + "<div style='margin-left: 30px; white-space: pre-wrap; color: black; word-break: break-all;'>" + resData[i].replyContent + "</div><br><br>"
     	        + "</td></tr>";
     	}
 
@@ -568,7 +569,9 @@ let currentReplyNo;
 // 댓글 수정 폼을 열 때 호출하는 함수
 function modifyReply(replyNo, content) {
   currentReplyNo = replyNo;
-  document.getElementById('editReplyContent').value = content;
+  // <br> 태그를 줄바꿈 문자(\n)로 변환
+  const formattedContent = content.replace(/<br\s*\/?>/gi, "\n");
+  document.getElementById('editReplyContent').value = formattedContent;
   $('#modalScrollable').modal('hide'); // modalScrollable 모달 닫기
   $('#editReplyModal').modal('show');
 }
@@ -578,7 +581,7 @@ function updateReply() {
   const updatedContent = document.getElementById('editReplyContent').value;
   $.ajax({
     type: 'POST',
-    url: '${contextPath}/board/updateReply.do',
+    url: `${contextPath}/board/updateReply.do`,
     data: {
       replyNo: currentReplyNo,
       content: updatedContent
@@ -598,12 +601,12 @@ function updateReply() {
   });
 }
 
-//댓글 삭제 함수
+// 댓글 삭제 함수
 function deleteReply(replyNo) {
   if (confirm('정말로 삭제하시겠습니까?')) {
     $.ajax({
       type: 'POST',
-      url: '${contextPath}/board/deleteReplyCompletely.do',
+      url: `${contextPath}/board/deleteReplyCompletely.do`,
       data: { replyNo: replyNo },
       success: function(response) {
         if (response.status === "SUCCESS") {
@@ -620,6 +623,7 @@ function deleteReply(replyNo) {
     });
   }
 }
+
 
 
 function boardList() {
