@@ -84,6 +84,16 @@ public class MemberController {
 		return null;
 	}
 	
+	// 로그아웃(김동규)
+	@PostMapping("/logout.do")
+	public String logout(HttpSession session, HttpServletRequest request) {
+		
+		session.invalidate();
+		
+		return "redirect:/";
+		
+	}
+	
 	
 	// 비밀번호변경(김동규)
 	@PostMapping("/resetPwd.do")

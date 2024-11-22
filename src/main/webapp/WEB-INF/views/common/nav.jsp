@@ -153,10 +153,12 @@
                    
                     <li>
                       <div class="d-grid px-2 pt-2 pb-1">
-                        <a class="btn btn-sm btn-danger d-flex" href="auth-login-cover.html" target="_blank">
+                      <form action="${contextPath}/member/logout.do" method="POST">
+                        <button type="submit" class="btn btn-sm btn-danger d-flex" style="justify-self: center;">
                           <small class="align-middle">Logout</small>
                           <i class="ti ti-logout ms-2 ti-14px"></i>
-                        </a>
+                        </button>
+                       </form>
                       </div>
                     </li>
                   </ul>
