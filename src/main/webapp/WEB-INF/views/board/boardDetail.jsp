@@ -230,8 +230,8 @@
 								              <div class="icon-wrapper">
 								                <i class="ti ti-dots-vertical ti-md modal-comment-icon" style="cursor: pointer;" onclick="toggleModalActionBox(this)"></i>
 								                <div class="modal-action-box">
-								                  <a href="javascript:void(0);" onclick="modifyReply(replyId,replyContent)"><i class="menu-icon tf-icons ti ti-edit"></i></a>
-								                  <a href="javascript:void(0);" onclick="deleteReply(replyId)"><i class="menu-icon tf-icons ti ti-trash"></i></a>
+								                  <a id="modal-modify" href="#"><i class="menu-icon tf-icons ti ti-edit"></i></a>
+								                  <a id="modal-delete" href="#"><i class="menu-icon tf-icons ti ti-trash"></i></a>
 								                </div>
 								              </div>
 								            </div>
@@ -534,10 +534,14 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
     modal.find('.modal-comment-icon').hide();
   }
 
-  // 수정 및 삭제 버튼에 데이터 할당
-  modal.find('.modal-action-box a:eq(0)').attr('onclick', `modifyReply(${replyId}, '${replyContent}')`);
-  modal.find('.modal-action-box a:eq(1)').attr('onclick', `deleteReply(${replyId})`);
-
+  // 수정 및 삭제 버튼에 이벤트 핸들러 설정
+  modal.find('#modal-modify').off('click').on('click', function() {
+    modifyReply(replyId, replyContent);
+  });
+  modal.find('#modal-delete').off('click').on('click', function() {
+    deleteReply(replyId);
+  });
+  
   // 등록 버튼에 replyId 할당
   modal.find('#regist').attr('onclick', `fn_insertRreply(${replyId})`);
 

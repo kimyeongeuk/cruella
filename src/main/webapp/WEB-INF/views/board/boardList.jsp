@@ -45,7 +45,7 @@
 	.datatables-basic td {
 	  white-space: nowrap;
 	  overflow: hidden;
-	  text-overflow: ellipsis;
+	  
 	}
 	
 	@media (max-width: 768px) {
@@ -68,6 +68,7 @@
 	    display: none;
 	  }
 	}
+
 </style>
 
 </head>
