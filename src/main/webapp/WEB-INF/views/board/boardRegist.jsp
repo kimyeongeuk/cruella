@@ -82,11 +82,9 @@
 							 </div>
 
                <script>
-               
                document.addEventListener('DOMContentLoaded', function () {
             	   // Quill 에디터 초기화
 								 const quill = new Quill('#board-editor', {
-								   bounds: '#full-editor',
 								   placeholder: '내용을 입력해주세요.',
 								   theme: 'snow',
 								   modules: {
@@ -108,11 +106,25 @@
             	   const form = document.querySelector('form');
             	   const hiddenInput = document.getElementById('boardContent');
 
-            	   form.addEventListener('submit', function () {
-            	     // Quill 에디터 내용을 HTML로 변환하여 숨겨진 입력 필드에 저장
+            	   // Quill 에디터 변경 시 내용 동기화
+            	   quill.on('text-change', function () {
             	     hiddenInput.value = quill.root.innerHTML;
             	   });
+
+            	   // 폼 제출 시 최종 확인
+            	   form.addEventListener('submit', function (e) {
+            	     hiddenInput.value = quill.root.innerHTML;
+
+            	     console.log("Quill Content:", quill.root.innerHTML);
+            	     console.log("Hidden Input Value:", hiddenInput.value);
+
+            	     if (!hiddenInput.value || hiddenInput.value.trim() === '') {
+            	       e.preventDefault();
+            	       alert("내용을 입력해주세요.");
+            	     }
+            	   });
             	 });
+
                
                document.addEventListener('DOMContentLoaded', function() {
                   const fileInput = document.getElementById('formFile');
