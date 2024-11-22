@@ -55,12 +55,13 @@
                       <br>
                       <label for="formFile" class="form-label">첨부파일</label>
                       <input class="form-control" type="file" id="formFile" name="uploadFiles" multiple/>
-                      <div id="file-container" style="margin-top: 10px;">
+                      <br>
+                      <div id="file-container">
                         <c:forEach var="at" items="${b.attachList}">
                           <div class="file-item" style="position: relative; display: inline-block; margin: 10px;" data-fileno="${at.fileNo}">
                             <c:choose>
                               <c:when test="${fn:endsWith(at.filesystemName, '.jpg') || fn:endsWith(at.filesystemName, '.jpeg') || fn:endsWith(at.filesystemName, '.png') || fn:endsWith(at.filesystemName, '.gif')}">
-                                <img src="${contextPath}${at.filePath}/${at.filesystemName}" style="max-width: 200px; height: auto;"/>
+                                <img src="${contextPath}${at.filePath}/${at.filesystemName}" style="max-width: 120px; height: auto;"/>
                               </c:when>
                               <c:otherwise>
                                 <p style="margin: 0; padding: 5px; border: 1px solid #ccc; background: #f9f9f9;">
@@ -165,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.onload = function (e) {
           const img = document.createElement('img');
           img.src = e.target.result;
-          img.style.maxWidth = '200px';
+          img.style.maxWidth = '120px';
           img.style.height = 'auto';
           fileDiv.appendChild(img);
         };

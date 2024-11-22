@@ -15,11 +15,16 @@ public class WorkLogDao {
 
 	
 	public int clockIn(WorkLogDto workLog) {
+
 		return sqlSession.insert("wlMapper.clockIn", workLog);
 	}
 	
-	public int clockInLate(WorkLogDto workLog) {
-		return sqlSession.insert("wlMapper.clockInLate", workLog);
+	public String selectClockInTime(String memNo) {
+		return sqlSession.selectOne("wlMapper.selectClockInTime", memNo);
+	}
+	
+	public int clockOut(WorkLogDto workLog) {
+		return sqlSession.update("wlMapper.clockOut", workLog);
 	}
 	
 }

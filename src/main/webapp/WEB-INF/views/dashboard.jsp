@@ -109,18 +109,20 @@
                 </div>
                 <div class="d-flex align-items-center justify-content-center">
 	                <c:choose>
-	                	<c:when test="${loginUser.wlStatus == null}">	
+	                	<c:when test="${loginUser.wlStatus == null}">
 		                  <a class="btn btn-success d-flex align-items-center me-4" onclick="fnClockIn();">
 		                  	<i class="ti-xs me-1 ti ti-clock me-2"></i>출근
 		                  </a>
 		                </c:when>
-		                <c:when test="${loginUser.wlStatus == 'C' || loginUser.wlStatus == 'L'}">	
+		                <c:when test="${loginUser.wlStatus == 'C'}">
 								      <a class="btn btn-danger d-flex align-items-center me-4" onclick="fnClockOut();">
 								        <i class="ti-xs me-1 ti ti-clock me-2"></i>퇴근
 								      </a>
 								    </c:when>
 								    <c:otherwise>
-								    	
+								    	<div class="d-flex align-items-center me-4">
+								        <i class="ti-xs me-1 ti ti-clock me-2"></i>근무완료 !
+								      </div>
 								    </c:otherwise>
 	                </c:choose>
                 </div>
@@ -603,7 +605,31 @@
 		  			success: function(res){
 		  				alert(res + ' 출근 등록이 완료되었습니다.');
 		  				
+		  				window.location.reload();
+		  			}
+		  			
+		  			})
+		  		}
+		  	
+		  	// 퇴근 버튼 클릭시 (김동규)
+		  	function fnClockOut(){
+		  			
+		  		
+		  		const today = new Date();
+		  		const clockOutTime = today.toLocaleTimeString('en-GB', { hour12: false });
+		  		
+		  		
+		  		$.ajax({
+		  			url: '${contextPath}/wl/clockOut.do',
+		  			type: 'POST',
+		  			data: {
+		  				memNo: '${loginUser.getMemNo()}',
+		  				clockOutTime: clockOutTime
+		  					},
+		  			success: function(res){
+		  				alert(res + '퇴근 등록이 완료되었습니다.');
 		  				
+		  				window.location.reload();
 		  			}
 		  			
 		  			})
