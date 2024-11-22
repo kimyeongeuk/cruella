@@ -150,9 +150,9 @@
 											<tr>
 												<td><span class="fw-medium">${member.memName}</span></td>
 
-												<td>${member.deptCode}</td>
+												<td>${member.deptName}</td>
 
-												<td><span class="fw-medium">${member.posCode}</span></td>
+												<td><span class="fw-medium">${member.posName}</span></td>
 
 
 												<td><span>${member.email}</span></td>

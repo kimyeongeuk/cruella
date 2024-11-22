@@ -125,10 +125,10 @@
                                       <select class="form-select" style="flex: 1;">
                                           <option value="">선택</option>
                                           <option value="">국민</option>
-                                          <option value="">신한</option>
+                                          <option value="신한"${ member.bankName == '신한' ? 'selected' : '' }>신한</option>
                                           <option value="">우리</option>
                                       </select>
-                                      <input class="form-control" type="text" name="account" id="account" placeholder="수정가능" style="flex: 3;" />
+                                      <input class="form-control" type="text" name="account" id="account" value="${ member.account }"style="flex: 3;" />
                                   </div>
                               </div>
                                 <div class="mb-4 col-md-6">
@@ -138,24 +138,25 @@
                                     type="text"
                                     id="memNo"
                                     name="memNo" 
-                                    placeholder="수정불가능"
+                                    value="${ member.memNo }"
                                     readonly/>
                                 </div>
                                 <div class="mb-4 col-md-6">
                                   <label for="deptCode" class="form-label">부서</label>
-                                  <select id="deptCode" name="deptCode" class="select form-select">
-                                    <option value="">인사</option>
-                                    <option value="">영업총괄</option>
-                                    <option value="">지원</option>
-                                    <option value="">남성의류</option>
-                                    <option value="">여성의류</option>
-                                    <option value="">식품</option>
-                                    <option value="">스포츠</option>
-                                    <option value="">뷰티</option>
-                                    <option value="">명품</option>
-                                    <option value="">문화센터</option>
-                                    <option value="">디지털 및 가전</option>
-                                  </select>
+																	<select id="deptCode" name="deptCode" class="select form-select">
+																	    <option value="">선택</option>
+																	    <option value="S1" ${member.deptCode == 'S1' ? 'selected' : ''}>영업총괄</option>
+																	    <option value="S2" ${member.deptCode == 'S2' ? 'selected' : ''}>인사</option>
+																	    <option value="S3" ${member.deptCode == 'S3' ? 'selected' : ''}>지원</option>
+																	    <option value="T1" ${member.deptCode == 'T1' ? 'selected' : ''}>남성의류</option>
+																	    <option value="T2" ${member.deptCode == 'T2' ? 'selected' : ''}>여성의류</option>
+																	    <option value="T3" ${member.deptCode == 'T3' ? 'selected' : ''}>식품</option>
+																	    <option value="T4" ${member.deptCode == 'T4' ? 'selected' : ''}>스포츠</option>
+																	    <option value="T5" ${member.deptCode == 'T5' ? 'selected' : ''}>뷰티</option>
+																	    <option value="T6" ${member.deptCode == 'T6' ? 'selected' : ''}>명품</option>
+																	    <option value="T7" ${member.deptCode == 'T7' ? 'selected' : ''}>문화센터</option>
+																	    <option value="T8" ${member.deptCode == 'T8' ? 'selected' : ''}>디지털 및 가전</option>
+																	</select>
                                 </div>
                                 <div class="mb-4 col-md-6">
                                   <label class="form-label" for="memPwd">비밀번호</label>
@@ -165,26 +166,27 @@
                                       id="memPwd"
                                       name="memPwd"
                                       class="form-control"
-                                      placeholder="수정불가능"
+                                      value="****"
                                       readonly />
                                   </div>
                                 </div>
                                 <div class="mb-4 col-md-6">
                                   <label for="posCode" class="form-label">직급</label>
                                   <select id="posCode" name="posCode" class="select form-select">
-                                    <option value="">선택</option>
-                                    <option value="">점장</option>
-                                    <option value="">부점장</option>
-                                    <option value="">부장</option>
-                                    <option value="">대리</option>
-                                    <option value="">주임</option>
-                                    <option value="">사원</option>
-                                    <option value="">매장매니저</option>
-                                  </select>
+																	    <option value="">선택</option>
+																	    <option value="C1" ${member.posCode == 'C1' ? 'selected' : ''}>점장</option>
+																	    <option value="C2" ${member.posCode == 'C2' ? 'selected' : ''}>부점장</option>
+																	    <option value="C3" ${member.posCode == 'C3' ? 'selected' : ''}>부장</option>
+																	    <option value="C4" ${member.posCode == 'C4' ? 'selected' : ''}>팀장</option>
+																	    <option value="C5" ${member.posCode == 'C5' ? 'selected' : ''}>대리</option>
+																	    <option value="C6" ${member.posCode == 'STAFF' ? 'C6' : ''}>주임</option>
+																	    <option value="C7" ${member.posCode == 'C7' ? 'selected' : ''}>사원</option>
+																	</select>
+
                                 </div>
                                 <div class="mb-4 col-md-6">
                                   <label for="email" class="form-label">Email</label>
-                                  <input class="form-control" type="text" id="email" name="email" placeholder="수정불가능" readonly/>
+                                  <input class="form-control" type="text" id="email" name="email" value="${ member.email }"/>
                                 </div>
                                 <div class="mb-4 col-md-6">
                                   <label for="salary" class="form-label">급여</label>
@@ -193,23 +195,23 @@
                                     class="form-control"
                                     id="salary"
                                     name="salary" 
-                                    value="수정가능"/>
+                                    value="${ member.salary }"/>
                                 </div>
                                 <div class="mb-4 col-md-6">
                                   <label class="hireDate" for="country">입사날짜</label>
-                                  <input class="form-control" type="date" id="hireDate" name="hireDate" placeholder="수정불가능" readonly/>
+                                  <input class="form-control" type="date" id="hireDate" name="hireDate" value="${ member.hireDate }" readonly/>
                                 </div>
                                 <div class="mb-4 col-md-6">
                                   <label for="language" class="form-label">주소</label>
-                                  <input class="form-control" type="text" id="address" name="address" placeholder="수정불가능" readonly />
+                                  <input class="form-control" type="text" id="address" name="address" value="${ member.address }" />
                                 </div>
                                 <div class="mb-4 col-md-6">
                                   <label for="memSSN" class="form-label">주민등록번호</label>
-                                  <input class="form-control" type="text" id="memSSN" name="memSSN" placeholder="수정불가능" readonly />
+                                  <input class="form-control" type="text" id="memSSN" name="memSSN" value="${ member.memSSN }" readonly />
                                 </div>
                                 <div class="mb-4 col-md-6">
                                   <label for="phone" class="form-label">전화번호</label>
-                                  <input class="form-control" type="text" id="phone" name="phone" placeholder="수정불가능" readonly />
+                                  <input class="form-control" type="text" id="phone" name="phone" value="${ member.phone }" />
                                 </div>
                               </div>
                               <div class="mt-2" style="justify-self: center;">
