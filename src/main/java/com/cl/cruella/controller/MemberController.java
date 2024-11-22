@@ -20,9 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.dto.PageInfoDto;
 import com.cl.cruella.service.MemberService;
 import com.cl.cruella.service.WorkLogService;
 import com.cl.cruella.util.FileUtil;
+import com.cl.cruella.util.PagingUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,6 +43,7 @@ public class MemberController {
 	private final JavaMailSender mailSender;
 	private final BCryptPasswordEncoder bcryptPwdEncoder;
 	private final FileUtil fileUtil;
+	private final PagingUtil pagingUtil;
 
 	
 	// 로그인(김동규)
@@ -340,9 +343,27 @@ public class MemberController {
 	
 	// 사원조회페이지로redirect(예빈)
 	@GetMapping("/employeelistview.do")
-	public void employeelistview(@RequestParam(value = "page", defaultValue = "1") int current, Model model) {
-		int listCount = memberService.selectAll();
+	public String employeelistview(
+	    @RequestParam(value = "page", defaultValue = "1") int currentPage,
+	    Model model
+	) {
+	    // 1. 전체 사원 수 가져오기
+	    int listCount = memberService.getMemberCount();
+
+	    // 2. 페이징 계산
+	    PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+
+	    // 3. 페이징된 사원 목록 가져오기
+	    List<MemberDto> list = memberService.getPagedMemberList(pi);
+
+	    // 4. 모델에 데이터 추가
+	    model.addAttribute("pi", pi); // 페이징 정보
+	    model.addAttribute("list", list); // 사원 목록
+
+	    // 5. 뷰 이름 반환
+	    return "member/employeelistview"; // employee/employeelistview.jsp
 	}
+
 	
 	@PostMapping("/updateProfile.do")
 	public String modifyProfile(@RequestParam("uploadFile") MultipartFile uploadFile, HttpSession session) {
@@ -383,7 +404,17 @@ public class MemberController {
 	
 	// 회원정보수정/탈퇴 (이예빈)
 	@GetMapping("/modifydelete.do")
-	public void modifydelete() {}
+	public String modifyDelete(@RequestParam("memNo") String memNo, Model model) {
+	    // 1. memNo로 해당 사원 정보 조회
+	    MemberDto member = memberService.selectMemberByNo(memNo);
+
+	    // 2. 조회된 정보를 모델에 담아 수정 페이지로 전달
+	    model.addAttribute("member", member);
+
+	    // 3. 수정 페이지 뷰 이름 반환
+	    return "member/modifydelete";
+	}
+
 	
 	
 	

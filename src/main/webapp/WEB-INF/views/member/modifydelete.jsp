@@ -116,7 +116,7 @@
                                     type="text"
                                     id="memName"
                                     name="memName"
-                                    placeholder="수정가능"
+                                    value="${ member.memName }"
                                  />
                                 </div>
                                 <div class="mb-4 col-md-6">

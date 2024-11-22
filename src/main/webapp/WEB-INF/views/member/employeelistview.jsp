@@ -143,99 +143,70 @@
               <!--/상단 검색바-->
 
               <!--검색내용-->
-              <div class="card" style="padding: 30px; padding: 30px;position: relative; bottom: 50px;">
-                <h5 class="card-header">사원목록 </h5>
-                <div class="table-responsive text-nowrap">
-                  <table class="table" style="text-align: center;">
-                    <thead>
-                      <tr>
-                        <th>사원명</th>
-                        <th>부서</th>
-                        <th>직급</th>
-                        <th>이메일</th>
-                        <th>&nbsp;</th>
+						<div class="card"
+							style="padding: 30px; padding: 30px; position: relative; bottom: 50px;">
+							<h5 class="card-header">사원목록</h5>
+							<div class="table-responsive text-nowrap">
+								<table class="table" style="text-align: center;">
+									<thead>
+										<tr>
+											<th>사원명</th>
+											<th>부서</th>
+											<th>직급</th>
+											<th>이메일</th>
+											<th>&nbsp;</th>
 
-                      </tr>
-                    </thead>
+										</tr>
+									</thead>
+									<tbody class="table-border-bottom-0">
+										<c:forEach var="member" items="${list}">
 
-                    <tbody class="table-border-bottom-0">
-                      <tr>
-                        <td>
-                          <span class="fw-medium">이예빈</span>
-                        </td>
 
-                        <td>인사팀</td>
+											<tr>
+												<td><span class="fw-medium">${member.memName}</span></td>
 
-                        <td>
+												<td>${member.deptCode}</td>
 
-                          <span class="fw-medium">대리</span>
-                        </td>
+												<td><span class="fw-medium">${member.posCode}</span></td>
 
-                        
-                        <td><span>shasha0326@naver.com</span></td>
 
-                        <td><button class="badge bg-label-primary me-1" style="border: none;" type="button" href="">수정/삭제</button></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                
-                <!-- 페이징바 , 클릭한 숫자에 클래스에 active 추가하기 -->
-                <div class="card-body">
-                  <div class="row" style="width: 100%; ">
-                    <div style="display: flex; justify-content:center;"  >
-                      
-                      
-                      <div class="demo-inline-spacing">
-                        <!-- Basic Pagination -->
-                        <nav aria-label="Page navigation">
-                          <ul class="pagination">
-                            <li class="page-item first">
-                              <a class="page-link" href="javascript:void(0);"
-                                ><i class="ti ti-chevrons-left ti-sm"></i
-                              ></a>
-                            </li>
-                            <li class="page-item prev">
-                              <a class="page-link" href="javascript:void(0);"
-                                ><i class="ti ti-chevron-left ti-sm"></i
-                              ></a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">1</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">2</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">3</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">4</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">5</a>
-                            </li>
-                            <li class="page-item next">
-                              <a class="page-link" href="javascript:void(0);"
-                                ><i class="ti ti-chevron-right ti-sm"></i
-                              ></a>
-                            </li>
-                            <li class="page-item last">
-                              <a class="page-link" href="javascript:void(0);"
-                                ><i class="ti ti-chevrons-right ti-sm"></i
-                              ></a>
-                            </li>
-                          </ul>
-                        </nav>
-                        <!--/ Basic Pagination -->
-                       
-                      </div>
-                    </div>
-                  
-                  </div>
-                </div>
-              </div>
-            <!--/검색내용-->
+												<td><span>${member.email}</span></td>
+
+												<td><a class="badge bg-label-primary me-1"
+													style="border: none;"
+													href="${contextPath}/member/modifydelete.do?memNo=${member.memNo}">수정/삭제</a>
+												</td>
+										</c:forEach>
+										</tr>
+									</tbody>
+								</table>
+						 	              <div class="card-body">
+	                <div class="row">
+	                  <span class="col-lg-12 d-flex justify-content-center">
+	                    <div class="demo-inline-spacing">
+	                      <nav aria-label="Page navigation">
+	                        <ul class="pagination">
+	                          <li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>
+	                          <li class="page-item prev ${pi.currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage - 1});"><i class="ti ti-chevron-left ti-sm"></i></a></li>
+	                          <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}"><li class="page-item ${i == pi.currentPage ? 'active' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${i});">${i}</a></li></c:forEach>
+	                          <li class="page-item next ${pi.currentPage == pi.maxPage ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage + 1});"><i class="ti ti-chevron-right ti-sm"></i></a></li>
+	                          <li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.maxPage});"><i class="ti ti-chevrons-right ti-sm"></i></a></li>
+	                        </ul>
+	                      </nav>
+	                    </div>
+	                  </span>
+	                </div>
+	              </div>
+
+
+
+
+							</div>
+
+							<!-- 페이징바 , 클릭한 숫자에 클래스에 active 추가하기 -->
+
+						</div>
+						<!--/검색내용-->
 
             
     		

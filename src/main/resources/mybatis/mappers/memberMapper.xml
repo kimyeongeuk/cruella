@@ -136,7 +136,6 @@
 		, email
 		, address
 		, hire_date
-		, status
 		, mem_ssn
 		, account
 		, bank_name
@@ -153,7 +152,6 @@
 		, #{email}
 		, #{address}
 		, TO_DATE(#{hireDate}, 'YYYY-MM-DD')
-		, 'Y'
 		, #{memSSN}
 		, #{account}
 		, #{bankName}
@@ -186,8 +184,16 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		 where mem_no = #{memNo}
 	</update>
 	
-	<!-- 직원조회리스트 (이예빈) -->
-	<select id="memberList" resultMap="memberResultMap">
+	<!-- 전체직원불러오기 -->
+	<select id="getMemberCount" resultType="_int">
+		select
+					count(*)
+		 from member
+		where mem_no = #{memNo}
+	</select>
+	
+	<!-- 직원조회리스트 (이예빈) 	-->
+	<select id="getPagedMemberList" resultMap="memberResultMap">
 		select 
 					 mem_no
 				 , mem_name
@@ -198,6 +204,25 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		  order by mem_no
 			
 	
+	</select>
+
+	<select id="selectMemberByNo" resultMap="memberResultMap">
+		select 
+		 		   mem_no
+			   , mem_name
+				 , mem_pwd
+				 , phone
+				 , email
+				 , address
+				 , hire_date
+				 , mem_ssn
+				 , account
+				 , bank_name
+				 , pos_code
+				 , dept_code
+				 , salary
+		  from member
+		 where mem_no = #{memNo}
 	</select>
 
 
