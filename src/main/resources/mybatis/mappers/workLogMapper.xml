@@ -13,17 +13,8 @@
 		<result column="WL_WORK_DATE" property="workDate" />
 	</resultMap>
 	
-	<!-- 출근 여부 조회 -->
-	<select id="checkStatus" resultMap="workLogResultMap">
-		select
-					 *
-			from work_log
-		 where trunc(wl_work_date) = trunc(sysdate)
-		   and wl_clock_out is null
-	</select>
-	
-	
-	<!-- 출근 -->
+
+	<!-- 출근(정상) -->
 	<insert id="clockIn">
 		insert
 		  into work_log
@@ -32,6 +23,7 @@
 		  , mem_no
 		  , wl_clock_in
 		  , wl_work_date
+		  , wl_status
 		  )
 		  values
 		  (
@@ -39,6 +31,27 @@
 		  , #{memNo}
 		  , #{clockInTime}
 		  , sysdate
+		  , 'C'
+		  )
+	</insert>
+	
+	<insert id="clockInLate">
+		insert
+		  into work_log
+		  (
+		  	wl_no
+		  , mem_no
+		  , wl_clock_in
+		  , wl_work_date
+		  , wl_status
+		  )
+		  values
+		  (
+		  	seq_work.nextval
+		  , #{memNo}
+		  , #{clockInTime}
+		  , sysdate
+		  , 'L'
 		  )
 	</insert>
 	

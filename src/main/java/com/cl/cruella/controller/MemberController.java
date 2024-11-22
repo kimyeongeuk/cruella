@@ -3,7 +3,6 @@ package com.cl.cruella.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cl.cruella.dto.MemberDto;
-import com.cl.cruella.service.BoardService;
 import com.cl.cruella.service.MemberService;
+import com.cl.cruella.service.WorkLogService;
 import com.cl.cruella.util.FileUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	
 	private final MemberService memberService;
+	private final WorkLogService wlService;
 	private final JavaMailSender mailSender;
 	private final BCryptPasswordEncoder bcryptPwdEncoder;
 	private final FileUtil fileUtil;
@@ -50,7 +50,7 @@ public class MemberController {
 								 , HttpServletResponse response
 								 , HttpServletRequest request) throws IOException {	// memNo = '입력한 아이디', memPwd = '입력한 비밀번호'
 		
-		MemberDto loginUser = memberService.selectMember(m);	
+		MemberDto loginUser = memberService.selectMember(m);
 		
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();

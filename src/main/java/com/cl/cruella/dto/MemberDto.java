@@ -44,6 +44,7 @@ public class MemberDto {
 		
 		private String signPath;
 		private String deptName;
+		private String wlStatus;
 		
 		
 }

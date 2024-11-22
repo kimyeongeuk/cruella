@@ -4,10 +4,9 @@ import com.cl.cruella.dto.WorkLogDto;
 
 public interface WorkLogService {
 
-	// 출근 여부 조회
-	WorkLogDto checkStatus(String memNo);
-	
-	// 출근
+	// 출근(정상)
 	int clockIn(WorkLogDto workLog);
 	
+	// 출근(지각)
+	int clockInLate(WorkLogDto workLog);
 }

@@ -12,15 +12,15 @@ import lombok.RequiredArgsConstructor;
 public class WorkLogServiceImpl implements WorkLogService {
 
 	private final WorkLogDao wlDao;
-	
-	@Override
-	public WorkLogDto checkStatus(String memNo) {
-		return wlDao.checkStatus(memNo);
-	}
-	
+		
 	@Override
 	public int clockIn(WorkLogDto workLog) {
 		return wlDao.clockIn(workLog);
+	}
+
+	@Override
+	public int clockInLate(WorkLogDto workLog) {
+		return wlDao.clockInLate(workLog);
 	}
 
 }

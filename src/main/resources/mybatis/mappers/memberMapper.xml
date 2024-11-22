@@ -24,36 +24,43 @@
 		<result column="pos_name" property="posName" />
 		<result column="dept_name" property="deptName" />
 		<result column="salary" property="salary" />
+		<result column="wl_status" property="wlStatus" />
 		
 	</resultMap>
 
 	<!-- 로그인(김동규) -->
 	<select id="selectMember" resultMap="memberResultMap">
-		select
-					mem_no
-				, mem_name
-				, mem_pwd
-				, phone
-				, email
-				, address
-				, hire_date
-				, end_date
-				, status
-				, gender
-				, mem_ssn
-				, account
-				, profile_url
-				, bank_name
-				, vac_count
-				, DEPT_CODE
-				, POS_CODE
-				, sign_path
-				, d.dept_name
-				, p.pos_name
-		 from member
-		 join department d using(dept_code)
-     join position p using(pos_code)
-		where mem_no = #{memNo}
+		select 
+		       m.mem_no
+		     , m.mem_name
+		     , m.mem_pwd
+		     , m.phone
+		     , m.email
+		     , m.address
+		     , m.hire_date
+		     , m.end_date
+		     , m.status
+		     , m.gender
+		     , m.mem_ssn
+		     , m.account
+		     , m.profile_url
+		     , m.bank_name
+		     , m.vac_count
+		     , m.dept_code
+		     , m.pos_code
+		     , m.sign_path
+		     , d.dept_name
+		     , p.pos_name
+		     , (select wl.wl_status 
+		          from work_log wl 
+		         where wl.mem_no = m.mem_no 
+		           and trunc(wl_work_date) = trunc(sysdate)
+		           and rownum = 1) as wl_status
+		         
+		from member m
+		join department d ON m.dept_code = d.dept_code
+		join position p ON m.pos_code = p.pos_code
+		where m.mem_no = #{memNo}
 	</select>
 
 	<!-- 비밀번호 변경(김동규) -->

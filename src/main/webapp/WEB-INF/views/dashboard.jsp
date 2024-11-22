@@ -108,9 +108,21 @@
                   </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-center">
-                  <a class="btn btn-success d-flex align-items-center me-4" onclick="fnClockIn();">
-                  	<i class="ti-xs me-1 ti ti-clock me-2"></i>출근
-                  </a>
+	                <c:choose>
+	                	<c:when test="${loginUser.wlStatus == null}">	
+		                  <a class="btn btn-success d-flex align-items-center me-4" onclick="fnClockIn();">
+		                  	<i class="ti-xs me-1 ti ti-clock me-2"></i>출근
+		                  </a>
+		                </c:when>
+		                <c:when test="${loginUser.wlStatus == 'C' || loginUser.wlStatus == 'L'}">	
+								      <a class="btn btn-danger d-flex align-items-center me-4" onclick="fnClockOut();">
+								        <i class="ti-xs me-1 ti ti-clock me-2"></i>퇴근
+								      </a>
+								    </c:when>
+								    <c:otherwise>
+								    	
+								    </c:otherwise>
+	                </c:choose>
                 </div>
               </div>
             </div>
@@ -578,7 +590,7 @@
 		  			
 		  		
 		  		const today = new Date();
-		  		const clockInTime = today.toLocaleTimeString();
+		  		const clockInTime = today.toLocaleTimeString('en-GB', { hour12: false });
 		  		
 		  		
 		  		$.ajax({
