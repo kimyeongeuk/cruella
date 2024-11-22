@@ -10,7 +10,7 @@
 <title>Insert title here</title>
 <script src="${contextPath}/resources/assets/js/config.js"></script>
 <style>
-	.icon-wrapper {
+.icon-wrapper {
 	  position: relative;
 	}
 	
@@ -84,8 +84,12 @@
     white-space: pre-wrap; /* 줄 바꿈을 적용하여 내용이 길어질 경우 자동으로 줄 바꿈 */
     word-wrap: break-word; /* 긴 단어가 있을 경우 자동으로 줄 바꿈 */
   }
-		
+  #writer, #count {
+  	overflow-x: auto; /* 가로 스크롤 활성화 */
+	  white-space: nowrap; /* 줄바꿈 방지 */
+  }
 </style>
+
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
@@ -108,7 +112,7 @@
                 <span style="font-size: 24px; color: black;">${b.boardTitle}</span>
                 <br><br>
                 <div class="d-flex justify-content-between align-items-center user-info">
-                  <div class="avatar-wrapper d-flex align-items-center">
+                  <div id="writer" class="avatar-wrapper d-flex align-items-center">
                     <div class="avatar me-2">
                       <img src="${contextPath}/resources/assets/img/avatars/1.png" alt class="rounded-circle"/>
                     </div>
@@ -121,7 +125,7 @@
                   </div>
                   <div class="attachment-toggle-wrapper">
                     <span id="attachment-toggle" style="cursor: pointer;">첨부파일(${b.attachCount})</span>
-                    <span style="margin-left: 20px; color: black;">조회수 (${b.boardCount})</span>
+                    <span id="count" style="margin-left: 20px; color: black;">조회수 (${b.boardCount})</span>
                     <div id="attachment-list" class="attachment-list">
                       <c:forEach var="at" items="${b.attachList}">
                         <a href="${contextPath}${at.filePath}/${at.filesystemName}" download="${at.originalName}">${at.originalName}</a>

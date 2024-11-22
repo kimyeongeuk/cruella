@@ -185,6 +185,7 @@
             	                    img.src = e.target.result;
             	                    img.style.maxWidth = '120px';
             	                    img.style.height = 'auto';
+            	                    img.style.maxHeight = '150px';
             	                    fileDiv.appendChild(img);
             	                };
             	                reader.readAsDataURL(file);

@@ -32,6 +32,42 @@
   	text-overflow: ellipsis;
   	white-space: nowrap;
   }
+  .card-datatable {
+  overflow-x: auto;
+	}
+	
+	.datatables-basic {
+	  table-layout: fixed;
+	  width: 100%;
+	}
+	
+	.datatables-basic th,
+	.datatables-basic td {
+	  white-space: nowrap;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	}
+	
+	@media (max-width: 768px) {
+	  .datatables-basic th,
+	  .datatables-basic td {
+	    font-size: 14px;
+	    padding: 8px;
+	  }
+	}
+	
+	@media (max-width: 480px) {
+	  .datatables-basic th,
+	  .datatables-basic td {
+	    font-size: 12px;
+	    padding: 6px;
+	  }
+	
+	  .datatables-basic th:nth-child(3),
+	  .datatables-basic td:nth-child(3) {
+	    display: none;
+	  }
+	}
 </style>
 
 </head>
