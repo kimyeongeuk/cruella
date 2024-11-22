@@ -334,44 +334,44 @@ function fn_replyList() {
       $("#rcount").text(resData.length); // 댓글 수 출력
       let tr = "";
       for (let i = 0; i < resData.length; i++) {
-        tr += "<tr><td colspan='3'>"
-              + "<div class='d-flex justify-content-between align-items-center user-info'>"
-              + "<div class='avatar-wrapper d-flex align-items-center'>"
-              + "<div class='avatar me-2'>"
-              + "<img src='${contextPath}/resources/assets/img/avatars/1.png' alt='Avatar' class='rounded-circle' />"
-              + "</div>"
-              + "<div class='d-flex align-items-center'>"
-              + "<span class='emp_name text_truncate' style='color: black; margin-right: 20px;'>" + resData[i].memName + "</span>"
-              + "<span>" + resData[i].replyRegistDT + "</span>"
-              + "</div></div>";
+    	    tr += "<tr><td colspan='3'>"
+    	        + "<div class='d-flex justify-content-between align-items-center user-info'>"
+    	        + "<div class='avatar-wrapper d-flex align-items-center'>"
+    	        + "<div class='avatar me-2'>"
+    	        + "<img src='${contextPath}/resources/assets/img/avatars/1.png' alt='Avatar' class='rounded-circle' />"
+    	        + "</div>"
+    	        + "<div class='d-flex align-items-center'>"
+    	        + "<span class='emp_name text_truncate' style='color: black; margin-right: 20px;'>" + resData[i].memName + "</span>"
+    	        + "<span>" + resData[i].replyRegistDT + "</span>"
+    	        + "</div></div>";
 
-        // 댓글 작성자가 로그인한 사용자와 같은지 확인
-        if (loginUserMemNo == resData[i].memNo) {
-          tr += "<div class='d-flex justify-content-end align-items-center'>"
-                + "<div class='icon-wrapper'>"
-                + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
-                + "<div class='action-replybox'>"
-                + "<form id='rfrm' action='' method='post'>"
-                + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
-                + "<a href='#' onclick='modifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
-                + "<i class='menu-icon tf-icons ti ti-edit'></i></a>"
-                + "<a href='#' onclick='deleteReply(" + resData[i].replyNo + ")'>"
-                + "<i class='menu-icon tf-icons ti ti-trash'></i></a>"
-                + "</form>"
-                + "</div></div></div>";
-        } else {
-          tr += "<br>";
-        }
+    	    // 댓글 작성자가 로그인한 사용자와 같은지 확인
+    	    if (loginUserMemNo == resData[i].memNo) {
+    	        tr += "<div class='d-flex justify-content-end align-items-center'>"
+    	            + "<div class='icon-wrapper'>"
+    	            + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
+    	            + "<div class='action-replybox'>"
+    	            + "<form id='rfrm' action='' method='post'>"
+    	            + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
+    	            + "<a href='#' onclick='modifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
+    	            + "<i class='menu-icon tf-icons ti ti-edit'></i></a>"
+    	            + "<a href='#' onclick='deleteReply(" + resData[i].replyNo + ")'>"
+    	            + "<i class='menu-icon tf-icons ti ti-trash'></i></a>"
+    	            + "</form>"
+    	            + "</div></div></div>";
+    	    } else {
+    	        tr += "<br>";
+    	    }
 
-        // 여기에서 fn_getRreplyCount 함수를 호출하여 답글 수를 가져옴
-        tr += "</div><br>"
-              + "<span style='color: black; margin: 40px;'>" + resData[i].replyContent + "</span><br><br>"
-              + "<button type='button' class='btn btn-sm btn-outline-secondary' style='margin-left: 40px;' data-bs-toggle='modal' data-bs-target='#modalScrollable' data-reply-id='" + resData[i].replyNo + "' data-reply-content='" + resData[i].replyContent + "' data-reply-author='" + resData[i].memName + "' data-reply-date='" + resData[i].replyRegistDT + "' data-reply-memno='" + resData[i].memNo + "'>답글 <span id='reply-count-" + resData[i].replyNo + "'>(0)</span></button>"
-              + "</td></tr>";
+    	    // 여기에서 fn_getRreplyCount 함수를 호출하여 답글 수를 가져옴
+    	    tr += "</div><br>"
+    	        + "<div style='margin-left: 30px; white-space: pre-wrap; color: black; word-break: break-all;'>" + resData[i].replyContent + "</div><br><br>"
+    	        + "<button type='button' class='btn btn-sm btn-outline-secondary' data-bs-toggle='modal' data-bs-target='#modalScrollable' data-reply-id='" + resData[i].replyNo + "' data-reply-content='" + resData[i].replyContent + "' data-reply-author='" + resData[i].memName + "' data-reply-date='" + resData[i].replyRegistDT + "' data-reply-memno='" + resData[i].memNo + "'>답글 <span id='reply-count-" + resData[i].replyNo + "'>(0)</span></button>"
+    	        + "</td></tr>";
 
-        // 답글 수를 가져와서 버튼에 표시
-        fn_getRreplyCount(resData[i].replyNo);
-      }
+    	    // 답글 수를 가져와서 버튼에 표시
+    	    fn_getRreplyCount(resData[i].replyNo);
+    	}
 
       $("#reply_area tbody").html(tr);
     },
@@ -452,42 +452,43 @@ function fn_rreplyList(replyId) {
 
       let tr = "";
       for (let i = 0; i < resData.length; i++) {
-        tr += "<tr><td colspan='3'>"
-              + "<div class='d-flex justify-content-between align-items-center user-info'>"
-              + "<div class='avatar-wrapper d-flex align-items-center'>"
-              + "<div class='avatar me-2 d-flex justify-content-between'>"
-              + "<i class='menu-icon tf-icons ti ti-currency-leu' style='margin-right: auto; font-size: 40px; margin-top: -10px;'></i>"
-              + "<img src='${contextPath}/resources/assets/img/avatars/1.png' alt='Avatar' class='rounded-circle' />"
-              + "</div>"
-              + "<div class='d-flex flex-column'>"
-              + "<span class='emp_name text_truncate' style='color: black; margin-left: 40px;'>" + resData[i].memName + "</span>"
-              + "</div>"
-              + "<div class='d-flex flex-column' style='margin-left: 20px;'>"
-              + "<span>" + resData[i].replyRegistDT + "</span>"
-              + "</div></div>";
+    	    tr += "<tr><td colspan='3'>"
+    	        + "<div class='d-flex justify-content-between align-items-center user-info'>"
+    	        + "<div class='avatar-wrapper d-flex align-items-center'>"
+    	        + "<div class='avatar me-2 d-flex justify-content-between'>"
+    	        + "<i class='menu-icon tf-icons ti ti-currency-leu' style='margin-right: auto; font-size: 40px; margin-top: -10px;'></i>"
+    	        + "<img src='${contextPath}/resources/assets/img/avatars/1.png' alt='Avatar' class='rounded-circle' />"
+    	        + "</div>"
+    	        + "<div class='d-flex flex-column'>"
+    	        + "<span class='emp_name text_truncate' style='color: black; margin-left: 40px;'>" + resData[i].memName + "</span>"
+    	        + "</div>"
+    	        + "<div class='d-flex flex-column' style='margin-left: 20px;'>"
+    	        + "<span>" + resData[i].replyRegistDT + "</span>"
+    	        + "</div></div>";
 
-        // 댓글 작성자가 로그인한 사용자와 같은지 확인
-        if (loginUserMemNo == resData[i].memNo) {
-          tr += "<div class='d-flex justify-content-end align-items-center'>"
-                + "<div class='icon-wrapper'>"
-                + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
-                + "<div class='action-replybox'>"
-                + "<form id='rfrm' action='' method='post'>"
-                + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
-                + "<a href='#' onclick='modifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
-                + "<i class='menu-icon tf-icons ti ti-edit'></i></a>"
-                + "<a href='#' onclick='deleteReply(" + resData[i].replyNo + ")'>"
-                + "<i class='menu-icon tf-icons ti ti-trash'></i></a>"
-                + "</form>"
-                + "</div></div></div>";
-        } else {
-          tr += "<br>";
-        }
+    	    // 댓글 작성자가 로그인한 사용자와 같은지 확인
+    	    if (loginUserMemNo == resData[i].memNo) {
+    	        tr += "<div class='d-flex justify-content-end align-items-center'>"
+    	            + "<div class='icon-wrapper'>"
+    	            + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
+    	            + "<div class='action-replybox'>"
+    	            + "<form id='rfrm' action='' method='post'>"
+    	            + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
+    	            + "<a href='#' onclick='modifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
+    	            + "<i class='menu-icon tf-icons ti ti-edit'></i></a>"
+    	            + "<a href='#' onclick='deleteReply(" + resData[i].replyNo + ")'>"
+    	            + "<i class='menu-icon tf-icons ti ti-trash'></i></a>"
+    	            + "</form>"
+    	            + "</div></div></div>";
+    	    } else {
+    	        tr += "<br>";
+    	    }
 
-        tr += "</div><br>"
-              + "<span style='color: black; margin: 40px;'>" + resData[i].replyContent + "</span><br><br>"
-              + "</td></tr>";
-      }
+    	    tr += "</div><br>"
+    	        + "<div style='margin-left: 30px; white-space: pre-wrap; color: black; word-break: break-all;'>" + resData[i].replyContent + "</div><br>"
+    	        + "</td></tr>";
+    	}
+
 
       // reply_table HTML 업데이트
       $("#reply_table tbody").html(tr);
