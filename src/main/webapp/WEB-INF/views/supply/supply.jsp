@@ -64,7 +64,12 @@
                   카테고리별 조회
                 </button>
                 <ul class="dropdown-menu" >
-							    <li><a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">전체</a></li>
+							    <li><a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">전체
+							    <input type="hidden" value="전체">
+							    </a>
+							    
+							    </li>
+							    
 							    <li><a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">전자기기</a></li>
 							    <li><a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">사무용품</a></li>
 							    <li><a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">기타</a></li>
@@ -361,7 +366,7 @@
                       </tr>
                     </thead>
                     <tbody id="tbodyId">
-                      
+                  <!--  
                       <c:choose>
 									<c:when test="${ empty list }">
 										<tr style="height:55px;">
@@ -385,7 +390,7 @@
 										</c:forEach>
 									</c:otherwise>
 								</c:choose>
-								
+								 -->   
                     </tbody>
                   </table>
 
@@ -468,50 +473,71 @@
 
 
 	    <script>
+	    
+	    $(document).ready(function(){
+	    	
+	    	selectSupplyList("전체", 1);
+		  })
+	    
+	    
 	  // 버튼에 선택된 항목 텍스트를 업데이트하는 함수
 	  function updateButtonText(element) {
+		  
+		  console.log("updateButtonText함수 실행됨");
 	    const button = element.closest('.btn-group').querySelector('button');
+	    
 	    button.innerHTML = element.innerHTML;
+	    
+	    
+	    
+	    
+	    selectSupplyList(element.innerText, 1);
 	  }
 	  
-	  
+		// 현재 선택되어있는 카테고리에 맞춰서 리스트 조회하는 ajax
+		
+	  function selectSupplyList(category, pageNo){ 
+			
+			
+		    $.ajax({
+				  url: '${contextPath}/supply/list.do', // ajax로 리스트 조회용 controller 따로 호출
+				  type: 'GET',
+				  data: {
+					  supCategory: category,
+					  pageNo: pageNo
+				  },
+				  success: function(res){
+					  
+					  console.log(res.list);  // {pi: {}, list: []}
+					  
+					  let a = "";
+					  for(let i=0; i<res.list.length; i++){
+						  a += "<tr style='height:55px;'>"
+							     +		"<td style='text-align:center; width:150px;'>" + res.list[i].supCategory + "</td>"
+							     +		"<td style='text-align:center;'>" + res.list[i].supType 
+							     +
+							     				"<button style='margin-left: 10px;' type='button' class='btn rounded-pill btn-outline-primary btn btn-sm'>" + '정보' + "</button>"
+							     +		"</td>"
+							     +		"<td style='text-align:center;'>" + res.list[i].leftSupply + "</td>"
+							     +		"<td style='text-align:center;'>" + res.list[i].repairSupply + "</td>"
+							     +		"<td style='text-align:center;'>" + res.list[i].workSupply + "</td>"
+							     +		"<td style='text-align:center;'>" 
+							     +
+									  			"<button type='button' class='btn rounded-pill btn-outline-info btn btn-sm'>" + '상세보기' + "</button>"			
+									 +		"</td>"
+									 +  "</tr>"
+					  }
+					  $("#tbodyId").html(a);
+					  
+					  
+				  }
+			  }) 
+	  }
 	  
 		</script>	
 
 
 
-
-	<script>
-	
-	// 카테고리별 select 하는 버튼 change 이벤트
-	  
-	  $(document).ready(function(){
-		  $('.dropdown-menu .dropdown-item a').click(function(){
-			  
-		       console.log($(this).text());  // 값이 출력될 것
-			  
-			  
-			  $.ajax({
-				  url: '${contextPath}/supply/supply.do',
-				  type: 'GET',
-				  data: {
-					  supplyCategory: $(this).val()
-				  },
-				  success: function(res){
-					  
-					  let a = "";
-					  
-					  
-					  
-				  }
-			  })
-			  
-			  
-		  })
-	  })
-	
-	
-	</script>
 	
 
 

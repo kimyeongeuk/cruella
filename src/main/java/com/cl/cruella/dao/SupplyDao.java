@@ -2,9 +2,11 @@ package com.cl.cruella.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.cl.cruella.dto.PageInfoDto;
 import com.cl.cruella.dto.SupplyDto;
 
 import lombok.RequiredArgsConstructor;
@@ -16,8 +18,16 @@ public class SupplyDao {
 	
 	private final SqlSessionTemplate sqlSession;
 	
-	public List<SupplyDto> selectSupplyList(){
-		return sqlSession.selectList("supplyMapper.selectSupplyList");
+	public List<SupplyDto> selectSupplyList(String supCategory, PageInfoDto pi){
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() - 1) * pi.getBoardLimit() , pi.getBoardLimit());
+		return sqlSession.selectList("supplyMapper.selectSupplyList", supCategory, rowBounds);
 	}
+	
+	
+	public int countSupply(String supCategory) {
+		return sqlSession.selectOne("supplyMapper.countSupply", supCategory);
+	}
+	
+	
 	
 }

@@ -28,7 +28,9 @@
 		     COUNT(CASE WHEN SUP_REPAIR = 'Y' AND SUP_STATUS != 'N' THEN 1 END) AS WORKSUPPLY
 		FROM 
 		     SUPPLIES
-		     #{ 
+	  <if test="supCategory != '전체'">
+	 WHERE SUP_CATEGORY = #{supCategory}
+	 	</if>
 	 GROUP BY 
 		     SUP_CATEGORY, 
 		     SUP_TYPE
@@ -37,6 +39,15 @@
 		     SUP_TYPE
 </select>
 
+
+<select id="countSupply" resultType="_int">
+	SELECT count(*)
+		FROM 
+		     SUPPLIES
+   <if test="supCategory != '전체'">
+      where sup_category = #{supCategory}
+   </if>
+</select>
 
 
 </mapper>
