@@ -91,14 +91,13 @@ public class ChatController {
 	@GetMapping(value="/updateNewMsg.do",produces="application/json")
 	public int updateNewMsg(MessageDto message) {
 		
-		log.debug("messagedd체크체크췤: {}",message);
 		
 		int result = chatServiceImpl.updateNewMsg(message);
 		
 		return result;
 		
 	}
-	
+	/*
 	@ResponseBody
 	@GetMapping(value="/start.do",produces="application/json")
 	public String startChat(String memNo,String inviteNo,String inviteName) {
@@ -128,7 +127,7 @@ public class ChatController {
 		return result;
 		
 	}
-	
+	*/
 	
 	
 	

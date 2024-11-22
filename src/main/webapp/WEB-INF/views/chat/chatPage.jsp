@@ -391,7 +391,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                           <div class="d-flex overflow-hidden align-items-center">
                             <div class="chat-contact-info flex-grow-1">
-                              <h6 class="m-0 fw-normal" style="font-weight: 900;">김유빈</h6>
+                              <h6 class="m-0 fw-normal" style="font-weight: 900;" id="testname">김유</h6>
 
 
 
@@ -1009,15 +1009,20 @@
         
         
         // 사원 목록 클릭후 채팅 시작 클릭 시 실행
-        
+        /*
            $('.chatStart').on('click',function(){
+        	   
+        	   var contextPath = '${contextPath}';
+        	   
         	   $.ajax({
         		url:'${contextPath}/chat/start.do',
         		data:{memNo:'${loginUser.memNo}',inviteNo:inviteMem,inviteName:inviteName},
         		success:function(res){
         			console.log(res);
         			if(res == 1){
-        			location.reload();        				
+        			//location.reload();
+        			window.location.href = contextPath+"/chat/chatPage.do";
+        			
         			}else{
         				alert('이미 존재하는 채팅방 입니다.');
         			}
@@ -1025,18 +1030,7 @@
         	})
         	
         })
-        	
-        	
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        	*/
 
 	     var chatNo = null;
 	     var userNo = "${loginUser.memNo}"; // 로그인 유저 사번
@@ -1076,11 +1070,40 @@
 									        $(this).prev().html(content.msgContent); 
 								    	} 
 				
-										}); // 미리보기 ajax 끝
-			        });
-			        
-			        
+									}); // 미리보기 ajax 끝
+			        });  
 			    }); // 모든 구독 끝
+			    
+			    
+		           $('.chatStart').on('click',function(){ // 채팅방생성 시작
+		        	   
+		        	   var contextPath = '${contextPath}';
+		        	   chatNo = 34;
+		        	   $.ajax({
+		        		url:'${contextPath}/chat/start.do',
+		        		data:{memNo:'${loginUser.memNo}',inviteNo:inviteMem,inviteName:inviteName},
+		        		success:function(res){
+		        			console.log(res);
+		        			if(res == 1){
+		        				alert('성공적으로 진입');
+		        				
+		        				client.subscribe('/sub/newChat', function (chat) { // 구독 시작
+					        				$('#testname').html('와 이게 되네');
+		        							console.log('이안으로 진입');
+		    			            var content = JSON.parse(chat.body);
+													console.log(content);
+		    			        }); // 구독 끝		
+		        			}else{
+		        				alert('이미 존재하는 채팅방 입니다.');
+		        			}
+		        		}
+		        	})
+		        	
+		        }) // 채팅방생성 종료
+			    
+			    
+			
+			
 			});
 
         // 채팅방 목록 클릭시 start 	

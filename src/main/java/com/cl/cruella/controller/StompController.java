@@ -2,7 +2,11 @@ package com.cl.cruella.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -10,7 +14,9 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.MessageDto;
@@ -73,12 +79,45 @@ public class StompController {
 		return messageDto;
 	}
 	
-	@MessageMapping("/chat/enter")
-	public void broadcastMessage(@RequestBody MessageDto messageDto) throws ParseException {
+	@ResponseBody
+	@GetMapping("/chat/start.do")
+	public int startChat(String memNo,String inviteNo,String inviteName) {
+		//log.debug("맴넘:{}",memNo);
+		//log.debug("초대넘:{}",inviteNo);
+		//log.debug("초대이름 : {}",inviteName);
 		
+		//Map<String,Object> map = new HashMap<>();
 		
-	}
+		//List<String> list = new ArrayList<>();
+		
+		//list.add(memNo);
+		//list.add(inviteNo);
+		
+		//map.put("memNo", memNo);
+		//map.put("inviteNo", inviteNo);
+		//map.put("inviteName",inviteName);
+		//map.put("list", list);
+		
+		//String result = chatServiceImpl.checkChatList(list);
+		
+		//System.out.println(result);
+		//if(result == null) {
+		//	result = String.valueOf(chatServiceImpl.startChat(map));
+		//}
+		
+		// int result = chatService.createChat(memNo, inviteNo); // DB에 채팅방 생성
+
+		  //  if (result == 1) {
+		  //      // 새 채팅방 생성 성공 시, 메시지 전송
+		   //     ChatRoom newChatRoom = chatService.getLatestChatRoom();
+		        template.convertAndSend("/sub/newChat", "값이잘전달됐나??????"); // 새 채팅방 정보를 모든 구독자에게 전송
+		   // }
+		   // return result; // 생성 결과 반환
+		System.out.println("이안으로 진입");
+		return 1;
+		
 	
+	}
 	
 	
 }
