@@ -16,6 +16,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cl.cruella.dto.MemberDto;
@@ -55,7 +56,7 @@ public class StompController {
 	@SendTo("/sub/{chatNo}")
 	public MessageDto message(@DestinationVariable String chatNo, @RequestBody MessageDto messageDto, @RequestBody MemberDto member) throws ParseException {
 		
-		
+		log.debug("번호허허헣 {}",chatNo);
 		if(messageDto.getMsgType().equals("message")) {
 			// 채팅방 인원수 확인
 			int chatCount = chatserviceImpl.chatCount(messageDto.getChatNo());
@@ -79,13 +80,15 @@ public class StompController {
 		return messageDto;
 	}
 	
-	@ResponseBody
-	@GetMapping("/chat/start.do")
-	public int startChat(String memNo,String inviteNo,String inviteName) {
-		//log.debug("맴넘:{}",memNo);
-		//log.debug("초대넘:{}",inviteNo);
-		//log.debug("초대이름 : {}",inviteName);
+	@MessageMapping("/chat/Chatroom")
+	public int startChat(Map<String,Object> map) {
 		
+		String memNo = (String)map.get("memNo");
+		String inviteNo = (String)map.get("inviteNo");
+		String inviteName = (String)map.get("inviteName");
+		log.debug("맴넘:{}",memNo);
+		log.debug("초대넘:{}",inviteNo);
+		log.debug("초대이름 : {}",inviteName);
 		//Map<String,Object> map = new HashMap<>();
 		
 		//List<String> list = new ArrayList<>();

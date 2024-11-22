@@ -39,10 +39,10 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 		
 		sessionList.add(session);
 		
-		for(WebSocketSession sss : sessionList) {
+		//for(WebSocketSession sss : sessionList) {
 			//String msg = "entry|"+ ((MemberDto)session.getAttributes().get("loginUser")).getUserId()+"님이 입장하였습니다.";
 			//sss.sendMessage(new TextMessage(msg));
-		}
+		//}
 		
 	}
 
@@ -62,15 +62,16 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 		
 		// 현재 해당 웹소켓에 연결되어있는 모든 클라이언트들(작성자본인포함)에게 현재 들어온 메세지 재발송
 		for(WebSocketSession sss : sessionList) {
-			// 메세지유형(chat/entry/exit)|채팅방에띄워주고자하는메세지내용|발신자아이디
-			//String msg = "chat|" + message.getPayload() + "|" + ((MemberDto)session.getAttributes().get("loginUser")).getUserId();
-			//sss.sendMessage(new TextMessage(msg)); // room.jsp에서 onMessage 함수가 자동 실행
+			 //메세지유형(chat/entry/exit)|채팅방에띄워주고자하는메세지내용|발신자아이디
+			String msg = "안녕!";
+			sss.sendMessage(new TextMessage(msg)); // room.jsp에서 onMessage 함수가 자동 실행
 		}
 		
 		
 		// 특정 회원과 채팅방을 만든다거나 해당 회원과 나눈 채팅내역을 보존한다거나 하려면
 		// 메세지 발송할때 마다 DB에 기록 해야됨
 		// 해당 클래스에 Service 클래스를 DI 해서 채팅메세지를 insert하는 메소드를 여기서 실행하면됨
+	
 		
 	}
 	
@@ -86,12 +87,12 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 		log.debug("현재 채팅방에서 나간 회원 : {}",session.getAttributes().get("loginUser"));
 		*/
 		
-		sessionList.remove(session);
+		// sessionList.remove(session);
 		
-		for(WebSocketSession sss : sessionList) {
+		//for(WebSocketSession sss : sessionList) {
 			//String msg = "exit|"+ ((MemberDto)session.getAttributes().get("loginUser")).getUserId()+"님이 퇴장하였습니다.";
 			//sss.sendMessage(new TextMessage(msg));
-		}
+		//}
 		
 		
 	}
