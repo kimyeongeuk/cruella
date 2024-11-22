@@ -28,6 +28,7 @@
 		     COUNT(CASE WHEN SUP_REPAIR = 'Y' AND SUP_STATUS != 'N' THEN 1 END) AS WORKSUPPLY
 		FROM 
 		     SUPPLIES
+		     #{ 
 	 GROUP BY 
 		     SUP_CATEGORY, 
 		     SUP_TYPE

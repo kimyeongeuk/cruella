@@ -58,16 +58,16 @@
                 <button
                 	id="categoryId"
                   type="button"
-                  class="btn btn-label-secondary dropdown-toggle whoareyou"
+                  class="btn btn-label-secondary dropdown-toggle"
                   data-bs-toggle="dropdown"
                   aria-expanded="false">
                   카테고리별 조회
                 </button>
-                <ul class="dropdown-menu whoareyou" >
-							    <li><a class="dropdown-item whoareyou" href="javascript:void(0);" onclick="updateButtonText(this)">전체</a></li>
-							    <li><a class="dropdown-item whoareyou" href="javascript:void(0);" onclick="updateButtonText(this)">전자기기</a></li>
-							    <li><a class="dropdown-item whoareyou" href="javascript:void(0);" onclick="updateButtonText(this)">사무용품</a></li>
-							    <li><a class="dropdown-item whoareyou" href="javascript:void(0);" onclick="updateButtonText(this)">기타</a></li>
+                <ul class="dropdown-menu" >
+							    <li><a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">전체</a></li>
+							    <li><a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">전자기기</a></li>
+							    <li><a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">사무용품</a></li>
+							    <li><a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">기타</a></li>
 							  </ul>
               </div>
 
@@ -486,9 +486,9 @@
 	// 카테고리별 select 하는 버튼 change 이벤트
 	  
 	  $(document).ready(function(){
-		  $('.whoareyou').change(function(){
+		  $('.dropdown-menu .dropdown-item a').click(function(){
 			  
-		       console.log($(this).val());  // 값이 출력될 것
+		       console.log($(this).text());  // 값이 출력될 것
 			  
 			  
 			  $.ajax({
