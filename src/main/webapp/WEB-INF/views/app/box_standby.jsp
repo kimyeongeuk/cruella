@@ -127,7 +127,7 @@
                             </select>
                           </span>
 
-                          <span style="position: relative; left: 964px; top: 25px; cursor: pointer;">
+                          <span id="delete_icon" style="position: relative; left: 964px; top: 25px; cursor: pointer;">
                             <i class="ti ti-trash" style="font-size: 25px;"></i>
                           </span>
 
@@ -189,7 +189,7 @@
 					<c:forEach var="a" items="${ list }">
                     <tr class="detail_tr" onclick="location.href='${contextPath}/app/detail.do?docNo=${a.docNo}'">
                       <td></td>
-                      <td><input type="checkbox" class="deleteCheck_box"></td>
+                      <td onclick="event.stopPropagation();"><input type="checkbox" class="deleteCheck_box" ></td>
                       <td><span class="name_box">${a.memName }</span></td>
                       <td></td>
                       <td style="text-align: center;"><span class="title_box">${a.docTitle}</span></td>
@@ -197,7 +197,7 @@
                       <td>
 	                      <span class="appDate_box">${a.docDt }</span>
 	                      <input type="hidden" value="${a.docType}" >
-						  <input type="hidden" value="${a.docNo}" >
+						  					<input type="hidden" value="${a.docNo}" >
                       </td>     
                       <td>
 	                      	<c:choose>
@@ -360,11 +360,18 @@
       		
       		  
       	  })
+      	  
     	    
-    	    
+    	     function rowClick(event, url) {
+    				// 추가적으로 필요하면 조건을 확인한 뒤 URL 이동
+    				window.location.href = url;
+  			}
     	    
    
-    	    
+    	    $('#delete_icon').on('click',function(){
+    	    	alert('삭제 권한이 없습니다');
+    	    })
+      	
     	    
     	    
     	    

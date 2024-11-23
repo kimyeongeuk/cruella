@@ -46,11 +46,14 @@
 
             <!-- 양식영역 -->
             
-             
+             					<div style="position: relative; top: 33px;">
+             					<span style=""><button type="button"  id="backBtn" class="btn btn-primary" onclick="historyBack();">목록</button></span>
+             					</div>
                       <div style="display: flex; justify-content: right;">
-                        <button type="button" class="btn btn-success">결재</button>
+                      	
+                        <button type="button" class="btn btn-success" id="last_sign_success">결재</button>
                         <span style="width: 52px;"></span>
-                        <button type="button" class="btn btn-warning">반려</button>
+                        <button type="button" class="btn btn-warning" id="last_sign_fail">반려</button>
                       </div>
                         
 
@@ -191,7 +194,12 @@
                             <span class="app_line_div">
 
 							
-                              <span class="line_title"><b>결재선</b></span>
+                              <span class="line_title">
+                              <b>결재선</b>
+                              <input type="hidden" id="maxOrder"  value="${app.maxOrder }"> <!-- 기안문서의 최종결재순서 -->
+                              <input type="hidden" id="docOrder"  value="${app.docOrder }"> <!-- 기안문서의 결재순서 -->
+                              
+                              </span>
                               
                               <c:forEach var="a" items="${app.rovalList}">
                               <span class="line_user">
@@ -200,7 +208,7 @@
                                   <img class="signImg_div" style="display:none;width: 100px; height: 100px;">
                                  <c:choose>
                                 	<c:when test="${a.rvNo eq memNo}">
-                                	
+                                		<input type="hidden" id="app_roval_level"  value="${a.appLevel}"> <!-- 결재자순서 -->
                                 		<button type="button" class="signbtn_div btn btn-dark">서명</button>
                                 		
                                 	</c:when>
@@ -233,10 +241,6 @@
                         
                  
                         
-                        <%-- <!-- 타입, 기안자 사번 -->
-                        <input type="hidden" name="docType" value="연차신청서">
-                        <input type="hidden" name="memNo" value="${m.memNo}"> --%>
-                        
                       </tr>
                     </table>
                    
@@ -245,7 +249,9 @@
                       <tr>
                         <td class="app_title_td" style="text-align: center; height: 40px;">기안자</td>
                         <td class="app_title_result" style="width: 788px; border: 1px solid black; ">
-                          <span style="position: relative; left: 10px;" id="userNo_value" ></span>
+                          <span style="position: relative; left: 10px;" id="userNo_value" >
+                          	<input type="hidden" id="doc_no_result" value="${app.docNo}">
+                          </span>
                           <span id="ref_list_div" style="position: relative; left: 8px;">${app.memName }</span>
                         </td>
                       </tr>
@@ -410,10 +416,12 @@
 	
 $(document).ready(function(){
 	
+	 var count = 0;
+	
+	
+	// 전자서명 
 	  $('.signbtn_div').on('click', function(){
 	        
-	        
-	      
 	        const sign = '${loginUser.signPath}';
 	       
 	        $(this).closest('.line_user')
@@ -422,9 +430,75 @@ $(document).ready(function(){
 	             .attr('src', sign); 
 	        
 	        $(this).remove();
+	        
+	        
+	       count++;
+	       console.log('Current count:', count); // 디버깅 로그
 	    });
+	  
+
+ // 뒤로가기
+	  function historyBack(){
+			    history.back();
+	  }
+ 
+ $('#backBtn').on('click',function(){
+			 historyBack();
+ })
+ 
+ 
+ 
+ 
+ 
+ $('#last_sign_success').on('click',function(){
+	 
+	
+	 const imgSrc = '${loginUser.signPath}';
+	 
+
+	 if (count == 0){ 
+	   alert('서명을 해주세요')
+	   
+	 }else{
+		 
+		 if(confirm('결재 하시겠습니까?')){
+			 
+		   $.ajax({
+			   url: '${contextPath}/app/ajaxSuccess.do',
+			   type: 'POST',
+			      contentType: 'application/json', 
+			      data:JSON.stringify({
+			        signPath: imgSrc, // 전자서명 이미지경로
+			        docNo: parseInt($('#doc_no_result').val(), 10), // 문서번호
+			        maxOrder: parseInt($('#maxOrder').val(), 10),  // 결재선 최종 순서 
+			        docOrder: parseInt($('#docOrder').val(), 10),  // 결재선 현재 순서 
+			        appLevel: parseInt($('#app_roval_level').val(), 10)  // 현재 결재자의 순서 
+			      
+			      }),
+			   success: function(res){
+				   	if(res>0){
+				   		alert('성공적으로 결재하였습니다');
+				   		location.href = '${contextPath}/app/box_standby.do';
+				   		
+				   	}
+			   }
+		   })
+		   
+		 }
+	   
+	 }
+	 
+	 
+ })
+	  
+	  
 	
 })
+
+	  
+	  
+	  
+	  
 		
 
 </script>

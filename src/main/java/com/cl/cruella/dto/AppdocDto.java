@@ -30,13 +30,21 @@ public class AppdocDto { // 기안문서
 	private Date docDt; // 작성일
 	private Date docModifyDt; // 수정일 // 이건 안쓸듯
 	private String docStatus; // 문서 상태 = 대기/진행/최종승인/반려
-	private int docOrder; // 결재순서
+	private int docOrder; // 기안문서의 결재선 순서
 	private String status; // 존재 여부 : Y , N
 	private String reason; // 반려사유
 	
 	private String memName; // 기안자 이름
 	private String deptName; // 부서명
 	private String posName; // 직급명
+	
+	
+	private String signPath; // 전자서명 
+	
+	private int appLevel; // 현재 결재자의 순서
+	
+	private int maxOrder; // 기안문서의 결재선 마지막 순서
+	
 	
 //	연차신청서
 	private Date appDateStart; // 시작일
@@ -53,6 +61,8 @@ public class AppdocDto { // 기안문서
 	
 //	파일첨부 리스트
 	private List<AttachDto> attachList;
+	
+	
 	
 	
 }

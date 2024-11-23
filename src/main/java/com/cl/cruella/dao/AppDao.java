@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.cl.cruella.dto.AppRefDto;
 import com.cl.cruella.dto.AppRovalDto;
 import com.cl.cruella.dto.AppdocDto;
+
 import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.PageInfoDto;
@@ -118,6 +119,41 @@ public class AppDao {
 	 // 파일조회(상세페이지용)
 	 public List<AttachDto> detailPageAttach(AppdocDto docNo){
 		 return sqlSession.selectList("appMapper.appdocDetailSelectAttach",docNo);
+	 }
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 // 상세페이지 결재 1
+	 public int detailClear1(AppdocDto ad) { // 기안문서 첫번째 / 다음순서와 진행중으로 업데이트
+		 return sqlSession.update("appMapper.appSignAndDocOrderAndstatusUpdate1",ad);
+	 }
+	 // 상세페이지 결재 2
+	 public int detailClear2(AppdocDto ad) { // 기안문서 두번째 / 다음순서와 진행중으로 업데이트
+		 return sqlSession.update("appMapper.appSignAndDocOrderAndstatusUpdate2",ad);
+	 }
+	 
+	 
+	 
+	 
+	 
+	 
+	 // 상세페이지 결재 라스트1
+	 public int detailLastClear1(AppdocDto ad) { // 최종승인으로 업데이트
+		 return sqlSession.update("appMapper.appSignAndLastUpdate1",ad);
+	 }
+	 
+	 // 상세페이지 결재 라스트2
+	 public int detailLastClear2(AppdocDto ad) { // 최종승인으로 업데이트
+		 return sqlSession.update("appMapper.appSignAndLastUpdate2",ad);
+	 }
+	 
+	 // 상세페이지 결재 라스트3
+	 public int detailLastClear3(AppdocDto ad) { // 최종승인으로 업데이트
+		 return sqlSession.update("appMapper.appSignAndLastUpdate3",ad);
 	 }
 	 
 	 

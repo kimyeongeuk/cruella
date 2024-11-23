@@ -8,6 +8,7 @@ import com.cl.cruella.dao.AppDao;
 import com.cl.cruella.dto.AppRefDto;
 import com.cl.cruella.dto.AppRovalDto;
 import com.cl.cruella.dto.AppdocDto;
+
 import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.PageInfoDto;
@@ -153,6 +154,34 @@ public class AppService {
 		
 		
 		return app;
+		
+	}
+	
+	
+	
+//	상세페이지 결재 시
+	public int datailClear(AppdocDto ad) {
+		
+		 // 문서의 최종결재순서와 현재결재자순서와 같을때 상태를 최종승인 으로
+		 // 아니면 진행중으로 업데이트
+		
+		int result = 0;
+		
+		if(ad.getMaxOrder() == ad.getAppLevel() && ad.getMaxOrder() == 1) {
+			result = appDao.detailLastClear1(ad);
+		}else if(ad.getMaxOrder() == ad.getAppLevel() && ad.getMaxOrder() == 2) {
+			result = appDao.detailLastClear2(ad);
+		}else if(ad.getMaxOrder() == ad.getAppLevel() && ad.getMaxOrder() == 3) {
+			result = appDao.detailLastClear3(ad);
+		}else if(ad.getMaxOrder() > ad.getAppLevel() && ad.getAppLevel() == 1) {
+			result = appDao.detailClear1(ad);
+		}else if(ad.getMaxOrder() > ad.getAppLevel() && ad.getAppLevel() == 2) {
+			result = appDao.detailClear2(ad);
+		}
+		
+		return result;
+		
+		
 		
 	}
 	
