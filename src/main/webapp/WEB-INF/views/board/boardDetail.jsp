@@ -515,6 +515,7 @@ function fn_rreplyList(replyId) {
   });
 }
 
+//모달을 열 때 넘버 값을 설정
 $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   var button = $(event.relatedTarget);
   var replyId = button.data('reply-id');
@@ -523,6 +524,7 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   var replyDate = button.data('reply-date');
   var replyMemNo = button.data('reply-memno');
   var modal = $(this);
+
   modal.find('#modal-author').text(replyAuthor);
   modal.find('#modal-date').text(replyDate);
   modal.find('#modal-content').text(replyContent);
@@ -541,7 +543,7 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   modal.find('#modal-delete').off('click').on('click', function() {
     deleteReply(replyId);
   });
-  
+
   // 등록 버튼에 replyId 할당
   modal.find('#regist').attr('onclick', `fn_insertRreply(${replyId})`);
 
@@ -574,17 +576,21 @@ function deleteBoardPost(boardNo) {
 //수정할 댓글 번호를 저장할 변수
 let currentReplyNo;
 
-// 댓글 수정 폼을 열 때 호출하는 함수
+//수정할 댓글 번호를 설정하는 함수
 function modifyReply(replyNo, content) {
-  currentReplyNo = replyNo;
-  // <br> 태그를 줄바꿈 문자(\n)로 변환
-  const formattedContent = content.replace(/<br\s*\/?>/gi, "\n");
-  document.getElementById('editReplyContent').value = formattedContent;
-  $('#modalScrollable').modal('hide'); // modalScrollable 모달 닫기
-  $('#editReplyModal').modal('show');
+  currentReplyNo = replyNo; // currentReplyNo 설정
+  if (typeof content === 'string') {
+    // <br> 태그를 줄바꿈 문자(\n)로 변환
+    const formattedContent = content.replace(/<br\s*\/?>/gi, "\n");
+    document.getElementById('editReplyContent').value = formattedContent;
+  } else {
+    document.getElementById('editReplyContent').value = content;
+  }
+  $('#modalScrollable').modal('hide');  // 첫 번째 모달 닫기
+  $('#editReplyModal').modal('show');  // 두 번째 모달 열기
 }
 
-// 서버로 수정된 댓글 내용을 전송하는 함수
+//서버로 수정된 댓글 내용을 전송하는 함수
 function updateReply() {
   const updatedContent = document.getElementById('editReplyContent').value;
   $.ajax({
@@ -597,8 +603,9 @@ function updateReply() {
     success: function(response) {
       if (response.status === "SUCCESS") {
         alert("댓글이 수정되었습니다.");
-        $('#editReplyModal').modal('hide');
-        fn_replyList(); // 댓글 목록 갱신
+        $('#editReplyModal').modal('hide');  // 수정 모달 닫기
+        fn_replyList();
+        fn_rreplyList(currentReplyNo); // 대댓글 목록 즉시 갱신
       } else {
         alert("댓글 수정에 실패하였습니다. 다시 시도해주세요.");
       }
@@ -609,7 +616,8 @@ function updateReply() {
   });
 }
 
-// 댓글 삭제 함수
+
+//댓글 삭제 함수
 function deleteReply(replyNo) {
   if (confirm('정말로 삭제하시겠습니까?')) {
     $.ajax({
@@ -619,8 +627,8 @@ function deleteReply(replyNo) {
       success: function(response) {
         if (response.status === "SUCCESS") {
           alert("댓글이 삭제되었습니다.");
-          $('#modalScrollable').modal('hide'); // 모달 닫기
           fn_replyList(); // 댓글 목록 갱신
+          fn_rreplyList(replyNo); // 대댓글 목록 즉시 갱신
         } else {
           alert("댓글 삭제에 실패하였습니다. 다시 시도해주세요.");
         }
@@ -704,7 +712,35 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+  
+  // 모달이 닫힐 때 액션 박스를 닫는 코드 추가
+  $('#editReplyModal').on('hide.bs.modal', function () {
+    const actionBoxes = document.querySelectorAll('.modal-action-box');
+    actionBoxes.forEach(box => {
+      box.style.display = 'none';
+    });
+  });
+
+  // 첫 번째 모달이 닫힐 때도 액션 박스를 닫도록 설정
+  $('#modalScrollable').on('hide.bs.modal', function () {
+    const actionBoxes = document.querySelectorAll('.modal-action-box, .action-replybox');
+    actionBoxes.forEach(box => {
+      box.style.display = 'none';
+    });
+  });
 });
+
+// toggleModalActionBox 함수 정의
+function toggleModalActionBox(icon) {
+  var actionBox = icon.nextElementSibling;
+  if (actionBox.style.display === 'none' || actionBox.style.display === '') {
+    actionBox.style.display = 'block';
+  } else {
+    actionBox.style.display = 'none';
+  }
+}
+
+
 
 </script>
 </html>
