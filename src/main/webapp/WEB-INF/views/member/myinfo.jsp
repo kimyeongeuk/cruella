@@ -70,6 +70,24 @@
 		.selected{
 			color: #7367f0;
 		}
+		#searchSelect{
+			width: 110px;
+			height: 38px !important;
+			min-height: 38px !important;
+			font-size: 16px !important;
+			padding-top: 0.3rem !important;
+			padding-right: 1rem !important;
+			padding-bottom: calc(38px - 1rem - 16px) !important;
+			padding-left: 1rem !important;
+			box-sizing: border-box;
+		}
+		#board{
+			cursor: pointer;
+		}
+		#board:hover{
+			color: #7367f0;
+			transition: color 0.3s ease;
+		}
    </style>
 </head>
 
@@ -543,139 +561,53 @@
                       </ul>
                     </div>
                   </div>
-                  <!-- Projects table -->
+                  <!-- 팀게시판 영역 (재운님 코드)-->
                   <div class="card">
-                    <div class="table-responsive text-nowrap">
-                      <table class="table">
-                        <thead>
-                          <div style="display: flex; height: 80px;">
-                            <div style="display: flex; margin-top: 30px; margin-left: 20px;">
-                              <i class="ti ti-news ti-lg"></i>
-                              <p style="margin-right: 50px; margin-left: 15px; font-size: 18px;">공지사항</p>
-                              <span style="cursor: pointer;" class="selected">전체</span>
-                              &nbsp;&nbsp;/&nbsp;&nbsp;
-                              <span style="cursor: pointer;" onclick="fnSelectTeamNotice();">${ loginUser.deptName }</span>
-                            </div>
-                            <div style="position: relative; top: 20px; left: 200px; display: flex; gap: 30px;">
-                              <div>
-                                <input
-                                  style="margin-top: 3px;"
-                                  type="text"
-                                  class="form-control"
-                                  id="defaultFormControlInput"
-                                  placeholder="검색어 입력"
-                                  aria-describedby="defaultFormControlHelp" />
-                              </div>
-                              <a href="javascript:void(0)" class="btn btn-primary mb-1" style="height: 45px;">
-                                <i class="ti ti-search ti-xs me-2"></i>검색
-                              </a>
-                            </div>
-                          </div>
-                        </thead>
-                        <thead>
-                          <tr>
-                            <th style="border: 1px solid #e6e6e8;">제목</th>
-                            <th>작성자</th>
-                            <th>작성일</th>
-                            <th>조회수</th>
-                          </tr>
-                        </thead>
-    
-                        <tbody class="table-border-bottom-0">
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td><span>3</span></td>
-                            
-                          </tr>
-    
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자2</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td><span>3</span></td>
-                            
-                          </tr>
-    
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자3</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td><span class="badge bg-label-primary me-1">3</span></td>
-                            
-                          </tr>
-    
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자4</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td><span class="badge bg-label-primary me-1">퇴사</span></td>
-                            
-                          </tr>
-    
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td><span class="badge bg-label-primary me-1">퇴사</span></td>
-                            
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <!--/ Projects table -->                  
+                    <div class="d-flex align-items-center">
+		                  <div style="margin: 20px;">
+		                    <a id="board" class="" style="font-size: 20px;" href="${contextPath}/board/boardList.do">
+		                      <c:choose>
+		                        <c:when test="${loginUser.deptCode eq 'S1'}">영업총괄팀 </c:when>
+		                        <c:when test="${loginUser.deptCode eq 'S2'}">인사팀 </c:when>
+		                        <c:when test="${loginUser.deptCode eq 'S3'}">지원팀 </c:when>
+		                        <c:when test="${loginUser.deptCode eq 'T1'}">남성의류팀 </c:when>
+		                        <c:when test="${loginUser.deptCode eq 'T2'}">여성의류팀 </c:when>
+		                        <c:when test="${loginUser.deptCode eq 'T3'}">식품팀 </c:when>
+		                        <c:when test="${loginUser.deptCode eq 'T4'}">스포츠팀 </c:when>
+		                        <c:when test="${loginUser.deptCode eq 'T5'}">뷰티팀 </c:when>
+		                        <c:when test="${loginUser.deptCode eq 'T6'}">명품팀 </c:when>
+		                        <c:when test="${loginUser.deptCode eq 'T7'}">문화센터팀 </c:when>
+		                        <c:when test="${loginUser.deptCode eq 'T8'}">디지털 및 가전팀 </c:when>
+		                        <c:otherwise>기타부서팀</c:otherwise>
+		                      </c:choose>
+		                      게시판
+		                    </a>                   
+		                  </div>
+
+		                  <div class="ms-auto d-flex">
+		
+		                  </div>
+		                </div>
+		             <div class="card-datatable table-responsive pt-3">
+								  <table class="datatables-basic table text-center">
+								    <thead>
+								      <tr>
+							            <th style="width: 10%;">번호</th>
+							            <th style="width: 15%;">작성자</th>
+							            <th style="width: 40%;">제목</th>
+							            <th style="width: 15%;">작성일</th>
+							            <th style="width: 10%;">조회수</th>
+							            <th style="width: 10%;">댓글수</th>
+								      </tr>
+								    </thead>
+								    <tbody id="boardListTbody">
+								      
+								    </tbody>
+								  </table>
+								</div>
+               </div>
+                  
+                  <!--/ 팀게시판 영역 -->                  
                   <!--/ Activity Timeline -->
                   <div class="row">
                     <!-- 나의 소속팀 목록 -->
@@ -774,10 +706,10 @@
    	// 페이지 로드 시 실행시킬 함수(김동규)
     window.onload = function(){
     	
-    	fnMemoList();	//   메모 전체 리스트 조회
-    	fnTeamList(); // 소속팀 전체 리스트 조회
-    	//console.log('${loginUser.getSignPath()}');
-    	fnLoadSign(); // 전자서명 조회
+    	fnMemoList();	 // 메모 전체 리스트 조회
+    	fnTeamList();  //	소속팀 전체 리스트 조회
+    	fnLoadSign();  // 전자서명 조회
+    	fnBoardList(); // 게시판 리스트 조회
 			    	
     }
     
@@ -957,16 +889,44 @@
     	})
     }
     
-    // 팀 공지사항 리스트 조회(팀명 클릭)
-    function fnSelectTeamNotice(){
-    	
-    	const memNo = '${loginUser.memNo}';
-    	
-    	$.ajax({
-    		
-    	})
-    	
-    }
+    //팀게시판 리스트 조회
+function fnBoardList() {
+    $.ajax({
+        url: '${contextPath}/member/boardList.do',
+        type: 'POST',
+        success: function(res) {
+            let trEl = '';
+
+            // 데이터가 비어 있는 경우
+            if (!res || res.list.length == 0) {
+                trEl += '<tr>';
+                trEl += '<td colspan="6">조회된 게시글이 없습니다.</td>';
+                trEl += '</tr>';
+            } else {
+                let count = 1;
+                let pi = res.pi; // 페이지 정보
+                res.list.forEach((board) => {
+                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
+
+                    
+                    trEl += '<tr data-boardno="' + board.boardNo + '">';
+                    trEl += '<td>' + reverseCount + '</td>';
+                    trEl += '<td>' + board.memName + '</td>';
+                    trEl += '<td class="title" style="cursor: pointer;">' + board.boardTitle;
+                    trEl += '</td>';
+                    trEl += '<td>' + board.boardRegistDT + '</td>';
+                    trEl += '<td>' + board.boardCount + '</td>';
+                    trEl += '<td>' + board.replyCount + '</td>';
+                    trEl += '</tr>';
+
+                    count++;
+                });
+            }
+
+            $('#boardListTbody').html(trEl);
+        }
+    })
+}
     
     
     
