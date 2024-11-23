@@ -616,7 +616,6 @@ function updateReply() {
         alert("댓글이 수정되었습니다.");
         $('#editReplyModal').modal('hide');  // 수정 모달 닫기
         fn_replyList(); // 댓글 목록 갱신
-        fn_rreplyList(currentReplyNo); // 대댓글 목록 즉시 갱신
         restoreScrollPosition(); // 스크롤 위치 복원
       } else {
         alert("댓글 수정에 실패하였습니다. 다시 시도해주세요.");
@@ -653,7 +652,6 @@ function deleteReply(replyNo) {
         if (response.status === "SUCCESS") {
           alert("댓글이 삭제되었습니다.");
           fn_replyList(); // 댓글 목록 갱신
-          fn_rreplyList(replyNo); // 대댓글 목록 즉시 갱신
           restoreScrollPosition(); // 스크롤 위치 복원
         } else {
           alert("댓글 삭제에 실패하였습니다. 다시 시도해주세요.");
