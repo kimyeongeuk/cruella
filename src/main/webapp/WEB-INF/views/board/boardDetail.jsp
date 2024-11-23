@@ -282,16 +282,43 @@
 <div class="drag-target"></div>
 </body>
 <script>
-//모달 내의 ... 아이콘 클릭 시 액션 박스를 토글하는 함수
-function toggleModalActionBox(icon) {
-  var actionBox = icon.nextElementSibling;
-  if (actionBox.style.display === 'none' || actionBox.style.display === '') {
-    actionBox.style.display = 'block';
-  } else {
-    actionBox.style.display = 'none';
+
+//수정할 댓글 번호를 저장할 변수
+let currentReplyNo;
+
+//쿠키에 스크롤 위치를 저장하는 함수
+function saveScrollPosition() {
+  var scrollPosition = window.scrollY;
+  document.cookie = "scrollPosition=" + scrollPosition + "; path=/";
+}
+
+// 쿠키에서 스크롤 위치를 가져오는 함수
+function getScrollPositionFromCookie() {
+  var name = "scrollPosition=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) === ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) === 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return null;
+}
+
+// 페이지 로드 시 스크롤 위치를 복원하는 함수
+function restoreScrollPosition() {
+  var scrollPosition = getScrollPositionFromCookie();
+  if (scrollPosition !== null) {
+    window.scrollTo(0, parseInt(scrollPosition));
   }
 }
 
+// 페이지 로드 시 스크롤 위치를 복원
+window.onload = restoreScrollPosition;
 
 
 $(document).ready(function(){
@@ -515,7 +542,28 @@ function fn_rreplyList(replyId) {
   });
 }
 
-//모달을 열 때 넘버 값을 설정
+
+//게시글 수정
+function modifyBoardPost(boardNo) {
+  var form = document.getElementById('frm');
+  form.setAttribute('action', '${contextPath}/board/boardModify.do');
+  document.getElementById('no').value = boardNo;
+  form.submit();
+}
+
+// 게시글 삭제
+function deleteBoardPost(boardNo) {
+  if (confirm('정말로 삭제하시겠습니까?')) {
+    var form = document.getElementById('frm');
+    form.setAttribute('action', '${contextPath}/board/boardDelete.do');
+    document.getElementById('no').value = boardNo;
+    form.submit();
+  }
+}
+
+
+
+// 모달을 열 때 넘버 값을 설정
 $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   var button = $(event.relatedTarget);
   var replyId = button.data('reply-id');
@@ -538,9 +586,11 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
 
   // 수정 및 삭제 버튼에 이벤트 핸들러 설정
   modal.find('#modal-modify').off('click').on('click', function() {
+    saveScrollPosition();  // 수정 시 스크롤 위치 저장
     modifyReply(replyId, replyContent);
   });
   modal.find('#modal-delete').off('click').on('click', function() {
+    saveScrollPosition();  // 삭제 시 스크롤 위치 저장
     deleteReply(replyId);
   });
 
@@ -551,46 +601,7 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   fn_rreplyList(replyId);
 });
 
-$(document).on('hide.bs.modal', '#modalScrollable', function() {
-    fn_replyList(); // 댓글 목록 새로고침
-});
-
-//게시글 수정
-function modifyBoardPost(boardNo) {
-  var form = document.getElementById('frm');
-  form.setAttribute('action', '${contextPath}/board/boardModify.do');
-  document.getElementById('no').value = boardNo;
-  form.submit();
-}
-
-// 게시글 삭제
-function deleteBoardPost(boardNo) {
-  if (confirm('정말로 삭제하시겠습니까?')) {
-    var form = document.getElementById('frm');
-    form.setAttribute('action', '${contextPath}/board/boardDelete.do');
-    document.getElementById('no').value = boardNo;
-    form.submit();
-  }
-}
-
-//수정할 댓글 번호를 저장할 변수
-let currentReplyNo;
-
-//수정할 댓글 번호를 설정하는 함수
-function modifyReply(replyNo, content) {
-  currentReplyNo = replyNo; // currentReplyNo 설정
-  if (typeof content === 'string') {
-    // <br> 태그를 줄바꿈 문자(\n)로 변환
-    const formattedContent = content.replace(/<br\s*\/?>/gi, "\n");
-    document.getElementById('editReplyContent').value = formattedContent;
-  } else {
-    document.getElementById('editReplyContent').value = content;
-  }
-  $('#modalScrollable').modal('hide');  // 첫 번째 모달 닫기
-  $('#editReplyModal').modal('show');  // 두 번째 모달 열기
-}
-
-//서버로 수정된 댓글 내용을 전송하는 함수
+// 서버로 수정된 댓글 내용을 전송하는 함수
 function updateReply() {
   const updatedContent = document.getElementById('editReplyContent').value;
   $.ajax({
@@ -604,8 +615,9 @@ function updateReply() {
       if (response.status === "SUCCESS") {
         alert("댓글이 수정되었습니다.");
         $('#editReplyModal').modal('hide');  // 수정 모달 닫기
-        fn_replyList();
+        fn_replyList(); // 댓글 목록 갱신
         fn_rreplyList(currentReplyNo); // 대댓글 목록 즉시 갱신
+        restoreScrollPosition(); // 스크롤 위치 복원
       } else {
         alert("댓글 수정에 실패하였습니다. 다시 시도해주세요.");
       }
@@ -616,8 +628,21 @@ function updateReply() {
   });
 }
 
+// 수정할 댓글 번호를 설정하는 함수
+function modifyReply(replyNo, content) {
+  currentReplyNo = replyNo; // currentReplyNo 설정
+  if (typeof content === 'string') {
+    // <br> 태그를 줄바꿈 문자(\n)로 변환
+    const formattedContent = content.replace(/<br\s*\/?>/gi, "\n");
+    document.getElementById('editReplyContent').value = formattedContent;
+  } else {
+    document.getElementById('editReplyContent').value = content;
+  }
+  $('#modalScrollable').modal('hide');  // 첫 번째 모달 닫기
+  $('#editReplyModal').modal('show');  // 두 번째 모달 열기
+}
 
-//댓글 삭제 함수
+// 댓글 삭제 함수
 function deleteReply(replyNo) {
   if (confirm('정말로 삭제하시겠습니까?')) {
     $.ajax({
@@ -629,6 +654,7 @@ function deleteReply(replyNo) {
           alert("댓글이 삭제되었습니다.");
           fn_replyList(); // 댓글 목록 갱신
           fn_rreplyList(replyNo); // 대댓글 목록 즉시 갱신
+          restoreScrollPosition(); // 스크롤 위치 복원
         } else {
           alert("댓글 삭제에 실패하였습니다. 다시 시도해주세요.");
         }
@@ -637,6 +663,16 @@ function deleteReply(replyNo) {
         console.error("에러 발생:", status, error);
       }
     });
+  }
+}
+
+// 모달 내의 ... 아이콘 클릭 시 액션 박스를 토글하는 함수
+function toggleModalActionBox(icon) {
+  var actionBox = icon.nextElementSibling;
+  if (actionBox.style.display === 'none' || actionBox.style.display === '') {
+    actionBox.style.display = 'block';
+  } else {
+    actionBox.style.display = 'none';
   }
 }
 
@@ -655,6 +691,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (actionBox) {
         actionBox.style.display = actionBox.style.display === 'none' || !actionBox.style.display ? 'block' : 'none';
         hideOtherBoxes('.action-box', actionBox);
+        saveScrollPosition();
       }
     }
 
@@ -664,6 +701,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (replyBox) {
         replyBox.style.display = replyBox.style.display === 'none' || !replyBox.style.display ? 'block' : 'none';
         hideOtherBoxes('.action-replybox', replyBox);
+        saveScrollPosition();
       }
     }
 
@@ -735,6 +773,7 @@ function toggleModalActionBox(icon) {
   var actionBox = icon.nextElementSibling;
   if (actionBox.style.display === 'none' || actionBox.style.display === '') {
     actionBox.style.display = 'block';
+    saveScrollPosition();  
   } else {
     actionBox.style.display = 'none';
   }
