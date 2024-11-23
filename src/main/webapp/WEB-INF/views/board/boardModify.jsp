@@ -24,6 +24,10 @@
   .delete-btn:hover {
     color: red;
   }
+  #fileText{
+  	color: gray;
+  	font-size: 11px;
+  }
 </style>
 </head>
 <body>
@@ -53,8 +57,8 @@
                       <label for="defaultFormControlInput" class="form-label">제목</label>
                       <input type="text" class="form-control" id="defaultFormControlInput" name="boardTitle" placeholder="제목을 입력하세요." value="${b.boardTitle}" required/>
                       <br>
-                      <label for="formFile" class="form-label">첨부파일</label>
-                      <input class="form-control" type="file" id="formFile" name="uploadFiles" multiple/>
+                      <label for="formFile" class="form-label">첨부파일<span id="fileText"> (첨부파일의 최대 크기는 10MB이며, 전체 첨부파일의 최대 크기는 100MB입니다. )</span></label>
+                      <input class="form-control file" type="file" id="formFile" name="uploadFiles" multiple/>
                       <br>
                       <div id="file-container">
                         <c:forEach var="at" items="${b.attachList}">
@@ -100,114 +104,146 @@
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  // JSP 변수 값을 JavaScript 변수로 안전하게 전달
-  var boardContentValue = `${b.boardContent}`; // HTML 이스케이프 해제
-  console.log(boardContentValue); // 값이 올바르게 전달되었는지 로그 확인
+$(document).ready(function() {
+    $('.file').on('change', function(evt) {
+        const files = evt.target.files; // FileList[0: File, 1: File, ..]
+        let totalSize = 0;
 
-  // Quill 에디터 초기화
-  const quill = new Quill('#board-editor', {
-    theme: 'snow',
-    placeholder: '내용을 입력해주세요.',
-    modules: {
-      toolbar: [
-        [{ font: [] }, { size: [] }],
-        ['bold', 'italic', 'underline', 'strike'],
-        [{ color: [] }, { background: [] }],
-        [{ script: 'super' }, { script: 'sub' }],
-        [{ header: '1' }, { header: '2' }, 'blockquote', 'code-block'],
-        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-        [{ direction: 'rtl' }],
-        ['link', 'image', 'video', 'formula'],
-        ['clean']
-      ]
-    }
-  });
+        for (let i = 0; i < files.length; i++) {
+            if (files[i].size > 10 * 1024 * 1024) { // 개별 파일 크기 10MB 제한
+                alert('첨부파일의 최대 크기는 10MB입니다.');
+                evt.target.value = ''; // 입력 초기화
+                $('#file-container').empty(); // 파일 컨테이너 초기화
+                return;
+            }
 
-  const boardContentHidden = document.getElementById('boardContent');
-  boardContentHidden.value = boardContentValue; // 숨겨진 input에 값 설정
+            totalSize += files[i].size;
 
-  if (boardContentHidden && boardContentHidden.value) {
-    quill.clipboard.dangerouslyPasteHTML(0, boardContentHidden.value); // Quill에 HTML 내용 삽입
-  }
+            if (totalSize > 100 * 1024 * 1024) { // 전체 파일 크기 100MB 제한
+                alert('전체 첨부파일의 최대 크기는 100MB입니다.');
+                evt.target.value = ''; // 입력 초기화
+                $('#file-container').empty(); // 파일 컨테이너 초기화
+                return;
+            }
+        }
 
-  // 폼 제출 시 내용 동기화
-  const form = document.querySelector('#modify-form');
-  form.addEventListener('submit', function () {
-    boardContentHidden.value = quill.root.innerHTML; // Quill의 내용을 숨겨진 input에 저장
-  });
-
-  const fileInput = document.getElementById('formFile');
-  const fileContainer = document.getElementById('file-container');
-  const dataTransfer = new DataTransfer();
-
-  fileInput.addEventListener('change', function(event) {
-    const newFiles = Array.from(event.target.files);
-    newFiles.forEach(file => dataTransfer.items.add(file));
-    renderFiles();
-    fileInput.files = dataTransfer.files;
-  });
-
-  function renderFiles() {
-    fileContainer.innerHTML = '';
-    Array.from(dataTransfer.files).forEach((file, index) => {
-      const fileType = file.type;
-      const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-
-      const fileDiv = document.createElement('div');
-      fileDiv.style.position = 'relative';
-      fileDiv.style.display = 'inline-block';
-      fileDiv.style.margin = '10px';
-      fileDiv.setAttribute('data-index', index);
-
-      if (validImageTypes.includes(fileType)) {
-        // 이미지 파일일 경우
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const img = document.createElement('img');
-          img.src = e.target.result;
-          img.style.maxWidth = '120px';
-          img.style.height = 'auto';
-          fileDiv.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        // 이미지 파일이 아닐 경우
-        const p = document.createElement('p');
-        p.textContent = file.name;
-        p.style.margin = '0';
-        p.style.padding = '5px';
-        p.style.border = '1px solid #ccc';
-        p.style.background = '#f9f9f9';
-        fileDiv.appendChild(p);
-      }
-
-	    const removeButton = document.createElement('button');
-	    removeButton.innerHTML = '&#10005;';
-	    removeButton.className = 'delete-btn'; // 동일한 클래스 추가
-	    removeButton.onclick = function () {
-	      fileDiv.remove();
-	      dataTransfer.items.remove(index);
-	      fileInput.files = dataTransfer.files;
-	    };
-
-	    fileDiv.appendChild(removeButton);
-	    fileContainer.appendChild(fileDiv);
-	  });
-	}
-
-  $(document).ready(function() {
-	  $(".origin_attach_del").on("click", function() {
-	    // 삭제할 첨부파일 번호를 submit시 넘기기 위한 작업
-	    let hiddenEl = "<input type='hidden' name='delFileNo' value='" + $(this).data("fileno") + "'>";
-	    $("#modify-form").append(hiddenEl);
-
-	    // 화면으로부터 삭제된 것처럼 보여지게 해당 첨부파일 링크 삭제 처리
-	    $(this).parent().remove();
-	  });
-	});
+        renderFiles(evt.target.files); // 검증을 통과한 파일만 렌더링
+    });
 });
 
+function renderFiles(files) {
+    const fileContainer = document.getElementById('file-container');
+    fileContainer.innerHTML = ''; // 기존 내용을 초기화
+
+    Array.from(files).forEach((file, index) => {
+        const fileType = file.type;
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+        const fileDiv = document.createElement('div');
+        fileDiv.style.position = 'relative';
+        fileDiv.style.display = 'inline-block';
+        fileDiv.style.margin = '10px';
+        fileDiv.setAttribute('data-index', index);
+
+        if (validImageTypes.includes(fileType)) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.maxWidth = '120px';
+                img.style.height = 'auto';
+                fileDiv.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            const p = document.createElement('p');
+            p.textContent = file.name;
+            p.style.margin = '0';
+            p.style.padding = '5px';
+            p.style.border = '1px solid #ccc';
+            p.style.background = '#f9f9f9';
+            fileDiv.appendChild(p);
+        }
+
+        const removeButton = document.createElement('button');
+        removeButton.innerHTML = '&#10005;';
+        removeButton.className = 'delete-btn';
+        removeButton.onclick = function() {
+            fileDiv.remove();
+        };
+
+        fileDiv.appendChild(removeButton);
+        fileContainer.appendChild(fileDiv);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // JSP 변수 값을 JavaScript 변수로 안전하게 전달
+    var boardContentValue = `${b.boardContent}`; // HTML 이스케이프 해제
+    console.log(boardContentValue); // 값이 올바르게 전달되었는지 로그 확인
+
+    // Quill 에디터 초기화
+    const quill = new Quill('#board-editor', {
+        theme: 'snow',
+        placeholder: '내용을 입력해주세요.',
+        modules: {
+            toolbar: [
+                [{ font: [] }, { size: [] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ color: [] }, { background: [] }],
+                [{ script: 'super' }, { script: 'sub' }],
+                [{ header: '1' }, { header: '2' }, 'blockquote', 'code-block'],
+                [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+                [{ direction: 'rtl' }],
+                ['link', 'image', 'video', 'formula'],
+                ['clean']
+            ]
+        }
+    });
+
+    const boardContentHidden = document.getElementById('boardContent');
+    boardContentHidden.value = boardContentValue; // 숨겨진 input에 값 설정
+
+    if (boardContentHidden && boardContentHidden.value) {
+        quill.clipboard.dangerouslyPasteHTML(0, boardContentHidden.value); // Quill에 HTML 내용 삽입
+    }
+
+    // 폼 제출 시 내용 동기화
+    const form = document.getElementById('modify-form');
+    form.addEventListener('submit', function(e) {
+        boardContentHidden.value = quill.root.innerHTML; // Quill의 내용을 숨겨진 input에 저장
+
+        console.log("Quill Content:", quill.root.innerHTML);
+        console.log("Hidden Input Value:", boardContentHidden.value);
+
+        if (!boardContentHidden.value || boardContentHidden.value.trim() === '') {
+            e.preventDefault();
+            alert("내용을 입력해주세요.");
+        }
+    });
+
+    const fileInput = document.getElementById('formFile');
+    const fileContainer = document.getElementById('file-container');
+    const dataTransfer = new DataTransfer();
+
+    fileInput.addEventListener('change', function(event) {
+        const newFiles = Array.from(event.target.files);
+        newFiles.forEach(file => dataTransfer.items.add(file));
+        renderFiles(dataTransfer.files);
+        fileInput.files = dataTransfer.files;
+    });
+
+    $(document).ready(function() {
+        $(".origin_attach_del").on("click", function() {
+            // 삭제할 첨부파일 번호를 submit 시 넘기기 위한 작업
+            let hiddenEl = "<input type='hidden' name='delFileNo' value='" + $(this).data("fileno") + "'>";
+            $("#modify-form").append(hiddenEl);
+
+            // 화면으로부터 삭제된 것처럼 보여지게 해당 첨부파일 링크 삭제 처리
+            $(this).parent().remove();
+        });
+    });
+});
 
 
 </script>

@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.dto.PageInfoDto;
 
 import jakarta.websocket.Session;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +64,19 @@ public class MemberDao {
 	
 	public int saveSignPath(MemberDto m) {
 		return sqlSession.update("memberMapper.saveSignPath", m);
+	}
+
+	public int getMemberCount() {
+		return sqlSession.selectOne("memberMapper.getMemberCount");
+	}
+
+	public List<MemberDto> getPagedMemberList(PageInfoDto pi) {
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() - 1) * pi.getBoardLimit() , pi.getBoardLimit());		
+		return sqlSession.selectList("memberMapper.getPagedMemberList",null, rowBounds);
+	}
+
+	public MemberDto selectMemberByNo(String memNo) {
+		return sqlSession.selectOne("memberMapper.selectMemberByNo", memNo);
 	}
 }
 

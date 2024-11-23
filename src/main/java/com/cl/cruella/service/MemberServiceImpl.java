@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.cl.cruella.dao.MemberDao;
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.dto.PageInfoDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -62,13 +63,20 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<MemberDto> selecMemberList(MemberDto m) {
-		return null;
+	public int getMemberCount() {
+		return memberDao.getMemberCount();
 	}
 
 	@Override
-	public int selectAll() {
-		return 0;
+	public List<MemberDto> getPagedMemberList(PageInfoDto pi) {
+		return memberDao.getPagedMemberList(pi);
 	}
+
+	@Override
+	public MemberDto selectMemberByNo(String memNo) {
+		return memberDao.selectMemberByNo(memNo);
+	}
+
+
 
 }
