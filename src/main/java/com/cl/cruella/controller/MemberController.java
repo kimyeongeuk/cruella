@@ -3,6 +3,7 @@ package com.cl.cruella.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cl.cruella.dto.BoardDto;
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.dto.PageInfoDto;
 import com.cl.cruella.service.MemberService;
 import com.cl.cruella.service.WorkLogService;
 import com.cl.cruella.util.FileUtil;
@@ -223,16 +226,39 @@ public class MemberController {
 		 
 	 }
 	 
-	 // 출근 버튼 클릭시(김동규)
-	 @GetMapping("/checkIn")
-	 public void checkIn() {
-		 
-	 }
-	 
-
+	 // 근태관리 탭 클릭
 	 @GetMapping("/myinfo_workLog.do")
 	 public void myinfoWorkLog() {}
 	 
+	 // 내정보 - 팀게시판리스트 조회
+	 @GetMapping("/boardList.do")
+     public String list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session) {
+         MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+         if (loginUser == null) {
+             return "redirect:/member/signin.do"; // 로그인 페이지로 리디렉션
+         }
+
+         String loggedInDeptCode = loginUser.getDeptCode();
+         if (loggedInDeptCode == null) {
+             model.addAttribute("error", "부서 코드가 설정되지 않았습니다.");
+             return "errorPage"; // 에러 페이지로 리디렉션
+         }
+
+         int listCount = boardService.selectBoardListCount(loggedInDeptCode);
+
+         PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+
+         Map<String, Object> params = new HashMap<>();
+         params.put("pi", pi);
+         params.put("deptCode", loggedInDeptCode);
+
+         List<BoardDto> list = boardService.selectBoardList(params);
+
+         model.addAttribute("pi", pi);
+         model.addAttribute("list", list);
+
+         return "board/boardList";
+     }
 	 
 	 
 	 
