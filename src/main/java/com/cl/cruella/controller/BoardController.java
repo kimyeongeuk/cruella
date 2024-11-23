@@ -24,6 +24,7 @@ import com.cl.cruella.dto.ReplyDto;
 import com.cl.cruella.service.BoardService;
 import com.cl.cruella.util.FileUtil;
 import com.cl.cruella.util.PagingUtil;
+import com.cl.cruella.util.StringUtil;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -208,18 +209,34 @@ public class BoardController {
 	@ResponseBody
 	@PostMapping("/rinsert.do")
 	public String replyInsert(ReplyDto r, HttpSession session) {
-		r.setMemNo( String.valueOf( ((MemberDto)session.getAttribute("loginUser")).getMemNo() ) );
-		int result = boardService.insertReply(r);
-		return result > 0 ? "SUCCESS" : "FAIL";
+		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "FAIL: Please log in first.";
+        }
+
+        // 댓글 내용의 줄바꿈을 <br> 태그로 변환
+        r.setReplyContent(StringUtil.convertNewlinesToBreaks(r.getReplyContent()));
+
+        r.setMemNo(String.valueOf(loginUser.getMemNo()));
+        int result = boardService.insertReply(r);
+        return result > 0 ? "SUCCESS" : "FAIL";
 	}
 	
 	@ResponseBody
 	@PostMapping("/rrinsert.do")
 	public String rreplyInsert(ReplyDto r, HttpSession session) {
-	    r.setMemNo(String.valueOf(((MemberDto)session.getAttribute("loginUser")).getMemNo()));
-	    r.setReplyType(1); // 대댓글(replyType=1) 설정
-	    int result = boardService.insertRreply(r);
-	    return result > 0 ? "SUCCESS" : "FAIL";
+		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "FAIL: Please log in first.";
+        }
+
+        // 대댓글 내용의 줄바꿈을 <br> 태그로 변환
+        r.setReplyContent(StringUtil.convertNewlinesToBreaks(r.getReplyContent()));
+
+        r.setMemNo(String.valueOf(loginUser.getMemNo()));
+        r.setReplyType(1); // 대댓글(replyType=1) 설정
+        int result = boardService.insertRreply(r);
+        return result > 0 ? "SUCCESS" : "FAIL";
 	}
 
 	@ResponseBody
@@ -269,5 +286,6 @@ public class BoardController {
 	public int getRreplyCount(@RequestParam int replyNo) {
 	    return boardService.getRreplyCount(replyNo);
 	}
+	
 	
 }

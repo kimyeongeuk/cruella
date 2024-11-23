@@ -991,8 +991,8 @@
             },
           })
         })
-        // 사원 클릭시 end
-
+        // 사원 클릭시 end        
+        
         // 사이드바 다시 활성화 start
         $('#chat-header-actions').on('click',function(){
             $('#app-chat-sidebar-right-setting').css('display','block');
@@ -1036,17 +1036,66 @@
 	     var userNo = "${loginUser.memNo}"; // 로그인 유저 사번
 	     var userName = "${loginUser.memName}"; // 로그인 유저 이름
 	   	 var socket = new SockJS("${contextPath}/chatPage");
+	     var socket2 = new SockJS("${contextPath}/chat");
 	     var client = Stomp.over(socket);
 	     var activeChat = null;
 	     
+	     // sockjs 실행
+	     
+	     socket2.onmessage = onMessage;
+	     
+       $('.chatStart').on('click',function(){ // 채팅방생성 시작
+		         socket2.send(JSON.stringify({ memNo: '${loginUser.memNo}',
+																					inviteNo:inviteMem,
+																					inviteName:inviteName}));
+      	
+      }) // 채팅방생성 종료
+	     
+      
+      // sockjs 메시지 응답
+     	function onMessage(evt){ 
+    	    
+    	   console.log('sockjs 응답완료');
+    	   console.log(evt);
+    	   $('#testname').html('변경완료@~#~!@@!');
+    	   let c = "";
+    	   
+    	   c += '<li class="chat-contact-list-item mb-1 chat-list-form">';
+    	   c += '<input type="hidden" value="${ list.chatNo }" class="chatlistno">';
+    		 c += '<a class="d-flex align-items-center">';
+    		 c += '<div class="flex-shrink-0 avatar avatar-offline">';
+    		 c += '<img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />';
+    		 c += '</div>';
+    		 c += '<div class="chat-contact-info flex-grow-1 ms-4 test1">';
+    		 c += '<div class="d-flex justify-content-between align-items-center">';
+    		 c += '<h6 class="chat-contact-name text-truncate fw-normal m-0">테스트 제목자리입니다</h6>';
+    		 c += '<small class="text-muted">30분전</small>';
+    		 c += '</div>';
+    		 c += '<small class="chat-contact-status text-truncate">테스트 메시지나오는자리입니다.</small>';
+    		 c += '<input type="hidden" value="${ list.chatNo }" class="mewmsg">';
+    		 c += '</div>';
+    		 c +=	'</a>';							 
+    		 c += '</li>';
+    		 
+    		 $('#chat-list').append(c);
+
+    	   
+    	   
+    	   
+    	}; // sockjs 메시지 종료
+	     
+      
+     	// sockjs 종료
+     
+	    // stomp 실행
 			client.connect({}, function (frame) {
 			    console.log("STOMP 연결됨");
 			
-			    // 모든 채팅방 구독
+			    // 모든 채팅방 구독                                                                                                                                                                                                                                                                                                                                                                 
 			    chatNoList.forEach(function (chatNo) {
 			        client.subscribe('/sub/' + chatNo, function (chat) {
 			            var content = JSON.parse(chat.body);
-									
+									                                    
 			            if(activeChat == chatNo){
 				            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck);
 				            $('#chathistory').append(str);
@@ -1074,37 +1123,33 @@
 			        });  
 			    }); // 모든 구독 끝
 			    
-			    
+			    		/*
 		           $('.chatStart').on('click',function(){ // 채팅방생성 시작
 		        	   
 		        	   var contextPath = '${contextPath}';
 		        	   chatNo = 34;
-		        	   $.ajax({
-		        		url:'${contextPath}/chat/start.do',
-		        		data:{memNo:'${loginUser.memNo}',inviteNo:inviteMem,inviteName:inviteName},
-		        		success:function(res){
-		        			console.log(res);
-		        			if(res == 1){
-		        				alert('성공적으로 진입');
-		        				
-		        				client.subscribe('/sub/newChat', function (chat) { // 구독 시작
-					        				$('#testname').html('와 이게 되네');
-		        							console.log('이안으로 진입');
-		    			            var content = JSON.parse(chat.body);
-													console.log(content);
-		    			        }); // 구독 끝		
-		        			}else{
-		        				alert('이미 존재하는 채팅방 입니다.');
-		        			}
-		        		}
-		        	})
+				         client.send('/pub/chat/Chatroom', {}, JSON.stringify({ memNo: '${loginUser.memNo}',
+																							                           inviteNo:inviteMem,
+																							                           inviteName:inviteName
+		        	   
+	
+							        client.subscribe('/sub/newChat', function (chat) {
+							            var content = JSON.parse(chat.body);
+													
+							            
+							            
+							            
+							        }); 
+				         
+				         
+                  }));
 		        	
 		        }) // 채팅방생성 종료
 			    
-			    
+			    */
 			
 			
-			});
+			}); // stomp 종료
 
         // 채팅방 목록 클릭시 start 	
         $('.chat-list-form').on('click', function() {
@@ -1133,7 +1178,7 @@
                 }, 50);
 		              
 				        // 채팅방 입장시 작동될 코드
-				        client.send('/pub/chat/enter', {}, JSON.stringify({chatNo:activeChat, memNo:userNo}))
+				        //client.send('/pub/chat/enter', {}, JSON.stringify({chatNo:activeChat, memNo:userNo}))
                 
               }
             });

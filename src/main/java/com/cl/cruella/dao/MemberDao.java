@@ -76,7 +76,7 @@ public class MemberDao {
 	}
 
 	public MemberDto selectMemberByNo(String memNo) {
-		return sqlSession.selectOne("memberMapper.selectMemberByNo", memNo);
+		return sqlSession.selectOne("memberMapper.selectMember", memNo);
 	}
 }
 

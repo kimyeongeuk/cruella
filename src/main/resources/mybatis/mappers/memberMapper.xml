@@ -28,7 +28,7 @@
 		
 	</resultMap>
 
-	<!-- 로그인(김동규) -->
+	<!-- 로그인(김동규) 수정페이지조회(예빈) -->
 	<select id="selectMember" resultMap="memberResultMap">
 		select 
 		       m.mem_no
@@ -189,41 +189,25 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		select
 					count(*)
 		 from member
-		where mem_no = #{memNo}
 	</select>
 	
 	<!-- 직원조회리스트 (이예빈) 	-->
 	<select id="getPagedMemberList" resultMap="memberResultMap">
 		select 
-					 mem_no
+                   mem_no
 				 , mem_name
-				 , DEPT_CODE
-				 , POS_CODE
+				 , DEPT_NAME
+				 , POS_NAME
 				 , email
-		  from member
+		  from member m
+          join  position p on (p.pos_code = m.pos_code)
+          join department d on (d.dept_code = m.dept_code)
+          
 		  order by mem_no
-			
 	
 	</select>
+	
 
-	<select id="selectMemberByNo" resultMap="memberResultMap">
-		select 
-		 		   mem_no
-			   , mem_name
-				 , mem_pwd
-				 , phone
-				 , email
-				 , address
-				 , hire_date
-				 , mem_ssn
-				 , account
-				 , bank_name
-				 , pos_code
-				 , dept_code
-				 , salary
-		  from member
-		 where mem_no = #{memNo}
-	</select>
 
 
 </mapper>
