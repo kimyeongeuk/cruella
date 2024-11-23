@@ -37,7 +37,6 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	
 	private final MemberService memberService;
-	private final WorkLogService wlService;
 	private final JavaMailSender mailSender;
 	private final BCryptPasswordEncoder bcryptPwdEncoder;
 	private final FileUtil fileUtil;

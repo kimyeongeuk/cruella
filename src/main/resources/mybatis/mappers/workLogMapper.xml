@@ -14,7 +14,7 @@
 	</resultMap>
 	
 
-	<!-- 출근(정상) -->
+	<!-- 출근 -->
 	<insert id="clockIn">
 		insert
 		  into work_log
@@ -34,26 +34,25 @@
 		  , 'C'
 		  )
 	</insert>
+
 	
-	<insert id="clockInLate">
-		insert
-		  into work_log
-		  (
-		  	wl_no
-		  , mem_no
-		  , wl_clock_in
-		  , wl_work_date
-		  , wl_status
-		  )
-		  values
-		  (
-		  	seq_work.nextval
-		  , #{memNo}
-		  , #{clockInTime}
-		  , sysdate
-		  , 'L'
-		  )
-	</insert>
+	<select id="selectClockInTime" resultType="String">
+		select
+				   wl_clock_in
+			from work_log
+		 where mem_no = #{memNo}
+		   and trunc(wl_work_date) = trunc(sysdate)
+	</select>
 	
+	<update id="clockOut">
+		update
+					 work_log
+			 set 
+			     wl_clock_out = #{clockOutTime}
+			   , wl_status = #{status}
+			   , wl_time = #{workTime}
+		 where mem_no = #{memNo}
+  		 and trunc(wl_work_date) = trunc(sysdate)
+	</update>
 
 </mapper>

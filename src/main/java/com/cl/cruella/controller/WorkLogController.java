@@ -33,24 +33,56 @@ public class WorkLogController {
 	@ResponseBody
 	public String clockIn(WorkLogDto workLog, HttpSession session) {
 		
-		String clTime = workLog.getClockInTime();
-
-	    int hour = Integer.parseInt(clTime.split(":")[0]); // 출근 시간 ??시 추출
-	    MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+		
 	    
-	    if(hour >= 9) { // 출근시간이 9시 이상일때
-	    	int result = wlService.clockInLate(workLog);
+	    int result = wlService.clockIn(workLog);
+	    
 	    	
-	    	loginUser.setWlStatus("C");
-	    }else {
-	    	int result = wlService.clockIn(workLog);
-	    	loginUser.setWlStatus("L");
-	    }
+	    // 세션에 출근 상태 업데이트
 	    session.setAttribute("loginUser", loginUser);
         
-	    // 세션에 출근 상태 업데이트
 		
 		return workLog.getClockInTime();
+	}
+	
+	// 퇴근
+	@PostMapping("/clockOut.do")
+	@ResponseBody
+	public String clockOut(WorkLogDto workLog, HttpSession session) {
+		
+		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+		
+		String clockInTime = wlService.selectClockInTime(workLog.getMemNo()); // 출근 시간 가져오기
+		String clockOutTime = workLog.getClockOutTime();
+		
+	    int coHour = Integer.parseInt(clockOutTime.split(":")[0]); // 퇴근 시간 ??시 추출
+	    int ciHour = Integer.parseInt(clockInTime.split(":")[0]);  // 출근 시간 ??시 추출
+		
+	    workLog.setWorkTime(coHour - ciHour); // 오늘의 근무 시간 저장
+	    
+		if(coHour < 18) { // 조퇴
+			
+			workLog.setStatus("E");
+			int result = wlService.clockOut(workLog);
+			
+		}else if(ciHour < 9) { // 정상
+			
+			workLog.setStatus("N");
+			int result = wlService.clockOut(workLog);
+			
+		}else { // 지각
+			
+			workLog.setStatus("L");
+			int result = wlService.clockOut(workLog);
+			
+		}
+		// 세션에 출근 상태 업데이트
+		loginUser.setWlStatus(workLog.getStatus());
+	    session.setAttribute("loginUser", loginUser);
+	    
+		return clockOutTime;
+		
 	}
 	
 	

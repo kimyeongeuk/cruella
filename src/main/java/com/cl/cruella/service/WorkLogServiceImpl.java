@@ -15,12 +15,18 @@ public class WorkLogServiceImpl implements WorkLogService {
 		
 	@Override
 	public int clockIn(WorkLogDto workLog) {
+		
 		return wlDao.clockIn(workLog);
 	}
 
 	@Override
-	public int clockInLate(WorkLogDto workLog) {
-		return wlDao.clockInLate(workLog);
+	public String selectClockInTime(String memNo) {
+		return wlDao.selectClockInTime(memNo);
+	}
+
+	@Override
+	public int clockOut(WorkLogDto workLog) {
+		return wlDao.clockOut(workLog);
 	}
 
 }
