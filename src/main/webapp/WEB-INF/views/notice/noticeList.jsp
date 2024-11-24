@@ -14,246 +14,311 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-    <script src="${ contextPath }/resources/assets/js/config.js"></script>
+<script src="${ contextPath }/resources/assets/js/config.js"></script>
+<style>
+  .ms-auto {
+    margin-left: auto;
+  }
+  .d-flex {
+    display: flex;
+    align-items: center;
+  }
+  .select, .text, #searchBtn {
+    margin-right: 10px; /* 요소 간의 간격을 조정 */
+  }
+  .title {
+  	max-width: 500px;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	white-space: nowrap;
+  }
+  .card-datatable {
+  overflow-x: auto;
+	}
+	
+	.datatables-basic {
+	  table-layout: fixed;
+	  width: 100%;
+	}
+	
+	.datatables-basic th,
+	.datatables-basic td {
+	  white-space: nowrap;
+	  overflow: hidden;
+	  
+	}
+	
+	@media (max-width: 768px) {
+	  .datatables-basic th,
+	  .datatables-basic td {
+	    font-size: 14px;
+	    padding: 8px;
+	  }
+	}
+	
+	@media (max-width: 480px) {
+	  .datatables-basic th,
+	  .datatables-basic td {
+	    font-size: 12px;
+	    padding: 6px;
+	  }
+	
+	  .datatables-basic th:nth-child(3),
+	  .datatables-basic td:nth-child(3) {
+	    display: none;
+	  }
+	}
+
+</style>
+
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
-   <div class="layout-container">
-   
-   
+  <div class="layout-container">
+
     <!-- 헤더 시작 -->
-      <jsp:include page="/WEB-INF/views/common/header.jsp"/>
+    <jsp:include page="/WEB-INF/views/common/header.jsp"/>
     <!-- 헤더 끝 -->
-    
-      <div class="layout-page">
 
-    <!-- nav 시작 -->
+    <div class="layout-page">
+
+      <!-- nav 시작 -->
       <jsp:include page="/WEB-INF/views/common/nav.jsp" />
-      <!-- nav 끗 -->
+      <!-- nav 끝 -->
 
-
-   <div class="content-wrapper">
-   <!-- 세션 시작 -->
-    <div class="container-xxl flex-grow-1 container-p-y">
-     	<!-- 이쪽에 세션정보 넣어야합니다 ----------------------------------------------------------------------- -->
-    	
-    	<!-- Content wrapper -->
       <div class="content-wrapper">
-        <!-- Content -->
-
+        <!-- 세션 시작 -->
         <div class="container-xxl flex-grow-1 container-p-y">
-          
-          <div class="container card" style="padding: 50px;">
-            <div style="display: flex; align-items: center;">
-              <div>
-                <span><span style="font-size: 24px;">공지사항</span>
-                <span style="color: #7367F0; margin-left: 40px;">전체</span><span> / 인사관리팀</span></span>
-              </div>
-              <div  style="margin-left: 50px;">
-                <button id="create" class="btn btn-primary" style="width: 100px;" onclick="regist();">+ 글작성</button>
-                <i class="menu-icon tf-icons ti ti-trash" style="margin-left: 10px;"></i>
-              </div>
-              <div style="margin-left: auto;">
-                <input type="text" class="form-control" id="noticeSearch" placeholder="검색어 입력" style="width: 260px;"/>
-              </div>
-              <div>
-                <button id="searchBtn" class="btn btn-primary" style="width: 90px; margin-left: 10px;">+ 검색</button>
-              </div>
-            </div>
-            
-            <br>
-            <div class="card-datatable table-responsive pt-0">
+          <!-- 이쪽에 세션정보 넣어야합니다 ----------------------------------------------------------------------- -->
 
-              <table class="datatables-basic table">
-                <thead style="text-align: center;">
-                  <tr>
-                    <th style="width: 5%;"><input type="checkbox" name="" id=""></th>
-                    <th style="width: 15%;">카테고리</th>
-                    <th style="width: 15%;">작성자</th>
-                    <th style="width: 40%;">제목</th>
-                    <th style="width: 15%;">작성일</th>
-                    <th style="width: 10%;">조회수</th>
-                  </tr>
-                </thead>
-                <tbody style="text-align: center;">
-                  <tr>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td>공지</td>
-                    <td>관리자</td>
-                    <td style="color: #FF9F43;"><a href="${ contextPath }/notice/noticeDetail.do">공지사항 제목입니다.<i class="menu-icon tf-icons ti ti-file" style="margin-left: 10px;"></i></a></td>
-                    <td>2024.11.05</td>
-                    <td>10</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td>공지</td>
-                    <td>관리자</td>
-                    <td style="color: #FF9F43;">공지사항 제목입니다.</td>
-                    <td>2024.11.05</td>
-                    <td>10</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td>공지</td>
-                    <td>관리자</td>
-                    <td style="color: #FF9F43;">공지사항 제목입니다.</td>
-                    <td>2024.11.05</td>
-                    <td>10</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td>공지</td>
-                    <td>관리자</td>
-                    <td>공지사항 제목입니다.</td>
-                    <td>2024.11.05</td>
-                    <td>10</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td>공지</td>
-                    <td>관리자</td>
-                    <td>공지사항 제목입니다.</td>
-                    <td>2024.11.05</td>
-                    <td>10</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td>공지</td>
-                    <td>관리자</td>
-                    <td>공지사항 제목입니다.</td>
-                    <td>2024.11.05</td>
-                    <td>10</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td>공지</td>
-                    <td>관리자</td>
-                    <td>공지사항 제목입니다.</td>
-                    <td>2024.11.05</td>
-                    <td>10</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td>공지</td>
-                    <td>관리자</td>
-                    <td>공지사항 제목입니다.</td>
-                    <td>2024.11.05</td>
-                    <td>10</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td>공지</td>
-                    <td>관리자</td>
-                    <td>공지사항 제목입니다.</td>
-                    <td>2024.11.05</td>
-                    <td>10</td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td>공지</td>
-                    <td>관리자</td>
-                    <td>공지사항 제목입니다.</td>
-                    <td>2024.11.05</td>
-                    <td>10</td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              <!-- 페이징바 , 클릭한 숫자에 클래스에 active 추가하기 -->
-              <div class="card-body">
-                <div class="row">
-                  <span class="col-lg-12 d-flex justify-content-center">                    
-                    <div class="demo-inline-spacing">
-                      <!-- Basic Pagination -->
-                      <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                          <li class="page-item first">
-                            <a class="page-link" href="javascript:void(0);"
-                              ><i class="ti ti-chevrons-left ti-sm"></i
-                            ></a>
-                          </li>
-                          <li class="page-item prev">
-                            <a class="page-link" href="javascript:void(0);"
-                              ><i class="ti ti-chevron-left ti-sm"></i
-                            ></a>
-                          </li>
-                          <li class="page-item active">
-                            <a class="page-link" href="javascript:void(0);">1</a>
-                          </li>
-                          <li class="page-item">
-                            <a class="page-link" href="javascript:void(0);">2</a>
-                          </li>
-                          <li class="page-item">
-                            <a class="page-link" href="javascript:void(0);">3</a>
-                          </li>
-                          <li class="page-item">
-                            <a class="page-link" href="javascript:void(0);">4</a>
-                          </li>
-                          <li class="page-item">
-                            <a class="page-link" href="javascript:void(0);">5</a>
-                          </li>
-                          <li class="page-item next">
-                            <a class="page-link" href="javascript:void(0);"
-                              ><i class="ti ti-chevron-right ti-sm"></i
-                            ></a>
-                          </li>
-                          <li class="page-item last">
-                            <a class="page-link" href="javascript:void(0);"
-                              ><i class="ti ti-chevrons-right ti-sm"></i
-                            ></a>
-                          </li>
-                        </ul>
-                      </nav>
-                      <!--/ Basic Pagination -->
-                    </div>
-                  </span>
-                </div>
-              </div>
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class="container card py-5">
+                <div class="d-flex align-items-center">
+                  <div style="margin: 20px;">
+                    <span style="font-size: 20px;">
+                    	공지사항                                        
+                    </span>
+                    <span class="text-primary" style="font-size: 14px; margin-left: 20px;">    
+                    <c:choose>
+                      <c:when test="${loginUser.deptCode eq 'S1'}">영업총괄팀 </c:when>
+                      <c:when test="${loginUser.deptCode eq 'S2'}">인사팀 </c:when>
+                      <c:when test="${loginUser.deptCode eq 'S3'}">지원팀 </c:when>
+                      <c:when test="${loginUser.deptCode eq 'T1'}">남성의류팀 </c:when>
+                      <c:when test="${loginUser.deptCode eq 'T2'}">여성의류팀 </c:when>
+                      <c:when test="${loginUser.deptCode eq 'T3'}">식품팀 </c:when>
+                      <c:when test="${loginUser.deptCode eq 'T4'}">스포츠팀 </c:when>
+                      <c:when test="${loginUser.deptCode eq 'T5'}">뷰티팀 </c:when>
+                      <c:when test="${loginUser.deptCode eq 'T6'}">명품팀 </c:when>
+                      <c:when test="${loginUser.deptCode eq 'T7'}">문화센터팀 </c:when>
+                      <c:when test="${loginUser.deptCode eq 'T8'}">디지털 및 가전팀 </c:when>
+                      <c:otherwise>기타부서팀</c:otherwise>
+                    </c:choose>      
+                    </span>         
+                  </div>
+
+                  <c:choose>
+                    <c:when test="${ loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4' }">
+                      <div class="ms-5">
+                        <button id="create" class="btn btn-primary waves-effect waves-light" onclick="regist();">
+                        	<span class="ti-xs ti ti-edit me-2"></span>작성
+                        </button>  
+                        <button id="create" class="btn btn-danger" onclick="deleteSelectedPosts();">
+                        	<span class="ti-xs ti ti-trash me-2"></span>삭제
+                        </button>      	 
+                      </div>
+                    </c:when>
+                    <c:otherwise></c:otherwise>
+                  </c:choose>
+                  <div class="ms-auto d-flex">
+                    <form id="search_form" action="${contextPath}/notice/noticeSearch.do" method="get" class="d-flex align-items-center">
+                      <input type="hidden" name="page" value="1">
+                      <div class="select">
+                        <select id="searchSelect" class="custom-select select1 form-select form-select-lg" name="condition" style="width: 110px; height: 38px !important; min-height: 38px !important; font-size: 16px !important; padding-top: 0.3rem !important; padding-right: 1rem !important; padding-bottom: calc(38px - 1rem - 16px) !important; padding-left: 1rem !important; box-sizing: border-box;">
+                          <option value="mem_name">작성자</option>
+                          <option value="notice_title">제목</option>
+                          <option value="notice_content">내용</option>
+                        </select>
+                      </div>
+                      <div class="text">
+                        <input type="hidden" name="deptCode" value="${loginUser.deptCode}">
+                        <input type="text" class="form-control" name="keyword" value="${search.keyword}">
+                      </div>
+                      <button type="submit" id="searchBtn" class="btn btn-primary">
+                     		<svg  xmlns="http://www.w3.org/2000/svg"  width="16"  height="16"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-search me-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>검색
+                      </button>   
+                    </form>
+                    <c:if test="${not empty search}">
+                      <script>
+                        $(document).ready(function(){
+                          $("#search_form select").val('${search.condition}');
+                          
+                          // 검색 후의 페이징바 클릭 시 검색 form을 강제로 submit
+                          // (단, 페이지번호는 현재 클릭한 페이지번호로 바꿔서)
+                          $("#paging_area a").on("click", function(){
+                            let page = $(this).text(); // Previous | Next | 페이지번호
+                            if(page == 'Previous'){
+                              page = ${pi.currentPage - 1};
+                            } else if(page == 'Next'){
+                              page = ${pi.currentPage + 1};
+                            }
+                            $("#search_form input[name=page]").val(page);
+                            $("#search_form").submit();
+                            return false; // 기본이벤트(href='/notice/list.do' url요청)가 동작 안 되도록
+                          });
+                        });
+                      </script>
+                    </c:if>
+                  </div>
+                </div>    
+                
+                <div class="card-datatable table-responsive pt-3">
+								  <table class="datatables-basic table text-center">
+								    <thead>
+								      <tr>
+								        <c:choose>
+								          <c:when test="${loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4'}">
+								            <th style="width: 5%;"><input type="checkbox" id="selectAll" /></th>
+								            <th style="width: 10%;">번호</th>
+								            <th style="width: 15%;">작성자</th>
+								            <th style="width: 35%;">제목</th>
+								            <th style="width: 15%;">작성일</th>
+								            <th style="width: 10%;">조회수</th>
+								          </c:when>
+								          <c:otherwise>
+								            <th style="width: 10%;">번호</th>
+								            <th style="width: 15%;">작성자</th>
+								            <th style="width: 40%;">제목</th>
+								            <th style="width: 15%;">작성일</th>
+								            <th style="width: 10%;">조회수</th>
+								          </c:otherwise>
+								        </c:choose>
+								      </tr>
+								    </thead>
+								    <tbody>
+								      <c:choose>
+								        <c:when test="${empty list}">
+								          <!-- 게시글이 없을 경우 -->
+								          <tr>
+								            <td colspan="6">조회된 게시글이 없습니다.</td>
+								          </tr>
+								        </c:when>
+								        <c:otherwise>
+								          <c:set var="count" value="1" />
+								          <c:forEach var="notice" items="${list}">
+								            <!-- 역순 넘버링 계산 -->
+								            <c:set var="reverseCount" value="${pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1)}" />
+								            <tr data-noticeno="${notice.noticeNo}">
+								              <c:choose>
+								                <c:when test="${loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4'}">
+								                  <td><input type="checkbox" class="item-checkbox" /></td>
+								                </c:when>
+								              </c:choose>
+								              <td>${reverseCount}</td> <!-- 역순 번호 -->
+								              <td>${notice.memName}</td>
+								              <td class="title" style="cursor: pointer;" onclick='location.href = "${contextPath}/notice/${loginUser.memNo eq notice.memNo ? "noticeDetail.do" : "increase.do"}?no=${notice.noticeNo}";'>
+								                ${notice.noticeTitle}
+								                <c:if test="${notice.attachCount != 0}">
+								                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip">
+								                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+								                    <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
+								                  </svg>
+								                </c:if>
+								              </td>
+								              <td>${notice.noticeRegistDT}</td>
+								              <td>${notice.noticeCount}</td>
+								            </tr>
+								            <c:set var="count" value="${count + 1}" />
+								          </c:forEach>
+								        </c:otherwise>
+								      </c:choose>
+								    </tbody>
+								  </table>
+								</div>
+                          	
+								
+								<!-- 페이징 바 -->
+	              <div class="card-body">
+	                <div class="row">
+	                  <span class="col-lg-12 d-flex justify-content-center">
+	                    <div class="demo-inline-spacing">
+	                      <nav aria-label="Page navigation">
+	                        <ul class="pagination">
+	                          <li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>
+	                          <li class="page-item prev ${pi.currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage - 1});"><i class="ti ti-chevron-left ti-sm"></i></a></li>
+	                          <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}"><li class="page-item ${i == pi.currentPage ? 'active' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${i});">${i}</a></li></c:forEach>
+	                          <li class="page-item next ${pi.currentPage == pi.maxPage ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage + 1});"><i class="ti ti-chevron-right ti-sm"></i></a></li>
+	                          <li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.maxPage});"><i class="ti ti-chevrons-right ti-sm"></i></a></li>
+	                        </ul>
+	                      </nav>
+	                    </div>
+	                  </span>
+	                </div>
+	              </div>
+	            </div>
             </div>
           </div>
+          <!-- 세션정보 끝 -->
         </div>
+        <!-- 세션 끝 -->
       </div>
-    	
-    	<script>
-			  function regist() {
-			    window.location.href = "${contextPath}/notice/noticeRegist.do";
-			  }
-			</script>
-    
-    
-    
-    	<!-- 세션정보 끝 ---------------------------------------------------------------------------------------- -->
+      <!-- 푸터 시작 -->
+      <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+      <!-- 푸터 끝 -->
+      <div class="content-backdrop fade"></div>
     </div>
-   <!-- 세션 끝 -->
-
-
-
-   <!-- 푸터 시작 -->
-   <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-   <!-- 푸터 끝 -->
-   
-   <div class="content-backdrop fade"></div>
-   <!-- wrapper 닫기 -->
-   </div>
-   
-   <!-- nav layout page 닫기 -->
-   </div>
-   
-   <!-- layout-container 닫기 -->
-   </div>
-     <!-- Overlay -->
-    <div class="layout-overlay layout-menu-toggle"></div>
-
-    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-    <div class="drag-target"></div>
-   
-   
-   <!-- layout wrapper 닫기 -->
-   </div>
-   
-   
-   
-   
-   
+    <!-- nav layout page 닫기 -->
+  </div>
+  <!-- layout-container 닫기 -->
+</div>
+<!-- Overlay -->
+<div class="layout-overlay layout-menu-toggle"></div>
+<!-- Drag Target Area To SlideIn Menu On Small Screens -->
+<div class="drag-target"></div>
+<!-- layout wrapper 닫기 -->
 </body>
+<script>
+  document.getElementById('selectAll').addEventListener('click', function(event) {
+    const checkboxes = document.querySelectorAll('.item-checkbox');
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = event.target.checked;
+    });
+  });
+
+  function goToPage(pageNumber) {
+    window.location.href = "${contextPath}/notice/noticeList.do?page=" + pageNumber;
+  }
+
+  function regist() {
+    window.location.href = "${contextPath}/notice/noticeRegist.do";
+  }
+
+  function deleteSelectedPosts() {
+    const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+    const selectednoticeNos = Array.from(checkboxes).map(checkbox => checkbox.closest('tr').dataset.noticeno);
+
+    if (selectednoticeNos.length === 0) {
+      alert('삭제할 게시물을 선택해주세요.');
+      return;
+    }
+
+    if (confirm('선택한 게시물을 삭제하시겠습니까?')) {
+      const form = document.createElement('form');
+      form.method = 'post';
+      form.action = "${contextPath}/notice/deleteSelectedPosts.do";
+      selectednoticeNos.forEach(noticeNo => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'noticeNos';
+        input.value = noticeNo;
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+  }
+</script>
 </html>

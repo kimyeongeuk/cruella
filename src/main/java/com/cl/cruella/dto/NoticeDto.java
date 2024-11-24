@@ -24,8 +24,8 @@ public class NoticeDto {
 	private String memNo; 
 	private String noticeRegistDT;
 	private String noticeModifyDT;
-	private int count;
-	private String status;
+	private int noticeCount;
+	private String noticeStatus;
 	private String deptCode;
 	private int attachCount;
 	private String memName;
