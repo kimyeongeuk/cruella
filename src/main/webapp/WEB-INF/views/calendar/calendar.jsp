@@ -110,17 +110,22 @@
           calendar.unselect()
         },
         */
-    
-          
           
         // 이벤트 조회
         events: [ 
                <c:forEach var="list" items="${list}"> // List로 불러오는거는 for문으로!
           {
-                  id: '${list.calNo}',
+            
+            id: '${list.calNo}',
             title: '${list.calTitle}',
             start: '${list.calStartDt}',
             end: '${list.calEndDt}T23:00',
+            extendedProps:{
+            	rgb: '${list.calRgb}',
+                category: '${list.calCategory}',
+            }
+            
+            
             <c:if test="${list.calStartDt eq list.calEndDt}">
                 allDay: true
               </c:if>
@@ -201,36 +206,64 @@
           
           
           
-					// 이벤트 선택해서 삭제하기
+					// 이벤트 선택해서 수정, 삭제하기
           
           eventClick: function(info){
-        	  if(confirm("'" + info.event.title +"' 일정을 삭제하시겠습니까?") ){
-        		  // 확인 클릭시
-        		var delCalNo = info.event.id; // 삭제할 이벤트 ID
+        	  
+        	 // console.log(info.event.start);
+        	 //console.log(info.event.end);
+        	  //console.log(info.event.extendedProps);
+        	  console.log(info.event.extendedProps.rgb);
+        	  
+        	 //console.log(info.event.id);
+        	  
+        	  
+        	  	// 일정명 적어뒀던거 수정 모달창에 뜨게 하기
+        	  	var event = info.event;
+        	  	var modal = $('#eventclickmodal');
+        	  
+        	  
+        			// 이벤트 클릭시 모달창 뜨게하는 것 
+              var eventclickmodal = new bootstrap.Modal(document.getElementById("eventclickmodal"));
+        			
+        			
+        			// 카테고리를 수정 모달에 뜨게 해주기
+        			$("#calCategory2").val(event.extendedProps.category);
+        			
+        			// 일정명을 수정 모달에 뜨게 해주기
+        			
+        			$("#title2").val(event.title);
+        			
+        			
+               var startDate = new Date(event.startStr);  // 종료일을 Date 객체로 변환
+               startDate.setDate(startDate.getDate()); 
 
-        		 
-        			  $.ajax({
-        				  url: '${contextPath}/calendar/deleteCalendar.do',
-        				  type: 'GET',
-        				  data: {
-        					  	calNo: delCalNo
-        				  },
-        				  success: function(res) {
-        	       				 if(res > 0){
-        	       					 info.event.remove();
-        	       					 alert('일정이 삭제되었습니다.');
+               var startDateString = startDate.toISOString().split('T')[0];  // YYYY-MM-DD 형식으로 변환
+        			
+              // event 로 부터 도출한 날짜 값을 modal 영역 내의 날짜 input 요소에 출력 
+              $("#start2").val(startDateString);  // 시작일을 'start' input에 입력 => String 값 반환됨
 
-        	       				 }else{
-        	       					 alert('일정 삭제에 실패했습니다. 다시 시도해주세요.');
-        	       				 }
-               			 },
-        			  })
-        		  
-        	  }
+           
+              var endDate = new Date(event.endStr);  // 종료일을 Date 객체로 변환
+              endDate.setDate(endDate.getDate()); 
+
+              var endDateString = endDate.toISOString().split('T')[0];  // YYYY-MM-DD 형식으로 변환
+              $("#end2").val(endDateString);  // 종료일 -1일을 'end' input에 입력  
+
+							
+              // RGB를 수정 모달에 뜨게 해주기
+              $("#color2").val(event.extendedProps.rbg);
+
+              
+              eventclickmodal.show();
+        	  
+              
+              
+        	  
           },
           
           
-          // /이벤트 선택해서 삭제하기
+          // /이벤트 선택해서 수정, 삭제하기
           
           
           
@@ -508,7 +541,7 @@
           <div class="modal-body">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="text-center mb-6">
-              <h4 class="mb-2">일정</h4>
+              <h4 class="mb-2">일정 추가</h4>
             </div>
 
               
@@ -600,8 +633,108 @@
     <!-- /day 클릭시 모달 -->
     
     
+
     
     
+    
+    <!-- 이벤트 클릭시 모달 -->
+    <div class="modal fade" id="eventclickmodal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+        <div class="modal-content" style="height: 620px;">
+          <div class="modal-body">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="text-center mb-6">
+              <h4 class="mb-2">일정 수정</h4>
+            </div>
+
+              
+              <div class="col-12 text-center" style="height:160px;">
+
+                <label for="calCategory" style="float:left;">일정 종류</label>
+                  <select
+                    id="calCategory2"
+                    name="calCategory"
+                    class="select2 form-select"
+                    data-allow-clear="true" >
+                    <option class="optionHover" value="선택" disabled selected style="display: none;">선택</option>
+                    <option class="optionHover" value="전사 일정" class="optionHover">전사 일정</option>
+                    <option class="optionHover" value="팀 일정" class="optionHover">팀 일정</option>
+                    <option class="optionHover" value="개인 일정" class="optionHover">개인 일정</option>
+                  </select>
+                
+                <label for="title" style="float:left; margin-top: 20px;">일정명</label>
+                  <input
+                    id="title2"
+                    name="title"
+                    class="form-control credit-card-mask"
+                    type="text"
+                    aria-describedby="title2"
+                    style="margin-bottom:20px;" />
+                <label for="start" style="float:left;">시작일</label>
+                  <input
+                    id="start2"
+                    name="start"
+                    class="form-control credit-card-mask"
+                    type="date"
+                    aria-describedby="title2"
+                    style="margin-bottom:20px;" />
+                <label for="end" style="float:left;">종료일</label>
+                  <input
+                    id="end2"
+                    name="end"
+                    class="form-control credit-card-mask"
+                    type="date"
+                    aria-describedby="title2"
+                    style="margin-bottom:20px;" />
+    
+
+
+                    
+                  
+
+                  <label for="color" style="float:left;">배경색</label>
+
+
+                  <select
+                    id="color2"
+                    name="color"
+                    class="select2 form-select"
+                    data-allow-clear="true">
+                    
+                    <option value="rgb(128, 108, 199)" class="companyCal" style="background-color: rgb(128, 108, 199);" selected>전사 일정</option>
+
+                    <option value="rgb(28, 134, 221)" class="teamCal" style="background-color: rgb(28, 134, 221);" selected>팀 일정</option>
+
+                    <option class="personalCal" value="선택" disabled selected style="display: none;">선택</option>
+                    <option value="rgb(253, 191, 191)" class="personalCal" style="background-color: rgb(253, 191, 191); color:transparent;">연빨강</option>
+                    <option value="rgb(255, 201, 165)" class="personalCal" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>
+                    <option value="rgb(255, 245, 191)" class="personalCal" style="background-color: rgb(255, 245, 191); color:transparent;">연노랑</option>
+                    <option value="rgb(207, 253, 226)" class="personalCal" style="background-color: rgb(207, 253, 226); color:transparent;">연초록</option>
+                    <option value="rgb(200, 247, 255)" class="personalCal" style="background-color: rgb(202, 240, 247); color:transparent;">연파랑</option>
+                    <option value="rgb(201, 206, 255)" class="personalCal" style="background-color: rgb(201, 206, 255); color:transparent;">연남색</option>
+                    <option value="rgb(238, 212, 255)" class="personalCal" style="background-color: rgb(238, 212, 255); color:transparent;">연보라</option>
+                  </select>
+
+
+
+
+                <button type="submit" class="btn btn-primary me-3" style="margin-top:30px;" id="saveChanges" data-bs-dismiss="modal">일정 수정</button>
+                <button
+                	id="deleteBtn"
+                  type="button"
+                  class="btn btn-label-secondary btn-reset"
+                  data-bs-dismiss="modal"
+                  aria-label="Delete" 
+                  style="margin-top:30px;">
+                  삭제
+                </button>
+              </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /이벤트 클릭시 모달 -->
     
     
     

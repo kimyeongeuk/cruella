@@ -8,6 +8,8 @@
 	<result column="CAL_CATEGORY" property="calCategory" />
 	<result column="CAL_STARTDATE" property="calStartDt" />
 	<result column="CAL_ENDDATE" property="calEndDt" />	
+	<result column="CAL_RGB" property="calRgb" />	
+	<result column="CAL_CATEGORY" property="calCategory" />	
 </resultMap>
 
 
@@ -15,7 +17,9 @@
 
 <!-- 전체 일정 목록 조회하기 -->
 <select id="selectCalendarList" resultMap="selectCalendarResultMap">
-		SELECT CAL_NO
+		SELECT CAL_CATEGORY
+				 , CAL_RGB
+				 , CAL_NO
 				 , CAL_TITLE
 		     , CAL_STARTDATE
 		     , CAL_ENDDATE
