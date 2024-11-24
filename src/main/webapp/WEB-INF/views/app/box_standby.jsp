@@ -220,11 +220,13 @@
                       	
                       </td>
                       <td>
-                       <c:if test="${a.docStatus eq 'A'}">
+                       
+                       
                       	<span class="status_box" style="color:#F89914;">
                       		대기
                       	</span>
-                       </c:if>
+                      	
+                       
                       </td>
                     </tr> 
                     </c:forEach>
