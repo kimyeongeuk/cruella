@@ -99,7 +99,7 @@
                     <span>메세지</span>
                   </div>
                   <div>
-                    <h5 class="mb-0">10</h5>
+                    <h5 class="mb-0">${loginUser.vacCount}</h5>
                     <span>잔여 휴가</span>
                   </div>
                   <div>

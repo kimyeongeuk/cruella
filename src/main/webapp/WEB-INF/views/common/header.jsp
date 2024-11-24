@@ -135,19 +135,19 @@
             </li>
 
             <!-- 마이페이지 -->
-            <li class="menu-item">
+            <li class="menu-item" id="mypage">
               <a href="#" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-user"></i>
                 <div data-i18n="마이페이지">마이페이지</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="${ contextPath }/member/myinfo.do" class="menu-link">
+                  <a href="${ contextPath }/member/myinfo.do" id="side_myinfo" class="menu-link">
                     <div data-i18n="내 정보">내 정보</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="${ contextPath }/member/myinfo_workLog.do" class="menu-link" id="side_myworklog">
                     <div data-i18n="근태관리">근태관리</div>
                   </a>
                 </li>
@@ -312,4 +312,6 @@
               </a>
             </li>
 					</ul>
+					
+					
         </aside>
