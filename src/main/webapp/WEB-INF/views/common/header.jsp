@@ -105,14 +105,7 @@
 
 		<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
-                <a href="<c:choose>
-                <c:when test="${loginUser == null}">
-                    ${contextPath}
-                </c:when>
-                <c:otherwise>
-                    ${contextPath}/dashboard
-                </c:otherwise>
-              </c:choose>" class="app-brand-link">
+                <a href="${contextPath}" class="app-brand-link">
               <img src="${ contextPath }/resources/assets/img/mainlogo.png ">
               <span class="app-brand-text demo menu-text fw-bold">Cruella</span>
             </a>
@@ -129,11 +122,18 @@
 
            
 
+						<!-- 대시보드 -->
+            <li class="menu-item">
+	            <a href="${ contextPath }" id="dashboard" class="menu-link">
+	            	<i class="menu-icon tf-icons ti ti-smart-home"></i>
+	              <div data-i18n="대시보드"></div>
+	            </a>
+            </li>
             <!-- 메뉴 -->
             <li class="menu-header small">
               <span class="menu-header-text" data-i18n="메뉴">메뉴</span>
             </li>
-
+            
             <!-- 마이페이지 -->
             <li class="menu-item" id="mypage">
               <a href="#" class="menu-link menu-toggle">

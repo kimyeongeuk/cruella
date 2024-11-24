@@ -32,12 +32,24 @@
       border: 0;
       color: #8D8F9B;
   }
-  #memoMenuModal .modal-dialog {
-    position: absolute;
-    top: 20%;  /* 원하는 위치로 조정 */
-    left: 30%; /* 원하는 위치로 조정 */
-    transform: translate(-50%, -50%);
-  }
+	  #memoMenuModal .modal-dialog {
+	    position: absolute;
+	    top: 20%;  /* 원하는 위치로 조정 */
+	    left: 30%; /* 원하는 위치로 조정 */
+	    transform: translate(-50%, -50%);
+	  }
+  	#side_dashboard::before {
+		  content: ''; /* 가상 요소 필수 */
+		  display: inline-block; /* 블록 요소 */
+		  width: 10px; /* 동그라미 크기 */
+		  height: 10px; /* 동그라미 크기 */
+		  border-radius: 50%; /* 완전한 원 */
+		  background-color: transparent; /* 배경을 투명으로 설정 */
+		  border: 2px solid gray; /* 초기 테두리 색상 */
+		}
+		#side_dashboard.active::before {
+		 	border: 2px solid white; /* 테두리만 흰색으로 변경 */
+		}
   </style>
 </head>
 <body>
@@ -824,6 +836,18 @@
                   createChart('남성의류');  // 초기화 시 첫 번째 카테고리로 차트를 만듭니다.
                 });
               </script>
+   <script>
+	   // 사이드바 처리
+		document.addEventListener("DOMContentLoaded", function () {
+	 	
+			const element = document.getElementById("dashboard");
+			
+		 	element.style.backgroundColor = "#958CF4";
+		 	element.style.color = "white";
+		 	element.classList.add("active");
+	 	
+		});
+   </script>
 	
 	
 	
