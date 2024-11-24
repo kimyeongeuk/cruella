@@ -62,23 +62,20 @@
                         <div
                           class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-4">
                           <div class="user-profile-info">
-                            <h4 class="mb-2 mt-lg-6">김영욱</h4>
+                            <h4 class="mb-2 mt-lg-6">${loginUser.memName}</h4>
                             <ul
                               class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-4 my-2">
                               <li class="list-inline-item d-flex gap-2 align-items-center">
-                                <i class="ti ti-book ti-lg"></i><span class="fw-medium">인사관리팀</span>
+                                <i class="ti ti-book ti-lg"></i><span class="fw-medium">${loginUser.deptName}</span>
                               </li>
                               <li class="list-inline-item d-flex gap-2 align-items-center">
-                                <i class="ti ti-mail ti-lg"></i><span class="fw-medium">cuteYoungwook@example.com</span>
+                                <i class="ti ti-mail ti-lg"></i><span class="fw-medium">${loginUser.email}</span>
                               </li>
                               <li class="list-inline-item d-flex gap-2 align-items-center">
-                                <i class="ti ti-calendar ti-lg"></i><span class="fw-medium"> 2024-06-17</span>
+                                <i class="ti ti-calendar ti-lg"></i><span class="fw-medium">${loginUser.hireDate}</span>
                               </li>
                             </ul>
                           </div>
-                          <a href="javascript:void(0)" class="btn btn-primary mb-1">
-                            <i class="ti ti-clock ti-xs me-2"></i>출근
-                          </a>
                         </div>
                       </div>
                     </div>
@@ -287,17 +284,17 @@
                           <div style="display: flex; height: 80px;">
                             <div style="display: flex; margin-top: 30px;">
                               <p style="margin-right: 50px; margin-left: 50px;">휴가관리</p>
-                              <p style="color: #28C76F;">3</p>
+                              <p style="color: #28C76F;">${loginUser.vacCount}</p>
                               &nbsp;&nbsp;/&nbsp;&nbsp;
                               <span>15</span>
                             </div>
                             <div style="position: relative; top: 20px; left: 400px; display: flex; gap: 30px;">
                               <div style="position: relative; top: 10px;">
-                                사용 <span>3</span>
+                                사용 <span>${15-loginUser.vacCount}</span>
                                 &nbsp;&nbsp;&nbsp;
-                                잔여 <span style="color: #28C76F;">12</span>
+                                잔여 <span style="color: #28C76F;">${loginUser.vacCount}</span>
                               </div>
-                              <a href="javascript:void(0)" class="btn btn-success mb-1" style="height: 45px;">
+                              <a href="${contextPath}/app/app_main.do" class="btn btn-success mb-1" style="height: 45px;">
                                 <i class="ti ti-plane-departure ti-xs me-2"></i>휴가 신청
                               </a>
                             </div>
