@@ -30,5 +30,6 @@ public class NoticeDto {
 	private int attachCount;
 	private String memName;
 	private List<AttachDto> attachList;
+	private List<DeptDto> deptCodes;
 }
 

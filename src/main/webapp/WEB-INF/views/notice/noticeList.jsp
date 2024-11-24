@@ -133,12 +133,13 @@
                     <c:otherwise></c:otherwise>
                   </c:choose>
                   
-                  <div class="ms-auto d-flex">
                   
+                  <div class="ms-auto d-flex">
 									  <form id="search_form" action="${contextPath}/notice/noticeSearch.do" method="get" class="d-flex align-items-center">
 									    <input type="hidden" name="page" value="1">
+									   	<input type="hidden" name="deptCode" value="${loginUser.deptCode}">
 									    <div class="select">
-                        <select id="searchSelect" class="custom-select select1 form-select form-select-lg" name="condition" style="width: 110px; height: 38px !important; min-height: 38px !important; font-size: 16px !important; padding-top: 0.3rem !important; padding-right: 1rem !important; padding-bottom: calc(38px - 1rem - 16px) !important; padding-left: 1rem !important; box-sizing: border-box;">
+									      <select id="searchSelect" class="custom-select select1 form-select form-select-lg" name="condition" style="width: 110px; height: 38px !important; min-height: 38px !important; font-size: 16px !important; padding-top: 0.3rem !important; padding-right: 1rem !important; padding-bottom: calc(38px - 1rem - 16px) !important; padding-left: 1rem !important; box-sizing: border-box;">
 									        <option value="" <c:if test="${empty search.condition}">selected</c:if>>전체</option>
 									        <option value="mem_name" <c:if test="${search.condition == 'mem_name'}">selected</c:if>>작성자</option>
 									        <option value="notice_title" <c:if test="${search.condition == 'notice_title'}">selected</c:if>>제목</option>
@@ -156,10 +157,9 @@
 									        <path d="M21 21l-6 -6"/>
 									      </svg>
 									      검색
-									    </button>   
+									    </button>
 									  </form>
-								  
-                    <c:if test="${not empty search}">
+									  <c:if test="${not empty search}">
 									    <script>
 									      $(document).ready(function(){
 									        $("#search_form select").val('${search.condition}');
@@ -181,6 +181,8 @@
 									    </script>
 									  </c:if>
 									</div>
+                  
+                  
                 </div>    
                 
                 <div class="card-datatable table-responsive pt-3">

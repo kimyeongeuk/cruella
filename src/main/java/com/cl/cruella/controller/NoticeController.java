@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cl.cruella.dto.AttachDto;
+import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.NoticeDto;
 import com.cl.cruella.dto.PageInfoDto;
@@ -30,33 +31,35 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/notice")
 @RequiredArgsConstructor
 public class NoticeController {
-	
-	private final NoticeService NoticeService;
-	private final PagingUtil pagingUtil;
-	private final FileUtil fileUtil;
-	
-	@GetMapping("/noticeList.do")
-    public String list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session) {
+
+    private final NoticeService noticeService;
+    private final PagingUtil pagingUtil;
+    private final FileUtil fileUtil;
+
+    @GetMapping("/noticeList.do")
+    public String list(@RequestParam(value = "page", defaultValue = "1") int currentPage,
+                       @RequestParam(value = "deptCode", required = false) String deptCode,
+                       Model model, HttpSession session) {
         MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
         if (loginUser == null) {
-            return "redirect:/member/signin.do"; // 로그인 페이지로 리디렉션
+            return "redirect:/member/signin.do";
         }
 
-        String loggedInDeptCode = loginUser.getDeptCode();
+        String loggedInDeptCode = deptCode != null ? deptCode : loginUser.getDeptCode();
         if (loggedInDeptCode == null) {
             model.addAttribute("error", "부서 코드가 설정되지 않았습니다.");
             return "errorPage"; // 에러 페이지로 리디렉션
         }
-
-        int listCount = NoticeService.selectNoticeListCount(loggedInDeptCode);
-
-        PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
-
+        
         Map<String, Object> params = new HashMap<>();
-        params.put("pi", pi);
         params.put("deptCode", loggedInDeptCode);
 
-        List<NoticeDto> list = NoticeService.selectNoticeList(params);
+        int listCount = noticeService.selectNoticeListCount(params);
+
+        PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+        params.put("pi", pi);
+
+        List<NoticeDto> list = noticeService.selectNoticeList(params);
 
         model.addAttribute("pi", pi);
         model.addAttribute("list", list);
@@ -64,152 +67,128 @@ public class NoticeController {
         return "notice/noticeList";
     }
 
+    @GetMapping("/increase.do")
+    public String increaseCount(int no) {
+        noticeService.updateIncreaseCount(no);
+        return "redirect:/notice/noticeDetail.do?no=" + no;
+    }
 
-	@GetMapping("/increase.do") // 조회수 증가용 (타인의 글일 경우 호출) => /notice/detail.do 재요청
-	public String increaseCount(int no) {
-		NoticeService.updateIncreaseCount(no);
-		return "redirect:/notice/noticeDetail.do?no=" + no;
-	}
-	
-	@GetMapping("/noticeDetail.do")
-	public void detail(int no, Model model) {
-		// 상세페이지에 필요한 데이터
-		// 게시글(제목,작성자,작성일,내용) 데이터, 첨부파일(원본명,저장경로,실
-		NoticeDto b = NoticeService.selectNotice(no);
-		// noticeNo, noticeTitle, noticeContent, noticeWriter, registDt, attachList
-		
-		model.addAttribute("b", b);
-	}
-		
-	@GetMapping("/noticeRegist.do")
-	public void noticeRegistPage() {
-		
-	}
-	
-	@PostMapping("/noticeInsert.do")
-	public String regist(NoticeDto notice
-					   , List<MultipartFile> uploadFiles
-					   , HttpSession session
-					   , RedirectAttributes rdAttributes) {
-		
-		// notice테이블에 insert할 데이터 
-		notice.setMemNo( String.valueOf( ((MemberDto)session.getAttribute("loginUser")).getMemNo() ) );
-		
-		// 첨부파일 업로드 후에 
-		// attachment테이블에 insert할 데이터
-		List<AttachDto> attachList = new ArrayList<>();
-		for(MultipartFile file : uploadFiles) {
-			if(file != null && !file.isEmpty()) {
-				Map<String, String> map = fileUtil.fileupload(file, "notice");
-				attachList.add(AttachDto.builder()
-										.filePath(map.get("filePath"))
-										.originalName(map.get("originalName"))
-										.filesystemName(map.get("filesystemName"))
-										.refType("B")
-										.build());
-			}
-		}
-		notice.setAttachList(attachList); // 제목,내용,작성자회원번호,첨부파일들정보
-		
-		int result = NoticeService.insertNotice(notice);
-		
-		if(attachList.isEmpty() && result == 1 
-				|| !attachList.isEmpty() && result == attachList.size()) {
-			rdAttributes.addFlashAttribute("alertMsg", "게시글 등록 성공");
-		}else {
-			rdAttributes.addFlashAttribute("alertMsg", "게시글 등록 실패");			
-		}
-		
-		return "redirect:/notice/noticeList.do";
-		
-	}
-	
-	@PostMapping("/noticeModify.do")
-	public String modifyPage(@RequestParam("no") int no, Model model) {
-	    model.addAttribute("b", NoticeService.selectNotice(no));
-	    return "notice/noticeModify";
-	}
+    @GetMapping("/noticeDetail.do")
+    public void detail(@RequestParam("no") int no, Model model) {
+        NoticeDto n = noticeService.selectNotice(no);
+        model.addAttribute("n", n);
+    }
 
+    @GetMapping("/noticeRegist.do")
+    public void noticeRegistPage() { }
 
-	@PostMapping("/noticeUpdate.do")
-	public String modify(NoticeDto notice 		// 번호,제목,내용
-					   , String[] delFileNo   // null | 삭제할첨부파일번호들
-					   , List<MultipartFile> uploadFiles // 새로넘어온첨부파일들
-					   , RedirectAttributes rdAttributes ) {
-		
-		// 후에 db에 반영 성공시 삭제할 파일들 삭제 위해 미리 조회
-		List<AttachDto> delAttachList = NoticeService.selectDelAttach(delFileNo);
-		
-		List<AttachDto> attachList = new ArrayList<>();
-		for(MultipartFile file : uploadFiles) {
-			if(file != null && !file.isEmpty()) {
-				Map<String, String> map = fileUtil.fileupload(file, "notice");
-				attachList.add(AttachDto.builder()
-										.filePath(map.get("filePath"))
-										.originalName(map.get("originalName"))
-										.filesystemName(map.get("filesystemName"))
-										.refType("B")
-										.refNo(notice.getNoticeNo())
-										.build());	
-			}
-		}
-		notice.setAttachList(attachList);
-		
-		int result = NoticeService.updateNotice(notice, delFileNo);
-		
-		if(result > 0) { // 성공
-			rdAttributes.addFlashAttribute("alertMsg", "성공적으로 수정되었습니다.");
-			for(AttachDto at : delAttachList) {
-				new File(at.getFilePath() + "/" + at.getFilesystemName()).delete();
-			}
-		}else { // 실패
-			rdAttributes.addFlashAttribute("alertMsg", "게시글 수정에 실패했습니다.");
-		}
-		
-		return "redirect:/notice/noticeDetail.do?no=" + notice.getNoticeNo();
-		
-	}
+    @PostMapping("/noticeInsert.do")
+    public String regist(NoticeDto notice, @RequestParam("deptCode") List<DeptDto> deptCodes,
+                         List<MultipartFile> uploadFiles, HttpSession session, RedirectAttributes rdAttributes) {
+        notice.setMemNo(String.valueOf(((MemberDto) session.getAttribute("loginUser")).getMemNo()));
 
+        List<AttachDto> attachList = new ArrayList<>();
+        for (MultipartFile file : uploadFiles) {
+            if (file != null && !file.isEmpty()) {
+                Map<String, String> map = fileUtil.fileupload(file, "notice");
+                attachList.add(AttachDto.builder()
+                                        .filePath(map.get("filePath"))
+                                        .originalName(map.get("originalName"))
+                                        .filesystemName(map.get("filesystemName"))
+                                        .refType("N")
+                                        .build());
+            }
+        }
+        notice.setAttachList(attachList);
+        notice.setDeptCodes(deptCodes);
 
-	@GetMapping("/noticeSearch.do")
-	public String search(@RequestParam(value="page", defaultValue="1") int currentPage
-					   , @RequestParam Map<String, String> search
-					   , Model model) {
-		// Map<String,String> search ==> {condition=user_id|notice_title|notice_content, keyword=란}
-		
-		int listCount = NoticeService.selectSearchListCount(search);
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
-		List<NoticeDto> list = NoticeService.selectSearchList(search, pi);
-		
-		model.addAttribute("pi", pi);
-		model.addAttribute("list", list);
-		model.addAttribute("search", search);
-		
-		
-		return "notice/noticeList";
-	}
-	
-	
-	@PostMapping("/noticeDelete.do")
-	public String remove(@RequestParam("no") int no, RedirectAttributes rdAttributes) {
-	    int result = NoticeService.deleteNotice(no);
-	    
-	    if (result > 0) {
-	        rdAttributes.addFlashAttribute("alertMsg", "성공적으로 삭제되었습니다.");
-	    } else {
-	        rdAttributes.addFlashAttribute("alertMsg", "게시글 삭제에 실패하였습니다.");
-	    }
-	    
-	    return "redirect:/notice/noticeList.do";
-	}
+        int result = noticeService.insertNotice(notice);
 
-	@PostMapping("/deleteSelectedPosts.do")
-	public String deleteSelectedPosts(@RequestParam("noticeNos") List<Integer> noticeNos) {
-	    NoticeService.deleteSelectedPosts(noticeNos);
-	    return "redirect:/notice/noticeList.do";
-	}
+        if (attachList.isEmpty() && result == 1 
+                || !attachList.isEmpty() && result == attachList.size()) {
+            rdAttributes.addFlashAttribute("alertMsg", "게시글 등록 성공");
+        } else {
+            rdAttributes.addFlashAttribute("alertMsg", "게시글 등록 실패");
+        }
 
+        return "redirect:/notice/noticeList.do";
+    }
 
-	
+    @PostMapping("/noticeModify.do")
+    public String modifyPage(@RequestParam("no") int no, Model model) {
+        model.addAttribute("n", noticeService.selectNotice(no));
+        return "notice/noticeModify";
+    }
+
+    @PostMapping("/noticeUpdate.do")
+    public String modify(NoticeDto notice, String[] delFileNo, List<MultipartFile> uploadFiles, RedirectAttributes rdAttributes) {
+        List<AttachDto> delAttachList = noticeService.selectDelAttach(delFileNo);
+
+        List<AttachDto> attachList = new ArrayList<>();
+        for (MultipartFile file : uploadFiles) {
+            if (file != null && !file.isEmpty()) {
+                Map<String, String> map = fileUtil.fileupload(file, "notice");
+                attachList.add(AttachDto.builder()
+                                        .filePath(map.get("filePath"))
+                                        .originalName(map.get("originalName"))
+                                        .filesystemName(map.get("filesystemName"))
+                                        .refType("N")
+                                        .refNo(notice.getNoticeNo())
+                                        .build());
+            }
+        }
+        notice.setAttachList(attachList);
+
+        int result = noticeService.updateNotice(notice, delFileNo);
+
+        if (result > 0) {
+            rdAttributes.addFlashAttribute("alertMsg", "성공적으로 수정되었습니다.");
+            for (AttachDto at : delAttachList) {
+                new File(at.getFilePath() + "/" + at.getFilesystemName()).delete();
+            }
+        } else {
+            rdAttributes.addFlashAttribute("alertMsg", "게시글 수정에 실패했습니다.");
+        }
+
+        return "redirect:/notice/noticeDetail.do?no=" + notice.getNoticeNo();
+    }
+
+    @GetMapping("/noticeSearch.do")
+    public String search(@RequestParam(value = "page", defaultValue = "1") int currentPage,
+                         @RequestParam Map<String, Object> search, Model model, HttpSession session) {
+        if (!search.containsKey("deptCode")) {
+            MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+            search.put("deptCode", loginUser.getDeptCode());
+        }
+
+        int listCount = noticeService.selectSearchListCount(search);
+        PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+        List<NoticeDto> list = noticeService.selectSearchList(search, pi);
+
+        model.addAttribute("pi", pi);
+        model.addAttribute("list", list);
+        model.addAttribute("search", search);
+
+        return "notice/noticeList";
+    }
+
+    @PostMapping("/noticeDelete.do")
+    public String remove(@RequestParam("no") int no, RedirectAttributes rdAttributes) {
+        int result = noticeService.deleteNotice(no);
+
+        if (result > 0) {
+            rdAttributes.addFlashAttribute("alertMsg", "성공적으로 삭제되었습니다.");
+        } else {
+            rdAttributes.addFlashAttribute("alertMsg", "게시글 삭제에 실패하였습니다.");
+        }
+
+        return "redirect:/notice/noticeList.do";
+    }
+
+    @PostMapping("/deleteSelectedPosts.do")
+    public String deleteSelectedPosts(@RequestParam("noticeNos") List<Integer> noticeNos) {
+        noticeService.deleteSelectedPosts(noticeNos);
+        return "redirect:/notice/noticeList.do";
+    }
+
 }
-
