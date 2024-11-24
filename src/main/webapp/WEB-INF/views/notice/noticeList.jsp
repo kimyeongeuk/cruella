@@ -122,56 +122,65 @@
                   <c:choose>
                     <c:when test="${ loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4' }">
                       <div class="ms-5">
-                        <button id="create" class="btn btn-primary waves-effect waves-light" onclick="regist();">
-                        	<span class="ti-xs ti ti-edit me-2"></span>작성
-                        </button>  
-                        <button id="create" class="btn btn-danger" onclick="deleteSelectedPosts();">
-                        	<span class="ti-xs ti ti-trash me-2"></span>삭제
-                        </button>      	 
-                      </div>
+											  <button id="create" class="btn btn-primary waves-effect waves-light" onclick="regist();">
+											    <span class="ti-xs ti ti-edit me-2"></span>작성
+											  </button>  
+											  <button id="create" class="btn btn-danger" onclick="deleteSelectedPosts();">
+											    <span class="ti-xs ti ti-trash me-2"></span>삭제
+											  </button>          
+											</div>
                     </c:when>
                     <c:otherwise></c:otherwise>
                   </c:choose>
+                  
                   <div class="ms-auto d-flex">
-                    <form id="search_form" action="${contextPath}/notice/noticeSearch.do" method="get" class="d-flex align-items-center">
-                      <input type="hidden" name="page" value="1">
-                      <div class="select">
+                  
+									  <form id="search_form" action="${contextPath}/notice/noticeSearch.do" method="get" class="d-flex align-items-center">
+									    <input type="hidden" name="page" value="1">
+									    <div class="select">
                         <select id="searchSelect" class="custom-select select1 form-select form-select-lg" name="condition" style="width: 110px; height: 38px !important; min-height: 38px !important; font-size: 16px !important; padding-top: 0.3rem !important; padding-right: 1rem !important; padding-bottom: calc(38px - 1rem - 16px) !important; padding-left: 1rem !important; box-sizing: border-box;">
-                          <option value="mem_name">작성자</option>
-                          <option value="notice_title">제목</option>
-                          <option value="notice_content">내용</option>
-                        </select>
-                      </div>
-                      <div class="text">
-                        <input type="hidden" name="deptCode" value="${loginUser.deptCode}">
-                        <input type="text" class="form-control" name="keyword" value="${search.keyword}">
-                      </div>
-                      <button type="submit" id="searchBtn" class="btn btn-primary">
-                     		<svg  xmlns="http://www.w3.org/2000/svg"  width="16"  height="16"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-search me-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>검색
-                      </button>   
-                    </form>
+									        <option value="" <c:if test="${empty search.condition}">selected</c:if>>전체</option>
+									        <option value="mem_name" <c:if test="${search.condition == 'mem_name'}">selected</c:if>>작성자</option>
+									        <option value="notice_title" <c:if test="${search.condition == 'notice_title'}">selected</c:if>>제목</option>
+									        <option value="notice_content" <c:if test="${search.condition == 'notice_content'}">selected</c:if>>내용</option>
+									      </select>
+									    </div>
+									    <div class="text">
+									      <input type="hidden" name="deptCode" value="${loginUser.deptCode}">
+									      <input type="text" class="form-control" name="keyword" value="${search.keyword}">
+									    </div>
+									    <button type="submit" id="searchBtn" class="btn btn-primary">
+									      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-search me-2">
+									        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+									        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/>
+									        <path d="M21 21l-6 -6"/>
+									      </svg>
+									      검색
+									    </button>   
+									  </form>
+								  
                     <c:if test="${not empty search}">
-                      <script>
-                        $(document).ready(function(){
-                          $("#search_form select").val('${search.condition}');
-                          
-                          // 검색 후의 페이징바 클릭 시 검색 form을 강제로 submit
-                          // (단, 페이지번호는 현재 클릭한 페이지번호로 바꿔서)
-                          $("#paging_area a").on("click", function(){
-                            let page = $(this).text(); // Previous | Next | 페이지번호
-                            if(page == 'Previous'){
-                              page = ${pi.currentPage - 1};
-                            } else if(page == 'Next'){
-                              page = ${pi.currentPage + 1};
-                            }
-                            $("#search_form input[name=page]").val(page);
-                            $("#search_form").submit();
-                            return false; // 기본이벤트(href='/notice/list.do' url요청)가 동작 안 되도록
-                          });
-                        });
-                      </script>
-                    </c:if>
-                  </div>
+									    <script>
+									      $(document).ready(function(){
+									        $("#search_form select").val('${search.condition}');
+									        
+									        // 검색 후의 페이징바 클릭 시 검색 form을 강제로 submit
+									        // (단, 페이지번호는 현재 클릭한 페이지번호로 바꿔서)
+									        $("#paging_area a").on("click", function(){
+									          let page = $(this).text(); // Previous | Next | 페이지번호
+									          if(page == 'Previous'){
+									            page = ${pi.currentPage - 1};
+									          } else if(page == 'Next'){
+									            page = ${pi.currentPage + 1};
+									          }
+									          $("#search_form input[name=page]").val(page);
+									          $("#search_form").submit();
+									          return false; // 기본이벤트(href='/notice/list.do' url요청)가 동작 안 되도록
+									        });
+									      });
+									    </script>
+									  </c:if>
+									</div>
                 </div>    
                 
                 <div class="card-datatable table-responsive pt-3">
@@ -237,27 +246,28 @@
 								    </tbody>
 								  </table>
 								</div>
-                          	
 								
 								<!-- 페이징 바 -->
-	              <div class="card-body">
-	                <div class="row">
-	                  <span class="col-lg-12 d-flex justify-content-center">
-	                    <div class="demo-inline-spacing">
-	                      <nav aria-label="Page navigation">
-	                        <ul class="pagination">
-	                          <li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>
-	                          <li class="page-item prev ${pi.currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage - 1});"><i class="ti ti-chevron-left ti-sm"></i></a></li>
-	                          <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}"><li class="page-item ${i == pi.currentPage ? 'active' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${i});">${i}</a></li></c:forEach>
-	                          <li class="page-item next ${pi.currentPage == pi.maxPage ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage + 1});"><i class="ti ti-chevron-right ti-sm"></i></a></li>
-	                          <li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.maxPage});"><i class="ti ti-chevrons-right ti-sm"></i></a></li>
-	                        </ul>
-	                      </nav>
-	                    </div>
-	                  </span>
-	                </div>
-	              </div>
-	            </div>
+								<div class="card-body">
+								  <div class="row">
+								    <span class="col-lg-12 d-flex justify-content-center">
+								      <div class="demo-inline-spacing">
+								        <nav aria-label="Page navigation">
+								          <ul class="pagination" id="paging_area">
+								            <li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>
+								            <li class="page-item prev ${pi.currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage - 1});"><i class="ti ti-chevron-left ti-sm"></i></a></li>
+								            <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+								              <li class="page-item ${i == pi.currentPage ? 'active' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${i});">${i}</a></li>
+								            </c:forEach>
+								            <li class="page-item next ${pi.currentPage == pi.maxPage ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage + 1});"><i class="ti ti-chevron-right ti-sm"></i></a></li>
+								            <li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.maxPage});"><i class="ti ti-chevrons-right ti-sm"></i></a></li>
+								          </ul>
+								        </nav>
+								      </div>
+								    </span>
+								  </div>
+								</div>
+
             </div>
           </div>
           <!-- 세션정보 끝 -->
@@ -280,6 +290,33 @@
 <!-- layout wrapper 닫기 -->
 </body>
 <script>
+	$(document).ready(function(){
+	  $("#searchSelect").val("${empty search.condition ? '' : search.condition}");
+	});
+
+
+  function goToPage(page) {
+    $("#search_form input[name=page]").val(page);
+    $("#search_form").submit();
+  }
+
+  $(document).ready(function(){
+    $("#search_form select").val('${search.condition}');
+    
+    // 검색 후의 페이징바 클릭 시 검색 form을 강제로 submit
+    // (단, 페이지번호는 현재 클릭한 페이지번호로 바꿔서)
+    $("#paging_area a").on("click", function(){
+      let page = $(this).text(); // Previous | Next | 페이지번호
+      if(page == 'Previous'){
+        page = ${pi.currentPage - 1};
+      } else if(page == 'Next'){
+        page = ${pi.currentPage + 1};
+      }
+      $("#search_form input[name=page]").val(page);
+      $("#search_form").submit();
+      return false; // 기본이벤트(href='/notice/list.do' url요청)가 동작 안 되도록
+    });
+  });
   document.getElementById('selectAll').addEventListener('click', function(event) {
     const checkboxes = document.querySelectorAll('.item-checkbox');
     checkboxes.forEach(checkbox => {

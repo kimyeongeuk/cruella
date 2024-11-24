@@ -84,15 +84,20 @@
 		    join member m on (m.mem_no = b.mem_no)
 		    where b.board_status = 'Y'
 		      and b.dept_code = #{deptCode}
-		    <if test="condition == 'mem_name'">
-		      and m.mem_name like '%' || #{keyword} || '%'
-		    </if>
-		    <if test="condition == 'board_title'">
-		      and b.board_title like '%' || #{keyword} || '%'
-		    </if>
-		    <if test="condition == 'board_content'">
-		      and b.board_content like '%' || #{keyword} || '%'
-		    </if>
+		    <if test="condition == ''">
+			    AND (m.mem_name LIKE '%' || #{keyword} || '%' OR b.board_title LIKE '%' || #{keyword} || '%' OR b.board_content LIKE '%' || #{keyword} || '%')
+			  </if>
+			  <if test="condition != ''">
+			    <if test="condition == 'mem_name'">
+			      AND m.mem_name LIKE '%' || #{keyword} || '%'
+			    </if>
+			    <if test="condition == 'board_title'">
+			      AND b.board_title LIKE '%' || #{keyword} || '%'
+			    </if>
+			    <if test="condition == 'board_content'">
+			      AND b.board_content LIKE '%' || #{keyword} || '%'
+			    </if>
+			  </if>
 		</select>
 
 		
@@ -125,14 +130,19 @@
 		   	) r ON r.board_no = b.board_no
 			  WHERE b.board_status = 'Y'
 			    AND b.dept_code = #{deptCode}
-		  <if test="condition == 'mem_name'">
-		    and m.mem_name like '%' || #{keyword} || '%'
+		  <if test="condition == ''">
+		    AND (m.mem_name LIKE '%' || #{keyword} || '%' OR b.board_title LIKE '%' || #{keyword} || '%' OR b.board_content LIKE '%' || #{keyword} || '%')
 		  </if>
-		  <if test="condition == 'board_title'">
-		    and b.board_title like '%' || #{keyword} || '%'
-		  </if>
-		  <if test="condition == 'board_content'">
-		    and b.board_content like '%' || #{keyword} || '%'
+		  <if test="condition != ''">
+		    <if test="condition == 'mem_name'">
+		      AND m.mem_name LIKE '%' || #{keyword} || '%'
+		    </if>
+		    <if test="condition == 'board_title'">
+		      AND b.board_title LIKE '%' || #{keyword} || '%'
+		    </if>
+		    <if test="condition == 'board_content'">
+		      AND b.board_content LIKE '%' || #{keyword} || '%'
+		    </if>
 		  </if>
 		  order by b.board_no desc
 		</select>

@@ -65,14 +65,19 @@
 		  JOIN member m ON (m.mem_no = n.mem_no)
 		  WHERE n.notice_status = 'Y'
 		    AND (n.dept_code IS NULL OR n.dept_code = #{deptCode})
-		  <if test="condition == 'mem_name'">
-		    AND m.mem_name LIKE '%' || #{keyword} || '%'
+		  <if test="condition == ''">
+		    AND (m.mem_name LIKE '%' || #{keyword} || '%' OR n.notice_title LIKE '%' || #{keyword} || '%' OR n.notice_content LIKE '%' || #{keyword} || '%')
 		  </if>
-		  <if test="condition == 'notice_title'">
-		    AND n.notice_title LIKE '%' || #{keyword} || '%'
-		  </if>
-		  <if test="condition == 'notice_content'">
-		    AND n.notice_content LIKE '%' || #{keyword} || '%'
+		  <if test="condition != ''">
+		    <if test="condition == 'mem_name'">
+		      AND m.mem_name LIKE '%' || #{keyword} || '%'
+		    </if>
+		    <if test="condition == 'notice_title'">
+		      AND n.notice_title LIKE '%' || #{keyword} || '%'
+		    </if>
+		    <if test="condition == 'notice_content'">
+		      AND n.notice_content LIKE '%' || #{keyword} || '%'
+		    </if>
 		  </if>
 		</select>
 		
@@ -99,18 +104,23 @@
 		  ) a ON a.file_ref_no = n.notice_no
 		  WHERE n.notice_status = 'Y'
 		    AND (n.dept_code IS NULL OR n.dept_code = #{deptCode})
-		  <if test="condition == 'mem_name'">
-		    AND m.mem_name LIKE '%' || #{keyword} || '%'
+		  <if test="condition == ''">
+		    AND (m.mem_name LIKE '%' || #{keyword} || '%' OR n.notice_title LIKE '%' || #{keyword} || '%' OR n.notice_content LIKE '%' || #{keyword} || '%')
 		  </if>
-		  <if test="condition == 'notice_title'">
-		    AND n.notice_title LIKE '%' || #{keyword} || '%'
-		  </if>
-		  <if test="condition == 'notice_content'">
-		    AND n.notice_content LIKE '%' || #{keyword} || '%'
+		  <if test="condition != ''">
+		    <if test="condition == 'mem_name'">
+		      AND m.mem_name LIKE '%' || #{keyword} || '%'
+		    </if>
+		    <if test="condition == 'notice_title'">
+		      AND n.notice_title LIKE '%' || #{keyword} || '%'
+		    </if>
+		    <if test="condition == 'notice_content'">
+		      AND n.notice_content LIKE '%' || #{keyword} || '%'
+		    </if>
 		  </if>
 		  ORDER BY n.notice_no DESC
 		</select>
-		
+
 		<select id="selectNotice" resultMap="noticeResultMap">
 		  SELECT
 		      n.notice_no,
