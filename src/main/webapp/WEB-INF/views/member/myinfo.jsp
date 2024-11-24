@@ -142,9 +142,6 @@
                               </li>
                             </ul>
                           </div>
-                          <a href="javascript:void(0)" class="btn btn-primary mb-1">
-                            <i class="ti ti-clock ti-xs me-2"></i>출근
-                          </a>
                         </div>
                       </div>
                     </div>
