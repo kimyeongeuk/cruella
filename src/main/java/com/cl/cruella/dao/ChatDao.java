@@ -1,6 +1,5 @@
 package com.cl.cruella.dao;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.cl.cruella.dto.ChatDto;
+import com.cl.cruella.dto.ChatListDto;
 import com.cl.cruella.dto.ChatProfileDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.MessageDto;
@@ -67,6 +67,19 @@ public class ChatDao {
 
 	public String checkChatList(List<String> list) {
 		return sqlSession.selectOne("chatMapper.checkChatList",list);
+	}
+
+	public ChatDto chatInfo() {
+		return sqlSession.selectOne("chatMapper.chatInfo");
+	}
+
+	public ChatDto chatTitle(int chatNo) {
+		return sqlSession.selectOne("chatMapper.chatTitle",chatNo);
+		 
+	}
+
+	public List<MemberDto> chatUserList(int chatNo) {
+		return sqlSession.selectList("chatMapper.chatUserList",chatNo);
 	}
 	
 

@@ -1,6 +1,7 @@
 package com.cl.cruella.controller;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cl.cruella.dto.ChatDto;
+import com.cl.cruella.dto.ChatListDto;
 import com.cl.cruella.dto.ChatProfileDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.MessageDto;
@@ -45,6 +47,28 @@ public class ChatController {
 		List<MemberDto> memberList = chatServiceImpl.memberList();
 		// 채팅방 인원 체크
 		
+	    Date today = new Date();
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    String todayDate = sdf.format(today);
+
+	    // 채팅방 날짜 포맷 적용
+	    for(ChatDto cd : chatList) {
+	        String chatDate = sdf.format(cd.getChatRegistDate());
+	        // chatDate를 비교하여 필요한 날짜 포맷을 설정 
+	        if (chatDate.substring(0, 10).equals(todayDate.substring(0, 10))) {
+	           
+	            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+	            cd.setStrDate(timeFormat.format(cd.getChatRegistDate()));  
+	        } else {
+	            
+	            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	            cd.setStrDate(dateFormat.format(cd.getChatRegistDate()));  
+	        }
+	    }
+	    
+	    
+	    
+		System.out.println(chatList);
 		model.addAttribute("chatList",chatList);
 		model.addAttribute("chatProfileList",chatProfileList);
 		model.addAttribute("memberList",memberList);
@@ -79,10 +103,12 @@ public class ChatController {
 	public Map<String,Object> chatList(int chatNo,String memNo) {
 		// 채팅리스트 불러오기
 		List<MessageDto> msgList = chatServiceImpl.messageList(chatNo);
-		
+		// 채팅 제목 불러오기
+		ChatDto chatTitle = chatServiceImpl.chatTitle(chatNo);
 		Map<String,Object> map = new HashMap<>();
 		map.put("m", memNo);
 		map.put("msg", msgList);
+		map.put("title",chatTitle);
 		
 		return map;
 	}
@@ -97,37 +123,17 @@ public class ChatController {
 		return result;
 		
 	}
-	/*
+	
 	@ResponseBody
-	@GetMapping(value="/start.do",produces="application/json")
-	public String startChat(String memNo,String inviteNo,String inviteName) {
-		log.debug("맴넘:{}",memNo);
-		log.debug("초대넘:{}",inviteNo);
-		log.debug("초대이름 : {}",inviteName);
+	@GetMapping(value="/chatuserlist.do",produces="application/json")
+	public List<MemberDto> chatUserList(int chatNo) {
 		
-		Map<String,Object> map = new HashMap<>();
-		
-		List<String> list = new ArrayList<>();
-		
-		list.add(memNo);
-		list.add(inviteNo);
-		
-		map.put("memNo", memNo);
-		map.put("inviteNo", inviteNo);
-		map.put("inviteName",inviteName);
-		map.put("list", list);
-		
-		String result = chatServiceImpl.checkChatList(list);
-		
-		System.out.println(result);
-		if(result == null) {
-			result = String.valueOf(chatServiceImpl.startChat(map));
-		}
-		
-		return result;
+		// 채팅방 유저 조회
+		List<MemberDto> chatUserList = chatServiceImpl.chatUserList(chatNo);
+		return chatUserList;
 		
 	}
-	*/
+	
 	
 	
 	

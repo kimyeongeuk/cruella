@@ -1,6 +1,8 @@
 package com.cl.cruella.dto;
 
-import java.sql.Date;
+
+
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,5 +25,6 @@ public class ChatDto {
 	private String chatCreater;
 	private String chatNewMsg;
 	private int chatCount;
+	private String strDate;
 	
 }

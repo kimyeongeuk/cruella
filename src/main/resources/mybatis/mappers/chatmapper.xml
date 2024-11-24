@@ -188,7 +188,7 @@ select count(chat_no) chat_count
 </insert>
 
 
-
+<!-- 최근메시지 등록 -->
 <update id="updateNewMsg">
 			UPDATE 
 							chat
@@ -207,7 +207,7 @@ select count(chat_no) chat_count
 			WHERE CHAT_NO = #{chatNo}
 </update>
 
-
+<!-- 채팅방 생성 -->
 <insert id="startChat">
 
 	insert
@@ -227,7 +227,7 @@ select count(chat_no) chat_count
 					)							
 </insert>
 
-
+<!-- 채팅방 리스트에 추가 -->
 <insert id="insertChatList">
 	insert
 		into	chat_List
@@ -242,6 +242,7 @@ select count(chat_no) chat_count
 					)
 </insert>
 
+<!-- 채팅방 중복검사 -->
 <select id="checkChatList" resultType="string">
 	SELECT count(CHAT_NO)
 		FROM chat_list
@@ -254,7 +255,42 @@ select count(chat_no) chat_count
   HAVING COUNT(DISTINCT MEM_NO) = 2
 </select>
 
+<!-- 채팅방 번호랑 제목불러오기 -->
+<select id="chatInfo" resultMap="chatResultMap">
+SELECT
+	    chat_no,
+	    chat_title
+FROM
+	    (SELECT
+	         chat_no,
+	         chat_title
+	     FROM
+	         chat
+	     ORDER BY
+	         chat_no DESC)
+WHERE
+   		 ROWNUM = 1
+</select>
 
+<select id="chatTitle" resultMap="chatResultMap">
+select
+				chat_title
+	from
+				chat
+ where	chat_no = #{chatNo}
+</select>
+
+<!-- 채팅방 참여자 목록 불러오기 -->
+<select id="chatUserList" resultMap="memberResultMap">
+select
+				m.mem_name
+     ,  m.PROFILE_URL
+	from
+				chat_list cl
+    		join member m on (m.mem_No = cl.mem_No)
+ where	cl.chat_no = #{chatNo}
+			
+</select>
 
 
 </mapper>

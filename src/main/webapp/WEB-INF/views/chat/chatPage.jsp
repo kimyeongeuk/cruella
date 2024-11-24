@@ -210,11 +210,11 @@
                         </li>
 
                         <!-- 단체 채팅방 끗 -->
-
-						<c:forEach var="list" items="${ chatList }">
-							<c:choose>
-								<c:when test="${ list.chatCount eq 2 }">
-			                        <li class="chat-contact-list-item mb-1 chat-list-form">
+			                        
+													<c:forEach var="list" items="${ chatList }">
+															<c:choose>
+																<c:when test="${ list.chatCount eq 2 }">
+				                        <li class="chat-contact-list-item mb-1 chat-list-form">
 			                        	<input type="hidden" value="${ list.chatNo }" class="chatlistno">
 			                        	
 			                          <a class="d-flex align-items-center">
@@ -224,7 +224,7 @@
 			                            <div class="chat-contact-info flex-grow-1 ms-4 test1">
 			                              <div class="d-flex justify-content-between align-items-center">
 			                                <h6 class="chat-contact-name text-truncate fw-normal m-0">${ list.chatTitle }</h6>
-			                                <small class="text-muted">30분전</small>
+			                                <small class="text-muted">${ list.strDate }</small>
 			                              </div>
 			                              <small class="chat-contact-status text-truncate">${ list.chatNewMsg }</small>
 			                              <input type="hidden" value="${ list.chatNo }" class="mewmsg">
@@ -263,7 +263,7 @@
 	                       	 	</c:otherwise>
 	                        
 	                        </c:choose>
-						</c:forEach>
+											</c:forEach>
 
                         
                       </ul>
@@ -351,7 +351,7 @@
 		                        </ul>
 		                      </div>
 		
-		
+													
 		                      <div class="d-flex mt-6">
 		                        <button
 		                          class="btn btn-primary w-100 chatStart"
@@ -361,6 +361,8 @@
 		                          채팅 시작
 		                        </button>
 		                      </div>
+		                   
+		                      
 		                    </div>
 		                  </div>
 
@@ -458,13 +460,14 @@
 
 
 
-                              <div class="my-6" data-target="#app-chat-sidebar-userlist" data-bs-toggle="sidebar" data-overlay="app-overlay-ex">
+                              <div class="my-6" data-target="#app-chat-sidebar-userlist" data-bs-toggle="sidebar" data-overlay="app-overlay-ex" 
+                              id="chatuserlist">
                                 <p class="text-uppercase text-muted mb-1"></p>
                                 <ul class="list-unstyled d-grid gap-4 ms-2 pt-2 text-heading">
                                   <li class="d-flex justify-content-between align-items-center">
                                     <div>
                                       <i class="ti ti-users ti-md me-1"></i>
-                                      <span class="align-middle">채팅 참여자 목록</span>
+                                      <span class="align-middle" id="chatuserlist;">채팅 참여자 목록</span>
                                     </div>
                                   </li>
                                 </ul>
@@ -804,7 +807,7 @@
 
 
 
-
+											<c:forEach var="list" items="${ memberList }">
                         <li class="mb-1">
                           <a class="d-flex align-items-center" style="margin: 20px;">
                             <div class="flex-shrink-0 avatar avatar-online">
@@ -812,7 +815,7 @@
                             </div>
                             <div class="chat-contact-info flex-grow-1 ms-4">
                               <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="chat-contact-name text-truncate m-0 fw-normal">매너남</h6>
+                                <h6 class="chat-contact-name text-truncate m-0 fw-normal">${ list.memName }</h6>
                               </div>
                               <div class="d-flex justify-content-between align-items-center" >
                               </div>
@@ -823,7 +826,7 @@
                             </button>
                           </a>
                         </li>
-
+											</c:forEach>
 
 
 
@@ -857,11 +860,8 @@
                     id="app-chat-chatuserlist">
 
 
-                    <div class="sidebar-body">
-
-
-                      <!-- 채팅방 초대 목록 -->
-                      <ul class="list-unstyled chat-contact-list py-2 mb-0" id="chat-list">
+                    <div class="sidebar-body">    
+                      <ul class="list-unstyled chat-contact-list py-2 mb-0" id="chat-userList">
                         <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
                           <h5 class="text-primary mb-0">채팅 참여자 목록</h5>
                         </li>
@@ -881,10 +881,10 @@
                               </div>
                               <div class="d-flex justify-content-between align-items-center" >
                               </div>
-                             
                             </div>
                           </a>
                         </li>
+
 
                       </ul>
 
@@ -967,6 +967,7 @@
     <script>
       var inviteMem = null;
       var inviteName = null;
+      var chatNoData = null;
 
       $(document).ready(function(){
 				
@@ -987,7 +988,7 @@
               $('#statusmessage').html(res.cp.cpMessage);
               $('#emailinfo').html(res.m.email);
               $('#phoneinfo').html(res.m.phone);
-              
+             
             },
           })
         })
@@ -1007,40 +1008,64 @@
         })
         // 채팅방 나가기 클릭시 end
         
-        
-        // 사원 목록 클릭후 채팅 시작 클릭 시 실행
-        /*
-           $('.chatStart').on('click',function(){
-        	   
-        	   var contextPath = '${contextPath}';
-        	   
-        	   $.ajax({
-        		url:'${contextPath}/chat/start.do',
-        		data:{memNo:'${loginUser.memNo}',inviteNo:inviteMem,inviteName:inviteName},
+        // 채팅방 인원 조회
+        $('#chatuserlist').on('click',function(){
+        	$.ajax({
+        		url:'${contextPath}/chat/chatuserlist.do',
+        		data:{chatNo:activeChat},
         		success:function(res){
-        			console.log(res);
-        			if(res == 1){
-        			//location.reload();
-        			window.location.href = contextPath+"/chat/chatPage.do";
         			
-        			}else{
-        				alert('이미 존재하는 채팅방 입니다.');
+        			let l = '';
+        			
+        			
+        			for(let i = 0;i<res.length;i++){
+        			 l += '<li class="mb-1">'
+        			 l += '<a class="d-flex align-items-center" style="margin: 20px;">'
+        			 l += '<div class="flex-shrink-0 avatar avatar-online">'
+        			 l += '<img src="${ contextPath }/resources/assets/img/avatars/13.png" alt="Avatar" class="rounded-circle" />'
+        			 l += '</div>'
+        			 l += '<div class="chat-contact-info flex-grow-1 ms-4">'
+        			 l += '<div class="d-flex justify-content-between align-items-center">'
+        			 l += '<h6 class="chat-contact-name text-truncate m-0 fw-normal">'+res[i].memName+'</h6>'
+        			 l += '</div>'
+        			 l += '<div class="d-flex justify-content-between align-items-center" >'
+        			 l += '</div>'
+        			 l += '</div>'
+        			 l += '</a>'
+        			 l += '</li>'
         			}
+        			
+        			
+        			$('#chat-userList').html(l);
         		}
         	})
-        	
         })
-        	*/
+   
+ 			 // 이벤트 위임
+			 $('#chat-list').on('click', '.chat-contact-list-item', function () {
+			    // 클릭된 요소를 찾기 위한 컨텍스트
+			    const clickedChatNo = $(this).find('.chatlistno').val(); 
+			    console.log('클릭된 채팅방 번호:', clickedChatNo);
+			
+			    // active 효과 적용
+			    $('#chat-list .chat-contact-list-item').removeClass('active'); // active 제거
+			    $(this).addClass('active'); // 클릭된 곳에 active 추가
+			
+			});
+        
+
 
 	     var chatNo = null;
 	     var userNo = "${loginUser.memNo}"; // 로그인 유저 사번
 	     var userName = "${loginUser.memName}"; // 로그인 유저 이름
 	   	 var socket = new SockJS("${contextPath}/chatPage");
-	     var socket2 = new SockJS("${contextPath}/chat");
+	     var socket2 = new SockJS("${contextPath}/chat?${loginUser.memNo}");
 	     var client = Stomp.over(socket);
 	     var activeChat = null;
 	     
 	     // sockjs 실행
+	     
+	     
 	     
 	     socket2.onmessage = onMessage;
 	     
@@ -1055,33 +1080,77 @@
       // sockjs 메시지 응답
      	function onMessage(evt){ 
     	    
-    	   console.log('sockjs 응답완료');
-    	   console.log(evt);
-    	   $('#testname').html('변경완료@~#~!@@!');
+    	   var chatData = JSON.parse(evt.data);
+    	   var chatNoData = chatData.chatNo;
+    	   var chatTitleData = chatData.chatTitle;
     	   let c = "";
-    	   
-    	   c += '<li class="chat-contact-list-item mb-1 chat-list-form">';
-    	   c += '<input type="hidden" value="${ list.chatNo }" class="chatlistno">';
-    		 c += '<a class="d-flex align-items-center">';
-    		 c += '<div class="flex-shrink-0 avatar avatar-offline">';
-    		 c += '<img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />';
-    		 c += '</div>';
-    		 c += '<div class="chat-contact-info flex-grow-1 ms-4 test1">';
-    		 c += '<div class="d-flex justify-content-between align-items-center">';
-    		 c += '<h6 class="chat-contact-name text-truncate fw-normal m-0">테스트 제목자리입니다</h6>';
-    		 c += '<small class="text-muted">30분전</small>';
-    		 c += '</div>';
-    		 c += '<small class="chat-contact-status text-truncate">테스트 메시지나오는자리입니다.</small>';
-    		 c += '<input type="hidden" value="${ list.chatNo }" class="mewmsg">';
-    		 c += '</div>';
-    		 c +=	'</a>';							 
-    		 c += '</li>';
-    		 
-    		 $('#chat-list').append(c);
-
-    	   
-    	   
-    	   
+    	   if(evt.data == '0'){
+    		  	alert('존재하는 채팅방입니다.');
+    	   }else{
+	    	   c += '<li class="chat-contact-list-item mb-1 chat-list-form">';
+	    	   c += '<input type="hidden" value="'+chatNoData+'" class="chatlistno">';
+	    		 c += '<a class="d-flex align-items-center">';
+	    		 c += '<div class="flex-shrink-0 avatar avatar-offline">';
+	    		 c += '<img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />';
+	    		 c += '</div>';
+	    		 c += '<div class="chat-contact-info flex-grow-1 ms-4 test1">';
+	    		 c += '<div class="d-flex justify-content-between align-items-center">';
+	    		 c += '<h6 class="chat-contact-name text-truncate fw-normal m-0">'+chatTitleData+'</h6>';
+	    		 c += '<small class="text-muted"></small>';
+	    		 c += '</div>';
+	    		 c += '<small class="chat-contact-status text-truncate"></small>';
+	    		 c += '<input type="hidden" value="'+chatNoData+'" class="mewmsg">';
+	    		 c += '</div>';
+	    		 c +=	'</a>';							 
+	    		 c += '</li>';
+	    		 $('#chat-list').append(c);
+	    		 
+			     client.subscribe('/sub/' + chatNoData, function (chat) {
+			            var content = JSON.parse(chat.body);                                  
+			            if(activeChat == chatNoData){
+				            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck);
+				            $('#chathistory').append(str);
+				            $(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
+			            }
+							        $('.mewmsg').each(function () { // 미리보기 ajax 시작
+							    		console.log('테스트 : '+$(this).val());
+							    		console.log('채팅방 번호 :'+chatNo);
+							    		
+									    if ($(this).val() == content.chatNo) { 
+									    	
+									    		$.ajax({ 
+									    			url:'${contextPath}/chat/updateNewMsg.do',
+									    			data:{chatNo:content.chatNo,msgContent:content.msgContent},
+									    			success:function(res){
+									    				console.log('성공');
+									    			}
+									    		})
+									    		
+									    											    		// 채팅 날짜 넣어주기
+													$(this).closest('.chat-contact-info').find('.text-muted').html(function() {
+													    var msgDate = new Date(content.msgRegistDate); // Date 객체로 변환
+													    var today = new Date();  // 오늘 날짜
+													
+													    
+													    if (msgDate.toDateString() === today.toDateString()) {
+													        
+													        return msgDate.toLocaleTimeString('en-GB', { hour12: false }); 
+													    } else {
+													        
+													        return msgDate.toLocaleDateString(); 
+													    }
+													}); // 채팅 날짜 넣어주기 끝
+									    		
+									        $(this).prev().html(content.msgContent); 
+								    	} 
+				
+									}); // 미리보기 ajax 끝
+			        });  
+	    		 
+	    		 
+	    		 
+    	   }
+    	  
     	}; // sockjs 메시지 종료
 	     
       
@@ -1115,44 +1184,31 @@
 									    				console.log('성공');
 									    			}
 									    		})
-									    		
+									    		// 채팅 날짜 넣어주기
+													$(this).closest('.chat-contact-info').find('.text-muted').html(function() {
+													    var msgDate = new Date(content.msgRegistDate); // Date 객체로 변환
+													    var today = new Date();  // 오늘 날짜
+													
+													    
+													    if (msgDate.toDateString() === today.toDateString()) {
+													        
+													        return msgDate.toLocaleTimeString('en-GB', { hour12: false }); 
+													    } else {
+													        
+													        return msgDate.toLocaleDateString(); 
+													    }
+													}); // 채팅 날짜 넣어주기 끝
+													
 									        $(this).prev().html(content.msgContent); 
 								    	} 
 				
 									}); // 미리보기 ajax 끝
 			        });  
 			    }); // 모든 구독 끝
-			    
-			    		/*
-		           $('.chatStart').on('click',function(){ // 채팅방생성 시작
-		        	   
-		        	   var contextPath = '${contextPath}';
-		        	   chatNo = 34;
-				         client.send('/pub/chat/Chatroom', {}, JSON.stringify({ memNo: '${loginUser.memNo}',
-																							                           inviteNo:inviteMem,
-																							                           inviteName:inviteName
-		        	   
-	
-							        client.subscribe('/sub/newChat', function (chat) {
-							            var content = JSON.parse(chat.body);
-													
-							            
-							            
-							            
-							        }); 
-				         
-				         
-                  }));
-		        	
-		        }) // 채팅방생성 종료
-			    
-			    */
-			
-			
 			}); // stomp 종료
 
         // 채팅방 목록 클릭시 start 	
-        $('.chat-list-form').on('click', function() {
+        $(document).on('click','.chat-list-form' ,function() {
         	activeChat = $(this).children().eq(0).val(); // 활성화된 채팅방 번호 넣기
         	
             // AJAX 메세지 조회 출력 start
@@ -1169,6 +1225,7 @@
                 }
                 
                 $('#chathistory').html(a);
+                $('#testname').html(res.title.chatTitle);
                 $('#chatMain').css('display', 'none');
                 $('#chatList').css('display', 'block');
                 $(".chatarea").scrollTop(0);
@@ -1177,8 +1234,7 @@
                     $(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
                 }, 50);
 		              
-				        // 채팅방 입장시 작동될 코드
-				        //client.send('/pub/chat/enter', {}, JSON.stringify({chatNo:activeChat, memNo:userNo}))
+				        
                 
               }
             });

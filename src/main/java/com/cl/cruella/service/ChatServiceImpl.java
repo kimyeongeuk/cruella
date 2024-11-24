@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.cl.cruella.dao.ChatDao;
 import com.cl.cruella.dto.ChatDto;
+import com.cl.cruella.dto.ChatListDto;
 import com.cl.cruella.dto.ChatProfileDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.MessageDto;
@@ -79,6 +80,16 @@ public class ChatServiceImpl implements ChatService{
 	}
 	public String checkChatList(List<String> list) {
 		return chatDao.checkChatList(list);
+	}
+	
+	public ChatDto chatInfo() {
+		return chatDao.chatInfo();
+	}
+	public ChatDto chatTitle(int chatNo) {
+		return chatDao.chatTitle(chatNo);
+	}
+	public List<MemberDto> chatUserList(int chatNo) {
+		return chatDao.chatUserList(chatNo);
 	}
 
 
