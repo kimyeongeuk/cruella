@@ -147,6 +147,7 @@
            
            
             console.log(info);
+            
               if(confirm("'"+ info.event.title + "' 일정을 수정하시겠습니까? ") ){
                  
                 var events = new Array(); // Json 데이터를 받기 위한 배열 선언
@@ -216,8 +217,11 @@
         	  console.log(info.event.extendedProps.rgb);
         	  
         	 //console.log(info.event.id);
+        	 
+        	 // 맨아래 script 문에서 만들어둔 전역변수에 값 담기
+        	 selectedId = info.event.id;
         	  
-        	  
+        	 
         	  	// 일정명 적어뒀던거 수정 모달창에 뜨게 하기
         	  	var event = info.event;
         	  	var modal = $('#eventclickmodal');
@@ -264,6 +268,20 @@
           
           
           // /이벤트 선택해서 수정, 삭제하기
+          
+          
+          
+          //////////////////////
+          
+          
+          
+    
+          
+          
+          
+          
+          
+          ////////////////////
           
           
           
@@ -718,7 +736,7 @@
 
 
 
-                <button type="submit" class="btn btn-primary me-3" style="margin-top:30px;" id="saveChanges" data-bs-dismiss="modal">일정 수정</button>
+                <button type="submit" class="btn btn-primary me-3" style="margin-top:30px;" id="saveUpdates" data-bs-dismiss="modal">일정 수정</button>
                 <button
                 	id="deleteBtn"
                   type="button"
@@ -815,6 +833,67 @@
 
 
     </script>
+    
+    
+    
+    <script>
+    
+    var selectedId = 0;
+    
+// 이벤트 수정 버튼 클릭시 db에 update 되게 하는 기능
+    
+    $("#saveUpdates").on("click", function(){
+    	
+    	if(confirm("일정을 수정하시겠습니까? ") ){
+    		
+    		var start = $("#start2").val();
+
+    		var end = $("#end2").val();
+    		
+    		var category = $("#calCategory2").val();
+    		
+    		var rgb = $("#rgb2").val();
+    		
+    		var title = $("#title2").val();
+    		
+    		//console.log(start);
+    		//console.log(end);
+    		console.log(selectedId);
+    		
+         	$.ajax({
+               url: '${contextPath}/calendar/updateCalendar.do',
+               type: 'GET',
+               data: {
+                  
+	                      calStartDt: start,  // 수정된 시작 날짜
+	                      calEndDt: end == null ? start : end.split('T')[0],      // 수정된 종료 날짜
+	                      calNo: selectedId,    // 수정하려는 이벤트의 ID
+                  			calTitle: title,
+                  			calCategory: category
+               },
+               success: function(res) {
+                  if(res > 0){
+                     alert('일정이 수정되었습니다.');
+                  }else{
+                     alert('일정 수정에 실패했습니다. 다시 시도해주세요.');
+                  }
+            },
+     })
+	}else{
+		
+	}
+    	
+    	
+    	
+    	
+    })
+    
+    
+    
+    </script>
+    
+    
+    
    
    
    
