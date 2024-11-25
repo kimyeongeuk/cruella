@@ -76,10 +76,6 @@ public class NoticeServiceImpl implements NoticeService {
         return result1 == 1 && result2 > 0 && result3 == list.size() ? 1 : -1;
     }
 
-    @Override
-    public List<AttachDto> selectDelAttach(String[] delFileNo) {
-        return delFileNo == null ? new ArrayList<>() : noticeDao.selectDelAttach(delFileNo);
-    }
 
     @Override
     public int selectNoticeListCount(Map<String, Object> params) {
@@ -102,12 +98,20 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
+    public List<AttachDto> selectDelAttach(String[] delFileNo) {
+        return delFileNo == null ? new ArrayList<>() : noticeDao.selectDelAttach(delFileNo);
+    }
+    
+    @Override
     public int deleteNotice(int noticeNo) {
         return noticeDao.deleteNotice(noticeNo);
     }
     
+    @Transactional
     @Override
     public int deleteSelectedPosts(List<Integer> noticeNos) {
         return noticeDao.deleteSelectedPosts(noticeNos);
     }
+
+
 }

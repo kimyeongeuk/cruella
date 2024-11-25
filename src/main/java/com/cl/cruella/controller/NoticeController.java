@@ -200,9 +200,18 @@ public class NoticeController {
     }
 
     @PostMapping("/deleteSelectedPosts.do")
-    public String deleteSelectedPosts(@RequestParam("noticeNos") List<Integer> noticeNos) {
-        noticeService.deleteSelectedPosts(noticeNos);
+    public String deleteSelectedPosts(@RequestParam("noticeNos") List<Integer> noticeNos, RedirectAttributes rdAttributes) {
+        int result = noticeService.deleteSelectedPosts(noticeNos);
+
+        if (result > 0) {
+            rdAttributes.addFlashAttribute("alertMsg", "선택된 게시글이 성공적으로 삭제되었습니다.");
+        } else {
+            rdAttributes.addFlashAttribute("alertMsg", "게시글 삭제에 실패하였습니다.");
+        }
         return "redirect:/notice/noticeList.do";
     }
+
+
+
 }
 

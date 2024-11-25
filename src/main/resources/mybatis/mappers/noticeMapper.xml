@@ -238,33 +238,34 @@
         </foreach>
     </select>
 
-    <!-- Delete Selected Notices Dept -->
-    <delete id="deleteSelectedNoticesDept">
-        DELETE FROM notice_dept
-        WHERE notice_no IN
-        <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
-            #{noticeNo}
-        </foreach>
-    </delete>
+		<!-- Delete Selected Notices Dept -->
+		<delete id="deleteSelectedNoticesDept">
+		    DELETE FROM notice_dept
+		    WHERE notice_no IN
+		    <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
+		        #{noticeNo}
+		    </foreach>
+		</delete>
+		
+		<!-- Delete Selected Attach by NoticeNos -->
+		<delete id="deleteSelectedAttach">
+		    DELETE FROM attachment
+		    WHERE file_ref_type = 'N'
+		      AND file_ref_no IN
+		    <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
+		        #{noticeNo}
+		    </foreach>
+		</delete>
+		
+		<!-- Delete Selected Notices -->
+		<delete id="deleteSelectNotice">
+		    DELETE FROM notice
+		    WHERE notice_no IN
+		    <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
+		        #{noticeNo}
+		    </foreach>
+		</delete>
 
-    <!-- Delete Selected Attach by NoticeNos -->
-    <delete id="deleteSelectedAttach">
-        DELETE FROM attachment
-        WHERE file_ref_type = 'N'
-          AND file_ref_no IN
-        <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
-            #{noticeNo}
-        </foreach>
-    </delete>
-
-    <!-- Delete Selected Notices -->
-    <delete id="deleteSelectNotice">
-        DELETE FROM notice
-        WHERE notice_no IN
-        <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
-            #{noticeNo}
-        </foreach>
-    </delete>
 
 		<select id="getLastInsertId" resultType="int">
 		    SELECT seq_nno.currval FROM dual

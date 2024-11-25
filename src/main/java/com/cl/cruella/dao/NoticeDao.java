@@ -75,12 +75,16 @@ public class NoticeDao {
         return sqlSession.insert("noticeMapper.insertNoticeDept", params);
     }
 
-    public int deleteNoticeDept(int noticeNo) {
-        return sqlSession.delete("noticeMapper.deleteNoticeDept", noticeNo);
+    public int deleteNoticeDept(List<Integer> noticeNos) {
+        return sqlSession.delete("noticeMapper.deleteNoticeDept", noticeNos);
     }
 
-    public int deleteAttach(int noticeNo) {
-        return sqlSession.delete("noticeMapper.deleteAttach", noticeNo);
+    public int deleteAttach(List<Integer> noticeNos) {
+        return sqlSession.delete("noticeMapper.deleteAttach", noticeNos);
+    }
+
+    public int deleteNotices(List<Integer> noticeNos) {
+        return sqlSession.delete("noticeMapper.deleteNotices", noticeNos);
     }
 
     public int deleteNotice(int noticeNo) {
@@ -105,13 +109,17 @@ public class NoticeDao {
     }
 
     public int deleteSelectedPosts(List<Integer> noticeNos) {
-        // 하위 레코드 삭제
-        sqlSession.delete("noticeMapper.deleteSelectedNoticesDept", noticeNos);
-        sqlSession.delete("noticeMapper.deleteSelectedAttach", noticeNos);
+        Map<String, Object> params = new HashMap<>();
+        params.put("noticeNos", noticeNos);
 
-        // 부모 레코드 삭제
-        return sqlSession.delete("noticeMapper.deleteSelectNotice", noticeNos);
+        int result = 0;
+        result += sqlSession.delete("noticeMapper.deleteSelectedNoticesDept", params);
+        result += sqlSession.delete("noticeMapper.deleteSelectedAttach", params);
+        result += sqlSession.delete("noticeMapper.deleteSelectNotice", params);
+
+        return result;
     }
+
     
     public int getLastInsertId() {
         return sqlSession.selectOne("noticeMapper.getLastInsertId");
