@@ -135,7 +135,8 @@ public class NoticeController {
     }
 
     @PostMapping("/noticeUpdate.do")
-    public String modify(NoticeDto notice, @RequestParam(value = "delFileNo", required = false) String[] delFileNo, List<MultipartFile> uploadFiles, RedirectAttributes rdAttributes) {
+    public String modify(NoticeDto notice, @RequestParam(value = "delFileNo", required = false) String[] delFileNo, 
+                         @RequestParam("deptCode") List<String> deptCodes, List<MultipartFile> uploadFiles, RedirectAttributes rdAttributes) {
         // 삭제할 첨부파일 목록을 가져옵니다.
         List<AttachDto> delAttachList = noticeService.selectDelAttach(delFileNo);
 
@@ -155,11 +156,18 @@ public class NoticeController {
         }
         notice.setAttachList(attachList);
 
+        // DeptDto 객체로 변환
+        List<DeptDto> deptDtoList = deptCodes.stream()
+                                              .map(code -> DeptDto.builder().deptCode(code).build())
+                                              .collect(Collectors.toList());
+        notice.setDeptCodes(deptDtoList); // 부서 코드 설정
+
         // 공지사항을 업데이트합니다.
         int result = noticeService.updateNotice(notice, delFileNo);
 
-        // 삭제할 첨부파일의 실제 파일을 삭제합니다.
+        // notice_dept 업데이트 로직 추가
         if (result > 0) {
+            noticeService.updateNoticeDept(notice);
             rdAttributes.addFlashAttribute("alertMsg", "성공적으로 수정되었습니다.");
             for (AttachDto at : delAttachList) {
                 new File(at.getFilePath() + "/" + at.getFilesystemName()).delete();
@@ -170,6 +178,7 @@ public class NoticeController {
 
         return "redirect:/notice/noticeDetail.do?no=" + notice.getNoticeNo();
     }
+
 
 
     @GetMapping("/noticeSearch.do")

@@ -77,16 +77,10 @@ public class NoticeDao {
         return sqlSession.insert("noticeMapper.insertNoticeDept", params);
     }
 
-    public int deleteNoticeDept(List<Integer> noticeNos) {
-        return sqlSession.delete("noticeMapper.deleteNoticeDept", noticeNos);
-    }
 
-    public int deleteAttach(List<Integer> noticeNos) {
-        return sqlSession.delete("noticeMapper.deleteAttach", noticeNos);
-    }
-
-    public int deleteNotices(List<Integer> noticeNos) {
-        return sqlSession.delete("noticeMapper.deleteNotices", noticeNos);
+    
+    public int deleteNoticeDept(int noticeNo) {
+        return sqlSession.delete("noticeMapper.deleteNoticeDept", noticeNo);
     }
 
     public int deleteNotice(int noticeNo) {
@@ -96,6 +90,14 @@ public class NoticeDao {
 
         // 부모 레코드 삭제
         return sqlSession.delete("noticeMapper.deleteNotice", noticeNo);
+    }
+
+    public int deleteAttach(List<Integer> noticeNos) {
+        return sqlSession.delete("noticeMapper.deleteAttach", noticeNos);
+    }
+
+    public int deleteNotices(List<Integer> noticeNos) {
+        return sqlSession.delete("noticeMapper.deleteNotices", noticeNos);
     }
 
     public int deleteSelectedNoticesDept(List<Integer> noticeNos) {
@@ -122,7 +124,6 @@ public class NoticeDao {
         return result;
     }
 
-    
     public int getLastInsertId() {
         return sqlSession.selectOne("noticeMapper.getLastInsertId");
     }

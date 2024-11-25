@@ -45,8 +45,6 @@ public class NoticeServiceImpl implements NoticeService {
         return result;
     }
 
-
-
     @Override
     public int updateIncreaseCount(int noticeNo) {
         return noticeDao.updateIncreaseCount(noticeNo);
@@ -79,6 +77,30 @@ public class NoticeServiceImpl implements NoticeService {
         return result;
     }
 
+    @Override
+    public void updateNoticeDept(NoticeDto notice) {
+        // 기존 부서 코드를 삭제하고 새로운 부서 코드 추가
+        noticeDao.deleteNoticeDept(notice.getNoticeNo());
+        for (DeptDto dept : notice.getDeptCodes()) {
+            noticeDao.insertNoticeDept(notice.getNoticeNo(), dept.getDeptCode());
+        }
+    }
+
+    @Override
+    public List<AttachDto> selectDelAttach(String[] delFileNo) {
+        return delFileNo == null ? new ArrayList<>() : noticeDao.selectDelAttach(delFileNo);
+    }
+    
+    @Override
+    public int deleteNotice(int noticeNo) {
+        return noticeDao.deleteNotice(noticeNo);
+    }
+    
+    @Transactional
+    @Override
+    public int deleteSelectedPosts(List<Integer> noticeNos) {
+        return noticeDao.deleteSelectedPosts(noticeNos);
+    }
 
     @Override
     public int selectNoticeListCount(Map<String, Object> params) {
@@ -99,22 +121,4 @@ public class NoticeServiceImpl implements NoticeService {
     public List<NoticeDto> selectSearchList(Map<String, Object> params, PageInfoDto pi) {
         return noticeDao.selectSearchList(params, pi);
     }
-
-    @Override
-    public List<AttachDto> selectDelAttach(String[] delFileNo) {
-        return delFileNo == null ? new ArrayList<>() : noticeDao.selectDelAttach(delFileNo);
-    }
-    
-    @Override
-    public int deleteNotice(int noticeNo) {
-        return noticeDao.deleteNotice(noticeNo);
-    }
-    
-    @Transactional
-    @Override
-    public int deleteSelectedPosts(List<Integer> noticeNos) {
-        return noticeDao.deleteSelectedPosts(noticeNos);
-    }
-
-
 }
