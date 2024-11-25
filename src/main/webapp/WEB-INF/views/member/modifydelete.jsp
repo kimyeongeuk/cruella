@@ -68,171 +68,202 @@
                 </div>
               </div>
 
-              
-                <div class="container-xxl flex-grow-1 container-p-y">
-                    <div class="row">
-                      <div class="col-md-12">
-      
-                        <div class="card mb-6">
-                          <!-- Account -->
-                          <div class="card-body">
-                            <div style="text-align: center;">
-                              <img
-                                src="${ contextPath }/assets/img/avatars/1.png"
-                                alt="user-avatar"
-                                class="d-block w-px-140 h-px-140 rounded mx-auto"
-                                id="uploadedAvatar" 
-                                style="margin-bottom: 20px; align-items: center;"
-                                height="120px" 
-                                />
-                              <div class="button-wrapper">
-                                <label for="upload" class="btn btn-primary me-3 mb-4" tabindex="0">
-                                  <span class="d-none d-sm-block">첨부파일 업로드</span>
-                                  <i class="ti ti-upload d-block d-sm-none"></i>
-                                  <input
-                                    type="file"
-                                    id="upload"
-                                    class="account-file-input"
-                                    hidden
-                                    accept="image/png, image/jpeg" 
-                                   />
-                                </label>
-                                <button type="button" class="btn btn-label-secondary account-image-reset mb-4">
-                                  <i class="ti ti-refresh-dot d-block d-sm-none"></i>
-                                  <span class="d-none d-sm-block">Reset</span>
-                                </button>
-      
-                              </div>
-                            </div>
-                          </div>
-                          <h5 class="pb-4 border-bottom mb-4"></h5>
-                          <div class="card-body pt-4">
-                            <form id="formAccountSettings" action="${ contextPath }/member/update.do" method="post" >
-                              <div class="row">
-                                <div class="mb-4 col-md-6">
-                                  <label for="memName" class="form-label">이름</label>
-                                  <input
-                                    class="form-control"
-                                    type="text"
-                                    id="memName"
-                                    name="memName"
-                                    value="${ member.memName }"
-                                 />
-                                </div>
-                                <div class="mb-4 col-md-6">
-                                  <label for="account" class="form-label">계좌번호</label>
-                                  <div style="display: flex; gap: 10px;">
-                                      <select class="form-select" style="flex: 1;">
-                                          <option value="">선택</option>
-                                          <option value="">국민</option>
-                                          <option value="신한"${ member.bankName == '신한' ? 'selected' : '' }>신한</option>
-                                          <option value="">우리</option>
-                                      </select>
-                                      <input class="form-control" type="text" name="account" id="account" value="${ member.account }"style="flex: 3;" />
-                                  </div>
-                              </div>
-                                <div class="mb-4 col-md-6">
-                                  <label for="memNo" class="form-label">사번</label>
-                                  <input
-                                    class="form-control"
-                                    type="text"
-                                    id="memNo"
-                                    name="memNo" 
-                                    value="${ member.memNo }"
-                                    readonly/>
-                                </div>
-                                <div class="mb-4 col-md-6">
-                                  <label for="deptCode" class="form-label">부서</label>
-																	<select id="deptCode" name="deptCode" class="select form-select">
-																	    <option value="">선택</option>
-																	    <option value="S1" ${member.deptCode == 'S1' ? 'selected' : ''}>영업총괄</option>
-																	    <option value="S2" ${member.deptCode == 'S2' ? 'selected' : ''}>인사</option>
-																	    <option value="S3" ${member.deptCode == 'S3' ? 'selected' : ''}>지원</option>
-																	    <option value="T1" ${member.deptCode == 'T1' ? 'selected' : ''}>남성의류</option>
-																	    <option value="T2" ${member.deptCode == 'T2' ? 'selected' : ''}>여성의류</option>
-																	    <option value="T3" ${member.deptCode == 'T3' ? 'selected' : ''}>식품</option>
-																	    <option value="T4" ${member.deptCode == 'T4' ? 'selected' : ''}>스포츠</option>
-																	    <option value="T5" ${member.deptCode == 'T5' ? 'selected' : ''}>뷰티</option>
-																	    <option value="T6" ${member.deptCode == 'T6' ? 'selected' : ''}>명품</option>
-																	    <option value="T7" ${member.deptCode == 'T7' ? 'selected' : ''}>문화센터</option>
-																	    <option value="T8" ${member.deptCode == 'T8' ? 'selected' : ''}>디지털 및 가전</option>
-																	</select>
-                                </div>
-                                <div class="mb-4 col-md-6">
-                                  <label class="form-label" for="memPwd">비밀번호</label>
-                                  <div class="input-group input-group-merge">
-                                    <input
-                                      type="text"
-                                      id="memPwd"
-                                      name="memPwd"
-                                      class="form-control"
-                                      value="****"
-                                      readonly />
-                                  </div>
-                                </div>
-                                <div class="mb-4 col-md-6">
-                                  <label for="posCode" class="form-label">직급</label>
-                                  <select id="posCode" name="posCode" class="select form-select">
-																	    <option value="">선택</option>
-																	    <option value="C1" ${member.posCode == 'C1' ? 'selected' : ''}>점장</option>
-																	    <option value="C2" ${member.posCode == 'C2' ? 'selected' : ''}>부점장</option>
-																	    <option value="C3" ${member.posCode == 'C3' ? 'selected' : ''}>부장</option>
-																	    <option value="C4" ${member.posCode == 'C4' ? 'selected' : ''}>팀장</option>
-																	    <option value="C5" ${member.posCode == 'C5' ? 'selected' : ''}>대리</option>
-																	    <option value="C6" ${member.posCode == 'STAFF' ? 'C6' : ''}>주임</option>
-																	    <option value="C7" ${member.posCode == 'C7' ? 'selected' : ''}>사원</option>
-																	</select>
 
-                                </div>
-                                <div class="mb-4 col-md-6">
-                                  <label for="email" class="form-label">Email</label>
-                                  <input class="form-control" type="text" id="email" name="email" value="${ member.email }"/>
-                                </div>
-                                <div class="mb-4 col-md-6">
-                                  <label for="salary" class="form-label">급여</label>
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    id="salary"
-                                    name="salary" 
-                                    value="${ member.salary }"/>
-                                </div>
-                                <div class="mb-4 col-md-6">
-                                  <label class="hireDate" for="country">입사날짜</label>
-                                  <input class="form-control" type="date" id="hireDate" name="hireDate" value="${ member.hireDate }" readonly/>
-                                </div>
-                                <div class="mb-4 col-md-6">
-                                  <label for="language" class="form-label">주소</label>
-                                  <input class="form-control" type="text" id="address" name="address" value="${ member.address }" />
-                                </div>
-                                <div class="mb-4 col-md-6">
-                                  <label for="memSSN" class="form-label">주민등록번호</label>
-                                  <input class="form-control" type="text" id="memSSN" name="memSSN" value="${ member.memSSN }" readonly />
-                                </div>
-                                <div class="mb-4 col-md-6">
-                                  <label for="phone" class="form-label">전화번호</label>
-                                  <input class="form-control" type="text" id="phone" name="phone" value="${ member.phone }" />
-                                </div>
-                              </div>
-                              <div class="mt-2" style="justify-self: center;">
-                                <button type="submit" class="btn btn-primary me-3">수정하기</button>
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">
-                                    퇴사처리
-                                  </button>
-                              </div>
-                            </form>
-                          </div>
-                          <!-- /Account -->
+						<div class="container-xxl flex-grow-1 container-p-y">
+							<div class="row">
+								<div class="col-md-12">
+
+									<div class="card mb-6">
+										<!-- Account -->
+										<div class="card-body">
+											<div style="text-align: center;">
+												<img src="${ contextPath }/assets/img/avatars/1.png"
+													alt="user-avatar"
+													class="d-block w-px-140 h-px-140 rounded mx-auto"
+													id="uploadedAvatar"
+													style="margin-bottom: 20px; align-items: center;"
+													height="120px" />
+												<div class="button-wrapper">
+													<label for="upload" class="btn btn-primary me-3 mb-4"
+														tabindex="0"> <span class="d-none d-sm-block">첨부파일
+															업로드</span> <i class="ti ti-upload d-block d-sm-none"></i> <input
+														type="file" id="upload" class="account-file-input" hidden
+														accept="image/png, image/jpeg" />
+													</label>
+													<button type="button"
+														class="btn btn-label-secondary account-image-reset mb-4">
+														<i class="ti ti-refresh-dot d-block d-sm-none"></i> <span
+															class="d-none d-sm-block">Reset</span>
+													</button>
+
+												</div>
+											</div>
+										</div>
+										<h5 class="pb-4 border-bottom mb-4"></h5>
+										<div class="card-body pt-4">
+											<form id="formAccountSettings"
+												action="${ contextPath }/member/updateMember.do"
+												method="post">
+												<div class="row">
+													<div class="mb-4 col-md-6">
+														<label for="memName" class="form-label">이름</label> <input
+															class="form-control" type="text" id="memName"
+															name="memName" value="${ member.memName }" />
+													</div>
+													<div class="mb-4 col-md-6">
+														<label for="account" class="form-label">계좌번호</label>
+														<div style="display: flex; gap: 10px;">
+															<select class="form-select" style="flex: 1;">
+																<option value="">선택</option>
+																<option value="">국민</option>
+																<option value="신한"
+																	${ member.bankName == '신한' ? 'selected' : '' }>신한</option>
+																<option value="">우리</option>
+															</select> <input class="form-control" type="text" name="account"
+																id="account" value="${ member.account }"
+																style="flex: 3;" />
+														</div>
+													</div>
+													<div class="mb-4 col-md-6">
+														<label for="memNo" class="form-label">사번</label> <input
+															class="form-control" type="text" id="memNo" name="memNo"
+															value="${ member.memNo }" readonly />
+													</div>
+													<div class="mb-4 col-md-6">
+														<label for="deptCode" class="form-label">부서</label> <select
+															id="deptCode" name="deptCode" class="select form-select">
+															<option value="">선택</option>
+															<option value="S1"
+																${member.deptCode == 'S1' ? 'selected' : ''}>영업총괄</option>
+															<option value="S2"
+																${member.deptCode == 'S2' ? 'selected' : ''}>인사</option>
+															<option value="S3"
+																${member.deptCode == 'S3' ? 'selected' : ''}>지원</option>
+															<option value="T1"
+																${member.deptCode == 'T1' ? 'selected' : ''}>남성의류</option>
+															<option value="T2"
+																${member.deptCode == 'T2' ? 'selected' : ''}>여성의류</option>
+															<option value="T3"
+																${member.deptCode == 'T3' ? 'selected' : ''}>식품</option>
+															<option value="T4"
+																${member.deptCode == 'T4' ? 'selected' : ''}>스포츠</option>
+															<option value="T5"
+																${member.deptCode == 'T5' ? 'selected' : ''}>뷰티</option>
+															<option value="T6"
+																${member.deptCode == 'T6' ? 'selected' : ''}>명품</option>
+															<option value="T7"
+																${member.deptCode == 'T7' ? 'selected' : ''}>문화센터</option>
+															<option value="T8"
+																${member.deptCode == 'T8' ? 'selected' : ''}>디지털
+																및 가전</option>
+														</select>
+													</div>
+													<div class="mb-4 col-md-6">
+														<label class="form-label" for="memPwd">비밀번호</label>
+														<div class="input-group input-group-merge">
+															<input type="text" id="memPwd" name="memPwd"
+																class="form-control" value="****" readonly />
+														</div>
+													</div>
+													<div class="mb-4 col-md-6">
+														<label for="posCode" class="form-label">직급</label> <select
+															id="posCode" name="posCode" class="select form-select">
+															<option value="">선택</option>
+															<option value="C1"
+																${member.posCode == 'C1' ? 'selected' : ''}>점장</option>
+															<option value="C2"
+																${member.posCode == 'C2' ? 'selected' : ''}>부점장</option>
+															<option value="C3"
+																${member.posCode == 'C3' ? 'selected' : ''}>부장</option>
+															<option value="C4"
+																${member.posCode == 'C4' ? 'selected' : ''}>팀장</option>
+															<option value="C5"
+																${member.posCode == 'C5' ? 'selected' : ''}>대리</option>
+															<option value="C6"
+																${member.posCode == 'STAFF' ? 'C6' : ''}>주임</option>
+															<option value="C7"
+																${member.posCode == 'C7' ? 'selected' : ''}>사원</option>
+														</select>
+
+													</div>
+													<div class="mb-4 col-md-6">
+														<label for="email" class="form-label">Email</label> <input
+															class="form-control" type="text" id="email" name="email"
+															value="${ member.email }" />
+													</div>
+													<div class="mb-4 col-md-6">
+														<label for="salary" class="form-label">급여</label> <input
+															type="text" class="form-control" id="salary"
+															name="salary" value="${ member.salary }" />
+													</div>
+													<div class="mb-4 col-md-6">
+														<label class="hireDate" for="country">입사날짜</label> <input
+															class="form-control" type="date" id="hireDate"
+															name="hireDate" value="${ member.hireDate }" readonly />
+													</div>
+													<div class="mb-4 col-md-6">
+														<label for="language" class="form-label">주소</label> <input
+															class="form-control" type="text" id="address"
+															name="address" value="${ member.address }" />
+													</div>
+													<div class="mb-4 col-md-6">
+														<label for="memSSN" class="form-label">주민등록번호</label> <input
+															class="form-control" type="text" id="memSSN"
+															name="memSSN" value="${ member.memSSN }" readonly />
+													</div>
+													<div class="mb-4 col-md-6">
+														<label for="phone" class="form-label">전화번호</label> <input
+															class="form-control" type="text" id="phone" name="phone"
+															value="${ member.phone }" />
+													</div>
+												</div>
+												<div class="mt-2" style="justify-self: center;">
+													<button type="submit" class="btn btn-primary me-3">수정하기</button>
+													<button type="button" class="btn btn-danger"
+														data-bs-toggle="modal" data-bs-target="#myModal">
+														퇴사처리</button>
+												</div>
+											</form>
+										</div>
+										<!-- /Account -->
+									</div>
+
+								</div>
+							</div>
+						</div>
+						<!-- 세션 끝 -->
+                  <div class="modal" id="myModal">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                  
+                        <!-- Modal Header -->
+                        <div class="modal-header" >
+                          <h4 class="modal-title" style="text-align: center; padding: 10px;">이 사원의 퇴사 처리를 진행하시겠습니까?</h4>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
-      
+                  
+                        <!-- Modal body -->
+												<div style="text-align: center; padding: 10px;">
+												    <i class="ti ti-alert-circle" style="font-size: 48px; color: red; margin-bottom: 10px;"></i>
+												    <p><strong>퇴사 처리 대상:</strong></p>
+												    <p>사원명: ${ member.memName }</p>
+												    <p>부서: ${ member.deptName }</p>
+												    <p>직급: ${ member.posName }</p>
+												    <p style="color: red; font-weight: bold;">퇴사 처리 후 모든 데이터가 삭제되며, 이 작업은 되돌릴 수 없습니다.</p>
+												    <p>정말로 진행하시겠습니까?</p>
+												</div>
+
+                  
+                        <!-- Modal footer -->
+                        <div class="modal-footer" style="justify-self: center;">
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">예</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                          </div>
+                  
                       </div>
                     </div>
-    
-    
-    
-    </div>
-   <!-- 세션 끝 -->
-
+                  </div>
+      
 
 
    <!-- 푸터 시작 -->

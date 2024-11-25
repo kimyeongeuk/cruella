@@ -195,7 +195,7 @@
 													<div class="mb-4 col-md-6">
 														<label class="form-label" for="memPwd">비밀번호</label>
 														<div class="input-group input-group-merge">
-															<input type="text" id="memPwd" name="memPwd"
+															<input type="text" id="memPwd" name="memPwd" value="${ memPwd }"
 																class="form-control" />
 														</div>
 													</div>

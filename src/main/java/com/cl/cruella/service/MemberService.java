@@ -41,6 +41,9 @@ public interface MemberService {
 	List<MemberDto> getPagedMemberList(PageInfoDto pi);
 
 	MemberDto selectMemberByNo(String memNo);
+
+	// 사원정보수정
+	int updateMember(MemberDto m);
 	
 
 

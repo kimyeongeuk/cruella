@@ -28,6 +28,7 @@ import com.cl.cruella.service.MemberService;
 import com.cl.cruella.util.FileUtil;
 import com.cl.cruella.util.PagingUtil;
 
+import jakarta.mail.Session;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -338,7 +339,9 @@ public class MemberController {
 	 @GetMapping("/signup.do")
 	 public void signup(Model model) {
 		 String memNo = memberService.memberNo();
+		 String memPwd = "111111";
 		 model.addAttribute("memNo",memNo);
+		 model.addAttribute("memPwd",memPwd);
 	 }
 	 
 
@@ -346,6 +349,10 @@ public class MemberController {
 	// 사원등록(이예빈)
 	@PostMapping("/insert.do")
 	public String insertMember(MemberDto m, RedirectAttributes rd) {
+		
+		if( m.getMemPwd()== null) {
+			m.setMemPwd("111111");
+		}
 		
 		m.setMemPwd( bcryptPwdEncoder.encode(m.getMemPwd()) );
 		
@@ -436,7 +443,18 @@ public class MemberController {
 	}
 
 	@PostMapping("/updateMember.do")
-	public void updateMember() {}
+	public String updateMember(MemberDto m, RedirectAttributes rd ) {
+		int result = memberService.updateMember(m);
+		
+		if(result > 0) {
+			rd.addFlashAttribute("alertMsg", "성공적으로 정보수정이 되었습니다.");
+		}else {
+			rd.addFlashAttribute("alertMsg", "정보수정에 실패하였습니다.");
+			
+		}
+		
+		return "redirect:/member/employeelistview.do";
+	}
 	
 	
 	

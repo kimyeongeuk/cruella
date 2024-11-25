@@ -152,7 +152,7 @@
 		, #{email}
 		, #{address}
 		, TO_DATE(#{hireDate}, 'YYYY-MM-DD')
-		, #{memSSN}
+		, SUBSTR(#{memSSN}, 1, 8) || '******'
 		, #{account}
 		, #{bankName}
 		, #{posCode}
@@ -206,6 +206,28 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		  order by mem_no
 	
 	</select>
+	
+	<!-- 사원정보 수정(이예빈) -->
+	<update id="updateMember">
+		update 
+					 member
+			 set mem_name = #{memName}
+			 	 , email = #{email}
+			 	 , bank_name = #{bankName}
+			 	 , DEPT_CODE = #{deptCode}
+			 	 , POS_CODE = #{posCode}
+			 	 , address = #{address}
+			 	 , phone = #{phone}		
+			 	 , salary = #{salary}
+		 where mem_no = #{memNo} 
+	</update>
+	
+	<!-- 사원탈퇴 -->
+	<update id="deleteMember">
+		update
+					 member
+	
+	</update>
 	
 
 

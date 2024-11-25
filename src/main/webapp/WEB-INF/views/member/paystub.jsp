@@ -67,15 +67,15 @@
         <table class="salary-table">
             <tr>
                 <td style="background-color: lightgray;">부서</td>
-                <td>콘텐츠개발</td>
+                <td>${ member.deptCode }</td>
                 <td style="background-color: lightgray;">직급</td>
-                <td>연구원</td>
+                <td>${ member.posCode }</td>
             </tr>
             <tr>
                 <td style="background-color: lightgray;">성명</td>
-                <td>김ㅇㅇ</td>
+                <td>${ member.memName }</td>
                 <td style="background-color: lightgray;">입사일</td>
-                <td>2015-11-11</td>
+                <td>${ member.hireDate }</td>
             </tr>
             <tr class="no-border" style="background-color: lightgray;">
                 <th colspan="2" style="height: 40px;">지급 항목</th>
@@ -83,7 +83,7 @@
             </tr>
             <tr>
                 <td>기본급</td>
-                <td>1,500,000</td>
+                <td>${ member.salary }</td>
                 <td>국민연금</td>
                 <td>44,290</td>
             </tr>
