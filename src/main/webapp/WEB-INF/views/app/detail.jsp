@@ -46,19 +46,83 @@
 
             <!-- 양식영역 -->
             
-             					<div style="position: relative; top: 33px;">
-             					<span style=""><button type="button"  id="backBtn" class="btn btn-primary" onclick="historyBack();">목록</button></span>
-             					</div>
-                      <div style="display: flex; justify-content: right;">
-                      	
-                        <button type="button" class="btn btn-success" id="last_sign_success">결재</button>
-                        <span style="width: 52px;"></span>
-                        <button type="button" class="btn btn-warning" id="last_sign_fail">반려</button>
-                      </div>
-                        
+            		<div style="display: flex; justify-content: left;">
+            			<span style=""><button type="button"  id="backBtn" class="btn btn-primary" onclick="historyBack();">목록</button></span>
+            			<c:if test="${app.docStatus eq 'A' }">
+            				<span style="position: relative;
+   										 left: 89%;"><button type="button"  id="delect_Btn" class="btn btn-danger" >회수</button></span>
+            			</c:if>
+            		</div>
+            		
+            		<script>
+            			$(document).ready(function(){
+            				$('#delect_Btn').on('click',function(){
+            					if(confirm("기안서를 회수 하시겠습니까?")){
+            						$.ajax({
+            							url: '${contextPath}/app/ajaxAppDeleteBack.do',
+            							type: 'POST',
+            							data:{
+            								docNo : $('#doc_no_result').val()
+            							},
+            							success:function(res){
+            								if(res>0){
+            									alert('기안서를 회수하였습니다');
+            								}
+            							}
+            							
+            						})
+            					}
+            				})
+            			})	
+            		
+            		</script>
+             		  
+                    
+                      
+                      
+                        <!-- 반려 모달 -->
+
+						<div class="modal" id="myModal">
+							<div class="modal-dialog" style="top: 235px;">
+								<div class="modal-content">
+
+									<!-- Modal Header -->
+									<div class="modal-header">
+										<span><h4 class="modal-title">반려메세지</h4></span>
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal"></button>
+									</div>
+
+									<!-- Modal body -->
+									<div class="modal-body">
+									<!-- 반려메세지 입력창 -->
+										<input type="text" class="form-control"
+											placeholder="제목을 입력하세요."
+											aria-describedby="defaultFormControlHelp" id="reason_result" name="reason"/>
+									</div>
+
+									<!-- Modal footer -->
+									<div class="modal-footer">
+									
+										<button type="button" class="btn btn-success" id="success_btn"
+											>확인</button>
+											
+										<button type="button" class="btn btn-danger"
+											data-bs-dismiss="modal">취소</button>
+									</div>
+
+								</div>
+							</div>
+						</div>
+						<!-- /반려모달 -->
+						
+						
 
 
-                <div class="col-12" style="margin-top: 20px;">
+
+
+
+						<div class="col-12" style="margin-top: 20px;">
                   <div class="card mb-6">
 
 
@@ -201,26 +265,49 @@
                               
                               </span>
                               
+                              
+                              
                               <c:forEach var="a" items="${app.rovalList}">
+                              
                               <span class="line_user">
                                 <span>${a.deptName}</span>
                                 <span class="signLine">
-                                  <img class="signImg_div" style="display:none;width: 100px; height: 100px;">
-                                 <c:choose>
-                                	<c:when test="${a.rvNo eq memNo}">
-                                		<input type="hidden" id="app_roval_level"  value="${a.appLevel}"> <!-- 결재자순서 -->
-                                		<button type="button" class="signbtn_div btn btn-dark">서명</button>
-                                		
+                                
+                                
+                                <c:choose>
+                                	<c:when test="${ a.appStatus ne 'A' }">
+			                               <!-- 현재 결재자(a)가 결재를 한 상태일 경우  -->
+			                               <c:choose>
+			                               	<c:when test="${ a.appStatus eq 'N'}">
+			                               		<b style="color:red;">반려</b>
+			                               	</c:when>
+			                               	<c:otherwise>
+			                               		<img class="signImg_div" src="data:image/png;base64,${ a.signPath }" style="width: 100px; height: 100px;">
+			                               	</c:otherwise>
+			                               </c:choose>
+			                               
+                                	</c:when>
+                                	<c:when test="${ a.rvNo eq memNo }">
+                                		<!-- 현재 결재자(a)가 결재를 안했는데 그게 나일 경우 -->
+                                		<img class="signImg_div" style="display:none;width: 100px; height: 100px;">
+		                 				<input type="hidden" id="app_roval_level"  value="${a.appLevel}"> <!-- 결재자순서 -->
+		                             	<button type="button" class="signbtn_div btn btn-dark">서명</button>
                                 	</c:when>
                                 	<c:otherwise>
-                                		서명
-                                	</c:otherwise>
-                                 </c:choose>
+		                                <!-- 현재 결재자(a)가 결재를 안했는데 그게 다른 사람일 경우 -->		                             	
+		                             	서명
+                 					</c:otherwise>
+                 				</c:choose>
+                 				
+                 				
                                 
                                 </span>
                                 <span class="sign_date">${a.memName}</span>
                               </span>
+                              
                               </c:forEach>
+                              
+                              
 
 
                             </span>
@@ -359,8 +446,10 @@
 
                                 <div class="card-body" style="height: 500px;">
 		
-									${app.docContent }
-
+									${app.docContent } 
+									<br>
+									
+									<span style="color:red;">${app.reason}</span>
 
                                 </div>
                               </div>
@@ -433,7 +522,7 @@ $(document).ready(function(){
 	        
 	        
 	       count++;
-	       console.log('Current count:', count); // 디버깅 로그
+	       
 	    });
 	  
 
@@ -472,8 +561,8 @@ $(document).ready(function(){
 			        docNo: parseInt($('#doc_no_result').val(), 10), // 문서번호
 			        maxOrder: parseInt($('#maxOrder').val(), 10),  // 결재선 최종 순서 
 			        docOrder: parseInt($('#docOrder').val(), 10),  // 결재선 현재 순서 
-			        appLevel: parseInt($('#app_roval_level').val(), 10)  // 현재 결재자의 순서 
-			      
+			        appLevel: parseInt($('#app_roval_level').val(), 10),  // 현재 결재자의 순서 
+			      	memNo: '${memNo}'
 			      }),
 			   success: function(res){
 				   	if(res>0){
@@ -490,6 +579,44 @@ $(document).ready(function(){
 	 
 	 
  })
+ 
+ 
+ 
+ 
+ 
+ $('#success_btn').on('click',function(){
+	 
+	 
+		if($('#reason_result').val() == ""){
+			alert('반려메세지를 입력해주세요')
+									
+		}else{
+			
+			if(confirm('반려하시겠습니까?')){
+				
+			$.ajax({
+				url: '${contextPath}/app/ajaxCompanion.do',
+				type: 'POST',
+				contentType: 'application/json',
+				data : JSON.stringify({
+						reason : $('#reason_result').val(),
+						memNo: '${memNo}',
+						docNo: parseInt($('#doc_no_result').val(), 10)
+					}),
+				success:function(res){
+						if(res>0){
+							$('#myModal').modal('hide'); 
+							alert('성공적으로 반려하였습니다');
+							location.href = '${contextPath}/app/box_standby.do';
+												
+						}
+					}
+			})
+		}
+									
+									
+		}
+	})
 	  
 	  
 	
@@ -504,9 +631,17 @@ $(document).ready(function(){
 </script>
 
      
-
-
-
+<c:forEach var="i" items="${app.rovalList }">
+<c:if test="${ i.rvNo eq memNo}">
+ <div style="display: flex; justify-content: right;">
+             			
+       <button type="button" class="btn btn-success" id="last_sign_success">결재</button>
+        <span style="width: 52px;"></span>
+        <button type="button" class="btn btn-warning" id="last_sign_fail" data-bs-toggle="modal" data-bs-target="#myModal">반려</button>
+                        
+  </div>
+</c:if>
+</c:forEach>
 
 
 

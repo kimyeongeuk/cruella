@@ -181,6 +181,53 @@ public class AppController {
 		
 	}
 	
+	
+	// 결재반려함 조회
+	@GetMapping("/box_companion.do")
+	public void companionSelect(@RequestParam(value="page", defaultValue="1") int currentPage
+			,HttpSession session
+			,Model model) {
+		
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		
+		int listCount = appService.selectCompanionCount(memNo);
+		
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
+		
+		List<AppdocDto> list = appService.selectCompanion(memNo,pi);
+		
+		model.addAttribute("list",list);
+		model.addAttribute("pi",pi);
+		
+	}
+	
+	
+	
+	// 결재진행함 조회
+	@GetMapping("/box_progress.do")
+	public void progressSelect(@RequestParam(value="page", defaultValue="1") int currentPage
+			,HttpSession session
+			,Model model) {
+		
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		
+		int listCount = appService.selectProgressCount(memNo);
+		
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
+		
+		List<AppdocDto> list = appService.selectProgress(memNo,pi);
+		
+		model.addAttribute("list",list);
+		model.addAttribute("pi",pi);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 	// 참조열람함 조회
 	@GetMapping("/box_view.do")
 	public void boxViewPage(@RequestParam(value="page", defaultValue="1") int currentPage
@@ -204,7 +251,7 @@ public class AppController {
 	
 	
 	
-//	결재문서함 상세조회
+//	결재문서함(대기,반려) 상세조회
 	@GetMapping("/detail.do")
 	public void detailPage(AppdocDto docNo,Model model,HttpSession session) {
 		
@@ -224,9 +271,30 @@ public class AppController {
 //	결재시 update
 	@ResponseBody
 	@PostMapping("/ajaxSuccess.do")
-	public int datailClear(@RequestBody AppdocDto ad) {
+	public int detailClear(@RequestBody AppdocDto ad) {
 		
-		int result = appService.datailClear(ad);
+		int result = appService.detailClear(ad);
+		
+		return result;
+	}
+	
+	
+//	반려시 update
+	@ResponseBody
+	@PostMapping("/ajaxCompanion.do")
+	public int detailFail(@RequestBody AppdocDto ad) {
+		
+		int result = appService.detailFail(ad);
+		
+		return result;
+	}
+	
+	
+//	회수버튼 클릭시
+	@ResponseBody
+	@PostMapping("/ajaxAppDeleteBack.do")
+	public int appDeleteBack(AppdocDto ad) {
+		int result = appService.appDeleteBack(ad);
 		
 		return result;
 	}
