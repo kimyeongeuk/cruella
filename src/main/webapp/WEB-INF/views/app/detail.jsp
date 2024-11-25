@@ -54,29 +54,7 @@
             			</c:if>
             		</div>
             		
-            		<script>
-            			$(document).ready(function(){
-            				$('#delect_Btn').on('click',function(){
-            					if(confirm("기안서를 회수 하시겠습니까?")){
-            						$.ajax({
-            							url: '${contextPath}/app/ajaxAppDeleteBack.do',
-            							type: 'POST',
-            							data:{
-            								docNo : $('#doc_no_result').val()
-            							},
-            							success:function(res){
-            								if(res>0){
-            									alert('기안서를 회수하였습니다');
-            								}
-            							}
-            							
-            						})
-            					}
-            				})
-            			})	
-            		
-            		</script>
-             		  
+            	
                     
                       
                       
@@ -617,6 +595,29 @@ $(document).ready(function(){
 									
 		}
 	})
+	
+	
+	
+	/* 회수버튼 클릭시 */
+		$('#delect_Btn').on('click',function(){
+            	if(confirm("기안서를 회수 하시겠습니까?")){
+            		$.ajax({
+            		url: '${contextPath}/app/ajaxAppDeleteBack.do',
+            		type: 'POST',
+            		data:{
+            			  docNo : $('#doc_no_result').val()
+            			},
+            		success:function(res){
+            			if(res>0){
+            				alert('기안서를 회수하였습니다');
+            				location.href = '${contextPath}/app/box_progress.do';
+            									
+            			}
+            		}
+            							
+            		})
+            	}
+         })
 	  
 	  
 	

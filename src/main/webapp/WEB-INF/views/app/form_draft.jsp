@@ -42,6 +42,11 @@
               .app_buttons {
                 margin-left: 15px;
               }
+              
+              .content-footer{
+						   	position: relative;
+						    top: 525px;
+					   	}
             </style>
 
             <div style="display: flex;" class="app_buttons">
