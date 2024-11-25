@@ -89,8 +89,8 @@ public class NoticeDao {
 
     public int deleteNotice(int noticeNo) {
         // 하위 레코드 삭제
-        sqlSession.delete("noticeMapper.deleteNoticeDept", noticeNo);
-        sqlSession.delete("noticeMapper.deleteAttach", noticeNo);
+        sqlSession.delete("noticeMapper.deleteNoticeDeptByNoticeNo", noticeNo);
+        sqlSession.delete("noticeMapper.deleteAttachByNoticeNo", noticeNo);
 
         // 부모 레코드 삭제
         return sqlSession.delete("noticeMapper.deleteNotice", noticeNo);
