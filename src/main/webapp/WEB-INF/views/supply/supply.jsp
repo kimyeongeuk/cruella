@@ -64,15 +64,22 @@
                   카테고리별 조회
                 </button>
                 <ul class="dropdown-menu" >
-							    <li><a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">전체
+							    <li>
+							     <a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">전체
 							    <input type="hidden" value="전체">
-							    </a>
+							    </a> 
 							    
 							    </li>
 							    
-							    <li><a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">전자기기</a></li>
-							    <li><a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">사무용품</a></li>
-							    <li><a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">기타</a></li>
+							    <li>
+							     <a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">전자기기</a> 
+							    </li>
+							    <li>
+							     <a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">사무용품</a> 
+							    </li>
+							    <li>
+							     <a class="dropdown-item" href="javascript:void(0);" onclick="updateButtonText(this)">기타</a> 
+							    </li>
 							  </ul>
               </div>
 
@@ -391,68 +398,40 @@
 									</c:otherwise>
 								</c:choose>
 								 -->   
+							
+								 
+								 
+								 
+								 
+								 
                     </tbody>
                   </table>
 
                   <!-- 페이징바 -->
 
 
-                  
-                <!-- 페이징바 , 클릭한 숫자에 클래스에 active 추가하기 -->
-                <div class="card-body" style="justify-items: center;">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      
-                      <div class="demo-inline-spacing">
-                        <!-- Basic Pagination -->
-                        <nav aria-label="Page navigation">
-                          <ul class="pagination">
-                            <li class="page-item first">
-                              <a class="page-link" href="javascript:void(0);"
-                                ><i class="ti ti-chevrons-left ti-sm"></i
-                              ></a>
-                            </li>
-                            <li class="page-item prev">
-                              <a class="page-link" href="javascript:void(0);"
-                                ><i class="ti ti-chevron-left ti-sm"></i
-                              ></a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">1</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">2</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">3</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">4</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">5</a>
-                            </li>
-                            <li class="page-item next">
-                              <a class="page-link" href="javascript:void(0);"
-                                ><i class="ti ti-chevron-right ti-sm"></i
-                              ></a>
-                            </li>
-                            <li class="page-item last">
-                              <a class="page-link" href="javascript:void(0);"
-                                ><i class="ti ti-chevrons-right ti-sm"></i
-                              ></a>
-                            </li>
-                          </ul>
-                        </nav>
-                        <!--/ Basic Pagination -->
-                       
-                      </div>
-                    </div>
-                  
-                  </div>
-                </div>
+								<div class="card-body">
+							<div class="row">
+								<span class="col-lg-12 d-flex justify-content-center">
+									<div class="demo-inline-spacing">
+										<nav aria-label="Page navigation">
+										
+										
+										
+										
+										
+										
+										
+										</nav>
+									</div>
+								</span>
+							</div>
+						</div>
+					</div>
 
-                <!-- /페이징바 -->
+                  
+                
+						
                 </div>
               </div>
 
@@ -470,6 +449,23 @@
     
     </div>
    <!-- 세션 끝 -->
+
+		<script>
+		
+		
+		  function goToPage(pageNumber) {
+		    // URL의 query string에 page 파라미터 추가
+		    const url = new URL(window.location.href);
+		    url.searchParams.set('page', pageNumber);
+		    window.location.href = url.toString();
+		  }
+		
+		
+		</script>
+
+
+
+
 
 
 	    <script>
@@ -496,7 +492,7 @@
 	  
 		// 현재 선택되어있는 카테고리에 맞춰서 리스트 조회하는 ajax
 		
-	  function selectSupplyList(category, pageNo){ 
+	   function selectSupplyList(category, pageNo){ 
 			
 			
 		    $.ajax({
@@ -526,13 +522,73 @@
 									  			"<button type='button' class='btn rounded-pill btn-outline-info btn btn-sm'>" + '상세보기' + "</button>"			
 									 +		"</td>"
 									 +  "</tr>"
+									 
+									 
+									 
+									 
 					  }
 					  $("#tbodyId").html(a);
 					  
 					  
+					  
+					  
+					  
+										
+											<ul class="pagination">
+												<!-- 첫 페이지로 이동 -->
+												<li
+													class="page-item first ${pi.currentPage == 1 ? 'disabled' : ''}">
+													<a class="page-link" href="#"
+													onclick="goToPage(1);"> <i
+														class="ti ti-chevrons-left ti-sm"></i>
+												</a>
+												</li>
+
+												<!-- 이전 페이지로 이동 -->
+												<li
+													class="page-item prev ${pi.currentPage == 1 ? 'disabled' : ''}">
+													<a class="page-link" href="${contextPath }/supply/list.do?page=${pi.currentPage-1}"> 
+													<i class="ti ti-chevron-left ti-sm"></i>
+												</a>
+												</li>
+
+												<!-- 페이지 번호 출력 -->
+												<c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+													<li class="page-item ${pi.currentPage == i ? 'active' : '' }">
+														<a class="page-link" href="${contextPath }/supply/list.do?page=${i}">${i}</a>
+													</li>
+												</c:forEach>
+
+												<!-- 다음 페이지로 이동 -->
+												<li
+													class="page-item prev ${pi.currentPage == 1 ? 'disabled' : ''}">
+													<a class="page-link" href="${contextPath }/supply/list.do?page=${pi.currentPage+1}"> 
+													<i class="ti ti-chevron-right ti-sm"></i>
+												</a>
+												</li>
+
+												<!-- 마지막 페이지로 이동 -->
+												<li
+													class="page-item last ${pi.currentPage == pi.maxPage ? 'disabled' : ''}">
+													<a class="page-link" href="#"
+													onclick="goToPage(${pi.maxPage});"> <i
+														class="ti ti-chevrons-right ti-sm"></i>
+												</a>
+												</li>
+											</ul> 
+											
+											
+											
+							
+					<!--/페이징바-->
+					  
+					  
+					  
+					  
+					  
 				  }
 			  }) 
-	  }
+	  } 
 	  
 		</script>	
 

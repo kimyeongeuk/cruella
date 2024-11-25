@@ -122,7 +122,7 @@
             end: '${list.calEndDt}T23:00',
             extendedProps:{
             	rgb: '${list.calRgb}',
-                category: '${list.calCategory}',
+              category: '${list.calCategory}',
             }
             
             
@@ -258,7 +258,6 @@
               // RGB를 수정 모달에 뜨게 해주기
               $("#color2").val(event.extendedProps.rbg);
 
-              
               eventclickmodal.show();
         	  
               
@@ -271,19 +270,7 @@
           
           
           
-          //////////////////////
-          
-          
-          
-    
-          
-          
-          
-          
-          
-          ////////////////////
-          
-          
+ 
           
           
           
@@ -483,7 +470,7 @@
 
    <div class="content-wrapper" style="height: 1100px;">
    <!-- 세션 시작 -->
-    <div class="container-xxl flex-grow-1 container-p-y" style="display:flex; flex-direction: column;">
+    <div class="container-xxl flex-grow-1 container-p-y" style="display:flex; flex-direction: column; ">
      <!-- 이쪽에 세션정보 넣어야합니다 -->
               
                     <!-- Filter -->
@@ -671,7 +658,7 @@
                 <label for="calCategory" style="float:left;">일정 종류</label>
                   <select
                     id="calCategory2"
-                    name="calCategory"
+                    name="calCategory2"
                     class="select2 form-select"
                     data-allow-clear="true" >
                     <option class="optionHover" value="선택" disabled selected style="display: none;">선택</option>
@@ -751,7 +738,6 @@
           </div>
         </div>
       </div>
-    </div>
     <!-- /이벤트 클릭시 모달 -->
     
     
@@ -796,8 +782,58 @@
    </div>
    
    <script>
-      
+   
+   
+   // 삭제 버튼 클릭시 삭제
+   
+                   $('#deleteBtn').on('click', function(){
+                	   
+                	   if(confirm("일정을 삭제하시겠습니까?") ){
 
+                 		 
+                 			  $.ajax({
+                 				  url: '${contextPath}/calendar/deleteCalendar.do',
+                 				  type: 'GET',
+                 				  data: {
+                 						 calNo: selectedId
+                 				  },
+                 				  success: function(res) {
+                 	       				 if(res > 0){
+                 	       					location.reload();
+                 	       					 alert('일정이 삭제되었습니다.');
+
+                 	       				 }else{
+                 	       					 alert('일정 삭제에 실패했습니다. 다시 시도해주세요.');
+                 	       				 }
+                        			 },
+                 			  })
+                 		  
+                 	  }
+                	   
+                	   
+                	   
+                	   
+                	   
+                	   
+                	   
+                   })
+   
+   
+   
+   
+   // /삭제 버튼 클릭시 삭제
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+      
+						// 일정 추가시 카테고리 선택에 따른 배경색 설정하는 스크립트문
       
             $(document).ready(function() {
                 // #calCategory select에서 change 이벤트 발생 시
@@ -827,6 +863,86 @@
 
 
                 });
+                
+                
+                
+                
+                // 일정 수정하기 버튼 클릭시 이미 db에 저장된 카테고리에 맞게끔 배경색도 맞춰 나오게 하기인데..
+                // 이게 안되네........
+                
+                
+                $('.fc-event-title-container').on('click', function(){
+                	
+                	console.log($('#calCategory2').val());
+                	var selectedValue = $(this).val();
+                	
+                	
+                	
+                	$('#color2').html("");
+
+                    let a = "";
+                    if(selectedValue === '전사 일정'){
+                      a = '<option value="rgb(128, 108, 199)" class="optionHover" style="background-color: rgb(128, 108, 199);">전사 일정</option>'
+                    }else if(selectedValue === '팀 일정'){
+                      a = '<option value="rgb(12, 114, 197)" class="optionHover" style="background-color: rgb(12, 114, 197);">팀 일정</option>'
+                    }else{ // '개인 일정'
+                      a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;" selected>연빨강</option>';
+                      a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
+                      a += '<option value="rgb(255, 245, 191)" class="optionHover" style="background-color: rgb(255, 245, 191); color:transparent;">연노랑</option>'; 
+                      a += '<option value="rgb(207, 253, 226)" class="optionHover" style="background-color: rgb(207, 253, 226); color:transparent;">연초록</option>';      
+                      a += '<option value="rgb(200, 247, 255)" class="optionHover" style="background-color: rgb(202, 240, 247); color:transparent;">연파랑</option>';     
+                      a += '<option value="rgb(201, 206, 255)" class="optionHover" style="background-color: rgb(201, 206, 255); color:transparent;">연남색</option>';     
+                      a += '<option value="rgb(238, 212, 255)" class="optionHover" style="background-color: rgb(238, 212, 255); color:transparent;">연보라</option>';    
+                    }
+
+                    $('#color2').html(a);
+                	
+                	
+                	
+                })
+                
+                
+                
+                // 일정 수정시 카테고리 선택에 따른 배경색 바꾸기
+                
+                $('#calCategory2').change(function() {
+                    // id="calCategory2"에 들어있는 value 값 가져오기 ( val 은 jquery문 )
+                    const selectedValue = $(this).val();
+
+                    //console.log(selectedValue);
+                    
+                    
+                    
+                    $('#color2').html("");
+
+                    let a = "";
+                    if(selectedValue === '전사 일정'){
+                      a = '<option value="rgb(128, 108, 199)" class="optionHover" style="background-color: rgb(128, 108, 199);">전사 일정</option>'
+                    }else if(selectedValue === '팀 일정'){
+                      a = '<option value="rgb(12, 114, 197)" class="optionHover" style="background-color: rgb(12, 114, 197);">팀 일정</option>'
+                    }else{ // '개인 일정'
+                      a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;" selected>연빨강</option>';
+                      a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
+                      a += '<option value="rgb(255, 245, 191)" class="optionHover" style="background-color: rgb(255, 245, 191); color:transparent;">연노랑</option>'; 
+                      a += '<option value="rgb(207, 253, 226)" class="optionHover" style="background-color: rgb(207, 253, 226); color:transparent;">연초록</option>';      
+                      a += '<option value="rgb(200, 247, 255)" class="optionHover" style="background-color: rgb(202, 240, 247); color:transparent;">연파랑</option>';     
+                      a += '<option value="rgb(201, 206, 255)" class="optionHover" style="background-color: rgb(201, 206, 255); color:transparent;">연남색</option>';     
+                      a += '<option value="rgb(238, 212, 255)" class="optionHover" style="background-color: rgb(238, 212, 255); color:transparent;">연보라</option>';    
+                    }
+
+                    $('#color2').html(a); // jQuery문으로 innerHTML에 넣는 구문이 .html이다.
+
+
+
+                });
+                
+                
+                
+                
+                
+                
+                
+                
             });
 
 
@@ -869,7 +985,8 @@
 	                      calEndDt: end == null ? start : end.split('T')[0],      // 수정된 종료 날짜
 	                      calNo: selectedId,    // 수정하려는 이벤트의 ID
                   			calTitle: title,
-                  			calCategory: category
+                  			calCategory: category,
+                  			calRgb: rgb
                },
                success: function(res) {
                   if(res > 0){
