@@ -45,6 +45,9 @@ public interface MemberService {
 	// 사원정보수정
 	int updateMember(MemberDto m);
 	
+	// 전체사원조회(사번, 이름, 메일, 사진)
+	List<MemberDto> selectAllMember(String memNo);
+	
 
 
 

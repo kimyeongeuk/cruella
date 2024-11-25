@@ -58,7 +58,11 @@
             n.notice_status,
             n.is_pinned,
             m.mem_name,
-            nd.dept_code
+            nd.dept_code,
+		        (SELECT COUNT(*)
+		        FROM attachment a
+		        WHERE a.file_ref_type = 'N'
+		        AND a.file_ref_no = n.notice_no) AS attach_count            
         FROM notice n
         JOIN member m ON n.mem_no = m.mem_no
         JOIN notice_dept nd ON n.notice_no = nd.notice_no
@@ -106,7 +110,11 @@
             n.notice_status,
             n.is_pinned, -- is_pinned 값을 추가합니다
             m.mem_name,
-            nd.dept_code
+            nd.dept_code,
+		        (SELECT COUNT(*)
+		        FROM attachment a
+		        WHERE a.file_ref_type = 'N'
+		        AND a.file_ref_no = n.notice_no) AS attach_count    
         FROM notice n
         JOIN member m ON n.mem_no = m.mem_no
         JOIN notice_dept nd ON n.notice_no = nd.notice_no
@@ -164,19 +172,11 @@
     </select>
 
     <!-- Insert Notice -->
-		<insert id="insertNotice" parameterType="com.cl.cruella.dto.NoticeDto">
-		    INSERT INTO notice
-		        (notice_no, notice_title, notice_content, mem_no, notice_regist_date, notice_modify_date, notice_count, notice_status, is_pinned)
-		    VALUES
-		        (seq_nno.nextval, #{noticeTitle}, #{noticeContent}, #{memNo}, SYSDATE, SYSDATE, 0, 'Y', #{isPinned})
-		</insert>
-
-    <!-- Insert Attach -->
-    <insert id="insertAttach">
-        INSERT INTO attachment
-            (file_no, file_path, file_system_name, file_original_name, file_ref_type, file_ref_no)
+    <insert id="insertNotice" parameterType="com.cl.cruella.dto.NoticeDto">
+        INSERT INTO notice
+            (notice_no, notice_title, notice_content, mem_no, notice_regist_date, notice_modify_date, notice_count, notice_status, is_pinned)
         VALUES
-            (seq_fno.nextval, #{filePath}, #{filesystemName}, #{originalName}, #{refType}, seq_nno.currval)
+            (seq_nno.nextval, #{noticeTitle}, #{noticeContent}, #{memNo}, SYSDATE, SYSDATE, 0, 'Y', #{isPinned})
     </insert>
 
     <!-- Insert Notice Dept -->
@@ -184,16 +184,6 @@
         INSERT INTO notice_dept (notice_no, dept_code)
         VALUES (#{noticeNo}, #{deptCode})
     </insert>
-
-    <!-- Update Notice -->
-    <update id="updateNotice">
-        UPDATE notice
-        SET notice_title = #{noticeTitle},
-            notice_content = #{noticeContent},
-            notice_modify_date = SYSDATE,
-            is_pinned = #{isPinned} -- is_pinned 값을 업데이트합니다
-        WHERE notice_no = #{noticeNo}
-    </update>
 
     <!-- Update Notice Count -->
     <update id="updateIncreaseCount">
@@ -203,66 +193,99 @@
           AND notice_status = 'Y'
     </update>
 
-		<!-- Delete Notice -->
-		<delete id="deleteNotice">
-		    DELETE FROM notice
-		    WHERE notice_no = #{noticeNo}
-		</delete>
-		
-		<!-- Delete Notice Dept By Notice No -->
-		<delete id="deleteNoticeDeptByNoticeNo">
-		    DELETE FROM notice_dept
-		    WHERE notice_no = #{noticeNo}
-		</delete>
-		
-		<!-- Delete Attach By Notice No -->
-		<delete id="deleteAttachByNoticeNo">
-		    DELETE FROM attachment
-		    WHERE file_ref_type = 'N'
-		      AND file_ref_no = #{noticeNo}
-		</delete>
+    <!-- Delete Notice -->
+    <delete id="deleteNotice">
+        DELETE FROM notice
+        WHERE notice_no = #{noticeNo}
+    </delete>
 
-    <!-- Select Del Attach -->
-    <select id="selectDelAttach" resultMap="attachResultMap">
-        SELECT file_path, file_system_name
-        FROM attachment 
+    <!-- Delete Notice Dept By Notice No -->
+    <delete id="deleteNoticeDeptByNoticeNo">
+        DELETE FROM notice_dept
+        WHERE notice_no = #{noticeNo}
+    </delete>
+
+    <!-- Delete Notice Dept -->
+    <delete id="deleteNoticeDept">
+        DELETE FROM notice_dept
+        WHERE notice_no = #{noticeNo}
+    </delete>
+
+    <!-- Delete Attach by File No -->
+    <delete id="deleteAttachByFileNo">
+        DELETE FROM attachment
         WHERE file_no IN
-        <foreach item="fileNo" collection="array" open="(" separator="," close=")">
+        <foreach item="fileNo" collection="delFileNo" open="(" separator="," close=")">
             #{fileNo}
         </foreach>
-    </select>
+    </delete>
 
-		<!-- Delete Selected Notices Dept -->
-		<delete id="deleteSelectedNoticesDept">
-		    DELETE FROM notice_dept
-		    WHERE notice_no IN
-		    <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
-		        #{noticeNo}
-		    </foreach>
-		</delete>
-		
-		<!-- Delete Selected Attach by NoticeNos -->
-		<delete id="deleteSelectedAttach">
-		    DELETE FROM attachment
-		    WHERE file_ref_type = 'N'
-		      AND file_ref_no IN
-		    <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
-		        #{noticeNo}
-		    </foreach>
-		</delete>
-		
-		<!-- Delete Selected Notices -->
-		<delete id="deleteSelectNotice">
-		    DELETE FROM notice
-		    WHERE notice_no IN
-		    <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
-		        #{noticeNo}
-		    </foreach>
-		</delete>
+<!-- Update Notice -->
+<update id="updateNotice">
+    UPDATE notice
+    SET notice_title = #{noticeTitle},
+        notice_content = #{noticeContent},
+        notice_modify_date = SYSDATE,
+        is_pinned = #{isPinned}
+    WHERE notice_no = #{noticeNo}
+</update>
 
+<!-- Insert Attach -->
+<insert id="insertAttach">
+    INSERT INTO attachment
+        (file_no, file_path, file_system_name, file_original_name, file_ref_type, file_ref_no)
+    VALUES
+        (seq_fno.nextval, #{filePath}, #{filesystemName}, #{originalName}, #{refType}, #{refNo})
+</insert>
 
-		<select id="getLastInsertId" resultType="int">
-		    SELECT seq_nno.currval FROM dual
-		</select>
-		
+<!-- Delete Attach By Notice No -->
+<delete id="deleteAttachByNoticeNo">
+    DELETE FROM attachment
+    WHERE file_ref_type = 'N'
+      AND file_ref_no = #{noticeNo}
+</delete>
+
+<!-- Select Del Attach -->
+<select id="selectDelAttach" resultMap="attachResultMap">
+    SELECT file_path, file_system_name
+    FROM attachment 
+    WHERE file_no IN
+    <foreach item="fileNo" collection="array" open="(" separator="," close=")">
+        #{fileNo}
+    </foreach>
+</select>
+
+<!-- Delete Selected Notices Dept -->
+<delete id="deleteSelectedNoticesDept">
+    DELETE FROM notice_dept
+    WHERE notice_no IN
+    <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
+        #{noticeNo}
+    </foreach>
+</delete>
+
+<!-- Delete Selected Attach by NoticeNos -->
+<delete id="deleteSelectedAttach">
+    DELETE FROM attachment
+    WHERE file_ref_type = 'N'
+      AND file_ref_no IN
+    <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
+        #{noticeNo}
+    </foreach>
+</delete>
+
+<!-- Delete Selected Notices -->
+<delete id="deleteSelectNotice">
+    DELETE FROM notice
+    WHERE notice_no IN
+    <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
+        #{noticeNo}
+    </foreach>
+</delete>
+
+<!-- Get Last Insert Id -->
+<select id="getLastInsertId" resultType="int">
+    SELECT seq_nno.currval FROM dual
+</select>
+
 </mapper>

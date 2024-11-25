@@ -28,6 +28,7 @@ public interface NoticeService {
     // 게시글 수정
     List<AttachDto> selectDelAttach(String[] delFileNo);
     int updateNotice(NoticeDto n, String[] delFileNo);
+    void updateNoticeDept(NoticeDto notice); // 추가된 메서드
 
     // 게시글 삭제
     int deleteNotice(int noticeNo);

@@ -26,5 +26,6 @@ public class ChatDto {
 	private String chatNewMsg;
 	private int chatCount;
 	private String strDate;
+	private String chatTitle2;
 	
 }

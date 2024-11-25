@@ -1,6 +1,6 @@
 package com.cl.cruella.service;
 
-import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +68,7 @@ public class ChatServiceImpl implements ChatService{
 	public int startChat(Map<String, Object> map) {
 		int result = chatDao.startChat(map);
 			if(result >0) {
-				List<String> list = (List<String>)map.get("list");
+				List<MemberDto> list = (List<MemberDto>)map.get("list3");
 				for(int i =0;i<list.size();i++) {
 					result = chatDao.insertChatList(list.get(i));
 				}
@@ -82,14 +82,28 @@ public class ChatServiceImpl implements ChatService{
 		return chatDao.checkChatList(list);
 	}
 	
-	public ChatDto chatInfo() {
-		return chatDao.chatInfo();
+	public List<ChatDto> chatInfo(Map<String, Object> map2) {
+		List<MemberDto> list = (List<MemberDto>)map2.get("list3");
+		List<ChatDto> cl = new ArrayList<>();
+		for(int i =0;i<list.size();i++) {
+			cl.addAll(chatDao.chatInfo(list.get(i)));
+		}
+		
+		return cl;
 	}
+	
 	public ChatDto chatTitle(int chatNo) {
 		return chatDao.chatTitle(chatNo);
 	}
+	
 	public List<MemberDto> chatUserList(int chatNo) {
 		return chatDao.chatUserList(chatNo);
+	}
+	public int msgNum() {
+		return chatDao.msgNum();
+	}
+	public int deleteMsg(int msgNo) {
+		return chatDao.deleteMsg(msgNo);
 	}
 
 

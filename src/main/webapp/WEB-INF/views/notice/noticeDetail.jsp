@@ -201,41 +201,6 @@
 
 <script>
 
-//쿠키에 스크롤 위치를 저장하는 함수
-function saveScrollPosition() {
-  var scrollPosition = window.scrollY;
-  document.cookie = "scrollPosition=" + scrollPosition + "; path=/";
-}
-
-// 쿠키에서 스크롤 위치를 가져오는 함수
-function getScrollPositionFromCookie() {
-  var name = "scrollPosition=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) === ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) === 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return null;
-}
-
-// 페이지 로드 시 스크롤 위치를 복원하는 함수
-function restoreScrollPosition() {
-  var scrollPosition = getScrollPositionFromCookie();
-  if (scrollPosition !== null) {
-    window.scrollTo(0, parseInt(scrollPosition));
-  }
-}
-
-// 페이지 로드 시 스크롤 위치를 복원
-window.onload = restoreScrollPosition;
-
-
 $(document).ready(function(){
 
   // attachment-toggle 클릭 시 첨부파일 목록 표시

@@ -115,6 +115,39 @@ public class AppService {
 	}
 	
 	
+//	결재반려함 카운트
+	public int selectCompanionCount(String memNo) {
+		int result = appDao.selectCompanionCount(memNo);
+		return result;
+	}
+	
+	
+//	결재반려함 조회
+	public List<AppdocDto> selectCompanion(String memNo,PageInfoDto pi){
+		List<AppdocDto> list = appDao.selectCompanion(memNo,pi);
+		return list;
+		
+	}
+	
+	
+//	결재진행함 카운트
+	public int selectProgressCount(String memNo) {
+		int result = appDao.selectProgressCount(memNo);
+		return result;
+	}
+	
+	
+//	결재진행함 조회
+	public List<AppdocDto> selectProgress(String memNo,PageInfoDto pi){
+		List<AppdocDto> list = appDao.selectProgress(memNo,pi);
+		return list;
+		
+	}
+	
+	
+	
+	
+	
 	
 	
 //	참조열람함 카운트
@@ -160,29 +193,59 @@ public class AppService {
 	
 	
 //	상세페이지 결재 시
-	public int datailClear(AppdocDto ad) {
+	public int detailClear(AppdocDto ad) {
 		
 		 // 문서의 최종결재순서와 현재결재자순서와 같을때 상태를 최종승인 으로
 		 // 아니면 진행중으로 업데이트
 		
 		int result = 0;
 		
-		if(ad.getMaxOrder() == ad.getAppLevel() && ad.getMaxOrder() == 1) {
-			result = appDao.detailLastClear1(ad);
-		}else if(ad.getMaxOrder() == ad.getAppLevel() && ad.getMaxOrder() == 2) {
-			result = appDao.detailLastClear2(ad);
-		}else if(ad.getMaxOrder() == ad.getAppLevel() && ad.getMaxOrder() == 3) {
-			result = appDao.detailLastClear3(ad);
-		}else if(ad.getMaxOrder() > ad.getAppLevel() && ad.getAppLevel() == 1) {
-			result = appDao.detailClear1(ad);
-		}else if(ad.getMaxOrder() > ad.getAppLevel() && ad.getAppLevel() == 2) {
-			result = appDao.detailClear2(ad);
+		if(ad.getMaxOrder() == ad.getAppLevel()) {
+			
+			result = appDao.detailLastClear(ad); // 최종승인 / 기안문서
+			
+			if(result>0) {
+				result = appDao.detailAppRoval(ad); // 최종승인 / 결재선
+			}
+			
+		}else if(ad.getMaxOrder() > ad.getAppLevel()) {
+			
+			result = appDao.detailClear(ad); // 다음순서 업데이트 / 기안문서
+			
+			if(result > 0) {
+				result = appDao.detailAppRoval(ad); // 다음순서 업데이트 / 결재선
+				
+			}
+		}
+		return result;
+		
+		
+		
+	}
+	
+	
+	
+//	상세페이지 반려시
+	public int detailFail(AppdocDto ad) {
+		
+		int result = appDao.detailFail1(ad);
+		
+		if(result > 0) {
+			result = appDao.detailFail2(ad);
 		}
 		
 		return result;
 		
 		
 		
+	}
+	
+	
+	
+//	회수버튼 클릭시 
+	public int appDeleteBack(AppdocDto ad) {
+		int result = appDao.appDeleteBack(ad);
+		return result;
 	}
 	
 	

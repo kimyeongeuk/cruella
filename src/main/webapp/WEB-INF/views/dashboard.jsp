@@ -17,28 +17,56 @@
     <script src="${ contextPath }/resources/assets/js/config.js"></script>
     
  <style>
-  #btn_memo_enroll{
-      margin-right: 50px;
-      background-color: #7367F0;
-      color: white;
-      width: 85px;
-      height: 40px;
-  }
-  #btn_memo_cancel{
-      margin-left: 50px;
-      background-color: #EAEBED;
-      width: 85px;
-      height: 40px;
-      border: 0;
-      color: #8D8F9B;
-  }
-	  #memoMenuModal .modal-dialog {
-	    position: absolute;
-	    top: 20%;  /* 원하는 위치로 조정 */
-	    left: 30%; /* 원하는 위치로 조정 */
-	    transform: translate(-50%, -50%);
-	  }
-  	#side_dashboard::before {
+ 	 textarea{
+		width: 400px;
+		height: 290px;
+		border: 2px solid transparent;
+    outline: none; 
+    resize: none !important;
+ 	 }
+ 	 #memoList{
+ 	 	background-color: #e9e7fd;
+ 	 	border-radius: 5px;
+ 	 }
+ 	 #memoList > span{
+ 	 	width: 340px;
+ 	 	height: 23px;
+ 	 	cursor: pointer;
+ 	 	overflow: hidden;
+ 	 }
+ 	 #memoDiv{
+ 	 	height: 220px;
+ 		margin-top: 15px;
+ 	 	overflow-y: scroll;
+ 	 }
+	 #memoDiv::-webkit-scrollbar {
+	  width: 10px;  /* 세로 스크롤바의 너비 */
+	  height: 8px; /* 가로 스크롤바의 높이 */
+	 }
+	
+	 #memoDiv::-webkit-scrollbar-track {
+	  background-color: #f1f1f1; /* 트랙 배경색 */
+	  border-radius: 10px; /* 트랙 모서리 둥글게 */
+	 }
+  	#memberListDiv{
+   	 max-height: 345px;
+   	 overflow-y: auto;
+   	}
+	
+		/* 스크롤바의 손잡이 (사용자가 드래그할 부분) */
+		#memoDiv::-webkit-scrollbar-thumb,
+		#memberListDiv::-webkit-scrollbar {
+	    background-color: #7367f0; /* 손잡이 색 */
+	    border-radius: 10px;     /* 손잡이 모서리 둥글게 */
+	    border: 2px solid #f1f1f1; /* 손잡이의 테두리 색 (트랙과 구분됨) */
+	}
+		/* 스크롤바 손잡이 위에 마우스를 올렸을 때 */
+		#memoDiv::-webkit-scrollbar-thumb:hover,
+		#memberListDiv::-webkit-scrollbar {
+	    background-color: #564EB5; /* 손잡이 색을 다르게 */
+		}
+  	#side_dashboard::before,
+		#memberListDiv::-webkit-scrollbar {
 		  content: ''; /* 가상 요소 필수 */
 		  display: inline-block; /* 블록 요소 */
 		  width: 10px; /* 동그라미 크기 */
@@ -47,7 +75,8 @@
 		  background-color: transparent; /* 배경을 투명으로 설정 */
 		  border: 2px solid gray; /* 초기 테두리 색상 */
 		}
-		#side_dashboard.active::before {
+		#side_dashboard.active::before,
+		#memberListDiv::-webkit-scrollbar {
 		 	border: 2px solid white; /* 테두리만 흰색으로 변경 */
 		}
   </style>
@@ -162,64 +191,55 @@
           </div>
         </div>
         <!-- /팀별 매출 점유율 차트 -->
-        <!-- Memo -->
-        <div class="card" style="width: 450px; margin-left: 10px;">
-          <div class="card-body" style="padding: 0%; padding-top: 25px;">
-            <div>
-              <small class="card-text text-uppercase text-muted small" style="margin-left: 30px;">Memo</small> 
-              <i class="ti ti-edit ti-sm" style="margin-left: 280px; cursor: pointer;" onclick="fnEnrollMemo();"></i>
-            </div>
-              <div style="width: 380px; justify-self: center;">
-                <ul class="list-unstyled mb-2 mt-3 pt-1">
-                  <li class="d-flex align-items-center pt-5 pb-5 mt-3" style="background-color: #e9e7fd; border-radius: 5px;">
-                    <span class="fw-medium mx-2" style="width: 320px; cursor: pointer;">오늘의 할일</span>
-                    <div class="dropdown">
-                      <i class="ti ti-dots-vertical ti-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      </i>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" onclick="fnEnrollMemo();"><i class="ti ti-zoom-in"></i> 메모 열기</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash"></i> 메모 삭제</a></li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li class="d-flex align-items-center pt-5 pb-5 mt-3" style="background-color: #e9e7fd; border-radius: 5px;">
-                    <span class="fw-medium mx-2" style="width: 320px; cursor: pointer;">오늘의 할일</span>
-                    <div class="dropdown">
-                      <i class="ti ti-dots-vertical ti-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      </i>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" onclick="fnEnrollMemo();"><i class="ti ti-zoom-in"></i> 메모 열기</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash"></i> 메모 삭제</a></li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li class="d-flex align-items-end pt-5 pb-5 mt-3" style="background-color: #e9e7fd; border-radius: 5px;">
-                    <span class="fw-medium mx-2" style="width: 320px; cursor: pointer;">메모메모</span>
-                    <div class="dropdown">
-                      <i class="ti ti-dots-vertical ti-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      </i>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" onclick="fnEnrollMemo();"><i class="ti ti-zoom-in"></i> 메모 열기</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash"></i> 메모 삭제</a></li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li class="d-flex align-items-end pt-5 pb-5 mt-3" style="background-color: #e9e7fd; border-radius: 5px;">
-                    <span class="fw-medium mx-2" style="width: 320px; cursor: pointer;">화이팅</span>
-                    <div class="dropdown"> <!-- 메모 목록 끝 버튼 클릭시 드롭다운 -->
-                      <i class="ti ti-dots-vertical ti-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      </i>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" onclick="fnEnrollMemo();"><i class="ti ti-zoom-in"></i> 메모 열기</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="ti ti-trash"></i> 메모 삭제</a></li>
-                      </ul>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+        
+        <!-- 메모목록 -->
+        <div class="card mb-2" style="height: 380px; width: 430px; margin-left: 12px;">
+          <div class="card-body">
+            <small class="card-text text-uppercase text-muted small">Memo</small> 
+            <i class="ti ti-edit ti-sm" style="margin-left: 310px; cursor: pointer;" onclick="fnOpenMemoModal();"></i>
+            <div id="memoDiv"></div>
           </div>
         </div>
-        <!-- /Memo -->
+        
+        <!-- 메모등록 모달 -->
+         <div class="modal fade" id="insertMemoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+           <div class="modal-dialog">
+               <div class="modal-content" style="width: 450px; height: 450px;">
+                   <div class="modal-header" style="background-color: #CEC9FF;">
+                       <h5 class="modal-title" id="exampleModalLabel" style="color: white; margin-bottom: 12px;">Memo</h5>
+                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                   </div>
+                   <div class="modal-body">
+                      <textarea id="insertMemoInput" name="memoContent"></textarea>
+                   </div>
+                   <div class="modal-footer justify-content-center">
+                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_memo_insert" onclick="fnInsertMemo();">등록</button>
+                       <button type="button" class="btn btn-primary" id="btn_memo_cancel" data-bs-dismiss="modal">취소</button>
+                   </div>
+               </div>
+           </div>
+         </div>
+        
+        <!-- 메모 조회 및 수정 모달 -->
+        <input type="hidden" name="memoNo" id="modifyMemoNo" value="">
+         <div class="modal fade" id="selectMemoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+           <div class="modal-dialog">
+               <div class="modal-content" style="width: 450px; height: 450px;">
+                   <div class="modal-header" style="background-color: #CEC9FF;">
+                       <h5 class="modal-title" id="exampleModalLabel" style="color: white; margin-bottom: 12px;">Memo</h5>
+                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                   </div>
+                   <div class="modal-body">
+                      <textarea id="insertMemoInput_edit" name="memoContent"></textarea>
+                   </div>
+                   <div class="modal-footer justify-content-center">
+                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_memo_insert" onclick="fnModifyMemo();">수정</button>
+                       <button type="button" class="btn btn-primary" id="btn_memo_cancel" data-bs-dismiss="modal">취소</button>
+                   </div>
+               </div>
+           </div>
+         </div>
+
 
         <!-- 총매출 차트부분 -->
         <div class="col-12" style="width: 950px;">
@@ -276,98 +296,11 @@
         <!-- Popular Instructors -->
         <div class="col-md-6 col-xxl-4 mb-6">
           <div class="card h-100">
-            <div class="card-header d-flex align-items-center justify-content-between">
-              <div class="card-title mb-0">
-                <h5 class="m-0 me-2">전직원목록</h5>
-              </div>
+            <div class="card-header align-items-center" style="display: flex; gap: 15px;">
+              <i class="ti ti-users ti-lg"></i>
+              <h5 class="card-action-title mb-0">전직원 목록</h5>
             </div>
-            <div class="px-5 py-4 border border-start-0 border-end-0">
-              <div class="d-flex justify-content-between align-items-center">
-                <p class="mb-0 text-uppercase">정렬기준</p>
-                <p class="mb-0 text-uppercase">개인 채팅</p>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-6">
-                <div class="d-flex align-items-center">
-                  <div class="avatar avatar me-4">
-                    <img src="${ contextPath }/assets/img/avatars/1.png" alt="Avatar" class="rounded-circle" />
-                  </div>
-                  <div>
-                    <div>
-                      <h6 class="mb-0 text-truncate">Maven Analytics</h6>
-                      <small class="text-truncate text-body">Business Intelligence</small>
-                    </div>
-                  </div>
-                </div>
-                <div class="text-end">
-                  <i class="ti ti-brand-telegram"></i>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mb-6">
-                <div class="d-flex align-items-center">
-                  <div class="avatar avatar me-4">
-                    <img src="../../assets/img/avatars/2.png" alt="Avatar" class="rounded-circle" />
-                  </div>
-                  <div>
-                    <div>
-                      <h6 class="mb-0 text-truncate">Bentlee Emblin</h6>
-                      <small class="text-truncate text-body">Digital Marketing</small>
-                    </div>
-                  </div>
-                </div>
-                <div class="text-end">
-                  <i class="ti ti-brand-telegram"></i>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mb-6">
-                <div class="d-flex align-items-center">
-                  <div class="avatar avatar me-4">
-                    <img src="${ contextPath }/assets/img/avatars/3.png" alt="Avatar" class="rounded-circle" />
-                  </div>
-                  <div>
-                    <div>
-                      <h6 class="mb-0 text-truncate">Benedetto Rossiter</h6>
-                      <small class="text-truncate text-body">UI/UX Design</small>
-                    </div>
-                  </div>
-                </div>
-                <div class="text-end">
-                  <i class="ti ti-brand-telegram"></i>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mb-6">
-                <div class="d-flex align-items-center">
-                  <div class="avatar avatar me-4">
-                    <img src="${ contextPath }/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />
-                  </div>
-                  <div>
-                    <div>
-                      <h6 class="mb-0 text-truncate">Beverlie Krabbe</h6>
-                      <small class="text-truncate text-body">React Native</small>
-                    </div>
-                  </div>
-                </div>
-                <div class="text-end">
-                  <i class="ti ti-brand-telegram"></i>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                  <div class="avatar avatar me-4">
-                    <img src="${ contextPath }/assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
-                  </div>
-                  <div>
-                    <div>
-                      <h6 class="mb-0 text-truncate">Alma Gonzalez</h6>
-                      <small class="text-truncate text-body">Java Developer</small>
-                    </div>
-                  </div>
-                </div>
-                <div class="text-end">
-                  <i class="ti ti-brand-telegram"></i>
-                </div>
-              </div>
+            <div class="card-body" id="memberListDiv"> <!-- 전 사원의 리스트가 보여질영역 -->
             </div>
           </div>
         </div>
@@ -847,6 +780,186 @@
 		 	element.classList.add("active");
 	 	
 		});
+	   
+	    window.onload = function(){
+	    	
+	    	fnMemoList();	  // 메모 전체 리스트 조회
+	    	fnMemberList(); // 전체 사원 리스트 조회
+				    	
+	    }
+	    
+	    // 메모 전체 리스트 조회(김동규)
+	   	function fnMemoList(){
+	   		
+	   		const memNo = '${loginUser.getMemNo()}'; // 현재 로그인한 사원의 사번
+	   		
+		   		$.ajax({
+		   			url : '${contextPath}/memo/memoList.do',
+		   			type: 'POST',
+		   			data: {memNo: memNo},
+		   	 success: function(res){
+		   		 
+		   		 		let liEl = "<ul class='list-unstyled mb-2'>";
+		   		 
+	 		 				for(let i = 0; i < res.length; i++) {
+	 		 					liEl += "<li class='d-flex align-items-center pt-5 pb-5 mt-3' id='memoList'>"
+		 		 							+ "<span class='fw-medium mx-2' onclick='fnSelectMemo(" + res[i].memoNo + ");'>" + res[i].memoContent + "</span>"
+		 		 							+ "<div class='dropdown'>"
+		 		 								+ "<i class='ti ti-dots-vertical ti-sm' type='button' data-bs-toggle='dropdown' aria-expanded='false'></i>"
+		 		 									+"<ul class='dropdown-menu'>"
+		 		 										+"<li><a class='dropdown-item' onclick='fnSelectMemo(" + res[i].memoNo + ")'><i class='ti ti-zoom-in'></i>메모 열기</a></li>"
+		 		 										+"<li><a class='dropdown-item' onclick='fnDeleteMemo(" + res[i].memoNo + ")'><i class='ti ti-trash'></i>메모 삭제</a></li>"
+		 		 									+"</ul>"
+		 		 								+"</div>"
+	 		 								+"</li>"
+	 		 				}
+	 		 				liEl += "</ul>";
+	             
+		   		 		$('#memoDiv').html(liEl);
+		   	 }
+		   		  
+		   	})	
+	   	}
+	    
+	    // 메모작성 아이콘 클릭 시 열리는 새 메모 작성 모달(김동규)
+	    function fnOpenMemoModal(){
+	      var memoModal = new bootstrap.Modal(document.getElementById("insertMemoModal"));
+
+				
+	      memoModal.show();
+
+	    }
+	    
+	    
+	    // 메모 클릭시 해당 메모 조회(김동규)
+	    function fnSelectMemo(memoNo){
+	    	
+	    	var memoModal = new bootstrap.Modal(document.getElementById("selectMemoModal"));
+
+	    	$.ajax({
+	    		url: '${contextPath}/memo/selectMemo.do',
+	    		type: 'POST',
+	    		data: {memoNo: memoNo},
+	    		success: function(res){
+
+			    	memoModal.show();
+			    	
+			    	$('#insertMemoInput_edit').val(res.memoContent);
+			    	$('#modifyMemoNo').val(res.memoNo);
+	    		}
+	    	})
+	    	
+	    }
+	    
+	    // 메모 등록
+	    function fnInsertMemo(){
+			
+	    	let memNo = '${loginUser.getMemNo()}';
+	    	let memoContent = $('#insertMemoInput').val();
+	    	
+	    	// 작성된 내용이 없을경우 등록하지않고 모달창 종료
+	    	if (!memoContent) {
+	    		 
+	 	       $('#selectMemoModal').modal('hide');
+	 	        
+	 	       return;
+	 	       
+	    	   }
+	    	
+	    	$.ajax({
+	    		url: '${contextPath}/memo/insertMemo.do',
+	    		type: 'POST',
+	    		data: {
+	    			memNo: memNo,
+	    			memoContent: memoContent
+	    		},
+	    		success: function(res){
+	    			
+	    				$('#insertMemoInput').val('');
+	    				
+			    		fnMemoList(); // 등록 후 전체 리스트 조회 실행
+	    			
+	    		}
+	    	})
+	    	
+	    }
+	    
+	    // 메모 삭제
+	    function fnDeleteMemo(memoNo){
+	    	
+	    	
+	    	$.ajax({
+	    		url: '${contextPath}/memo/deleteMemo.do',
+	    		type: 'POST',
+	    		data: {memoNo: memoNo},
+	    		success: function(res) {
+	    			fnMemoList();	// 삭제 후 전체 리스트 조회 재실행
+	    	    	
+	    		}
+	    		
+	    	})
+	    }
+	    
+	    // 메모 수정
+	    function fnModifyMemo(){
+	    	
+	    	let memNo = '${loginUser.getMemNo()}';
+	    	let memoNo = $('#modifyMemoNo').val();
+	    	let memoContent = $('#insertMemoInput_edit').val();
+
+	    	$.ajax({
+	    		url: '${contextPath}/memo/modifyMemo.do',
+	    		type: 'POST',
+	    		data: {
+	    			memNo: memNo,
+	    			memoNo: memoNo,
+	    			memoContent: memoContent
+	    			},
+	    		success: function(res){
+	    			fnMemoList();	// 수정 후 전체 리스트 조회 재실행
+	    		}
+	    	})
+	    }
+	    
+	    // 전체 사원 리스트 조회
+	    function fnMemberList(){
+	    	
+	    	let memNo = '${loginUser.getMemNo()}';
+	    	
+	    	$.ajax({
+	    		url: '${contextPath}/member/selectAll_db.do',
+	    		type: 'POST',
+	    		data: {memNo: memNo},
+	    		success: function(res){
+	    			
+	    			let liEl = '<ul class="list-unstyled mb-0">'
+	    			
+	    			for(let i = 0; i < res.length; i++){
+	    				
+	    				liEl += '<li class="mb-4">'
+	    							+'<div class="d-flex align-items-center">'
+	    								+'<div class="d-flex align-items-center">'
+	    									+'<div class="avatar me-2">'
+	    										+'<img src="${ contextPath }/assets/img/avatars/2.png" alt="Avatar" class="rounded-circle" />'
+	    									+'</div>'
+	    									+'<div class="me-2">'
+	    										+'<h6 class="mb-0">' + res[i].memName + '</h6>'
+	    										+'<small>' + res[i].email + '</small>'
+	    									+'</div>'
+	    								+'</div>'
+	    								+'<div class="ms-auto"><button class="btn btn-label-primary btn-icon"><i class="ti ti-brand-telegram ti-md"></i></button></div>'
+	    						  +'</li>'
+	    			}
+	    			
+	    			liEl += '</ul>';
+	    			
+	    			$('#memberListDiv').html(liEl);
+	    			
+	    		}
+	    		
+	    	})
+	    }	    
+	    
    </script>
 	
 	

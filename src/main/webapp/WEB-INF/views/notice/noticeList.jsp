@@ -78,7 +78,10 @@
 	    font-size: 14px; /* 글자 크기를 조금 줄입니다 */
 	    white-space: nowrap; /* 글자가 한 줄로 나오도록 합니다 */
 	}
-
+	.pinned {
+	  background-color: #fff8dc; /* 예: 배경색을 밝은 노란색으로 설정 */
+	  font-weight: bold; /* 예: 글씨를 굵게 설정 */
+	}
 
 </style>
 
@@ -232,7 +235,7 @@
 								          <c:forEach var="notice" items="${list}">
 								            <!-- 역순 넘버링 계산 -->
 								            <c:set var="reverseCount" value="${pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1)}" />
-								            <tr data-noticeno="${notice.noticeNo}">
+								            <tr data-noticeno="${notice.noticeNo}" class="${notice.isPinned == 1 ? 'pinned' : ''}">
 								              <c:choose>
 								                <c:when test="${ loginUser.deptCode == 'S2'}">
 								                  <td><input type="checkbox" class="item-checkbox" /></td>

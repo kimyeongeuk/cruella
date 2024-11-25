@@ -134,7 +134,25 @@ public class ChatController {
 		
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/msgNum.do",produces="application/json")
+	public int msgNum() {
+		
+		
+		int result = chatServiceImpl.msgNum();
+		log.debug("번호 : {}",result);
+		return result;
+		
+	}
 	
+	
+	@ResponseBody
+	@GetMapping(value="/delete.do",produces="application/json")
+	public int deleteMsg(int msgNo) {
+		int result = chatServiceImpl.deleteMsg(msgNo);
+		return result;
+		
+	}
 	
 	
 	

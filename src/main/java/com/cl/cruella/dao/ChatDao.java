@@ -61,16 +61,16 @@ public class ChatDao {
 		return sqlSession.insert("chatMapper.startChat",map);
 	}
 
-	public int insertChatList(String memNo) {
-		return sqlSession.insert("chatMapper.insertChatList",memNo);
+	public int insertChatList(MemberDto m) {
+		return sqlSession.insert("chatMapper.insertChatList",m);
 	}
 
 	public String checkChatList(List<String> list) {
 		return sqlSession.selectOne("chatMapper.checkChatList",list);
 	}
 
-	public ChatDto chatInfo() {
-		return sqlSession.selectOne("chatMapper.chatInfo");
+	public List<ChatDto> chatInfo(MemberDto cd) {
+		return sqlSession.selectList("chatMapper.chatInfo",cd);
 	}
 
 	public ChatDto chatTitle(int chatNo) {
@@ -80,6 +80,14 @@ public class ChatDao {
 
 	public List<MemberDto> chatUserList(int chatNo) {
 		return sqlSession.selectList("chatMapper.chatUserList",chatNo);
+	}
+
+	public int msgNum() {
+		return sqlSession.selectOne("chatMapper.msgNum");
+	}
+
+	public int deleteMsg(int msgNo) {
+		return sqlSession.update("chatMapper.deleteMsg",msgNo);
 	}
 	
 
