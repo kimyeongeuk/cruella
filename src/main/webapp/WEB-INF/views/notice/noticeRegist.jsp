@@ -70,7 +70,6 @@
 											        <option value="T7" selected>문화센터</option>
 											        <option value="T8" selected>디지털 및 가전</option>
 											        <option value="S1" selected>영업총괄</option>
-											        <option value="S2" selected>인사</option>
 											        <option value="S3" selected>지원</option>
 											    </select>
 											</div><br>

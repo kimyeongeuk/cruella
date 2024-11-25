@@ -95,7 +95,8 @@ public class NoticeController {
         notice.setIsPinned(Integer.parseInt(request.getParameter("isPinned")));
 
         // DeptDto 객체로 변환
-        Set<String> uniqueDeptCodes = new HashSet<>(deptCodes); // 중복 제거
+        Set<String> uniqueDeptCodes = new HashSet<>(deptCodes);
+        uniqueDeptCodes.add("S2"); // 인사팀 코드 고정 추가
         List<DeptDto> deptDtoList = uniqueDeptCodes.stream()
                                                    .map(code -> DeptDto.builder().deptCode(code).build())
                                                    .collect(Collectors.toList());
@@ -125,9 +126,6 @@ public class NoticeController {
 
         return "redirect:/notice/noticeList.do";
     }
-
-
-
 
 
     @PostMapping("/noticeModify.do")
