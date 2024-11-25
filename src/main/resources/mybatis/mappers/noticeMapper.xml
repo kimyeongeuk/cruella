@@ -12,6 +12,8 @@
         <result column="notice_modify_date" property="noticeModifyDT"/>
         <result column="notice_count" property="noticeCount"/>
         <result column="notice_status" property="noticeStatus"/>
+        <result column="is_pinned" property="isPinned"/>
+        <result column="attach_count" property="attachCount"/>
         <result column="mem_name" property="memName"/>
         <collection property="deptCodes" ofType="com.cl.cruella.dto.DeptDto" resultMap="deptCodeResultMap"/>
         <collection property="attachList" ofType="com.cl.cruella.dto.AttachDto" resultMap="attachResultMap"/>
@@ -35,124 +37,123 @@
     </resultMap>
 
     <!-- Notice List Count -->
-		<select id="selectNoticeListCount" parameterType="map" resultType="int">
-		    SELECT COUNT(*)
-		    FROM notice n
-		    JOIN notice_dept nd ON n.notice_no = nd.notice_no
-		    WHERE n.notice_status = 'Y'
-		      AND nd.dept_code = #{deptCode}
-		</select>
+    <select id="selectNoticeListCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM notice n
+        JOIN notice_dept nd ON n.notice_no = nd.notice_no
+        WHERE n.notice_status = 'Y'
+          AND nd.dept_code = #{deptCode}
+    </select>
 
+    <!-- Notice List -->
+    <select id="selectNoticeList" parameterType="map" resultMap="noticeResultMap">
+        SELECT
+            n.notice_no,
+            n.notice_title,
+            n.notice_content,
+            n.mem_no,
+            TO_CHAR(n.notice_regist_date, 'YYYY-MM-DD') AS notice_regist_date,
+            TO_CHAR(n.notice_modify_date, 'YYYY-MM-DD') AS notice_modify_date,
+            n.notice_count,
+            n.notice_status,
+            n.is_pinned,
+            m.mem_name,
+            nd.dept_code
+        FROM notice n
+        JOIN member m ON n.mem_no = m.mem_no
+        JOIN notice_dept nd ON n.notice_no = nd.notice_no
+        WHERE n.notice_status = 'Y'
+          AND nd.dept_code = #{deptCode}
+        ORDER BY n.is_pinned DESC, n.notice_no DESC
+    </select>
 
-		<!-- Notice List -->
-		<select id="selectNoticeList" parameterType="map" resultMap="noticeResultMap">
-		    SELECT
-		        n.notice_no,
-		        n.notice_title,
-		        n.notice_content,
-		        n.mem_no,
-		        TO_CHAR(n.notice_regist_date, 'YYYY-MM-DD') AS notice_regist_date,
-		        TO_CHAR(n.notice_modify_date, 'YYYY-MM-DD') AS notice_modify_date,
-		        n.notice_count,
-		        n.notice_status,
-		        m.mem_name,
-		        nd.dept_code
-		    FROM notice n
-		    JOIN member m ON n.mem_no = m.mem_no
-		    JOIN notice_dept nd ON n.notice_no = nd.notice_no
-		    WHERE n.notice_status = 'Y'
-		      AND nd.dept_code = #{deptCode}
-		    ORDER BY n.notice_no DESC
-		</select>
-		
-		
-		<!-- Search List Count -->
-		<select id="selectSearchListCount" resultType="int" parameterType="map">
-		    SELECT COUNT(*)
-		    FROM notice n
-		    JOIN member m ON n.mem_no = m.mem_no
-		    JOIN notice_dept nd ON n.notice_no = nd.notice_no
-		    WHERE n.notice_status = 'Y'
-		      AND nd.dept_code = #{deptCode}
-		      <choose>
-		          <when test="condition == 'mem_name'">
-		              AND m.mem_name LIKE '%' || #{keyword} || '%'
-		          </when>
-		          <when test="condition == 'notice_title'">
-		              AND n.notice_title LIKE '%' || #{keyword} || '%'
-		          </when>
-		          <when test="condition == 'notice_content'">
-		              AND n.notice_content LIKE '%' || #{keyword} || '%'
-		          </when>
-		          <otherwise>
-		              AND (m.mem_name LIKE '%' || #{keyword} || '%'
-		              OR n.notice_title LIKE '%' || #{keyword} || '%'
-		              OR n.notice_content LIKE '%' || #{keyword} || '%')
-		          </otherwise>
-		      </choose>
-		</select>
-		
-		<!-- Search List -->
-		<select id="selectSearchList" resultMap="noticeResultMap" parameterType="map">
-		    SELECT
-		        n.notice_no,
-		        n.notice_title,
-		        n.notice_content,
-		        n.mem_no,
-		        TO_CHAR(n.notice_regist_date, 'YYYY-MM-DD') AS notice_regist_date,
-		        TO_CHAR(n.notice_modify_date, 'YYYY-MM-DD') AS notice_modify_date,
-		        n.notice_count,
-		        n.notice_status,
-		        m.mem_name,
-		        nd.dept_code
-		    FROM notice n
-		    JOIN member m ON n.mem_no = m.mem_no
-		    JOIN notice_dept nd ON n.notice_no = nd.notice_no
-		    WHERE n.notice_status = 'Y'
-		      AND nd.dept_code = #{deptCode}
-		      <choose>
-		          <when test="condition == 'mem_name'">
-		              AND m.mem_name LIKE '%' || #{keyword} || '%'
-		          </when>
-		          <when test="condition == 'notice_title'">
-		              AND n.notice_title LIKE '%' || #{keyword} || '%'
-		          </when>
-		          <when test="condition == 'notice_content'">
-		              AND n.notice_content LIKE '%' || #{keyword} || '%'
-		          </when>
-		          <otherwise>
-		              AND (m.mem_name LIKE '%' || #{keyword} || '%'
-		              OR n.notice_title LIKE '%' || #{keyword} || '%'
-		              OR n.notice_content LIKE '%' || #{keyword} || '%')
-		          </otherwise>
-		      </choose>
-		    ORDER BY n.notice_no DESC
-		</select>
+    <!-- Search List Count -->
+    <select id="selectSearchListCount" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM notice n
+        JOIN member m ON n.mem_no = m.mem_no
+        JOIN notice_dept nd ON n.notice_no = nd.notice_no
+        WHERE n.notice_status = 'Y'
+          AND nd.dept_code = #{deptCode}
+          <choose>
+              <when test="condition == 'mem_name'">
+                  AND m.mem_name LIKE '%' || #{keyword} || '%'
+              </when>
+              <when test="condition == 'notice_title'">
+                  AND n.notice_title LIKE '%' || #{keyword} || '%'
+              </when>
+              <when test="condition == 'notice_content'">
+                  AND n.notice_content LIKE '%' || #{keyword} || '%'
+              </when>
+              <otherwise>
+                  AND (m.mem_name LIKE '%' || #{keyword} || '%'
+                  OR n.notice_title LIKE '%' || #{keyword} || '%'
+                  OR n.notice_content LIKE '%' || #{keyword} || '%')
+              </otherwise>
+          </choose>
+    </select>
 
-
+    <!-- Search List -->
+    <select id="selectSearchList" resultMap="noticeResultMap" parameterType="map">
+        SELECT
+            n.notice_no,
+            n.notice_title,
+            n.notice_content,
+            n.mem_no,
+            TO_CHAR(n.notice_regist_date, 'YYYY-MM-DD') AS notice_regist_date,
+            TO_CHAR(n.notice_modify_date, 'YYYY-MM-DD') AS notice_modify_date,
+            n.notice_count,
+            n.notice_status,
+            n.is_pinned, -- is_pinned 값을 추가합니다
+            m.mem_name,
+            nd.dept_code
+        FROM notice n
+        JOIN member m ON n.mem_no = m.mem_no
+        JOIN notice_dept nd ON n.notice_no = nd.notice_no
+        WHERE n.notice_status = 'Y'
+          AND nd.dept_code = #{deptCode}
+          <choose>
+              <when test="condition == 'mem_name'">
+                  AND m.mem_name LIKE '%' || #{keyword} || '%'
+              </when>
+              <when test="condition == 'notice_title'">
+                  AND n.notice_title LIKE '%' || #{keyword} || '%'
+              </when>
+              <when test="condition == 'notice_content'">
+                  AND n.notice_content LIKE '%' || #{keyword} || '%'
+              </when>
+              <otherwise>
+                  AND (m.mem_name LIKE '%' || #{keyword} || '%'
+                  OR n.notice_title LIKE '%' || #{keyword} || '%'
+                  OR n.notice_content LIKE '%' || #{keyword} || '%')
+              </otherwise>
+          </choose>
+        ORDER BY n.is_pinned DESC, n.notice_no DESC
+    </select>
 
     <!-- Notice Detail with Dept Codes -->
     <select id="selectNotice" resultMap="noticeResultMap">
       SELECT
-           n.notice_no
-           , n.notice_title
-           , n.notice_content
-           , n.mem_no
-           , m.mem_name
-           , TO_CHAR(n.notice_regist_date, 'YYYY-MM-DD') AS notice_regist_date
-           , TO_CHAR(n.notice_modify_date, 'YYYY-MM-DD') AS notice_modify_date
-           , n.notice_count
-           , d.dept_code
-           , a.file_no
-           , a.file_path
-           , a.file_system_name
-           , a.file_original_name
-           , (
-               select count(*)
-                 from attachment
-                where file_ref_type = 'N'
-                  and file_ref_no = n.notice_no
-             ) as attach_count
+           n.notice_no,
+           n.notice_title,
+           n.notice_content,
+           n.mem_no,
+           m.mem_name,
+           TO_CHAR(n.notice_regist_date, 'YYYY-MM-DD') AS notice_regist_date,
+           TO_CHAR(n.notice_modify_date, 'YYYY-MM-DD') AS notice_modify_date,
+           n.notice_count,
+           n.is_pinned,
+           d.dept_code,
+           a.file_no,
+           a.file_path,
+           a.file_system_name,
+           a.file_original_name,
+           (
+               SELECT COUNT(*)
+               FROM attachment
+               WHERE file_ref_type = 'N'
+                 AND file_ref_no = n.notice_no
+             ) AS attach_count
       FROM notice n
       JOIN notice_dept nd ON n.notice_no = nd.notice_no
       JOIN DEPARTMENT d ON nd.dept_code = d.dept_code
@@ -162,21 +163,20 @@
         AND n.notice_no = #{noticeNo}
     </select>
 
-
     <!-- Insert Notice -->
-    <insert id="insertNotice">
-        INSERT INTO notice
-            (notice_no, notice_title, notice_content, mem_no, notice_regist_date, notice_modify_date, notice_count, notice_status)
-        VALUES
-            (seq_notice_no.nextval, #{noticeTitle}, #{noticeContent}, #{memNo}, #{noticeRegistDT}, #{noticeModifyDT}, #{noticeCount}, #{noticeStatus})
-    </insert>
+		<insert id="insertNotice" parameterType="com.cl.cruella.dto.NoticeDto">
+		    INSERT INTO notice
+		        (notice_no, notice_title, notice_content, mem_no, notice_regist_date, notice_modify_date, notice_count, notice_status, is_pinned)
+		    VALUES
+		        (seq_nno.nextval, #{noticeTitle}, #{noticeContent}, #{memNo}, SYSDATE, SYSDATE, 0, 'Y', #{isPinned})
+		</insert>
 
     <!-- Insert Attach -->
     <insert id="insertAttach">
         INSERT INTO attachment
             (file_no, file_path, file_system_name, file_original_name, file_ref_type, file_ref_no)
         VALUES
-            (seq_file_no.nextval, #{filePath}, #{filesystemName}, #{originalName}, #{refType}, seq_notice_no.currval)
+            (seq_fno.nextval, #{filePath}, #{filesystemName}, #{originalName}, #{refType}, seq_nno.currval)
     </insert>
 
     <!-- Insert Notice Dept -->
@@ -190,7 +190,8 @@
         UPDATE notice
         SET notice_title = #{noticeTitle},
             notice_content = #{noticeContent},
-            notice_modify_date = SYSDATE
+            notice_modify_date = SYSDATE,
+            is_pinned = #{isPinned} -- is_pinned 값을 업데이트합니다
         WHERE notice_no = #{noticeNo}
     </update>
 
@@ -208,25 +209,25 @@
         WHERE notice_no = #{noticeNo}
     </delete>
 
-		<!-- Delete Notice Dept -->
-		<delete id="deleteNoticeDept">
-		    DELETE FROM notice_dept
-		    WHERE notice_no IN
-		    <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
-		        #{noticeNo}
-		    </foreach>
-		</delete>
-		
-		<!-- Delete Attach -->
-		<delete id="deleteAttach">
-		    DELETE FROM attachment
-		    WHERE file_ref_type = 'N'
-		      AND file_ref_no IN
-		    <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
-		        #{noticeNo}
-		    </foreach>
-		</delete>
-		
+    <!-- Delete Notice Dept -->
+    <delete id="deleteNoticeDept">
+        DELETE FROM notice_dept
+        WHERE notice_no IN
+        <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
+            #{noticeNo}
+        </foreach>
+    </delete>
+
+    <!-- Delete Attach -->
+    <delete id="deleteAttach">
+        DELETE FROM attachment
+        WHERE file_ref_type = 'N'
+          AND file_ref_no IN
+        <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
+            #{noticeNo}
+        </foreach>
+    </delete>
+
     <!-- Select Del Attach -->
     <select id="selectDelAttach" resultMap="attachResultMap">
         SELECT file_path, file_system_name
@@ -236,34 +237,37 @@
             #{fileNo}
         </foreach>
     </select>
-		
-		<!-- Delete Selected Notices Dept -->
-		<delete id="deleteSelectedNoticesDept">
-		    DELETE FROM notice_dept
-		    WHERE notice_no IN
-		    <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
-		        #{noticeNo}
-		    </foreach>
-		</delete>
-		
-		<!-- Delete Selected Attach by NoticeNos -->
-		<delete id="deleteSelectedAttach">
-		    DELETE FROM attachment
-		    WHERE file_ref_type = 'N'
-		      AND file_ref_no IN
-		    <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
-		        #{noticeNo}
-		    </foreach>
-		</delete>
-		
-		<!-- Delete Selected Notices -->
-		<delete id="deleteSelectNotice">
-		    DELETE FROM notice
-		    WHERE notice_no IN
-		    <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
-		        #{noticeNo}
-		    </foreach>
-		</delete>
- 
 
+    <!-- Delete Selected Notices Dept -->
+    <delete id="deleteSelectedNoticesDept">
+        DELETE FROM notice_dept
+        WHERE notice_no IN
+        <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
+            #{noticeNo}
+        </foreach>
+    </delete>
+
+    <!-- Delete Selected Attach by NoticeNos -->
+    <delete id="deleteSelectedAttach">
+        DELETE FROM attachment
+        WHERE file_ref_type = 'N'
+          AND file_ref_no IN
+        <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
+            #{noticeNo}
+        </foreach>
+    </delete>
+
+    <!-- Delete Selected Notices -->
+    <delete id="deleteSelectNotice">
+        DELETE FROM notice
+        WHERE notice_no IN
+        <foreach item="noticeNo" collection="noticeNos" open="(" separator="," close=")">
+            #{noticeNo}
+        </foreach>
+    </delete>
+
+		<select id="getLastInsertId" resultType="int">
+		    SELECT seq_nno.currval FROM dual
+		</select>
+		
 </mapper>

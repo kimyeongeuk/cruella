@@ -33,3 +33,4 @@ public interface NoticeService {
     int deleteNotice(int noticeNo);
     int deleteSelectedPosts(List<Integer> noticeNos);
 }
+

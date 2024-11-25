@@ -26,7 +26,7 @@ public class NoticeDto {
 	private String noticeModifyDT;
 	private int noticeCount;
 	private String noticeStatus;
-	private String deptCode;
+	private int isPinned;
 	private int attachCount;
 	private String memName;
 	private List<AttachDto> attachList;

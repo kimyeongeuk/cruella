@@ -21,26 +21,31 @@ public class NoticeServiceImpl implements NoticeService {
 
     private final NoticeDao noticeDao;
 
+    @Transactional
     @Override
     public int insertNotice(NoticeDto n) {
         int result = noticeDao.insertNotice(n);
 
-        List<AttachDto> list = n.getAttachList();
-        if (result > 0 && !list.isEmpty()) {
-            result = 0;
-            for (AttachDto attach : list) {
-                result += noticeDao.insertAttach(attach);
-            }
-        }
-
         if (result > 0) {
+            int noticeNo = noticeDao.getLastInsertId(); // 삽입된 notice_no 값을 가져옵니다.
+            
+            List<AttachDto> list = n.getAttachList();
+            if (!list.isEmpty()) {
+                for (AttachDto at : list) {
+                    at.setRefNo(noticeNo); // 첨부 파일의 refNo를 noticeNo로 설정
+                    noticeDao.insertAttach(at);
+                }
+            }
+
             for (DeptDto dept : n.getDeptCodes()) {
-                noticeDao.insertNoticeDept(n.getNoticeNo(), dept.getDeptCode());
+                noticeDao.insertNoticeDept(noticeNo, dept.getDeptCode());
             }
         }
 
         return result;
     }
+
+
 
     @Override
     public int updateIncreaseCount(int noticeNo) {

@@ -3,8 +3,11 @@ package com.cl.cruella.controller;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,7 @@ import com.cl.cruella.service.NoticeService;
 import com.cl.cruella.util.FileUtil;
 import com.cl.cruella.util.PagingUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
@@ -83,9 +87,19 @@ public class NoticeController {
     public void noticeRegistPage() { }
 
     @PostMapping("/noticeInsert.do")
-    public String regist(NoticeDto notice, @RequestParam("deptCode") List<DeptDto> deptCodes,
-                         List<MultipartFile> uploadFiles, HttpSession session, RedirectAttributes rdAttributes) {
+    public String regist(NoticeDto notice, @RequestParam("deptCode") List<String> deptCodes, 
+                         List<MultipartFile> uploadFiles, HttpSession session, HttpServletRequest request, RedirectAttributes rdAttributes) {
         notice.setMemNo(String.valueOf(((MemberDto) session.getAttribute("loginUser")).getMemNo()));
+
+        // 상단 고정 여부 설정
+        notice.setIsPinned(Integer.parseInt(request.getParameter("isPinned")));
+
+        // DeptDto 객체로 변환
+        Set<String> uniqueDeptCodes = new HashSet<>(deptCodes); // 중복 제거
+        List<DeptDto> deptDtoList = uniqueDeptCodes.stream()
+                                                   .map(code -> DeptDto.builder().deptCode(code).build())
+                                                   .collect(Collectors.toList());
+        notice.setDeptCodes(deptDtoList); // 부서 코드 설정
 
         List<AttachDto> attachList = new ArrayList<>();
         for (MultipartFile file : uploadFiles) {
@@ -100,12 +114,10 @@ public class NoticeController {
             }
         }
         notice.setAttachList(attachList);
-        notice.setDeptCodes(deptCodes);
 
         int result = noticeService.insertNotice(notice);
 
-        if (attachList.isEmpty() && result == 1 
-                || !attachList.isEmpty() && result == attachList.size()) {
+        if (result > 0) {
             rdAttributes.addFlashAttribute("alertMsg", "게시글 등록 성공");
         } else {
             rdAttributes.addFlashAttribute("alertMsg", "게시글 등록 실패");
@@ -113,6 +125,10 @@ public class NoticeController {
 
         return "redirect:/notice/noticeList.do";
     }
+
+
+
+
 
     @PostMapping("/noticeModify.do")
     public String modifyPage(@RequestParam("no") int no, Model model) {
@@ -190,5 +206,5 @@ public class NoticeController {
         noticeService.deleteSelectedPosts(noticeNos);
         return "redirect:/notice/noticeList.do";
     }
-
 }
+

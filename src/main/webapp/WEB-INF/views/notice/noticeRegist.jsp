@@ -45,51 +45,51 @@
           <div class="content-wrapper">
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="container card" style="padding: 50px;">
-                <form id="notice-form" action="${contextPath}/notice/noticeInsert.do" method="post" enctype="multipart/form-data">
-                  <div class="card-body" style="align-items: center;">
-						        <input type="hidden" name="deptCode" value="${loginUser.deptCode}" />
-						        <input type="hidden" name="noticeContent" id="noticeContent">
-						        <span style="font-size: 24px;">공지사항 작성</span><br><br>
-						        
-						        <label for="defaultFormControlInput" class="form-label">제목</label>
-						        <input type="text" class="form-control" id="defaultFormControlInput" name="noticeTitle" placeholder="제목을 입력하세요." required><br>
-						        
-						        <label for="formFile" class="form-label">첨부파일<span id="fileText"> (첨부파일의 최대 크기는 10MB이며, 전체 첨부파일의 최대 크기는 100MB입니다. )</span></label>
-						        <input class="form-control file" type="file" id="formFile" name="uploadFiles" multiple><br>
-						        <div id="file-container"></div><br>
-						        
-						        <label for="select2Info" class="form-label">읽기권한</label>
-						        <div class="select2-info">
-						            <select id="select2Info" class="select2 form-select" multiple>
-						                <option value="T1" selected>남성의류</option>
-						                <option value="T2" selected>여성의류</option>
-						                <option value="T3" selected>식품</option>
-						                <option value="T4" selected>스포츠</option>
-						                <option value="T5" selected>뷰티</option>
-						                <option value="T6" selected>명품</option>
-						                <option value="T7" selected>문화센터</option>
-						                <option value="T8" selected>디지털 및 가전</option>
-						                <option value="S1" selected>영업총괄</option>
-						                <option value="S2" selected>인사</option>
-						                <option value="S3" selected>지원</option>
-						            </select>
-						        </div><br>
-						        
-						        <label class="d-block form-label">상단 고정</label>
-						        <div>
-						            <input type="radio" class="form-check-input" id="is_pinned_yes" name="is_pinned" value="1" required>
-						            <label for="is_pinned_yes">Yes</label>
-						            <input type="radio" class="form-check-input" id="is_pinned_no" name="is_pinned" value="0" style="margin-left: 10px;" required checked>
-						            <label for="is_pinned_no">No</label>
-						        </div><br><br>
-						        
-						        <div id="notice-editor"></div><br>
-						        
-						        <div style="display: flex; justify-content: space-between; align-items: center;">
-						            <button id="back" class="btn btn-secondary" type="button" onclick="window.history.back();">취소</button>
-						            <button id="registerButton" class="btn btn-primary" type="submit">작성</button>
-						        </div>
-						    </div>
+							<form id="notice-form" action="${contextPath}/notice/noticeInsert.do" method="post" enctype="multipart/form-data">
+							    <div class="card-body" style="align-items: center;">
+							        <input type="hidden" name="deptCode" value="${loginUser.deptCode}" />
+							        <input type="hidden" name="noticeContent" id="noticeContent">
+							        <span style="font-size: 24px;">공지사항 작성</span><br><br>
+							        
+							        <label for="defaultFormControlInput" class="form-label">제목</label>
+							        <input type="text" class="form-control" id="defaultFormControlInput" name="noticeTitle" placeholder="제목을 입력하세요." required><br>
+							        
+							        <label for="formFile" class="form-label">첨부파일<span id="fileText"> (첨부파일의 최대 크기는 10MB이며, 전체 첨부파일의 최대 크기는 100MB입니다. )</span></label>
+							        <input class="form-control file" type="file" id="formFile" name="uploadFiles" multiple><br>
+							        <div id="file-container"></div><br>
+							        
+											<label for="select2Info" class="form-label">읽기권한</label>
+											<div class="select2-info">
+											    <select id="select2Info" name="deptCode" class="select2 form-select" multiple>
+											        <option value="T1" selected>남성의류</option>
+											        <option value="T2" selected>여성의류</option>
+											        <option value="T3" selected>식품</option>
+											        <option value="T4" selected>스포츠</option>
+											        <option value="T5" selected>뷰티</option>
+											        <option value="T6" selected>명품</option>
+											        <option value="T7" selected>문화센터</option>
+											        <option value="T8" selected>디지털 및 가전</option>
+											        <option value="S1" selected>영업총괄</option>
+											        <option value="S2" selected>인사</option>
+											        <option value="S3" selected>지원</option>
+											    </select>
+											</div><br>
+							        
+							        <label class="d-block form-label">상단 고정</label>
+							        <div>
+							            <input type="radio" class="form-check-input" id="is_pinned_yes" name="isPinned" value="1" required>
+							            <label for="is_pinned_yes">Yes</label>
+							            <input type="radio" class="form-check-input" id="is_pinned_no" name="isPinned" value="0" style="margin-left: 10px;" required checked>
+							            <label for="is_pinned_no">No</label>
+							        </div><br><br>
+							        
+							        <div id="notice-editor"></div><br>
+							        
+							        <div style="display: flex; justify-content: space-between; align-items: center;">
+							            <button id="back" class="btn btn-secondary" type="button" onclick="window.history.back();">취소</button>
+							            <button id="registerButton" class="btn btn-primary" type="submit">작성</button>
+							        </div>
+							    </div>
 							</form>
 
               </div>

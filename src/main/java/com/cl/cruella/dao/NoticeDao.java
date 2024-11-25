@@ -74,7 +74,7 @@ public class NoticeDao {
         params.put("deptCode", deptCode);
         return sqlSession.insert("noticeMapper.insertNoticeDept", params);
     }
-    
+
     public int deleteNoticeDept(int noticeNo) {
         return sqlSession.delete("noticeMapper.deleteNoticeDept", noticeNo);
     }
@@ -91,7 +91,7 @@ public class NoticeDao {
         // 부모 레코드 삭제
         return sqlSession.delete("noticeMapper.deleteNotice", noticeNo);
     }
-    
+
     public int deleteSelectedNoticesDept(List<Integer> noticeNos) {
         Map<String, Object> params = new HashMap<>();
         params.put("noticeNos", noticeNos);
@@ -111,6 +111,10 @@ public class NoticeDao {
 
         // 부모 레코드 삭제
         return sqlSession.delete("noticeMapper.deleteSelectNotice", noticeNos);
+    }
+    
+    public int getLastInsertId() {
+        return sqlSession.selectOne("noticeMapper.getLastInsertId");
     }
 
 }
