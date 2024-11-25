@@ -27,5 +27,5 @@ public class MessageDto {
 	 private String msgStatus;
 	 private Date msgModifyDate;
 	 private String msgType;
-
+	 private String type;
 }

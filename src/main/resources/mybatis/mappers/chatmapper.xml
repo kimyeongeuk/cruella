@@ -162,7 +162,7 @@ select count(chat_no) chat_count
 			 , MSG_MODIFY_DATE
   from message
  where chat_no = #{chatNo}
-   and MSG_STATUS = 'Y'
+   and MSG_STATUS in ('Y','N')
  order by msg_no
 </select>
 
@@ -305,6 +305,23 @@ select max(msg_no) msg_no
 from message
 </select>
 
+<!-- 메시지 삭제 -->
+<update id="deleteMsg">
+update
+        message
+   set
+        MSG_CONTENT = '삭제된 메시지입니다.'
+     ,  MSG_STATUS = 'N'
+ where  MSG_No = #{msgNo}
+</update>
 
+<!-- 메시지 삭제시 최근메시지변경 -->
+<update id="changeNewMsg">
+update
+				chat
+	 set
+	 			CHAT_NEWMSG = '삭제된 메시지입니다.'
+ where	chat_no = #{chatNo}
+</update>
 
 </mapper>

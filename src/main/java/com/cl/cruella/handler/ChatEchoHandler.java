@@ -59,18 +59,16 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 		WebSocketSession mySession = map.get(loginUser); // 내 세션 찾기
 	    String payload = (String) message.getPayload();
 	    JSONObject jsonObject = new JSONObject(payload); 
-	    String memNo = jsonObject.getString("memNo");
+    	List<String> targetMemNo = new ArrayList<>();
+    	String memNo = jsonObject.getString("memNo");
 	    String inviteNo = jsonObject.getString("inviteNo");
 	    String inviteName = jsonObject.getString("inviteName");
 	    String memName = jsonObject.getString("memName");
-	    String type = jsonObject.getString("type");
-	    int msgNo = jsonObject.getInt("msgNo");
 	    /**
 	     * 내가 원하는 대상에게만 보낼 메시지
 	     */
-	    if(type.equals("newChat")) {
-	    	List<String> targetMemNo = new ArrayList<>();
-	    	
+
+
 	    	targetMemNo.add(memNo);
 	    	targetMemNo.add(inviteNo);
 	    	
@@ -120,10 +118,7 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 	    	}else { // 이미 존재하는 채팅방일경우
 	    		mySession.sendMessage(new TextMessage("0"));
 	    	}
-	    }else if(type.equals("delete")){
-	    	System.out.println(msgNo);
-	    	System.out.println("삭제 실행됨");
-	    }
+	    
 	  		
 	    
 	    

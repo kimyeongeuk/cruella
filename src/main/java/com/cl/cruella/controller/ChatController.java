@@ -146,13 +146,7 @@ public class ChatController {
 	}
 	
 	
-	@ResponseBody
-	@GetMapping(value="/delete.do",produces="application/json")
-	public int deleteMsg(int msgNo) {
-		int result = chatServiceImpl.deleteMsg(msgNo);
-		return result;
-		
-	}
+
 	
 	
 	

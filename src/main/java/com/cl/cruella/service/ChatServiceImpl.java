@@ -105,6 +105,9 @@ public class ChatServiceImpl implements ChatService{
 	public int deleteMsg(int msgNo) {
 		return chatDao.deleteMsg(msgNo);
 	}
+	public int changeNewMsg(int chatNo) {
+		return chatDao.changeNewMsg(chatNo);
+	}
 
 
 
