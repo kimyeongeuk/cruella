@@ -68,6 +68,17 @@
 	    display: none;
 	  }
 	}
+	#create {
+	    width: 70px; /* 너비를 줄입니다 */
+	    height: 35px;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    padding: 0 5px; /* 내부 패딩을 추가하여 글자가 잘리지 않도록 합니다 */
+	    font-size: 14px; /* 글자 크기를 조금 줄입니다 */
+	    white-space: nowrap; /* 글자가 한 줄로 나오도록 합니다 */
+	}
+
 
 </style>
 
@@ -120,7 +131,7 @@
                   </div>
 
                   <c:choose>
-                    <c:when test="${ loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4' }">
+                    <c:when test="${ loginUser.deptCode == 'S2'}">
                       <div class="ms-5">
 											  <button id="create" class="btn btn-primary waves-effect waves-light" onclick="regist();">
 											    <span class="ti-xs ti ti-edit me-2"></span>작성
@@ -190,7 +201,7 @@
 								    <thead>
 								      <tr>
 								        <c:choose>
-								          <c:when test="${loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4'}">
+								          <c:when test="${ loginUser.deptCode == 'S2'}">
 								            <th style="width: 5%;"><input type="checkbox" id="selectAll" /></th>
 								            <th style="width: 10%;">번호</th>
 								            <th style="width: 15%;">작성자</th>
@@ -223,7 +234,7 @@
 								            <c:set var="reverseCount" value="${pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1)}" />
 								            <tr data-noticeno="${notice.noticeNo}">
 								              <c:choose>
-								                <c:when test="${loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4'}">
+								                <c:when test="${ loginUser.deptCode == 'S2'}">
 								                  <td><input type="checkbox" class="item-checkbox" /></td>
 								                </c:when>
 								              </c:choose>

@@ -68,6 +68,16 @@
 	    display: none;
 	  }
 	}
+	#create {
+	    width: 70px; /* 너비를 줄입니다 */
+	    height: 35px;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    padding: 0 5px; /* 내부 패딩을 추가하여 글자가 잘리지 않도록 합니다 */
+	    font-size: 14px; /* 글자 크기를 조금 줄입니다 */
+	    white-space: nowrap; /* 글자가 한 줄로 나오도록 합니다 */
+	}
 
 </style>
 
