@@ -1075,41 +1075,13 @@
 		         socket2.send(JSON.stringify({ memNo: '${loginUser.memNo}',
 		        	 														memName: '${loginUser.memName}',
 																					inviteNo:inviteMem,
-																					inviteName:inviteName,
-																					type:'newChat'}));
+																					inviteName:inviteName
+																					}));
       	
       }) // 채팅방생성 종료
       
     		
 	     
-      // 메시지 삭제
-      
-      $('#messageDelete').on('click',function(){
-	         console.log('ddd');
-    	  //socket2.send(JSON.stringify({ memNo: '${loginUser.memNo}',
-			//																	  type:'delete'}));
-      })
-      
-      $(document).on('click', '.messageDelete', function () {
-	    	var msgNo = $(this).data('value');
-	    	console.log('삭제 버튼 클릭됨. 메시지 번호:', msgNo);
-	    	  socket2.send(JSON.stringify({ memNo: '${loginUser.memNo}',
-																				 type:'delete'}));
-	
-			});
-      
-      function deleteMsg(respon){
-    		console.log(respon.dataset.value);
-    		
-    		$.ajax({
-    			url:'${contextPath}/chat/delete.do',
-    			data:{msgNo:respon.dataset.value},
-    			success:function(res){
-    				// $(this).closest('.chat-message').find('.chatContent').html('삭제된 메시지입니다.').css('color','lightgray');
-    			}
-    		})
-    	}
-       
       
       // sockjs 메시지 응답
      	function onMessage(evt){ 
@@ -1215,49 +1187,73 @@
 			        client.subscribe('/sub/' + chatNo, function (chat) {
 			            var content = JSON.parse(chat.body);
 			            var msgNum ="";
-									$.ajax({
+			            console.log(content.type)
+			            // 채팅번호 입력 및 메시지 출력 ajax 시작
+									if(content.type == 'message'){
+			            $.ajax({
 										url:'${contextPath}/chat/msgNum.do',
 										success:function(res){
 					            if(activeChat == chatNo){
 						            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck,res);
 						            $('#chathistory').append(str);
 						            $(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
-						            	
+						            
+								        $('.mewmsg').each(function () { // 미리보기 ajax 시작
+								    		console.log('채팅방 번호 :'+chatNo);
+								    		console.log('테스트 : '+$(this).val());
+								    		
+										    if ($(this).val() == content.chatNo) { 
+										    	
+										    		$.ajax({ 
+										    			url:'${contextPath}/chat/updateNewMsg.do',
+										    			data:{chatNo:content.chatNo,msgContent:content.msgContent},
+										    			success:function(res){
+										    				console.log('성공');
+										    			}
+										    		})
+										    		// 채팅 날짜 넣어주기
+														$(this).closest('.chat-contact-info').find('.text-muted').html(function() {
+														    var msgDate = new Date(content.msgRegistDate); // Date 객체로 변환
+														    var today = new Date();  // 오늘 날짜
+														
+														    
+														    if (msgDate.toDateString() === today.toDateString()) {
+														        
+														        return msgDate.toLocaleTimeString('en-GB', { hour12: false }); 
+														    } else {
+														        
+														        return msgDate.toLocaleDateString(); 
+														    }
+														}); // 채팅 날짜 넣어주기 끝
+														
+										        $(this).prev().html(content.msgContent); 
+										    	} 
+						
+												}); // 미리보기 ajax 끝
 					            }
 										}
-									})
-							        $('.mewmsg').each(function () { // 미리보기 ajax 시작
-							    		console.log('채팅방 번호 :'+chatNo);
-							    		console.log('테스트 : '+$(this).val());
-							    		
-									    if ($(this).val() == content.chatNo) { 
-									    	
-									    		$.ajax({ 
-									    			url:'${contextPath}/chat/updateNewMsg.do',
-									    			data:{chatNo:content.chatNo,msgContent:content.msgContent},
-									    			success:function(res){
-									    				console.log('성공');
+								})}// 채팅번호 입력 및 메시지 출력 ajax 끝
+									else if(content.type == 'delete'){
+
+										 $('.mewmsg').each(function () { // 미리보기 ajax 시작
+									    		console.log('채팅방 번호 :'+chatNo);
+									    		console.log('테스트222222 : '+$(this).val());
+									    		console.log($('#chatContent'+content.msgNo).html())
+										 			console.log($(this).prev().html());
+									    		if($(this).val() == content.chatNo) { 
+										    			if($('#chatContent'+content.msgNo).html() == $(this).prev().html()){
+												    	$(this).prev().html('삭제된 메시지입니다.'); 
+															$('#chatContent'+content.msgNo).html('삭제된 메시지입니다.');
 									    			}
-									    		})
-									    		// 채팅 날짜 넣어주기
-													$(this).closest('.chat-contact-info').find('.text-muted').html(function() {
-													    var msgDate = new Date(content.msgRegistDate); // Date 객체로 변환
-													    var today = new Date();  // 오늘 날짜
-													
-													    
-													    if (msgDate.toDateString() === today.toDateString()) {
-													        
-													        return msgDate.toLocaleTimeString('en-GB', { hour12: false }); 
-													    } else {
-													        
-													        return msgDate.toLocaleDateString(); 
-													    }
-													}); // 채팅 날짜 넣어주기 끝
-													
-									        $(this).prev().html(content.msgContent); 
-								    	} 
-				
-									}); // 미리보기 ajax 끝
+									    		}
+							
+										}); // 미리보기 ajax 끝
+										
+										
+                  }
+									
+									
+
 			        });  
 			    }); // 모든 구독 끝
 			}); // stomp 종료
@@ -1314,12 +1310,18 @@
 					                                                          }));
 					            msg.value = '';
 			      				}
-			      			}
-			
-
-			            
-			            
-			        });
+			      			}            
+			        }); // 구독된 사람들에게 채팅메세지 발송 끝
+			   
+			    // 메시지 삭제 시작
+	          $(document).on('click', '.messageDelete', function () {
+			  	    	var msgNo = $(this).data('value');
+			  	    	client.send('/pub/'+activeChat, {}, JSON.stringify({msgNo: msgNo,
+																								                    msgType:'delete',
+																								                    chatNo: activeChat
+																								                  }));
+  					});
+			        
 
 
       })
@@ -1328,7 +1330,7 @@
     	let str = "";
     	
    	  	if(writer == userNo){
-          str += '<li class="chat-message chat-message-right">';
+          str += '<li class="chat-message chat-message-right" id="megList"'+msgNo+'>';
           str += '<div class="dropdown">';
           str += '<button class="btn btn-sm btn-icon btn-text-secondary text-secondary rounded-pill dropdown-toggle hide-arrow waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="true" id="chat-header-actions">'
           str += '<i class="ti ti-dots-vertical ti-md"></i>';
@@ -1346,7 +1348,7 @@
 
           str += '<div class="chat-message-wrapper flex-grow-1 w-50">';
           str += '<div class="chat-message-text messageNoCheck">';
-          str += '<p class="mb-0 chatContent chatContent" id="chatContent">'+ msgContent +'</p>';
+          str += '<p class="mb-0 chatContent chatContent" id="chatContent'+msgNo+'">'+ msgContent +'</p>';
           str += '</div>';
           str += '<div class="text-end text-muted mt-1">';
           str += '<small>'+ msgDate +'</small>';

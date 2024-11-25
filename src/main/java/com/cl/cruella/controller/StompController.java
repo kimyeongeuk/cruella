@@ -54,7 +54,7 @@ public class StompController {
 	
 	@MessageMapping("/{chatNo}")
 	@SendTo("/sub/{chatNo}")
-	public MessageDto message(@DestinationVariable String chatNo, @RequestBody MessageDto messageDto, @RequestBody MemberDto member) throws ParseException {
+	public MessageDto message(@DestinationVariable String chatNo,@RequestBody MessageDto messageDto, @RequestBody MemberDto member) throws ParseException {
 		
 		log.debug("번호허허헣 {}",chatNo);
 		if(messageDto.getMsgType().equals("message")) {
@@ -72,9 +72,20 @@ public class StompController {
 				messageDto.setMsgRegistDate(formattedDate);
 				messageDto.setMsgCheck(chatCount-1);
 				// 메시지 인서트
-				int result = chatserviceImpl.insertMessage(messageDto);	            
-				
+				int result = chatserviceImpl.insertMessage(messageDto);
+				messageDto.setType("message");
 			}
+		}else if(messageDto.getMsgType().equals("delete")) {
+			
+			// 메시지 삭제
+			
+			int result = chatserviceImpl.deleteMsg(messageDto.getMsgNo());
+			if(result > 0) {
+				// 최근 메시지 변경
+				result = 0;
+				result = chatserviceImpl.changeNewMsg(messageDto.getChatNo());
+			}
+			messageDto.setType("delete");
 		}
 		
 		return messageDto;
