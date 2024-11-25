@@ -58,7 +58,11 @@
             n.notice_status,
             n.is_pinned,
             m.mem_name,
-            nd.dept_code
+            nd.dept_code,
+		        (SELECT COUNT(*)
+		        FROM attachment a
+		        WHERE a.file_ref_type = 'N'
+		        AND a.file_ref_no = n.notice_no) AS attach_count            
         FROM notice n
         JOIN member m ON n.mem_no = m.mem_no
         JOIN notice_dept nd ON n.notice_no = nd.notice_no
@@ -106,7 +110,11 @@
             n.notice_status,
             n.is_pinned, -- is_pinned 값을 추가합니다
             m.mem_name,
-            nd.dept_code
+            nd.dept_code,
+		        (SELECT COUNT(*)
+		        FROM attachment a
+		        WHERE a.file_ref_type = 'N'
+		        AND a.file_ref_no = n.notice_no) AS attach_count    
         FROM notice n
         JOIN member m ON n.mem_no = m.mem_no
         JOIN notice_dept nd ON n.notice_no = nd.notice_no
