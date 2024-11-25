@@ -464,7 +464,7 @@
     
    
    <script>
-	   // 사이드바 처리
+	  // 사이드바 처리
 		document.addEventListener("DOMContentLoaded", function () {
 	 	
 			const element = document.getElementById("side_myworklog");
@@ -473,6 +473,19 @@
 		 	element.style.backgroundColor = "#958CF4";
 		 	element.style.color = "white";
 		 	element.classList.add("active");
+		 	
+		 // 근태일정 조회
+		 
+		 const memNo = ${loginUser.memNo};
+		 
+	   $.ajax({
+		   url: '${contextPath}/wl/loadWorkLog.do',
+		   type: 'POST',
+			 data: {memNo: memNo},
+			 success: function(res){
+				 
+			 }
+	   })
 	 	
 	});
    </script>
