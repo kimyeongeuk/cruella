@@ -393,19 +393,34 @@ public class MemberController {
 
 	
 	// 프로필사진변경
+	@ResponseBody
 	@PostMapping("/updateProfile.do")
-	public void updateProfile(@RequestParam("uploadFile") MultipartFile uploadFile, 
-								@RequestParam("memNo") String memNo, 
-								HttpSession session) {
+	public String updateProfile( MultipartFile uploadFile) {
 		// 수정 대상 회원정보 조회
+		System.out.println("들어옴");
+		String memNo = "C2024005";
 		MemberDto targetMember = memberService.selectMemberByNo(memNo); // 회원 번호로 회원 정보 조회
 		// 기존 프로필 URL 저장 
 		String originalProfileURL = targetMember.getProfileURL();
 		
 		// 파일 업로드 처리 
-//		Map<String, String> map = fileUtil.fileupload
-		
-		
+		Map<String, String> map = fileUtil.fileupload(uploadFile, "profile");
+		// 새 프로필 URL 설정
+		targetMember.setProfileURL(map.get("filePath") + "/" + map.get("filesystemName"));
+		int result = memberService.updateProfileImg(targetMember);
+			if(result > 0) {
+				// 성공시 => 기존 프로필이 존재했을 경우 파일 삭제
+				if(originalProfileURL != null) {
+					new File(originalProfileURL).delete();
+				}
+				return "SUCCESS";
+			}else {
+				// 실패시 => 변경요청시 전달된 파일 삭제
+				new File(targetMember.getProfileURL()).delete();
+				targetMember.setProfileURL(originalProfileURL);
+				return "FAIL";
+			}
+			
 	}
 	
 	// 회원정보수정페이지 이동 (이예빈)

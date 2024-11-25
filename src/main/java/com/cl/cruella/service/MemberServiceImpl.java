@@ -52,10 +52,6 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.memberNo();
 		}
 
-	@Override
-	public int updateProfileImg(MemberDto m) {
-		return memberDao.updateProfileImg(m);
-	}
 
 	@Override
 	public int saveSignPath(MemberDto m) {
@@ -85,6 +81,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public List<MemberDto> selectAllMember(String memNo) {
 		return memberDao.selectAllMember(memNo);
+	}
+
+	@Override
+	public int updateProfileImg(MemberDto targetMember) {
+		return memberDao.updateProfileImg(targetMember);
 	}
 
 

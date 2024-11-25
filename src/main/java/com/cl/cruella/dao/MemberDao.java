@@ -57,10 +57,6 @@ public class MemberDao {
 	public String memberNo() {
 		return sqlSession.selectOne("memberMapper.selectMemNo");
 	}
-
-	public int updateProfileImg(MemberDto m) {
-		return sqlSession.update("memberMapper.updateProfileImg", m);
-	}
 	
 	public int saveSignPath(MemberDto m) {
 		return sqlSession.update("memberMapper.saveSignPath", m);
@@ -85,6 +81,10 @@ public class MemberDao {
 	}
 	public List<MemberDto> selectAllMember(String memNo) {
 		return sqlSession.selectList("memberMapper.selectAllMember", memNo);
+	}
+
+	public int updateProfileImg(MemberDto targetMember) {
+		return sqlSession.update("memberMapper.updateProfileImg", targetMember);
 	}
 }
 

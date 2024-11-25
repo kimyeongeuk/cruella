@@ -30,9 +30,6 @@ public interface MemberService {
 	// 사번등록
 	String memberNo();
 
-	// 프로필이미지업로드 
-	int updateProfileImg(MemberDto m);
-
 	// 전자서명 저장
 	int saveSignPath(MemberDto m);
 
@@ -47,6 +44,9 @@ public interface MemberService {
 	
 	// 전체사원조회(사번, 이름, 메일, 사진)
 	List<MemberDto> selectAllMember(String memNo);
+
+	// 프로필이미지변경
+	int updateProfileImg(MemberDto targetMember);
 	
 
 

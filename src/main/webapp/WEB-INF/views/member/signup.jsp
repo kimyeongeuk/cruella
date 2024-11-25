@@ -104,7 +104,7 @@
 													$(document).ready(function() {
 														$('#upload').on("change", function(evt) {
 															const file = evt.target.files[0]; // 사용자가 선택한 파일
-															
+															console.log("실행");
 															
 															console.log(file );
 															
