@@ -260,15 +260,9 @@ public class MemberController {
          return params;
      }
 	 
-	 // 전 사원 정보 조회(이름, 메일, 사번, 사진)
-	 @PostMapping("/selectAll_db.do")
-	 @ResponseBody
-	 public List<MemberDto> selectAllMember(String memNo) {
-		 
-		 List<MemberDto> list = memberService.selectAllMember(memNo);
-		 
-		 return list;
-	 }
+	 
+	 
+	 
 	 
 	 
 	 
@@ -398,40 +392,19 @@ public class MemberController {
 	}
 
 	
+	// 프로필사진변경
 	@PostMapping("/updateProfile.do")
-	public String modifyProfile(@RequestParam("uploadFile") MultipartFile uploadFile, HttpSession session) {
+	public void updateProfile(@RequestParam("uploadFile") MultipartFile uploadFile, 
+								@RequestParam("memNo") String memNo, 
+								HttpSession session) {
+		// 수정 대상 회원정보 조회
+		MemberDto targetMember = memberService.selectMemberByNo(memNo); // 회원 번호로 회원 정보 조회
+		// 기존 프로필 URL 저장 
+		String originalProfileURL = targetMember.getProfileURL();
 		
-		System.out.println("333333333333333");
+		// 파일 업로드 처리 
+//		Map<String, String> map = fileUtil.fileupload
 		
-	    // 현재 로그인한 회원 정보
-		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
-		System.out.println(loginUser);
-
-	    // 현재 로그인한 회원의 기존 프로필 URL
-	    String originalProfileURL = loginUser.getProfileURL();
-
-	    // 파일 업로드 처리
-	    Map<String, String> map = fileUtil.fileupload(uploadFile, "profile");
-
-	    // 새 프로필 URL 설정
-	    loginUser.setProfileURL(map.get("filePath") + "/" + map.get("filesystemName"));
-
-	    // DB 업데이트
-	   // System.out.println("가공해서 새로 저장한 경로 " + loginUser.getProfileURL());
-	    int result = memberService.updateProfileImg(loginUser);
-
-		if(result > 0) {
-			// 성공시 => 기존 프로필이 존재했을 경우 파일 삭제
-			if(originalProfileURL != null) {
-				new File(originalProfileURL).delete();
-			}
-			return "SUCCESS";
-		}else {
-			// 실패시 => 변경요청시 전달된 파일 삭제
-			new File(loginUser.getProfileURL()).delete();
-			loginUser.setProfileURL(originalProfileURL);
-			return "FAIL";
-		}
 		
 	}
 	

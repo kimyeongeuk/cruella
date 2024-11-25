@@ -80,6 +80,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int updateMember(MemberDto m) {
 		return memberDao.updateMember(m);
+	}
 	
 	@Override
 	public List<MemberDto> selectAllMember(String memNo) {
