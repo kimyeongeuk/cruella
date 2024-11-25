@@ -180,7 +180,7 @@
                         <td colspan="3">댓글 (<span id="rcount">0</span>) </td> 
                       </tr>
                     </thead>
-                    <tbody id="reply-tbody">
+                    <tbody>
                                                                     
                     </tbody>
                   </table>
@@ -264,12 +264,45 @@
 </body>
 <script>
 
+
+// 쿠키에서 스크롤 위치를 가져오는 함수
+function getScrollPositionFromCookie() {
+  var name = "scrollPosition=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) === ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) === 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return null;
+}
+
+// 페이지 로드 시 스크롤 위치를 복원하는 함수
+function restoreScrollPosition() {
+  var scrollPosition = getScrollPositionFromCookie();
+  if (scrollPosition !== null) {
+    window.scrollTo(0, parseInt(scrollPosition));
+  }
+}
+
+// 페이지 로드 시 스크롤 위치를 복원
+window.onload = restoreScrollPosition;
+
+
+
 //수정할 댓글 번호를 저장할 변수
 let currentReplyNo;
 
 $(document).ready(function(){
   fn_replyList(); // 페이지 로드 시 댓글 목록 불러오기
-
+  
+  
+  
   // 아이콘 클릭 시 액션 박스 표시
   $(document).on('click', '.icon', function() {
     $(this).next('.action-replybox').toggle();
@@ -351,6 +384,8 @@ function fn_replyList() {
       }
 
       $("#reply_area tbody").html(tr);
+   		
+      
     },
     error: function(xhr, status, error) {
       console.error("에러 발생:", status, error);
@@ -535,9 +570,11 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
 
   // 수정 및 삭제 버튼에 이벤트 핸들러 설정
   modal.find('#modal-modify').off('click').on('click', function() {
+	    // 수정 시 스크롤 위치 저장
     modifyReply(replyId, replyContent);
   });
   modal.find('#modal-delete').off('click').on('click', function() {
+	    // 수정 시 스크롤 위치 저장
     deleteReply(replyId);
   });
 
@@ -574,8 +611,11 @@ function updateReply() {
 }
 
 function modifyReply(replyNo, replyContent) {
-  const replyTbody = document.getElementById('reply-tbody');
+  
 
+	//스크롤 위치 저장
+  
+	
   // 현재 수정 중인 댓글의 최신 내용을 가져옴
   let replyRow = $("tr[data-replyno='" + replyNo + "']");
   let contentDiv = replyRow.find(".reply-content");
@@ -598,10 +638,14 @@ function modifyReply(replyNo, replyContent) {
   // 수정 아이콘이 있던 box 닫기
   let iconWrapper = replyRow.find(".icon-wrapper");
   iconWrapper.hide();
+  
+  $('#modalScrollable').modal('hide');
+	//스크롤 위치 복원
+  
 }
 
 function saveReply(replyNo) {
-  const replyTbody = document.getElementById('reply-tbody');
+  
   let replyRow = $("tr[data-replyno='" + replyNo + "']");
   let editedContent = replyRow.find(".reply-edit-content").val();
 
@@ -617,6 +661,8 @@ function saveReply(replyNo) {
 
       // replyRow에 데이터 속성으로 업데이트된 내용을 저장
       replyRow.data('replycontent', editedContent);
+   		
+      
     },
     error: function(xhr, status, error) {
       console.error("댓글 수정 중 에러 발생:", status, error);
@@ -625,7 +671,7 @@ function saveReply(replyNo) {
 }
 
 function cancelModifyReply(replyNo, originalContent) {
-  const replyTbody = document.getElementById('reply-tbody');
+  
   let replyRow = $("tr[data-replyno='" + replyNo + "']");
   let contentDiv = replyRow.find(".reply-content");
 
@@ -637,11 +683,13 @@ function cancelModifyReply(replyNo, originalContent) {
 }
 
 function deleteReply(replyNo) {
-  const replyTbody = document.getElementById('reply-tbody');
+  
 
   // 삭제 확인 알림
   if (confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
-
+		
+	  
+		
     // 서버에 댓글 삭제 요청 전송
     $.ajax({
       url: '${contextPath}/board/deleteReplyCompletely.do',
@@ -650,8 +698,11 @@ function deleteReply(replyNo) {
       success: function(resData) {
         // 댓글 삭제 후 목록 갱신
         $("tr[data-replyno='" + replyNo + "']").remove();
+        
+        
+        
         fn_replyList(); // 댓글 목록 갱신
-        $('#modalScrollable').modal('hide');              
+        $('#modalScrollable').modal('hide');    
       },
       error: function(xhr, status, error) {
         console.error("댓글 삭제 중 에러 발생:", status, error);
@@ -771,6 +822,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (actionBox) {
         actionBox.style.display = actionBox.style.display === 'none' || !actionBox.style.display ? 'block' : 'none';
         hideOtherBoxes('.action-box', actionBox);
+        
       }
     }
 
@@ -780,6 +832,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (replyBox) {
         replyBox.style.display = replyBox.style.display === 'none' || !replyBox.style.display ? 'block' : 'none';
         hideOtherBoxes('.action-replybox', replyBox);
+        
       }
     }
 
@@ -850,7 +903,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function toggleModalActionBox(icon) {
   var actionBox = icon.nextElementSibling;
   if (actionBox.style.display === 'none' || actionBox.style.display === '') {
-    actionBox.style.display = 'block';  
+    actionBox.style.display = 'block'; 
+    
   } else {
     actionBox.style.display = 'none';
   }
