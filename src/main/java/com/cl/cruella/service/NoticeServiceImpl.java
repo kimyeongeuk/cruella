@@ -59,21 +59,24 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Transactional
     @Override
-    public int updateNotice(NoticeDto n, String[] delFileNo) {
-        int result1 = noticeDao.updateNotice(n);
+    public int updateNotice(NoticeDto notice, String[] delFileNo) {
+        // 공지사항 업데이트
+        int result = noticeDao.updateNotice(notice);
 
-        int result2 = 1;
-        if (result1 > 0 && delFileNo != null) {
-            result2 = noticeDao.deleteAttach(delFileNo);
+        // 삭제할 첨부파일 처리
+        if (delFileNo != null && delFileNo.length > 0) {
+            result += noticeDao.deleteAttachByFileNo(delFileNo);
         }
 
-        List<AttachDto> list = n.getAttachList();
-        int result3 = 0;
-        for (AttachDto at : list) {
-            result3 += noticeDao.insertAttach(at);
+        // 새로운 첨부파일 삽입
+        List<AttachDto> attachList = notice.getAttachList();
+        if (attachList != null && !attachList.isEmpty()) {
+            for (AttachDto attach : attachList) {
+                result += noticeDao.insertAttach(attach);
+            }
         }
 
-        return result1 == 1 && result2 > 0 && result3 == list.size() ? 1 : -1;
+        return result;
     }
 
 

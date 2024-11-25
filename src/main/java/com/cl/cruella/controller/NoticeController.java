@@ -135,9 +135,11 @@ public class NoticeController {
     }
 
     @PostMapping("/noticeUpdate.do")
-    public String modify(NoticeDto notice, String[] delFileNo, List<MultipartFile> uploadFiles, RedirectAttributes rdAttributes) {
+    public String modify(NoticeDto notice, @RequestParam(value = "delFileNo", required = false) String[] delFileNo, List<MultipartFile> uploadFiles, RedirectAttributes rdAttributes) {
+        // 삭제할 첨부파일 목록을 가져옵니다.
         List<AttachDto> delAttachList = noticeService.selectDelAttach(delFileNo);
 
+        // 새로운 첨부파일 목록을 준비합니다.
         List<AttachDto> attachList = new ArrayList<>();
         for (MultipartFile file : uploadFiles) {
             if (file != null && !file.isEmpty()) {
@@ -153,8 +155,10 @@ public class NoticeController {
         }
         notice.setAttachList(attachList);
 
+        // 공지사항을 업데이트합니다.
         int result = noticeService.updateNotice(notice, delFileNo);
 
+        // 삭제할 첨부파일의 실제 파일을 삭제합니다.
         if (result > 0) {
             rdAttributes.addFlashAttribute("alertMsg", "성공적으로 수정되었습니다.");
             for (AttachDto at : delAttachList) {
@@ -166,6 +170,7 @@ public class NoticeController {
 
         return "redirect:/notice/noticeDetail.do?no=" + notice.getNoticeNo();
     }
+
 
     @GetMapping("/noticeSearch.do")
     public String search(@RequestParam(value = "page", defaultValue = "1") int currentPage,

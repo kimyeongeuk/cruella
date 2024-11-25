@@ -171,29 +171,11 @@
 		        (seq_nno.nextval, #{noticeTitle}, #{noticeContent}, #{memNo}, SYSDATE, SYSDATE, 0, 'Y', #{isPinned})
 		</insert>
 
-    <!-- Insert Attach -->
-    <insert id="insertAttach">
-        INSERT INTO attachment
-            (file_no, file_path, file_system_name, file_original_name, file_ref_type, file_ref_no)
-        VALUES
-            (seq_fno.nextval, #{filePath}, #{filesystemName}, #{originalName}, #{refType}, seq_nno.currval)
-    </insert>
-
     <!-- Insert Notice Dept -->
     <insert id="insertNoticeDept">
         INSERT INTO notice_dept (notice_no, dept_code)
         VALUES (#{noticeNo}, #{deptCode})
     </insert>
-
-    <!-- Update Notice -->
-    <update id="updateNotice">
-        UPDATE notice
-        SET notice_title = #{noticeTitle},
-            notice_content = #{noticeContent},
-            notice_modify_date = SYSDATE,
-            is_pinned = #{isPinned} -- is_pinned 값을 업데이트합니다
-        WHERE notice_no = #{noticeNo}
-    </update>
 
     <!-- Update Notice Count -->
     <update id="updateIncreaseCount">
@@ -214,6 +196,34 @@
 		    DELETE FROM notice_dept
 		    WHERE notice_no = #{noticeNo}
 		</delete>
+
+		<!-- Delete Attach by File No -->
+		<delete id="deleteAttachByFileNo">
+		    DELETE FROM attachment
+		    WHERE file_no IN
+		    <foreach item="fileNo" collection="delFileNo" open="(" separator="," close=")">
+		        #{fileNo}
+		    </foreach>
+		</delete>
+		
+		<!-- Update Notice -->
+		<update id="updateNotice">
+		    UPDATE notice
+		    SET notice_title = #{noticeTitle},
+		        notice_content = #{noticeContent},
+		        notice_modify_date = SYSDATE,
+		        is_pinned = #{isPinned}
+		    WHERE notice_no = #{noticeNo}
+		</update>
+		
+		<!-- Insert Attach -->
+		<insert id="insertAttach">
+		    INSERT INTO attachment
+		        (file_no, file_path, file_system_name, file_original_name, file_ref_type, file_ref_no)
+		    VALUES
+		        (seq_fno.nextval, #{filePath}, #{filesystemName}, #{originalName}, #{refType}, #{refNo})
+		</insert>
+
 		
 		<!-- Delete Attach By Notice No -->
 		<delete id="deleteAttachByNoticeNo">
