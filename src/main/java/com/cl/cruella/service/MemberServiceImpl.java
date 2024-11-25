@@ -77,6 +77,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectMemberByNo(memNo);
 	}
 
+	@Override
+	public List<MemberDto> selectAllMember(String memNo) {
+		return memberDao.selectAllMember(memNo);
+	}
+
 
 
 }

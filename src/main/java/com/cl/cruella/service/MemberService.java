@@ -42,6 +42,9 @@ public interface MemberService {
 
 	MemberDto selectMemberByNo(String memNo);
 	
+	// 전체사원조회(사번, 이름, 메일, 사진)
+	List<MemberDto> selectAllMember(String memNo);
+	
 
 
 

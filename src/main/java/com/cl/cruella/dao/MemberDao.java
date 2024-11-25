@@ -78,6 +78,10 @@ public class MemberDao {
 	public MemberDto selectMemberByNo(String memNo) {
 		return sqlSession.selectOne("memberMapper.selectMember", memNo);
 	}
+	
+	public List<MemberDto> selectAllMember(String memNo) {
+		return sqlSession.selectList("memberMapper.selectAllMember", memNo);
+	}
 }
 
 

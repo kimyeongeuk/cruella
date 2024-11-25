@@ -207,6 +207,16 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 	
 	</select>
 	
+	<select id="selectAllMember" resultMap="memberResultMap">
+		select
+					 mem_no
+			   , mem_name
+			   , email
+			   , profile_url
+		  from member
+		 where mem_no != #{memNo}
+	</select>
+	
 
 
 
