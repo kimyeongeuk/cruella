@@ -13,8 +13,6 @@
 		<result column="WL_WORK_DATE" property="workDate" />
 	</resultMap>
 	
-	
-	
 
 	<!-- 출근 -->
 	<insert id="clockIn">
@@ -56,9 +54,5 @@
 		 where mem_no = #{memNo}
   		 and trunc(wl_work_date) = trunc(sysdate)
 	</update>
-	
-	<!-- 근태기록 조회(캘린더) -->
-	<select id="loadWorkLog" resultMap=""
-	
 
 </mapper>
