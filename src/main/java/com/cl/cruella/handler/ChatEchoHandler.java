@@ -14,6 +14,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.cl.cruella.dto.ChatDto;
+import com.cl.cruella.dto.ChatListDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.service.ChatServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,51 +62,68 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 	    String memNo = jsonObject.getString("memNo");
 	    String inviteNo = jsonObject.getString("inviteNo");
 	    String inviteName = jsonObject.getString("inviteName");
-	    
+	    String memName = jsonObject.getString("memName");
+	    String type = jsonObject.getString("type");
+	    int msgNo = jsonObject.getInt("msgNo");
 	    /**
 	     * 내가 원하는 대상에게만 보낼 메시지
 	     */
-	    List<String> targetMemNo = new ArrayList<>();
-	    
-	    targetMemNo.add(memNo);
-	    targetMemNo.add(inviteNo);
-	    
-	    log.debug("memNo 객체 : {}",memNo);
-	    log.debug("inviteNo 객체 : {}",inviteNo);
-	    log.debug("inviteName 객체 : {}",inviteName);
-
+	    if(type.equals("newChat")) {
+	    	List<String> targetMemNo = new ArrayList<>();
+	    	
+	    	targetMemNo.add(memNo);
+	    	targetMemNo.add(inviteNo);
+	    	
+	    	log.debug("memNo 객체 : {}",memNo);
+	    	log.debug("inviteNo 객체 : {}",inviteNo);
+	    	log.debug("inviteName 객체 : {}",inviteName);
+	    	
 	    	Map<String,Object> map2 = new HashMap<>();
-	  		List<String> list2 = new ArrayList<>();
-	  		
-	  		list2.add(memNo);
-	  		list2.add(inviteNo);
-	  		
-	  		map2.put("memNo", memNo);
-	  		map2.put("inviteNo", inviteNo);
-	  		map2.put("inviteName",inviteName);
-	  		map2.put("list", list2);
-	  		
-	  		String result = chatServiceImpl.checkChatList(list2);
-	  		
-	  		System.out.println(result);
-	  		if(result == null) { // 널일경우 채팅방 생성
-	  			result = String.valueOf(chatServiceImpl.startChat(map2)); // 값은 1로담김
-	  			if(result.equals("1")) {
-	  				// 채팅방 번호랑 채팅방 제목 담아오기
-	  				ChatDto cd = chatServiceImpl.chatInfo();
-	  				ObjectMapper objectMapper = new ObjectMapper();
-	  		        String cdJson = objectMapper.writeValueAsString(cd); 
-		  			for(String target : targetMemNo) {
-		  				WebSocketSession targetSession = map.get(target);
-		  				if (targetSession != null) {
-		  					targetSession.sendMessage(new TextMessage(cdJson));
-		  				}
-		  			}
-	  			}
-	  		}else { // 이미 존재하는 채팅방일경우
-	  			mySession.sendMessage(new TextMessage("0"));
-	  		}
-	  		
+	    	List<String> list2 = new ArrayList<>();
+	    	List<MemberDto> list3 = new ArrayList<>();
+	    	
+	    	list3.add(MemberDto.builder().memNo(memNo).memName(inviteName).build());
+	    	list3.add(MemberDto.builder().memNo(inviteNo).memName(memName).build());
+	    	
+	    	list2.add(memNo);
+	    	list2.add(inviteNo);
+	    	
+	    	map2.put("memNo", memNo);
+	    	map2.put("inviteNo", inviteNo);
+	    	map2.put("inviteName",inviteName);
+	    	map2.put("list", list2);
+	    	map2.put("list3", list3);
+	    	
+	    	String result = chatServiceImpl.checkChatList(list2);
+	    	if(result == null) { // 널일경우 채팅방 생성
+	    		result = String.valueOf(chatServiceImpl.startChat(map2)); // 값은 1로담김
+	    		if(result.equals("1")) {
+	    			// 채팅방 번호랑 채팅방 제목 담아오기
+	    			ChatDto cd = new ChatDto();
+	    			List<ChatDto> chatList = chatServiceImpl.chatInfo(map2);
+	    			
+	    			for(int i =0;i<chatList.size();i++) {
+	    				cd.setChatNo(chatList.get(0).getChatNo());
+	    				cd.setChatTitle(chatList.get(0).getChatTitle());
+	    				cd.setChatTitle2(chatList.get(1).getChatTitle());
+	    			}
+	    			log.debug("채팅리스트트트트 {} ",cd);
+	    			ObjectMapper objectMapper = new ObjectMapper();
+	    			String cdJson = objectMapper.writeValueAsString(cd); 
+	    			for(String target : targetMemNo) {
+	    				WebSocketSession targetSession = map.get(target);
+	    				if (targetSession != null) {
+	    					targetSession.sendMessage(new TextMessage(cdJson));
+	    				}
+	    			}
+	    		}
+	    	}else { // 이미 존재하는 채팅방일경우
+	    		mySession.sendMessage(new TextMessage("0"));
+	    	}
+	    }else if(type.equals("delete")){
+	    	System.out.println(msgNo);
+	    	System.out.println("삭제 실행됨");
+	    }
 	  		
 	    
 	    

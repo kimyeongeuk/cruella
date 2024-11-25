@@ -76,7 +76,7 @@
 <select id="chatList" resultMap="chatResultMap">
 select 
 			 c.CHAT_NO
-			,CHAT_TITLE
+			,cl_TITLE chat_title
 			,CHAT_REGIST_DATE
 			,CL.mem_no
 			,CHAT_NEWMSG
@@ -162,6 +162,7 @@ select count(chat_no) chat_count
 			 , MSG_MODIFY_DATE
   from message
  where chat_no = #{chatNo}
+   and MSG_STATUS = 'Y'
  order by msg_no
 </select>
 
@@ -234,11 +235,13 @@ select count(chat_no) chat_count
 					(
 						CHAT_NO
 					, MEM_NO
+					, cl_title
 					)
 					values
 					(
 						seq_chat.currval
 					,	#{memNo}
+					, #{memName}
 					)
 </insert>
 
@@ -258,14 +261,18 @@ select count(chat_no) chat_count
 <!-- 채팅방 번호랑 제목불러오기 -->
 <select id="chatInfo" resultMap="chatResultMap">
 SELECT
-	    chat_no,
-	    chat_title
+    	chat_no,
+    	cl_title chat_title,
+    	mem_no chatCreater
 FROM
 	    (SELECT
 	         chat_no,
-	         chat_title
+	         cl_title,
+	         mem_no 
 	     FROM
-	         chat
+	         chat_list
+	     WHERE
+	         mem_no = #{memNo}
 	     ORDER BY
 	         chat_no DESC)
 WHERE
@@ -291,6 +298,13 @@ select
  where	cl.chat_no = #{chatNo}
 			
 </select>
+
+<!-- 메시지 번호 조회 -->
+<select id="msgNum" resultType="_int">
+select max(msg_no) msg_no 
+from message
+</select>
+
 
 
 </mapper>
