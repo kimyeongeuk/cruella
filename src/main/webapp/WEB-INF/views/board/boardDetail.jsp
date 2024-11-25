@@ -267,49 +267,6 @@
 //수정할 댓글 번호를 저장할 변수
 let currentReplyNo;
 
-//쿠키에 스크롤 위치를 저장하는 함수
-function saveScrollPosition(element) {
-  sessionStorage.setItem('scrollPosition', element.scrollTop);
-}
-
-function restoreScrollPosition(element) {
-  const scrollPosition = sessionStorage.getItem('scrollPosition');
-  if (scrollPosition) {
-    element.scrollTop = parseInt(scrollPosition);
-  }
-}
-
-
-
-// 쿠키에서 스크롤 위치를 가져오는 함수
-function getScrollPositionFromCookie() {
-  var name = "scrollPosition=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) === ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) === 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return null;
-}
-
-// 페이지 로드 시 스크롤 위치를 복원하는 함수
-function restoreScrollPosition() {
-  var scrollPosition = getScrollPositionFromCookie();
-  if (scrollPosition !== null) {
-    window.scrollTo(0, parseInt(scrollPosition));
-  }
-}
-
-// 페이지 로드 시 스크롤 위치를 복원
-window.onload = restoreScrollPosition;
-
-
 $(document).ready(function(){
   fn_replyList(); // 페이지 로드 시 댓글 목록 불러오기
 
@@ -347,9 +304,6 @@ $(document).ready(function(){
 var loginUserMemNo = "${loginUser.memNo}";
 
 function fn_replyList() {
-  const replyTbody = document.getElementById('reply-tbody');
-  // 스크롤 위치 저장
-  saveScrollPosition(replyTbody);
 
   $.ajax({
     url: '${contextPath}/board/rlist.do',
@@ -397,9 +351,6 @@ function fn_replyList() {
       }
 
       $("#reply_area tbody").html(tr);
-
-      // 스크롤 위치 복원
-      restoreScrollPosition(replyTbody);
     },
     error: function(xhr, status, error) {
       console.error("에러 발생:", status, error);
@@ -584,11 +535,9 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
 
   // 수정 및 삭제 버튼에 이벤트 핸들러 설정
   modal.find('#modal-modify').off('click').on('click', function() {
-    saveScrollPosition();  // 수정 시 스크롤 위치 저장
     modifyReply(replyId, replyContent);
   });
   modal.find('#modal-delete').off('click').on('click', function() {
-    saveScrollPosition();  // 삭제 시 스크롤 위치 저장
     deleteReply(replyId);
   });
 
@@ -614,7 +563,6 @@ function updateReply() {
         alert("댓글이 수정되었습니다.");
         $('#editReplyModal').modal('hide');  // 수정 모달 닫기
         fn_replyList(); // 댓글 목록 갱신
-        restoreScrollPosition(); // 스크롤 위치 복원
       } else {
         alert("댓글 수정에 실패하였습니다. 다시 시도해주세요.");
       }
@@ -627,9 +575,6 @@ function updateReply() {
 
 function modifyReply(replyNo, replyContent) {
   const replyTbody = document.getElementById('reply-tbody');
-
-  // 스크롤 위치 저장
-  saveScrollPosition(replyTbody);
 
   // 현재 수정 중인 댓글의 최신 내용을 가져옴
   let replyRow = $("tr[data-replyno='" + replyNo + "']");
@@ -653,9 +598,6 @@ function modifyReply(replyNo, replyContent) {
   // 수정 아이콘이 있던 box 닫기
   let iconWrapper = replyRow.find(".icon-wrapper");
   iconWrapper.hide();
-
-  // 스크롤 위치 복원
-  restoreScrollPosition(replyTbody);
 }
 
 function saveReply(replyNo) {
@@ -675,9 +617,6 @@ function saveReply(replyNo) {
 
       // replyRow에 데이터 속성으로 업데이트된 내용을 저장
       replyRow.data('replycontent', editedContent);
-
-      // 스크롤 위치 복원
-      restoreScrollPosition(replyTbody);
     },
     error: function(xhr, status, error) {
       console.error("댓글 수정 중 에러 발생:", status, error);
@@ -695,9 +634,6 @@ function cancelModifyReply(replyNo, originalContent) {
 
   // 수정 취소 후 아이콘 다시 표시
   replyRow.find(".icon-wrapper").show();
-
-  // 스크롤 위치 복원
-  restoreScrollPosition(replyTbody);
 }
 
 function deleteReply(replyNo) {
@@ -705,8 +641,6 @@ function deleteReply(replyNo) {
 
   // 삭제 확인 알림
   if (confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
-    // 스크롤 위치 저장
-    saveScrollPosition(replyTbody);
 
     // 서버에 댓글 삭제 요청 전송
     $.ajax({
@@ -716,9 +650,8 @@ function deleteReply(replyNo) {
       success: function(resData) {
         // 댓글 삭제 후 목록 갱신
         $("tr[data-replyno='" + replyNo + "']").remove();
-
-        // 스크롤 위치 복원
-        restoreScrollPosition(replyTbody);
+        fn_replyList(); // 댓글 목록 갱신
+        $('#modalScrollable').modal('hide');              
       },
       error: function(xhr, status, error) {
         console.error("댓글 삭제 중 에러 발생:", status, error);
@@ -813,7 +746,6 @@ function modalDeleteReply(replyNo) {
 	      success: function(resData) {
 	        // 대댓글 삭제 후 목록 갱신
 	        $("tr[data-replyno='" + replyNo + "']").remove();
-	        restoreScrollPosition(); // 스크롤 위치 복원
 	      },
 	      error: function(xhr, status, error) {
 	        console.error("대댓글 삭제 중 에러 발생:", status, error);
@@ -839,7 +771,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (actionBox) {
         actionBox.style.display = actionBox.style.display === 'none' || !actionBox.style.display ? 'block' : 'none';
         hideOtherBoxes('.action-box', actionBox);
-        saveScrollPosition();
       }
     }
 
@@ -849,7 +780,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (replyBox) {
         replyBox.style.display = replyBox.style.display === 'none' || !replyBox.style.display ? 'block' : 'none';
         hideOtherBoxes('.action-replybox', replyBox);
-        saveScrollPosition();
       }
     }
 
@@ -920,8 +850,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function toggleModalActionBox(icon) {
   var actionBox = icon.nextElementSibling;
   if (actionBox.style.display === 'none' || actionBox.style.display === '') {
-    actionBox.style.display = 'block';
-    saveScrollPosition();  
+    actionBox.style.display = 'block';  
   } else {
     actionBox.style.display = 'none';
   }
