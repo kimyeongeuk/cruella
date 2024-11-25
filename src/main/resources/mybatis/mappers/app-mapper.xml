@@ -56,6 +56,8 @@
 	<result column="doc_content" property="docContent"/>
 	<result column="max_order" property="maxOrder"/>
 	<result column="doc_order" property="docOrder"/>
+	<result column="app_rej_reason" property="reason"/>
+	<result column="doc_status" property="docStatus"/>
 </resultMap>
 
 
@@ -65,6 +67,8 @@
 	<result column="mem_name" property="memName"/>
 	<result column="app_level" property="appLevel"/>
 	<result column="mem_no" property="rvNo"/>
+	<result column="sign_path" property="signPath"/>
+	<result column="app_status" property="appStatus"/>
 </resultMap>
 
 
@@ -140,7 +144,7 @@ values
   ,#{docContent}
   ,#{docImpo}
   ,sysdate
-  ,'A'  -- 대기/진행/최종승인/반려
+  ,'A'  --  A: 대기 / B:진행/ C:최종승인/ D:반려
   ,1    -- 결재순서
   ,'Y'  -- 존재여부
 )
@@ -167,7 +171,7 @@ values
     ,#{originalName}
     ,#{filesystemName}
     ,seq_app.currval
-    ,'A'
+    ,'A' -- 전자결재
 )
 
 </insert>
@@ -189,7 +193,7 @@ values
   #{rvNo}
   ,seq_app.currval
   ,#{appLevel}  -- 결재순서
-  ,'대기'
+  ,'A' -- 대기
 )
 
 </insert>
@@ -260,7 +264,7 @@ from member m
     join approval r on (a.doc_no = r.doc_no)
     where r.mem_no = #{memNo} -- 결재선/현재로그인한 사번
     and a.doc_order = r.app_level
-    and r.app_status = '대기'
+    and r.app_status = 'A' -- 대기
 
 </select>
 
@@ -289,7 +293,7 @@ select
     join approval r on (a.doc_no = r.doc_no)
     where r.mem_no = #{memNo} -- 결재선/현재로그인한 사번
     and a.doc_order = r.app_level
-    and r.app_status = '대기'
+    and r.app_status = 'A' -- 대기
     --and a.doc_status = 'A'
     and a.status = 'Y'
     order by a.doc_date desc
@@ -341,6 +345,98 @@ select
 
 
 
+<!-- 반려리스트 조회 -->
+<select id="selectCompanion" resultMap="selectStandbyResult"> 
+select 
+        m.mem_name as mem_name
+        ,a.doc_no as doc_no
+        ,a.doc_type as doc_type
+        ,
+         CASE 
+	     WHEN LENGTH(a.doc_title) > 15 THEN SUBSTR(a.doc_title, 1, 15) || '...'
+	     ELSE a.doc_title
+	  	 END as doc_title
+	  	 
+        ,a.doc_content as doc_content
+        ,a.doc_date as doc_date
+        ,a.doc_importance as doc_importance
+        ,a.doc_status as doc_status
+       
+    from member m
+    join app_doc a on(m.mem_no = a.mem_no)
+    where a.mem_no = #{memNo} -- 결재선/현재로그인한 사번
+   	and a.doc_status = 'D'
+    and a.status = 'Y'
+    order by a.doc_date desc
+
+</select>
+
+
+<!-- 반려리스트 카운트 -->
+<select id="selectCompanionCount" resultType="_int"> 
+select count(*)
+        
+    from member m
+    join app_doc a on(m.mem_no = a.mem_no)
+    where a.mem_no = #{memNo} -- 결재선/현재로그인한 사번
+   	and a.doc_status = 'D'
+    and a.status = 'Y'
+    order by a.doc_date desc
+
+</select>
+
+
+
+<!-- 진행리스트 조회 -->
+<select id="selectProgress" resultMap="selectStandbyResult"> 
+select 
+        m.mem_name as mem_name
+        ,a.doc_no as doc_no
+        ,a.doc_type as doc_type
+        ,
+         CASE 
+	     WHEN LENGTH(a.doc_title) > 15 THEN SUBSTR(a.doc_title, 1, 15) || '...'
+	     ELSE a.doc_title
+	  	 END as doc_title
+	  	 
+        ,a.doc_content as doc_content
+        ,a.doc_date as doc_date
+        ,a.doc_importance as doc_importance
+        ,a.doc_status as doc_status
+       
+    from member m
+    join app_doc a on(m.mem_no = a.mem_no)
+    where a.mem_no = #{memNo} -- 결재선/현재로그인한 사번
+   	and a.doc_status in ('A','B')
+    and a.status = 'Y'
+    order by a.doc_date desc
+
+</select>
+
+<!-- 진행리스트 -->
+<select id="selectProgressCount" resultType="_int">
+select 
+       count(*)
+       
+    from member m
+    join app_doc a on(m.mem_no = a.mem_no)
+    where a.mem_no = #{memNo} -- 결재선/현재로그인한 사번
+   	and a.doc_status in ('A','B')
+    and a.status = 'Y'
+    order by a.doc_date desc
+    
+</select>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -374,6 +470,7 @@ select
 	  ,ad.doc_type as doc_type
 	  ,af.APP_DATE_START as APP_DATE_START
 	  ,af.APP_DATE_END as APP_DATE_END
+	  ,ad.doc_status as doc_status
 	  ,ac.APP_COE_DATE as APP_COE_DATE   -- 발행날짜
 	  ,
 	  (
@@ -383,6 +480,8 @@ select
         		where a.doc_no = ar.doc_no
                 and a.doc_no = #{docNo}
      )as max_order  -- 기안문서의 결재선 마지막 순서
+     ,ad.app_rej_reason as app_rej_reason -- 반려사유
+
  from 
  	 member m
  join 
@@ -404,15 +503,18 @@ select
 
 <!-- 결재선조회 (상세페이지용) -->
 <select id="appdocDetailSelectRoval" resultMap="detailSelectRoval">
-select 
+ select 
       d.dept_name as dept_name
       ,m.mem_name as mem_name
       ,ar.APP_LEVEL as app_level
       ,ar.mem_no as mem_no
+      ,m.sign_path as sign_path -- 전자서명
+      ,ar.app_status as app_status -- 결재상태
 from approval ar
 join member m on (m.mem_no = ar.mem_no)
 join department d on(m.dept_code = d.dept_code)
 where ar.doc_no = #{docNo}
+order by app_level
 
 </select>
 
@@ -432,72 +534,70 @@ select
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-<!-- 해당 기안문서의 첫번째 전자서명 업데이트 -->
-<!-- 기안문서의 다음순서 및 진행중으로 업데이트 -->
-<update id="appSignAndDocOrderAndstatusUpdate1">
+<!-- 기안문서의 다음순서 및 진행중으로 업데이트 / 기안문서 -->
+<update id="appSignAndDocOrderAndstatusUpdate">
 
 update app_doc 
-set doc_sign_a = #{signPath},
-		doc_status = 'B',  -- 진행중
-		doc_order = doc_order + 1  -- 기안문서 순서 증가
-where doc_no = #{docNo}
-
-</update>
-
-<!-- 해당 기안문서의 두번째 전자서명 업데이트 -->
-<!-- 기안문서의 다음순서 및 진행중으로 업데이트 -->
-<update id="appSignAndDocOrderAndstatusUpdate2">
-
-update app_doc 
-set doc_sign_b = #{signPath},
-		doc_status = 'B',  -- 진행중
+set     doc_status = 'B',  -- 진행중
 		doc_order = doc_order + 1  -- 기안문서 순서 증가
 where doc_no = #{docNo}
 
 </update>
 
 
-
-
-
-
-<!-- 해당 기안문서의 첫번째 일때 전자서명 업데이트 -->
-<!-- 기안문서 최종승인으로 업데이트 -->
-<update id="appSignAndLastUpdate1">
+<!-- 기안문서 최종승인으로 업데이트 / 기안문서 -->
+<update id="appSignAndLastUpdate">
 update app_doc 
-set doc_sign_a = #{signPath},
-		doc_status = 'C'  -- 최종승인
-where doc_no = #{docNo}
+set    doc_status = 'C'  -- 최종승인
+where  doc_no = #{docNo}
 </update>
 
-<!-- 해당 기안문서의 두번째 일때 전자서명 업데이트 -->
-<!-- 기안문서 최종승인으로 업데이트 -->
-<update id="appSignAndLastUpdate2">
-update app_doc 
-set doc_sign_b = #{signPath},
-		doc_status = 'C'  -- 최종승인
-where doc_no = #{docNo}
+
+<!-- 기안문서의 다음순서 및 진행중으로 업데이트 / 결재선 -->
+<update id="lastApproval">
+update approval 
+set  app_status = 'Y', -- 결재선 상태 업데이트
+	 app_date = sysdate -- 결재일 업데이트
+where doc_no = #{docNo}	
+  and mem_no = #{memNo}
 </update>
 
-<!-- 해당 기안문서의 세번째 일때 전자서명 업데이트 -->
-<!-- 기안문서 최종일때 최종승인으로 업데이트 -->
-<update id="appSignAndLastUpdate3">
+
+
+<!-- 기안문서 반려 업데이트 / 기안문서 -->
+<update id="appdocCompanionUpdate">
 update app_doc 
-set doc_sign_c = #{signPath},
-		doc_status = 'C'  -- 최종승인
-where doc_no = #{docNo}
+set    doc_status = 'D',  -- 반려
+	   APP_REJ_REASON = #{reason}
+where  doc_no = #{docNo}
 </update>
+
+
+<!-- 기안문서 반려 업데이트 결재선 -->
+<update id="approvalCompanion">
+update approval 
+set  app_status = 'N', -- 결재선 상태 업데이트
+	 app_date = sysdate -- 결재일(반려일) 업데이트
+where doc_no = #{docNo}	
+  and mem_no = #{memNo}
+</update>
+
+
+
+
+
+
+
+
+<!-- 회수버튼 클릭스 기안서 회수 -->
+<update id="appDeleteBack">
+update app_doc 
+set    STATUS = 'N'
+where  doc_no = #{docNo}
+</update>
+
+
+
 
 
 

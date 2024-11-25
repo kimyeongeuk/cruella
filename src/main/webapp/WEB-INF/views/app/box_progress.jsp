@@ -118,8 +118,8 @@
                               class="select form-select form-select-lg select2-hidden-accessible"
                               style="width: 240px;">
                               <option value="선택">선택해주세요</option>
-                              <option value="결재대기함" selected>결재대기함</option>
-                              <option value="결재진행함">결재진행함</option>
+                              <option value="결재대기함" >결재대기함</option>
+                              <option value="결재진행함" selected>결재진행함</option>
                               <option value="결재완료함">결재완료함</option>
                               <option value="결재반려함">결재반려함</option>
                               <option value="참조열람함">참조열람함</option>
@@ -195,9 +195,11 @@
                       <td style="text-align: center;"><span class="title_box">${a.docTitle}</span></td>
                       <td></td>
                       <td>
+                      
 	                      <span class="appDate_box">${a.docDt }</span>
 	                      <input type="hidden" value="${a.docType}" >
-						  					<input type="hidden" value="${a.docNo}" >
+						  <input type="hidden" value="${a.docNo}" >
+						  
                       </td>     
                       <td>
 	                      	<c:choose>
@@ -222,8 +224,8 @@
                       <td>
                        
                        
-                      	<span class="status_box" style="color:#F89914;">
-                      		대기
+                      	<span class="status_box" style="color:orange;">
+                      		진행중
                       	</span>
                       	
                        
@@ -260,7 +262,7 @@
                             
                             <li class="page-item prev ${ pi.currentPage == 1 ? 'disabled' : '' }">
                               <a class="page-link" 
-                              		href="${ contextPath }/app/box_standby.do?page=${pi.currentPage-1}">
+                              		href="${ contextPath }/app/box_progress.do?page=${pi.currentPage-1}">
                                 <i class="ti ti-chevron-left ti-sm"></i>
                               </a>
                             </li>
@@ -270,7 +272,7 @@
                             <!-- 페이징 숫자 / for문돌려서 생성 -->
                             <li class="page-item ${pi.currentPage == i ? 'active' : '' }">
                               <a class="page-link" 
-                              	href="${ contextPath }/app/box_standby.do?page=${i}">${ i }</a>
+                              	href="${ contextPath }/app/box_progress.do?page=${i}">${ i }</a>
                             </li>
                             </c:forEach>
                            
@@ -278,7 +280,7 @@
                             <!-- 페이징 다음버튼 -->
                             <li class="page-item next ${ pi.currentPage == pi.maxPage ? 'disabled' : '' }">
                               <a class="page-link" 
-                              		href="${ contextPath }/app/box_standby.do?page=${pi.currentPage+1}">
+                              		href="${ contextPath }/app/box_progress.do?page=${pi.currentPage+1}">
                                 <i class="ti ti-chevron-right ti-sm"></i>
                               </a>
                             </li>
@@ -319,7 +321,7 @@
       // 다수 페이징버튼          
      function goPage(pNum){
                         	   
-       window.location.href = '${contextPath}/app/box_standby.do?page=' + pNum;
+       window.location.href = '${contextPath}/app/box_progress.do?page=' + pNum;
  	}
      
      

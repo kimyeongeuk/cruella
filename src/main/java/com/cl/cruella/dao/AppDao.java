@@ -80,6 +80,36 @@ public class AppDao {
 		 RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit() ,pi.getBoardLimit());
 		 return sqlSession.selectList("appMapper.selectStandby",memNo,rowBounds);
 	 }
+	 
+	 // 결재반려함 (listCount용)
+	 public int selectCompanionCount(String memNo) {
+		 return sqlSession.selectOne("appMapper.selectCompanionCount",memNo);
+	 }
+	 
+	 // 결재반려함 리스트 조회
+	 public List<AppdocDto> selectCompanion(String memNo,PageInfoDto pi){
+		 RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit() ,pi.getBoardLimit());
+		 return sqlSession.selectList("appMapper.selectCompanion",memNo,rowBounds);
+	 }
+	 
+	 
+	 // 결재진행함 (listCount용)
+	 public int selectProgressCount(String memNo) {
+		 return sqlSession.selectOne("appMapper.selectProgressCount",memNo);
+	 }
+	 
+	 // 결재진행함 리스트 조회
+	 public List<AppdocDto> selectProgress(String memNo,PageInfoDto pi){
+		 RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit() ,pi.getBoardLimit());
+		 return sqlSession.selectList("appMapper.selectProgress",memNo,rowBounds);
+	 }
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 	 // 참조열람함 (listCount용)
 	 public int selectViewCount(String memNo) {
 		 return sqlSession.selectOne("appMapper.selectViewCount",memNo);
@@ -127,36 +157,40 @@ public class AppDao {
 	 
 	 
 	 
-	 // 상세페이지 결재 1
-	 public int detailClear1(AppdocDto ad) { // 기안문서 첫번째 / 다음순서와 진행중으로 업데이트
-		 return sqlSession.update("appMapper.appSignAndDocOrderAndstatusUpdate1",ad);
-	 }
-	 // 상세페이지 결재 2
-	 public int detailClear2(AppdocDto ad) { // 기안문서 두번째 / 다음순서와 진행중으로 업데이트
-		 return sqlSession.update("appMapper.appSignAndDocOrderAndstatusUpdate2",ad);
+	 // 상세페이지 결재 // 다음순서와 진행중으로 업데이트 // 기안문서
+	 public int detailClear(AppdocDto ad) { 
+		 return sqlSession.update("appMapper.appSignAndDocOrderAndstatusUpdate",ad);
 	 }
 	 
-	 
-	 
-	 
-	 
-	 
-	 // 상세페이지 결재 라스트1
-	 public int detailLastClear1(AppdocDto ad) { // 최종승인으로 업데이트
-		 return sqlSession.update("appMapper.appSignAndLastUpdate1",ad);
-	 }
-	 
-	 // 상세페이지 결재 라스트2
-	 public int detailLastClear2(AppdocDto ad) { // 최종승인으로 업데이트
-		 return sqlSession.update("appMapper.appSignAndLastUpdate2",ad);
-	 }
-	 
-	 // 상세페이지 결재 라스트3
-	 public int detailLastClear3(AppdocDto ad) { // 최종승인으로 업데이트
-		 return sqlSession.update("appMapper.appSignAndLastUpdate3",ad);
+	 // 상세페이지 결재 라스트
+	 public int detailLastClear(AppdocDto ad) { // 최종승인으로 업데이트 / 기안문서
+		 return sqlSession.update("appMapper.appSignAndLastUpdate",ad);
 	 }
 	 
 	 
+	 // 상세페이지 결재 // 다음순서와 진행중으로 업데이트 및 최종승인 // 결재선
+	 public int detailAppRoval(AppdocDto ad) { 
+		 return sqlSession.update("appMapper.lastApproval",ad);
+	 }
+	 
+	 
+	 // 상세페이지 반려 / 기안문서
+	 public int detailFail1(AppdocDto ad) {
+		 return sqlSession.update("appMapper.appdocCompanionUpdate",ad);
+	 }
+	 // 상세페이지 반려 / 결재선
+	 public int detailFail2(AppdocDto ad) {
+		 return sqlSession.update("appMapper.approvalCompanion",ad);
+	 }
+	
+	 
+	 
+	 
+	 
+	 // 회수버튼 클릭시
+	 public int appDeleteBack(AppdocDto ad) {
+		 return sqlSession.update("appMapper.appDeleteBack",ad);
+	 }
 	
 	
 	
