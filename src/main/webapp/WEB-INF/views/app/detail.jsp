@@ -17,13 +17,15 @@
     <script src="${ contextPath }/resources/assets/js/config.js"></script>
     
    
-    
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
-    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+
     
 </head>
 <body>
+
+
 <div class="layout-wrapper layout-content-navbar">
    <div class="layout-container">
    
@@ -58,6 +60,13 @@
             			    <c:if test="${app.docStatus eq 'A' and app.memNo eq memNo}">
 	            				<span style="position: relative; left: 89%;">
 	            					<button type="button"  id="delect_Btn" class="btn btn-danger" >회수</button>
+	            				</span>
+	            			</c:if>
+	            			<c:if test="${app.docStatus eq 'C' and app.memNo eq memNo}">
+	            				<span style="position: relative; left: 89%; cursor: pointer;" onclick="pdf_down();">
+	            					<!-- <button type="button"  onclick="ff();" class="btn btn-success" >다운받기</button> -->
+	            					<img src="${contextPath}/resources/assets/img/free-icon-pdf-5453995.png"
+	            					     style="width: 38px;"/>
 	            				</span>
 	            			</c:if>
             			
@@ -109,7 +118,7 @@
 
 
 
-						<div class="col-12" style="margin-top: 20px;" id="content_div">
+				<div class="col-12" style="margin-top: 20px;" id="content_div">
                   <div class="card mb-6">
 
 
@@ -420,8 +429,15 @@
                         </td>
                       </tr>
                     </table>
-
-
+                    
+                    
+                <c:if test="${app.docType eq '지각사유서' }">    
+                 <table>
+                  <tr>
+                   <td style="border: 1px solid black;width: 169px; text-align: center;">사유</td>
+                   <td>
+				</c:if>
+				
                     <div style="border: 1px solid black;">
                       <div class="content-wrapper">
                         <div class="container-xxl flex-grow-1 container-p-y">
@@ -435,7 +451,7 @@
 		
 									${app.docContent } 
 									<br>
-									
+									<br>
 									<span style="color:red;">${app.reason}</span>
 
                                 </div>
@@ -446,6 +462,18 @@
                         </div>
                       </div>
                     </div>
+                    
+                    
+                 <c:if test="${app.docType eq '지각사유서' }">  
+                   </td>
+                 </tr>
+           	   </table>
+                </c:if> 
+                    
+                    
+                    
+              
+                    
 
                     <!-- file input -->
                     <div class="card" style="border: 1px solid; border-radius: 0;">
@@ -469,8 +497,8 @@
                     </div>
                     <!-- /file input -->
 					<input type="hidden" name="docContent" id="docContentInput" />
-
-
+					
+					
 
 
           </div>
@@ -637,13 +665,37 @@ $(document).ready(function(){
 	
 })
 
-	  
-	  
-	  
-	  
-		
+
+	// pdf 다운 함수
+function pdf_down() {
+	   const element = document.getElementById('content_div');  // PDF로 변환할 요소
+	    
+	    const options = {
+	        margin:       10,    // 여백
+	        filename:     '${app.docType}.pdf', // 파일 이름
+	        image:        { type: 'jpeg', quality: 0.98 },
+	        html2canvas:  { scale: 1 },   // 해상도 설정
+	        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+	    };
+
+	    // html2pdf 라이브러리를 사용하여 선택한 요소를 PDF로 변환
+	    html2pdf()
+	        .from(element)   // PDF로 변환할 요소
+	        .set(options)     // 옵션 설정
+	        .save();          // PDF 파일 저장
+  }
+
+
 
 </script>
+
+
+
+
+
+
+   
+
 
      
 <c:forEach var="i" items="${app.rovalList }">
@@ -684,25 +736,7 @@ $(document).ready(function(){
    </div>
    
    
-   <button onclick="ff()">dd</button>
-
-<script>
-
-	
-function ff() {
-    const content = $('#content_div')[0];  // '#content_div' 요소 선택 (jQuery 객체에서 DOM 요소로 변경)
-
-    // html2pdf로 PDF 변환
-    html2pdf()
-      .from(content)  // 선택한 DOM 요소로부터
-      .save('document.pdf');  // 'document.pdf'로 저장
-  }
-	
-	
-	
-
-</script>
-   
+ 
   
    
 

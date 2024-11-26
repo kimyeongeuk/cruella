@@ -318,6 +318,25 @@ public class AppController {
 	
 	
 	
+//	체크한 기안서 삭제
+	@ResponseBody
+	@PostMapping("/deleteApp.do")
+	public int ajaxDeleteCheckApp(@RequestBody Map<String, List<String> >requestBody) {
+		
+		
+		List<String> docNos = requestBody.get("docNos");
+		
+		log.debug("docNos : {}",requestBody.get("docNos"));
+		log.debug("docNos : {}",docNos);
+		
+		int result = appService.ajaxDeleteCheckApp(docNos);
+		
+		
+		return result;
+	}
+	
+	
+	
 	
 	
 	
