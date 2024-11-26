@@ -48,10 +48,12 @@
             
             		<div style="display: flex; justify-content: left;">
             			<span style=""><button type="button"  id="backBtn" class="btn btn-primary" onclick="historyBack();">목록</button></span>
-            			<c:if test="${app.docStatus eq 'A' }">
-            				<span style="position: relative;
-   										 left: 89%;"><button type="button"  id="delect_Btn" class="btn btn-danger" >회수</button></span>
-            			</c:if>
+            			    <c:if test="${app.docStatus eq 'A' and app.memNo eq memNo}">
+	            				<span style="position: relative; left: 89%;">
+	            					<button type="button"  id="delect_Btn" class="btn btn-danger" >회수</button>
+	            				</span>
+	            			</c:if>
+            			
             		</div>
             		
             	

@@ -125,6 +125,21 @@ public class AppDao {
 	 
 	 
 	 
+	 // 결재완료함 (listCount용)
+	 public int selectSuccessCount(String memNo) {
+		 return sqlSession.selectOne("appMapper.selectSuccessCount",memNo);
+	 }
+	 
+	 // 결재완료함 리스트 조회
+	 public List<AppdocDto> selectSuccess(String memNo,PageInfoDto pi){
+		 RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit() ,pi.getBoardLimit());
+		 return sqlSession.selectList("appMapper.selectSuccess",memNo,rowBounds);
+	 }
+	 
+	 
+	 
+	 
+	 
 	 
 	 
 	 

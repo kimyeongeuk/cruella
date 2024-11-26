@@ -14,9 +14,10 @@ import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.PageInfoDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AppService {
@@ -167,6 +168,23 @@ public class AppService {
 	
 	
 	
+//	결재완료함 카운트
+	public int selectSuccessCount(String memNo) {
+		int result = appDao.selectSuccessCount(memNo);
+		return result;
+	}
+//	결재완료함 조회
+	public List<AppdocDto> selectSuccess(String memNo,PageInfoDto pi){
+		List<AppdocDto> list = appDao.selectSuccess(memNo,pi);
+		return list;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -177,8 +195,11 @@ public class AppService {
 		
 		AppdocDto app = appDao.detailPage(docNo);
 		
+		
 		List<AppRovalDto> rovalList = appDao.detailPageRoval(docNo);
+		
 		List<AttachDto> attachList = appDao.detailPageAttach(docNo);
+		
 		
 		
 		app.setRovalList(rovalList);

@@ -45,6 +45,8 @@ public class AppdocDto { // 기안문서
 	
 	private int maxOrder; // 기안문서의 결재선 마지막 순서
 	
+	private String refStatus; // 상태: 참조
+	
 	
 //	연차신청서
 	private Date appDateStart; // 시작일
