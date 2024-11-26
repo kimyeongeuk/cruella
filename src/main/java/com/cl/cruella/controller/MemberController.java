@@ -239,7 +239,7 @@ public class MemberController {
 	 // 내정보 - 팀게시판리스트 조회
 	 @PostMapping("/boardList.do")
 	 @ResponseBody
-     public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session) {
+     public Map<String, Object> boardList(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session) {
 		 
          MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
 
@@ -261,6 +261,33 @@ public class MemberController {
 
          return params;
      }
+	 
+	 // 대시보드 - 공지사항 조회
+	 @PostMapping("/noticeList.do")
+	 @ResponseBody
+	 public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session){
+		 
+         MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+
+         String deptCode = loginUser.getDeptCode();
+        
+
+         int listCount = boardService.selectBoardListCount(deptCode);
+
+         PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+
+         Map<String, Object> params = new HashMap<>();
+         params.put("pi", pi);
+         params.put("deptCode", deptCode);
+
+         List<BoardDto> list = boardService.selectBoardList(params);
+         params.put("list", list);
+
+         
+
+         return params;		 
+	 }
+	 
 	 
 	 // 전 사원 정보 조회(이름, 메일, 사번, 사진)
 	 @PostMapping("/selectAll_db.do")
@@ -305,10 +332,6 @@ public class MemberController {
          params.put("list", list);
          return params;
 	 }
-	 
-	 
-	 
-	 
 	 
 	 
 	 

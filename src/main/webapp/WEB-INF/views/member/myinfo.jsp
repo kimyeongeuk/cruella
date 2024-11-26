@@ -911,7 +911,7 @@
     	})
     }
     
-    //팀게시판 리스트 조회
+    // 팀게시판 리스트 조회
 		function fnBoardList() {
 		    $.ajax({
 		        url: '${contextPath}/member/boardList.do',

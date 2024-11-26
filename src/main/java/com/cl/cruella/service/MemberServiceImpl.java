@@ -95,6 +95,9 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int selectVacListCount(String memNo) {
 		return memberDao.selectVacListCount(memNo);
+	}
+	
+	@Override
 	public List<Map<String, String>> getAllDepartments() {
 		return memberDao.getAllDepartments();
 	}

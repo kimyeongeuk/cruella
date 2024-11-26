@@ -306,135 +306,45 @@
         </div>
         <!--/ Popular Instructors -->
 
-        <!-- Projects table -->
-        <div class="card" style="width: 920px;">
-          <div class="table-responsive text-nowrap">
-            <table class="table">
-              <thead>
-                <div style="display: flex; height: 80px;">
-                  <div style="display: flex; margin-top: 30px; margin-left: 20px;">
-                    <i class="ti ti-news ti-lg"></i>
-                    <p style="margin-right: 50px; margin-left: 15px; font-size: 18px;">공지사항</p>
-                    <a style="color: blue;" href="#">전체</a>
-                    &nbsp;&nbsp;/&nbsp;&nbsp;
-                    <a href="#">${ loginUser.getDeptCode() }</a>
-                  </div>
-                  <div style="position: relative; top: 20px; left: 200px; display: flex; gap: 30px;">
-                    <div>
-                      <input
-                        style="margin-top: 3px;"
-                        type="text"
-                        class="form-control"
-                        id="defaultFormControlInput"
-                        placeholder="검색어 입력"
-                        aria-describedby="defaultFormControlHelp" />
-                    </div>
-                    <a href="javascript:void(0)" class="btn btn-primary mb-1" style="height: 45px;">
-                      <i class="ti ti-search ti-xs me-2"></i>검색
-                    </a>
-                  </div>
-                </div>
-              </thead>
-              <thead>
-                <tr>
-                  <th style="border: 1px solid #e6e6e8;">제목</th>
-                  <th>작성자</th>
-                  <th>작성일</th>
-                  <th>조회수</th>
-                </tr>
-              </thead>
-
-              <tbody class="table-border-bottom-0">
-                <tr>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    관리자
-                  </td>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    <span>3</span>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    관리자2
-                  </td>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    <span>3</span>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    관리자3
-                  </td>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    <span class="badge bg-label-primary me-1">3</span>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    관리자4
-                  </td>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    <span class="badge bg-label-primary me-1">퇴사</span>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    관리자
-                  </td>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    <span class="badge bg-label-primary me-1">퇴사</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!--/ Projects table -->
-      </div>    
+				<!-- 팀게시판 영역 (재운님 코드)-->
+				<div class="card">
+  				<div class="d-flex align-items-center">
+   					<div style="margin: 20px;">
+         			<h5>공지사항</h5>
+     				</div>
+  	 			</div>
+	 				<div class="card-datatable table-responsive pt-3">
+						<table class="datatables-basic table text-center">
+							<thead>
+  							<tr>
+        					<th style="width: 10%;">번호</th>
+									<th style="width: 15%;">작성자</th>
+									<th style="width: 40%;">제목</th>
+									<th style="width: 15%;">작성일</th>
+									<th style="width: 10%;">조회수</th>
+  							</tr>
+							</thead>
+  						<tbody id="boardListTbody">
+    
+							</tbody>
+						</table>
+					</div>
+					<div class="card-body">
+					  <div class="row">
+					    <span class="col-lg-12 d-flex justify-content-center">
+					      <div class="demo-inline-spacing">
+					        <nav aria-label="Page navigation">
+					          <ul class="pagination" id="paging_area">
+					          </ul>
+					        </nav>
+					      </div>
+					    </span>
+					  </div>
+	        </div>
+	     		</div>
+	       
+	       <!--/ 팀게시판 영역 -->         
+     </div>    
     
     
     
@@ -515,7 +425,6 @@
 	  		// 출근 등록여부 확인
 	  		function checkClockInStatus(){
 	  			
-	  			console.log("33");
 	  			
 	  			$.ajax({
 	  				url: '${contextPath}/wl/checkStatus.do',
@@ -960,7 +869,62 @@
 	    		}
 	    		
 	    	})
-	    }	    
+	    }
+	    
+	    // 공지사항 목록조회
+	    function fnNoticeList(){
+	    	$.ajax({
+	    		url: '${contextPath}/member/noticeList.do',
+	    		type: 'POST',
+	    		success: function(res) {
+		              let pi = res.pi; // 페이지 정보
+			            let trEl = '';
+			
+			            // 데이터가 비어 있는 경우
+			            if (!res || res.list.length == 0) {
+			                trEl += '<tr>';
+			                trEl += '<td colspan="6">조회된 게시글이 없습니다.</td>';
+			                trEl += '</tr>';
+			            } else {
+			                let count = 1;
+			                res.list.forEach((board) => {
+			                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
+			
+			                    
+			                    trEl += '<tr data-boardno="' + board.boardNo + '">';
+			                    trEl += '<td>' + reverseCount + '</td>';
+			                    trEl += '<td>' + board.memName + '</td>';
+			                    trEl += '<td class="title" style="cursor: pointer;">' + board.boardTitle;
+			                    trEl += '</td>';
+			                    trEl += '<td>' + board.boardRegistDT + '</td>';
+			                    trEl += '<td>' + board.boardCount + '</td>';
+			                    trEl += '<td>' + board.replyCount + '</td>';
+			                    trEl += '</tr>';
+			
+			                    count++;
+			                });
+			            }
+			
+			            $('#boardListTbody').html(trEl);
+			            
+			            // 페이징바
+			            let pagingEl = '';
+			            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
+			            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
+
+			            // 페이지 번호 생성
+			            for (let i = pi.startPage; i <= pi.endPage; i++) {
+			                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + i + ');">' + i + '</a></li>';
+			            }
+
+			            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
+			            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
+
+			            // 페이징바 업데이트
+			            $('#paging_area').html(pagingEl);	    			
+	    		}
+	    	})
+	    }
 	    
    </script>
 	

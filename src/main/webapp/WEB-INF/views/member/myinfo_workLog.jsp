@@ -299,7 +299,7 @@
                               &nbsp;&nbsp;/&nbsp;&nbsp;
                               <span>15</span>
                             </div>
-                            <div style="position: relative; top: 20px; left: 400px; display: flex; gap: 30px;">
+                            <div style="position: relative; top: 20px; left: 400px; display: flex; gap: 60px;">
                               <div style="position: relative; top: 10px;">
                                 사용 <span>${15-loginUser.vacCount}</span>
                                 &nbsp;&nbsp;&nbsp;
@@ -444,7 +444,18 @@
 		                    trEl += '<td>' + reverseCount + '</td>';
 		                    trEl += '<td>' + vac.docTitle + '</td>';
 		                    trEl += '<td>' + vac.docDt + '</td>';
-		                    trEl += '<td>' + vac.docStatus + '</td>';
+		                    
+		                    // docStatus에 따라 이미지 삽입
+		                    let statusImage = '';
+		                    if (vac.docStatus == 'A' || vac.docStatus == 'B') {
+		                        statusImage = '<img src="${contextPath}/assets/img/customizer/checkGray.png" alt="대기" />';
+		                    } else if (vac.docStatus == 'C') {
+		                        statusImage = '<img src="${contextPath}/assets/img/customizer/checkGreen.png" alt="승인" />';
+		                    } else if (vac.docStatus == 'D') {
+		                        statusImage = '<img src="${contextPath}/assets/img/customizer/checkRed.png" alt="반려" />';
+		                    }
+		                    
+		                    trEl += '<td>' + statusImage + '</td>';
 		                    trEl += '</tr>';
 		
 		                    count++;
