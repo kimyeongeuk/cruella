@@ -90,6 +90,14 @@ public class MemberDao {
 		return sqlSession.selectList("memberMapper.selectAllMember", memNo);
 	}
 
+	public List<Map<String, String>> getAllDepartments() {
+		return sqlSession.selectList("memberMapper.getAllDepartments");
+	}
+
+	public List<Map<String, String>> getEmployeesByDeptCode(String deptCode) {
+		return sqlSession.selectList("memberMapper.getEmployeesByDeptCode", deptCode);
+	}
+
 
 }
 

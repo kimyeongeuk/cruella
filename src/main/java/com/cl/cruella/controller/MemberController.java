@@ -495,6 +495,30 @@ public class MemberController {
 	// 근무시간조회(이예빈)
 	@GetMapping("/workhoursview.do")
 	public void workhoursview() {}
+	
+	// 조직도조회(이예빈)
+	@GetMapping("/organization.do")
+	public void organization() {}
+	
+	
+	
+	
+	@GetMapping("/departments.do")
+	@ResponseBody
+	public List<Map<String, String>> getDepartments() {
+	    // memberService를 이용해 부서 데이터를 가져옵니다.
+	    return memberService.getAllDepartments();
+	}
+
+	@GetMapping("/employees.do")
+	@ResponseBody
+	public List<Map<String, String>> getEmployees(@RequestParam("deptCode") String deptCode) {
+	    // memberService를 이용해 특정 부서에 속한 직원 데이터를 가져옵니다.
+	    return memberService.getEmployeesByDeptCode(deptCode);
+	}
+
+	
+	
 
 	
 	

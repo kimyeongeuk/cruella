@@ -1,6 +1,7 @@
 package com.cl.cruella.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -82,6 +83,16 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public List<MemberDto> selectAllMember(String memNo) {
 		return memberDao.selectAllMember(memNo);
+	}
+
+	@Override
+	public List<Map<String, String>> getAllDepartments() {
+		return memberDao.getAllDepartments();
+	}
+
+	@Override
+	public List<Map<String, String>> getEmployeesByDeptCode(String deptCode) {
+		return memberDao.getEmployeesByDeptCode(deptCode);
 	}
 
 
