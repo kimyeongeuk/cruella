@@ -260,7 +260,7 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 	</insert>
 	
 	<!-- 부서 데이터 가져오기 -->
-	<select id="getAllDepartments" resultType="map">
+	<select id="getAllDepartments" >
 	    SELECT 
 	    			 DEPT_CODE 
 	    		 , dept_name
@@ -268,7 +268,7 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 	</select>
 	
 	<!-- 특정 부서에 속한 직원 데이터 가져오기 -->
-	<select id="getEmployeesByDeptCode" resultType="map">
+	<select id="getEmployeesByDeptCode" >
 	    select 
 	    mem_name,
 	    mem_no 
