@@ -47,8 +47,6 @@ public interface MemberService {
 	// 전체사원조회(사번, 이름, 메일, 사진)
 	List<MemberDto> selectAllMember(String memNo);
 
-	// 프로필이미지변경
-	int updateProfileImg(MemberDto targetMember);
 
 	// 휴가내역 조회
 	int selectVacListCount(String memNo); // 리스트카운트

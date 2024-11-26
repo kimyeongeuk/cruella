@@ -108,6 +108,9 @@ public class ChatServiceImpl implements ChatService{
 	public int changeNewMsg(int chatNo) {
 		return chatDao.changeNewMsg(chatNo);
 	}
+	public int modifyMsg(MessageDto messageDto) {
+		return chatDao.modifyMsg(messageDto);
+	}
 
 
 

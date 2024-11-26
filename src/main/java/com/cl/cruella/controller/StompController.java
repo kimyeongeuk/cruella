@@ -74,6 +74,9 @@ public class StompController {
 				// 메시지 인서트
 				int result = chatserviceImpl.insertMessage(messageDto);
 				messageDto.setType("message");
+				// 메시지 넘버 넘어주기
+				messageDto.setMsgNo(chatserviceImpl.msgNum());
+				log.debug("메시지 디티오 : {}",messageDto);
 			}
 		}else if(messageDto.getMsgType().equals("delete")) {
 			
@@ -86,52 +89,17 @@ public class StompController {
 				result = chatserviceImpl.changeNewMsg(messageDto.getChatNo());
 			}
 			messageDto.setType("delete");
+		}else if(messageDto.getMsgType().equals("modify")) {
+			// 메시지 수정
+			int result = chatserviceImpl.modifyMsg(messageDto);
+			messageDto.setType("modify");
+			//messageDto.setMsgStatus("M");
 		}
 		
 		return messageDto;
 	}
 	
-	@MessageMapping("/chat/Chatroom")
-	public int startChat(Map<String,Object> map) {
-		
-		String memNo = (String)map.get("memNo");
-		String inviteNo = (String)map.get("inviteNo");
-		String inviteName = (String)map.get("inviteName");
-		log.debug("맴넘:{}",memNo);
-		log.debug("초대넘:{}",inviteNo);
-		log.debug("초대이름 : {}",inviteName);
-		//Map<String,Object> map = new HashMap<>();
-		
-		//List<String> list = new ArrayList<>();
-		
-		//list.add(memNo);
-		//list.add(inviteNo);
-		
-		//map.put("memNo", memNo);
-		//map.put("inviteNo", inviteNo);
-		//map.put("inviteName",inviteName);
-		//map.put("list", list);
-		
-		//String result = chatServiceImpl.checkChatList(list);
-		
-		//System.out.println(result);
-		//if(result == null) {
-		//	result = String.valueOf(chatServiceImpl.startChat(map));
-		//}
-		
-		// int result = chatService.createChat(memNo, inviteNo); // DB에 채팅방 생성
 
-		  //  if (result == 1) {
-		  //      // 새 채팅방 생성 성공 시, 메시지 전송
-		   //     ChatRoom newChatRoom = chatService.getLatestChatRoom();
-		        template.convertAndSend("/sub/newChat", "값이잘전달됐나??????"); // 새 채팅방 정보를 모든 구독자에게 전송
-		   // }
-		   // return result; // 생성 결과 반환
-		System.out.println("이안으로 진입");
-		return 1;
-		
-	
-	}
 	
 	
 }

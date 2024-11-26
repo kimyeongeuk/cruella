@@ -35,7 +35,13 @@ public class MemberDao {
 	}
 
 	public int insertMember(MemberDto m) {
-		return sqlSession.insert("memberMapper.insertMember", m);
+
+		int result =  sqlSession.insert("memberMapper.insertMember", m);
+		if(result > 0) {
+			result = 0;
+			result = sqlSession.insert("memberMapper.chatProfile", m);
+		}
+		return result;
 	}
 	
 	public List<MemberDto> selectTeamList(MemberDto m) {
@@ -98,6 +104,7 @@ public class MemberDao {
 		return sqlSession.selectOne("memberMapper.selectVacListCount", memNo);
 	}
 	
+
 }
 
 
