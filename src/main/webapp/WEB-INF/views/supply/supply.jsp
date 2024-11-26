@@ -276,7 +276,7 @@
               <!-- 비품 신청 모달창 -->
               <div class="modal fade" id="applySupply" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
-                  <div class="modal-content" style="width:600px;">
+                  <div class="modal-content" style="width:600px; margin-left: 100px;">
                     <div class="modal-body">
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       <div class="text-center mb-6">
