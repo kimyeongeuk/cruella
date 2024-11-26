@@ -357,6 +357,18 @@
       		
       		  
       	  })
+      	  
+      	  
+      	  
+      	  function rowClick(event, url) {
+    				// 추가적으로 필요하면 조건을 확인한 뒤 URL 이동
+    				window.location.href = url;
+  			}
+    	    
+   
+    	    $('#delete_icon').on('click',function(){
+    	    	alert('삭제 권한이 없습니다');
+    	    })
     	    
     	    
     	    

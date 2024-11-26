@@ -15,6 +15,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <script src="${ contextPath }/resources/assets/js/config.js"></script>
+    
+   
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+    
+    
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
@@ -102,7 +109,7 @@
 
 
 
-						<div class="col-12" style="margin-top: 20px;">
+						<div class="col-12" style="margin-top: 20px;" id="content_div">
                   <div class="card mb-6">
 
 
@@ -672,7 +679,30 @@ $(document).ready(function(){
    </div>
    
    
+   <button onclick="ff()">dd</button>
+
+<script>
+
+	
+function ff() {
+    const content = $('#content_div')[0];  // '#content_div' 요소 선택 (jQuery 객체에서 DOM 요소로 변경)
+
+    // html2pdf로 PDF 변환
+    html2pdf()
+      .from(content)  // 선택한 DOM 요소로부터
+      .save('document.pdf');  // 'document.pdf'로 저장
+  }
+	
+	
+	
+
+</script>
    
+  
+   
+
+
+
    
    
 </body>

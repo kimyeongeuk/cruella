@@ -373,7 +373,14 @@
     	    
    
     	    $('#delete_icon').on('click',function(){
-    	    	alert('삭제 권한이 없습니다');
+    	    	
+    	    	$.ajax({
+    	    		url : '${contextPath}/app/deleteApp.do',
+    	    		data:{
+    	    			
+    	    		}
+    	    	})
+    	    	
     	    })
       	
     	    

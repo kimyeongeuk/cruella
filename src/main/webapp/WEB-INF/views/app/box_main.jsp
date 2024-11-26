@@ -124,7 +124,7 @@
                               <option value="결재완료함">결재완료함</option>
                               <option value="결재반려함">결재반려함</option>
                               <option value="참조열람함">참조열람함</option>
-                              <option value="공문수신함">공문수신함</option>
+                            
                             </select>
                           </span>
                           
