@@ -90,10 +90,6 @@ public class MemberDao {
 		return sqlSession.selectList("memberMapper.selectAllMember", memNo);
 	}
 
-	public int updateProfileImg(MemberDto targetMember) {
-		return sqlSession.update("memberMapper.updateProfileImg", targetMember);
-	}
-	
 	public List<AppdocDto> selectVacList(Map<String, Object> params) {
         PageInfoDto pi = (PageInfoDto) params.get("pi");
         RowBounds rowBounds = new RowBounds((pi.getCurrentPage() - 1) * pi.getBoardLimit(), pi.getBoardLimit());
@@ -104,6 +100,14 @@ public class MemberDao {
 		return sqlSession.selectOne("memberMapper.selectVacListCount", memNo);
 	}
 	
+	public List<Map<String, String>> getAllDepartments() {
+		return sqlSession.selectList("memberMapper.getAllDepartments");
+	}
+
+	public List<Map<String, String>> getEmployeesByDeptCode(String deptCode) {
+		return sqlSession.selectList("memberMapper.getEmployeesByDeptCode", deptCode);
+	}
+
 
 }
 
