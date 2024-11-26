@@ -542,7 +542,12 @@ $(document).ready(function(){
 			        maxOrder: parseInt($('#maxOrder').val(), 10),  // 결재선 최종 순서 
 			        docOrder: parseInt($('#docOrder').val(), 10),  // 결재선 현재 순서 
 			        appLevel: parseInt($('#app_roval_level').val(), 10),  // 현재 결재자의 순서 
-			      	memNo: '${memNo}'
+			      	memNo: '${memNo}',
+			      	appDateStart : '${app.appDateStart }',
+			      	appDateEnd : '${app.appDateEnd }',
+			      	docType : '${app.docType}',
+			      	docMemNo : '${app.memNo}'
+			      	
 			      }),
 			   success: function(res){
 				   	if(res>0){
