@@ -445,6 +445,7 @@ function fn_insertRreply(replyId) {
     },
     success: function(resData){
       if (resData === "SUCCESS") {
+    	  fn_replyList(); // 댓글 목록 갱신
         fn_rreplyList(replyId); // 대댓글 목록 새로고침
         $("#rreply_content").val(""); // 입력 필드 초기화
       } else {
@@ -570,11 +571,9 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
 
   // 수정 및 삭제 버튼에 이벤트 핸들러 설정
   modal.find('#modal-modify').off('click').on('click', function() {
-	    // 수정 시 스크롤 위치 저장
     modifyReply(replyId, replyContent);
   });
   modal.find('#modal-delete').off('click').on('click', function() {
-	    // 수정 시 스크롤 위치 저장
     deleteReply(replyId);
   });
 
@@ -585,37 +584,7 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   fn_rreplyList(replyId);
 });
 
-// 서버로 수정된 댓글 내용을 전송하는 함수
-function updateReply() {
-  const updatedContent = document.getElementById('editReplyContent').value;
-  $.ajax({
-    type: 'POST',
-    url: `${contextPath}/board/updateReply.do`,
-    data: {
-      replyNo: currentReplyNo,
-      content: updatedContent
-    },
-    success: function(response) {
-      if (response.status === "SUCCESS") {
-        alert("댓글이 수정되었습니다.");
-        $('#editReplyModal').modal('hide');  // 수정 모달 닫기
-        fn_replyList(); // 댓글 목록 갱신
-      } else {
-        alert("댓글 수정에 실패하였습니다. 다시 시도해주세요.");
-      }
-    },
-    error: function(xhr, status, error) {
-      console.error("에러 발생:", status, error);
-    }
-  });
-}
-
 function modifyReply(replyNo, replyContent) {
-  
-
-	//스크롤 위치 저장
-  
-	
   // 현재 수정 중인 댓글의 최신 내용을 가져옴
   let replyRow = $("tr[data-replyno='" + replyNo + "']");
   let contentDiv = replyRow.find(".reply-content");
@@ -638,9 +607,12 @@ function modifyReply(replyNo, replyContent) {
   // 수정 아이콘이 있던 box 닫기
   let iconWrapper = replyRow.find(".icon-wrapper");
   iconWrapper.hide();
-  
   $('#modalScrollable').modal('hide');
-	//스크롤 위치 복원
+  
+  // input 창에 포커스 맞추기
+  setTimeout(function() {
+    contentDiv.find('.reply-edit-content').focus();
+  }, 300);
   
 }
 
@@ -661,8 +633,7 @@ function saveReply(replyNo) {
 
       // replyRow에 데이터 속성으로 업데이트된 내용을 저장
       replyRow.data('replycontent', editedContent);
-   		
-      
+      fn_replyList(); // 댓글 목록 갱신
     },
     error: function(xhr, status, error) {
       console.error("댓글 수정 중 에러 발생:", status, error);
@@ -738,7 +709,7 @@ function modalModifyReply(replyNo, replyContent) {
   let decodedContent = $('<div/>').html(latestContent).text();
 
   let inputHtml = "<textarea class='form-control reply-edit-content' aria-label='With textarea' style='width: 80%; resize: none;'>" + decodedContent + "</textarea>";
-  let saveButtonHtml = "<button class='btn btn-sm btn-label-info' style='text-align: center; margin-left: 10px; margin-top: 5px;' onclick='saveReply(" + replyNo + ");'>수정</button>";
+  let saveButtonHtml = "<button class='btn btn-sm btn-label-info' style='text-align: center; margin-left: 10px; margin-top: 5px;' onclick='modalSaveReply(" + replyNo + ");'>수정</button>";
   let cancelButtonHtml = "<button class='btn btn-sm btn-label-dark' style='text-align: center; margin-left: 10px; margin-top: 5px;' onclick='cancelModifyReply(" + replyNo + ", `" + originalContent + "`);'>취소</button>";
 
   contentDiv.html(inputHtml + saveButtonHtml + cancelButtonHtml);
@@ -749,7 +720,7 @@ function modalModifyReply(replyNo, replyContent) {
 }
 
 
-function saveReply(replyNo) {
+function modalSaveReply(replyNo) {
   let replyRow = $("tr[data-replyno='" + replyNo + "']");
   let editedContent = replyRow.find(".reply-edit-content").val();
 
@@ -797,6 +768,7 @@ function modalDeleteReply(replyNo) {
 	      success: function(resData) {
 	        // 대댓글 삭제 후 목록 갱신
 	        $("tr[data-replyno='" + replyNo + "']").remove();
+	        fn_replyList(); // 댓글 목록 갱신
 	      },
 	      error: function(xhr, status, error) {
 	        console.error("대댓글 삭제 중 에러 발생:", status, error);
@@ -881,14 +853,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-  
-  // 모달이 닫힐 때 액션 박스를 닫는 코드 추가
-  $('#editReplyModal').on('hide.bs.modal', function () {
-    const actionBoxes = document.querySelectorAll('.modal-action-box');
-    actionBoxes.forEach(box => {
-      box.style.display = 'none';
-    });
-  });
 
   // 첫 번째 모달이 닫힐 때도 액션 박스를 닫도록 설정
   $('#modalScrollable').on('hide.bs.modal', function () {
