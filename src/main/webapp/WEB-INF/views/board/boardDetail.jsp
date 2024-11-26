@@ -141,14 +141,14 @@
                     <div class="d-flex justify-content-end align-items-center">
                       <div class="icon-wrapper">
                         <i class="ti ti-dots-vertical ti-md icon"></i>
-                        <div class="action-box">
+                        <div class="action-box dropdown-replymenu dropdown-menu-end" style="margin-left: -60px;">
                           <form id="frm" action="" method="post">
                             <input type="hidden" id="no" name="no" value="" />
-                            <a href="#" onclick="modifyBoardPost(${b.boardNo})">
-                              <i class="menu-icon tf-icons ti ti-edit"></i>
+                            <a  class="dropdown-item" href="#" onclick="modifyBoardPost(${b.boardNo})">
+                              <i class="menu-icon tf-icons ti ti-edit"></i><span>수정</span>
                             </a>
-                            <a href="#" onclick="deleteBoardPost(${b.boardNo})">
-                              <i class="menu-icon tf-icons ti ti-trash"></i>
+                            <a  class="dropdown-item" href="#" onclick="deleteBoardPost(${b.boardNo})">
+                              <i class="menu-icon tf-icons ti ti-trash"></i><span>삭제</span>
                             </a>
                           </form>
                         </div>
@@ -210,9 +210,9 @@
 								            <div class="d-flex justify-content-end align-items-center">
 								              <div class="icon-wrapper">
 								                <i class="ti ti-dots-vertical ti-md modal-comment-icon" style="cursor: pointer;" onclick="toggleModalActionBox(this)"></i>
-								                <div class="modal-action-box">
-								                  <a id="modal-modify" href="#"><i class="menu-icon tf-icons ti ti-edit"></i></a>
-								                  <a id="modal-delete" href="#"><i class="menu-icon tf-icons ti ti-trash"></i></a>
+								                <div class="modal-action-box dropdown-replymenu dropdown-menu-end" style="margin-left: -60px;">
+								                  <a class="dropdown-item" id="modal-modify" href="#"><i class="menu-icon tf-icons ti ti-edit"></i><span>수정</span></a>
+								                  <a class="dropdown-item" id="modal-delete" href="#"><i class="menu-icon tf-icons ti ti-trash"></i><span>삭제</span></a>
 								                </div>
 								              </div>
 								            </div>
@@ -361,13 +361,13 @@ function fn_replyList() {
           tr += "<div class='d-flex justify-content-end align-items-center'>"
               + "<div class='icon-wrapper'>"
               + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
-              + "<div class='action-replybox'>"
+              + "<div class='action-replybox dropdown-replymenu dropdown-menu-end' style='margin-left: -60px;'>"
               + "<form id='rfrm' action='' method='post'>"
               + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
-              + "<a href='#' onclick='modifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
-              + "<i class='menu-icon tf-icons ti ti-edit'></i></a>"
-              + "<a href='#' onclick='deleteReply(" + resData[i].replyNo + ")'>"
-              + "<i class='menu-icon tf-icons ti ti-trash'></i></a>"
+              + "<a class='dropdown-item' href='#' onclick='modifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
+              + "<i class='menu-icon tf-icons ti ti-edit'></i><span>수정</span></a>"
+              + "<a class='dropdown-item' href='#' onclick='deleteReply(" + resData[i].replyNo + ")'>"
+              + "<i class='menu-icon tf-icons ti ti-trash'></i><span>삭제</span></a>"
               + "</form>"
               + "</div></div></div>";
         } else {
@@ -486,13 +486,13 @@ function fn_rreplyList(replyId) {
           tr += "<div class='d-flex justify-content-end align-items-center'>"
               + "<div class='icon-wrapper'>"
               + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
-              + "<div class='action-replybox'>"
+              + "<div class='action-replybox dropdown-replymenu dropdown-menu-end' style='margin-left: -60px;'>"
               + "<form id='rfrm' action='' method='post'>"
               + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
-              + "<a href='#' onclick='modalModifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
-              + "<i class='menu-icon tf-icons ti ti-edit'></i></a>"
-              + "<a href='#' onclick='modalDeleteReply(" + resData[i].replyNo + ")'>"
-              + "<i class='menu-icon tf-icons ti ti-trash'></i></a>"
+              + "<a class='dropdown-item' href='#' onclick='modalModifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
+              + "<i class='menu-icon tf-icons ti ti-edit'></i><span>수정</span></a>"
+              + "<a class='dropdown-item' href='#' onclick='modalDeleteReply(" + resData[i].replyNo + ")'>"
+              + "<i class='menu-icon tf-icons ti ti-trash'></i><span>삭제</span></a>"
               + "</form>"
               + "</div></div></div>";
         } else {
@@ -612,7 +612,7 @@ function modifyReply(replyNo, replyContent) {
   // input 창에 포커스 맞추기
   setTimeout(function() {
     contentDiv.find('.reply-edit-content').focus();
-  }, 300);
+  }, 500);
   
 }
 
@@ -685,13 +685,51 @@ function deleteReply(replyNo) {
 
 // 모달 내의 ... 아이콘 클릭 시 액션 박스를 토글하는 함수
 function toggleModalActionBox(icon) {
-  var actionBox = icon.nextElementSibling;
-  if (actionBox.style.display === 'none' || actionBox.style.display === '') {
-    actionBox.style.display = 'block';
+  // 모든 드롭다운 메뉴를 닫음
+  document.querySelectorAll('.modal-action-box').forEach(menu => {
+    menu.style.display = 'none';
+  });
+
+  // 클릭한 드롭다운 메뉴를 토글
+  var dropdownMenu = icon.nextElementSibling;
+  if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
+    dropdownMenu.style.display = 'block';
   } else {
-    actionBox.style.display = 'none';
+    dropdownMenu.style.display = 'none';
   }
 }
+
+// 페이지가 로드될 때 모든 드롭다운 메뉴를 숨기기
+document.addEventListener('DOMContentLoaded', () => {
+  const dropdownMenus = document.querySelectorAll('.modal-action-box');
+  dropdownMenus.forEach(menu => {
+    menu.style.display = 'none';
+  });
+
+  // 외부 클릭 이벤트 처리 (모든 dropdown-menu 숨기기)
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.icon-wrapper') && !e.target.matches('.ti-dots-vertical')) {
+      document.querySelectorAll('.modal-action-box').forEach(box => {
+        box.style.display = 'none';
+      });
+    } else {
+      const targetMenu = e.target.closest('.icon-wrapper').querySelector('.modal-action-box');
+      document.querySelectorAll('.modal-action-box').forEach(box => {
+        if (box !== targetMenu) {
+          box.style.display = 'none';
+        }
+      });
+    }
+  });
+
+  // 모달이 닫힐 때 모든 드롭다운 메뉴를 숨기기
+  $('#modalScrollable').on('hide.bs.modal', function () {
+    const dropdownMenus = document.querySelectorAll('.modal-action-box');
+    dropdownMenus.forEach(box => {
+      box.style.display = 'none';
+    });
+  });
+});
 
 
 function modalModifyReply(replyNo, replyContent) {
@@ -862,18 +900,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
-
-// toggleModalActionBox 함수 정의
-function toggleModalActionBox(icon) {
-  var actionBox = icon.nextElementSibling;
-  if (actionBox.style.display === 'none' || actionBox.style.display === '') {
-    actionBox.style.display = 'block'; 
-    
-  } else {
-    actionBox.style.display = 'none';
-  }
-}
-
 
 
 </script>

@@ -52,7 +52,10 @@ public interface MemberService {
 	List<Map<String, String>> getEmployeesByDeptCode(String deptCode);
 
 
-
+	// 휴가내역 조회
+	int selectVacListCount(String memNo); // 리스트카운트
+	List<AppdocDto> selectVacList(Map<String, Object> params);
+	
 
 
 
