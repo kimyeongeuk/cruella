@@ -806,12 +806,12 @@
                         </li>
 
 
-
+<!-- <c:out value='${ list.profileURL }'/> -->
 											<c:forEach var="list" items="${ memberList }">
                         <li class="mb-1">
                           <a class="d-flex align-items-center" style="margin: 20px;">
                             <div class="flex-shrink-0 avatar avatar-online">
-                              <img src="${ contextPath }<c:out value='${ list.profileURL }'/>" alt="Avatar" class="rounded-circle" />
+                              <img src="" alt="" class="rounded-circle" />
                             </div>
                             <div class="chat-contact-info flex-grow-1 ms-4">
                               <div class="d-flex justify-content-between align-items-center">
@@ -1262,12 +1262,15 @@
 															$(this).prev().html(content.msgContent); 
 										    		}									    		
 								    		}
+								    		  $('#modifyForm').val('');
 									}); // 미리보기 ajax 끝
-								    		//if(content.msgStatus != 'M'){
 									    		let th = '<div style= "text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center; width: 50px;">(수정됨)</div>';
+									    		let str = '';
+									    		str += '<div style="text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center;">';
+										      str += '(수정됨)';
+										      str += '</div>';
 									    		$('#chatContent'+content.msgNo).closest('.d-flex.overflow-hidden.modifyDiv').prepend(th);
-								    	//	}
-								    		 $('#modifyForm').val('');
+													$('#chatContent'+content.msgNo).clodset('.d-flex overflow-hidden.othermodifyDiv').append(str);
 										
 										
 									}									
@@ -1399,7 +1402,7 @@
 
         }else{
           str += '<li class="chat-message">';
-          str += '<div class="d-flex overflow-hidden">';
+          str += '<div class="d-flex overflow-hidden othermodifyDiv">';
           str += '<div class="user-avatar flex-shrink-0 me-4">';
           str += '<div class="avatar avatar-sm" data-target="#app-chat-sidebar-right" data-bs-toggle="sidebar" data-overlay="app-overlay-ex">';
           str += '<img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" />';

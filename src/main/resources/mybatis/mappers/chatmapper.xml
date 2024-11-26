@@ -111,7 +111,7 @@ select
 	  from member m
       join department d on (m.dept_code = d.dept_code)
       join position p on (m.pos_code = p.pos_code)
-   where status in ('Y','S')  
+   where status in ('Y','S','A')  
 </select>
 
 <!-- 채팅방 인원 체크 -->
