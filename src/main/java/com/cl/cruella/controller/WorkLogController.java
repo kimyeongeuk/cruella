@@ -1,16 +1,13 @@
 package com.cl.cruella.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cl.cruella.dto.CalendarDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.WorkLogDto;
 import com.cl.cruella.service.WorkLogService;
@@ -84,6 +81,16 @@ public class WorkLogController {
 		return clockOutTime;
 		
 	}
+	// 근태기록조회
+	@PostMapping("/loadWorkLog.do")
+	@ResponseBody
+	public List<CalendarDto> loadWorkLog(String memNo){
+		
+		List<CalendarDto> list = wlService.loadWorkLog(memNo);
+		
+		return list;
+	}
+	
 	
 	
 	

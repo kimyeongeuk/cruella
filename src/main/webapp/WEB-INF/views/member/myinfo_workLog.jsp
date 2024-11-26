@@ -475,6 +475,19 @@
 		 	element.classList.add("active");
 	 	
 	});
+	   
+		 // 근태일정 조회
+		 
+		 const memNo = ${loginUser.memNo};
+		 
+	   $.ajax({
+		   url: '${contextPath}/wl/loadWorkLog.do',
+		   type: 'POST',
+			 data: {memNo: memNo},
+			 success: function(res){
+				 
+			 }
+	   })
    </script>
 
 

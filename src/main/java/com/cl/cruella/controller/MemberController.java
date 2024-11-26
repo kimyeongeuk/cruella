@@ -260,6 +260,16 @@ public class MemberController {
          return params;
      }
 	 
+	 // 전 사원 정보 조회(이름, 메일, 사번, 사진)
+	 @PostMapping("/selectAll_db.do")
+	 @ResponseBody
+	 public List<MemberDto> selectAllMember(String memNo) {
+		 
+		 List<MemberDto> list = memberService.selectAllMember(memNo);
+		 
+		 return list;
+	 }
+	 
 	 
 	 
 	 

@@ -515,6 +515,8 @@
 	  		// 출근 등록여부 확인
 	  		function checkClockInStatus(){
 	  			
+	  			console.log("33");
+	  			
 	  			$.ajax({
 	  				url: '${contextPath}/wl/checkStatus.do',
 	  				type: 'POST',
@@ -586,191 +588,191 @@
 
 
 
-              <!-- 매장별 매출 점유율 -->
-              <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                  const ctx = document.getElementById('doughnutChart').getContext('2d');
-                  const chartCenterText = document.getElementById('chartCenterText');
-            
-                  const data = {
-                    labels: ['남성의류', '여성의류', '식품', '스포츠', '뷰티', '명품', '문화센터', '디지털 및 가전'],
-                    datasets: [{
-                      data: [5000000, 10000000, 10000000, 8000000, 9000000, 20000000, 9000000, 6000000],
-                      backgroundColor: ['rgb(102, 110, 232)', 'rgb(40, 208, 148)', 'rgb(253, 172, 52)', 'rgb(253, 233, 52)', 'rgb(223, 253, 52)', 'rgb(52, 223, 253)', 'rgb(196, 52, 253)', 'rgb(253, 52, 193)']
-                    }]
-                  };
-            
-                  const config = {
-                    type: 'doughnut',
-                    data: data,
-                    options: {
-                      responsive: true,
-                      maintainAspectRatio: false,
-                      plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                          callbacks: {
-                            label: (context) => {
-                              let label = context.label || '';
-                              if (label) label += ': ';
-                              if (context.parsed !== null) {
-                                const total = context.chart.getDatasetMeta(context.datasetIndex).total;
-                                const percentage = (context.parsed / total * 100).toFixed(2);
-                                label += `${percentage}% (${context.parsed.toLocaleString()} 원)`;
-                              }
-                              return label;
-                            }
-                          }
-                        },
-                        datalabels: {
-                          formatter: (value, context) => {
-                            const dataset = context.chart.data.datasets[0];
-                            const meta = context.chart.getDatasetMeta(0);
-                            const total = dataset.data.reduce((a, b, i) => a + (!meta.data[i].hidden ? b : 0), 0);
-                            const percentage = (value / total * 100).toFixed(2) + '%';
-                            return meta.data[context.dataIndex].hidden ? '' : percentage;
-                          },
-                          color: '#fff',
-                          labels: { title: { font: { weight: 'bold' } } }
-                        }
-                      }
-                    },
-                    plugins: [ChartDataLabels]
-                  };
-            
-                  const chart = new Chart(ctx, config);
-                  updateCenterText();
-            
-                  const legendContainer = document.getElementById('legendContainer');
-                  data.labels.forEach((label, index) => {
-                    const legendItem = document.createElement('div');
-                    legendItem.className = 'legend-item';
-                    const legendColor = document.createElement('div');
-                    legendColor.className = 'legend-color';
-                    legendColor.style.backgroundColor = data.datasets[0].backgroundColor[index];
-                    const legendText = document.createElement('span');
-                    legendText.innerText = label;
-                    legendItem.appendChild(legendColor);
-                    legendItem.appendChild(legendText);
-            
-                    legendItem.addEventListener('click', () => {
-                      legendItem.classList.toggle('active');
-                      const meta = chart.getDatasetMeta(0);
-                      meta.data[index].hidden = !meta.data[index].hidden;
-                      chart.options.plugins.datalabels.formatter = (value, context) => {
-                        const dataset = context.chart.data.datasets[0];
-                        const total = dataset.data.reduce((a, b, i) => a + (!meta.data[i].hidden ? b : 0), 0);
-                        const percentage = (value / total * 100).toFixed(2) + '%';
-                        return meta.data[context.dataIndex].hidden ? '' : percentage;
-                      };
-                      chart.update();
-                      updateCenterText();
-                    });
-            
-                    legendContainer.appendChild(legendItem);
-                  });
-                });
-    
-    
-              </script>
-              <script>
-                const div1 = document.getElementById("div1");
-                div1.style.backgroundColor = 'rgba(75, 192, 192, 0.2)';
-                div1.style.borderColor = 'rgba(75, 192, 192, 1)';
-
-                const div2 = document.getElementById("div2");
-                div2.style.backgroundColor = 'rgba(255, 159, 64, 0.2)';
-                div2.style.borderColor = 'rgba(255, 159, 64, 1)';
-              </script>
-              <!-- 매장매출 차트 -->
-              <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                  const ctx = document.getElementById('barChart').getContext('2d');
-                  const categorySelect = document.getElementById('categorySelect');
-                  const startDate = document.getElementById('startDate');
-                  const endDate = document.getElementById('endDate');
-            
-                  const dataSets = {
-                    '남성의류': { '레노마셔츠': 5000000, '라코스테': 7000000 },
-                    '여성의류': { '샤넬': 10000000, '구찌': 12000000 },
-                    '식품': { '롯데마트': 10000000, '홈플러스': 9500000 },
-                    '스포츠': { '나이키': 8000000, '아디다스': 8500000 },
-                    '뷰티': { '아모레퍼시픽': 9000000, 'LG생활건강': 11000000 },
-                    '명품': { '루이비통': 20000000, '에르메스': 25000000 },
-                    '문화센터': { 'CGV': 9000000, '롯데시네마': 8000000 },
-                    '디지털 및 가전': { '삼성전자': 6000000, 'LG전자': 7500000 }
-                  };
-            
-                  let chart;
-            
-                  const createChart = (category) => {
-                    const data = {
-                      labels: Object.keys(dataSets[category]),
-                      datasets: [{
-                        label: '매출',
-                        data: Object.values(dataSets[category]),
-                        backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)'],
-                        borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)'],
-                        borderWidth: 1,
-                        barThickness: 40 // 막대의 두께를 설정합니다
-                      },
-                      {
-                        label: '', // 가짜 데이터셋
-                        data: [], // 데이터는 비워둡니다.
-                        backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)'], // 새로운 색상
-                        borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)'],
-                        borderWidth: 1,
-                        barThickness: 40
-                      }]
-                    };
-            
-                    const config = {
-                      type: 'bar',
-                      data: data,
-                      options: {
-                        responsive: true, // 반응형 설정
-                        maintainAspectRatio: false,
-                        scales: {
-                          y: {
-                            beginAtZero: true,
-                            ticks: {
-                              callback: function(value) {
-                                return value.toLocaleString() + ' 원';
-                              }
-                            }
-                          }
-                        },
-                        plugins: {
-                          legend: { 
-                            display: false,
-                          },
-                          
-                          tooltip: {
-                            callbacks: {
-                              label: function(context) {
-                                return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + ' 원';
-                              }
-                            }
-                          }
-                        }
-                      }
-                    };
-            
-                    if (chart) {
-                      chart.destroy();
-                    }
-                    chart = new Chart(ctx, config);
-                  };
-            
-                  categorySelect.addEventListener('change', (event) => {
-                    createChart(event.target.value);
-                  });
-            
-                  createChart('남성의류');  // 초기화 시 첫 번째 카테고리로 차트를 만듭니다.
-                });
-              </script>
+   <!-- 매장별 매출 점유율 -->
    <script>
-	   // 사이드바 처리
+     document.addEventListener('DOMContentLoaded', () => {
+       const ctx = document.getElementById('doughnutChart').getContext('2d');
+       const chartCenterText = document.getElementById('chartCenterText');
+ 
+       const data = {
+         labels: ['남성의류', '여성의류', '식품', '스포츠', '뷰티', '명품', '문화센터', '디지털 및 가전'],
+         datasets: [{
+           data: [5000000, 10000000, 10000000, 8000000, 9000000, 20000000, 9000000, 6000000],
+           backgroundColor: ['rgb(102, 110, 232)', 'rgb(40, 208, 148)', 'rgb(253, 172, 52)', 'rgb(253, 233, 52)', 'rgb(223, 253, 52)', 'rgb(52, 223, 253)', 'rgb(196, 52, 253)', 'rgb(253, 52, 193)']
+         }]
+       };
+ 
+       const config = {
+         type: 'doughnut',
+         data: data,
+         options: {
+           responsive: true,
+           maintainAspectRatio: false,
+           plugins: {
+             legend: { display: false },
+             tooltip: {
+               callbacks: {
+                 label: (context) => {
+                   let label = context.label || '';
+                   if (label) label += ': ';
+                   if (context.parsed !== null) {
+                     const total = context.chart.getDatasetMeta(context.datasetIndex).total;
+                     const percentage = (context.parsed / total * 100).toFixed(2);
+                     label += `${percentage}% (${context.parsed.toLocaleString()} 원)`;
+                   }
+                   return label;
+                 }
+               }
+             },
+             datalabels: {
+               formatter: (value, context) => {
+                 const dataset = context.chart.data.datasets[0];
+                 const meta = context.chart.getDatasetMeta(0);
+                 const total = dataset.data.reduce((a, b, i) => a + (!meta.data[i].hidden ? b : 0), 0);
+                 const percentage = (value / total * 100).toFixed(2) + '%';
+                 return meta.data[context.dataIndex].hidden ? '' : percentage;
+               },
+               color: '#fff',
+               labels: { title: { font: { weight: 'bold' } } }
+             }
+           }
+         },
+         plugins: [ChartDataLabels]
+       };
+ 
+       const chart = new Chart(ctx, config);
+       updateCenterText();
+ 
+       const legendContainer = document.getElementById('legendContainer');
+       data.labels.forEach((label, index) => {
+         const legendItem = document.createElement('div');
+         legendItem.className = 'legend-item';
+         const legendColor = document.createElement('div');
+         legendColor.className = 'legend-color';
+         legendColor.style.backgroundColor = data.datasets[0].backgroundColor[index];
+         const legendText = document.createElement('span');
+         legendText.innerText = label;
+         legendItem.appendChild(legendColor);
+         legendItem.appendChild(legendText);
+ 
+         legendItem.addEventListener('click', () => {
+           legendItem.classList.toggle('active');
+           const meta = chart.getDatasetMeta(0);
+           meta.data[index].hidden = !meta.data[index].hidden;
+           chart.options.plugins.datalabels.formatter = (value, context) => {
+             const dataset = context.chart.data.datasets[0];
+             const total = dataset.data.reduce((a, b, i) => a + (!meta.data[i].hidden ? b : 0), 0);
+             const percentage = (value / total * 100).toFixed(2) + '%';
+             return meta.data[context.dataIndex].hidden ? '' : percentage;
+           };
+           chart.update();
+           updateCenterText();
+         });
+ 
+         legendContainer.appendChild(legendItem);
+       });
+     });
+
+
+   </script>
+   <script>
+     const div1 = document.getElementById("div1");
+     div1.style.backgroundColor = 'rgba(75, 192, 192, 0.2)';
+     div1.style.borderColor = 'rgba(75, 192, 192, 1)';
+
+     const div2 = document.getElementById("div2");
+     div2.style.backgroundColor = 'rgba(255, 159, 64, 0.2)';
+     div2.style.borderColor = 'rgba(255, 159, 64, 1)';
+   </script>
+   <!-- 매장매출 차트 -->
+   <script>
+     document.addEventListener('DOMContentLoaded', () => {
+       const ctx = document.getElementById('barChart').getContext('2d');
+       const categorySelect = document.getElementById('categorySelect');
+       const startDate = document.getElementById('startDate');
+       const endDate = document.getElementById('endDate');
+ 
+       const dataSets = {
+         '남성의류': { '레노마셔츠': 5000000, '라코스테': 7000000 },
+         '여성의류': { '샤넬': 10000000, '구찌': 12000000 },
+         '식품': { '롯데마트': 10000000, '홈플러스': 9500000 },
+         '스포츠': { '나이키': 8000000, '아디다스': 8500000 },
+         '뷰티': { '아모레퍼시픽': 9000000, 'LG생활건강': 11000000 },
+         '명품': { '루이비통': 20000000, '에르메스': 25000000 },
+         '문화센터': { 'CGV': 9000000, '롯데시네마': 8000000 },
+         '디지털 및 가전': { '삼성전자': 6000000, 'LG전자': 7500000 }
+       };
+ 
+       let chart;
+ 
+       const createChart = (category) => {
+         const data = {
+           labels: Object.keys(dataSets[category]),
+           datasets: [{
+             label: '매출',
+             data: Object.values(dataSets[category]),
+             backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+             borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)'],
+             borderWidth: 1,
+             barThickness: 40 // 막대의 두께를 설정합니다
+           },
+           {
+             label: '', // 가짜 데이터셋
+             data: [], // 데이터는 비워둡니다.
+             backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)'], // 새로운 색상
+             borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)'],
+             borderWidth: 1,
+             barThickness: 40
+           }]
+         };
+ 
+         const config = {
+           type: 'bar',
+           data: data,
+           options: {
+             responsive: true, // 반응형 설정
+             maintainAspectRatio: false,
+             scales: {
+               y: {
+                 beginAtZero: true,
+                 ticks: {
+                   callback: function(value) {
+                     return value.toLocaleString() + ' 원';
+                   }
+                 }
+               }
+             },
+             plugins: {
+               legend: { 
+                 display: false,
+               },
+               
+               tooltip: {
+                 callbacks: {
+                   label: function(context) {
+                     return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + ' 원';
+                   }
+                 }
+               }
+             }
+           }
+         };
+ 
+         if (chart) {
+           chart.destroy();
+         }
+         chart = new Chart(ctx, config);
+       };
+ 
+       categorySelect.addEventListener('change', (event) => {
+         createChart(event.target.value);
+       });
+ 
+       createChart('남성의류');  // 초기화 시 첫 번째 카테고리로 차트를 만듭니다.
+     });
+   </script>
+   <script>
+	  // 사이드바 처리
 		document.addEventListener("DOMContentLoaded", function () {
 	 	
 			const element = document.getElementById("dashboard");
