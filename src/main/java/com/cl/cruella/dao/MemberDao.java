@@ -86,6 +86,7 @@ public class MemberDao {
 	public int updateProfileImg(MemberDto targetMember) {
 		return sqlSession.update("memberMapper.updateProfileImg", targetMember);
 	}
+	
 }
 
 

@@ -1,8 +1,11 @@
 package com.cl.cruella.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.cl.cruella.dto.CalendarDto;
 import com.cl.cruella.dto.WorkLogDto;
 
 import lombok.RequiredArgsConstructor;
@@ -26,5 +29,10 @@ public class WorkLogDao {
 	public int clockOut(WorkLogDto workLog) {
 		return sqlSession.update("wlMapper.clockOut", workLog);
 	}
+	
+	public List<CalendarDto> loadWorkLog(String memNo) {
+		return sqlSession.selectList("wlMapper.loadWorkLog", memNo);
+	}
+	
 	
 }
