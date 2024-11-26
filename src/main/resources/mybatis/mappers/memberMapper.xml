@@ -225,6 +225,7 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 			 	 , address = #{address}
 			 	 , phone = #{phone}		
 			 	 , salary = #{salary}
+			 	 , profile_url = #{profileURL}
 		 where mem_no = #{memNo} 
 	</update>
 	
@@ -245,7 +246,18 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		  from member
 		 where mem_no != #{memNo}
 	</select>
-
+	
+	<insert id="chatProfile">
+		insert 
+			into chat_profile
+			(
+			  mem_no
+			) 
+			values
+			(
+			  #{memNo}
+			)
+	</insert>
 	
 
 

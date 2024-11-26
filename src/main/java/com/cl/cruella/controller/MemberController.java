@@ -446,8 +446,22 @@ public class MemberController {
 	    return "member/modifydelete";
 	}
 
+	// 회원정보수정
 	@PostMapping("/updateMember.do")
-	public String updateMember(MemberDto m, RedirectAttributes rd ) {
+	public String updateMember(MemberDto m, RedirectAttributes rd, @RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile ) {
+		
+	    // 1. 파일 업로드 처리
+	    if (!uploadFile.isEmpty()) {
+	        // 파일 업로드 수행
+	        Map<String, String> map = fileUtil.fileupload(uploadFile, "profile");
+	        String filePath = map.get("filePath") + "/" + map.get("filesystemName");
+
+	        // MemberDto에 프로필 URL 설정
+	        m.setProfileURL(filePath);
+	    } else {
+	        m.setProfileURL(null); // 파일이 없을 경우 null로 설정
+	    }
+		// 사원정보 업데이트
 		int result = memberService.updateMember(m);
 		
 		if(result > 0) {
