@@ -84,11 +84,6 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectAllMember(memNo);
 	}
 
-	@Override
-	public int updateProfileImg(MemberDto targetMember) {
-		return memberDao.updateProfileImg(targetMember);
-	}
-
 
 
 }

@@ -84,10 +84,7 @@ public class MemberDao {
 		return sqlSession.selectList("memberMapper.selectAllMember", memNo);
 	}
 
-	public int updateProfileImg(MemberDto targetMember) {
-		return sqlSession.update("memberMapper.updateProfileImg", targetMember);
-	}
-	
+
 }
 
 

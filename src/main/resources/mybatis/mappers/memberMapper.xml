@@ -146,6 +146,7 @@
 		, pos_code
 		, dept_code
 		, salary
+		, profile_url
 		)
 		values
 		(
@@ -162,6 +163,7 @@
 		, #{posCode}
 		, #{deptCode}
 		, #{salary}
+		, #{profileURL}
 		)
 	</insert>
 	
