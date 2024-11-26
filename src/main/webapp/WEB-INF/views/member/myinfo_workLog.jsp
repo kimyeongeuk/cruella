@@ -305,7 +305,7 @@
                                 &nbsp;&nbsp;&nbsp;
                                 잔여 <span style="color: #28C76F;">${loginUser.vacCount}</span>
                               </div>
-                              <a href="${contextPath}/app/app_main.do" class="btn btn-success mb-1" style="height: 45px;">
+                              <a href="${contextPath}/app/form_annual.do" class="btn btn-success mb-1" style="height: 45px;">
                                 <i class="ti ti-plane-departure ti-xs me-2"></i>휴가 신청
                               </a>
                             </div>

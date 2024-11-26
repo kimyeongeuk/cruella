@@ -2,6 +2,7 @@ package com.cl.cruella.service;
 
 import java.util.List;
 
+import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
 
@@ -47,7 +48,6 @@ public interface MemberService {
 
 	// 프로필이미지변경
 	int updateProfileImg(MemberDto targetMember);
-	
 
 
 

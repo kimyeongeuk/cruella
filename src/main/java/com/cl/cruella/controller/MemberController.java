@@ -20,15 +20,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.BoardDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
+import com.cl.cruella.service.AppService;
 import com.cl.cruella.service.BoardService;
 import com.cl.cruella.service.MemberService;
 import com.cl.cruella.util.FileUtil;
 import com.cl.cruella.util.PagingUtil;
 
-import jakarta.mail.Session;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -47,6 +48,7 @@ public class MemberController {
 	private final FileUtil fileUtil;
 	private final PagingUtil pagingUtil;
 	private final BoardService boardService;
+	private final AppService appService;
 
 	
 	// 로그인(김동규)
@@ -268,6 +270,20 @@ public class MemberController {
 		 List<MemberDto> list = memberService.selectAllMember(memNo);
 		 
 		 return list;
+	 }
+	 
+	 // 내 결재 문서함 조회
+	 @PostMapping("selectAppList.do")
+	 @ResponseBody
+	 public Map<String, Integer> selectAppList(String memNo) {
+		 
+	     // 상태별 개수를 저장할 Map
+	     Map<String, Integer> statusCounts = new HashMap<>();
+	     statusCounts.put("A", appService.selectStandbyCount(memNo));  // 대기
+	     statusCounts.put("B", appService.selectProgressCount(memNo)); // 진행
+	     statusCounts.put("C", appService.selectSuccessCount(memNo));  // 완료
+	     
+	     return statusCounts;
 	 }
 	 
 	 
