@@ -139,11 +139,9 @@
 
                           <li class="d-flex justify-content-between align-items-center">
                             <div>
-                              <i class="ti ti-bell ti-md me-1"></i>
-                              <span class="align-middle">채팅 알림</span>
+
                             </div>
                             <div class="form-check form-switch mb-0 me-1">
-                              <input type="checkbox" class="form-check-input" />
                             </div>
                           </li>
                         </ul>
@@ -427,27 +425,13 @@
                                       <span class="align-middle">채팅 잠금</span>
                                     </div>
                                     <div class="form-check form-switch mb-0 me-1">
-                                      <input type="checkbox" class="form-check-input" />
+                                      <input type="checkbox" class="form-check-input" id="chatLockBox"/>
                                     </div>
                                   </li>
                                 </ul>
                               </div>
 
 
-                              <div class="my-6">
-                                <p class="text-uppercase text-muted mb-1"></p>
-                                <ul class="list-unstyled d-grid gap-4 ms-2 pt-2 text-heading">
-                                  <li class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                      <i class="ti ti-bell ti-md me-1"></i>
-                                      <span class="align-middle">채팅 알림</span>
-                                    </div>
-                                    <div class="form-check form-switch mb-0 me-1">
-                                      <input type="checkbox" class="form-check-input" />
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
 
 
 
@@ -710,7 +694,7 @@
 
 
                       <!-- 채팅 입력 칸  -->
-                      <div class="chat-history-footer shadow-xs" >
+                      <div class="chat-history-footer shadow-xs" id="chat-input-section">
                         <div class="form-send-message d-flex justify-content-between align-items-center" id="chatinput">
                           <input
                             class="form-control message-input border-0 me-4 shadow-none" 
@@ -727,9 +711,10 @@
                           </div>
                         </div>
                       </div> 
-
-                      <!-- 채팅 잠금 화면 
-                      <div class="chat-history-footer shadow-xs" id="chat-lock">
+										
+										
+                     
+                      <div class="chat-history-footer shadow-xs" id="chat-lock" style="display:none; position: absolute; width: 94%;">
                         <form class="form-send-message d-flex justify-content-between align-items-center">
                           <i class="ti ti-lock ti-md mx-1 "></i>
                           <input
@@ -739,14 +724,15 @@
                              
                           <div class="message-actions d-flex align-items-center">
 
-                            <button class="btn btn-primary d-flex send-msg-btn">
+                            <button class="btn btn-primary d-flex send-msg-btn" id="unlockButton" type="button">
                               <span class="align-middle d-md-inline-block d-none" style="flex: none;">확인</span>
                             </button>
                           </div>
                         </form>
                       </div>
+                      
                     </div>
-                    -->
+                    
 
                   </div>
 									
@@ -968,7 +954,7 @@
       var inviteMem = null;
       var inviteName = null;
       var chatNoData = null;
-
+      var activeChat = null;
       $(document).ready(function(){
 				
         // 사원 클릭시 start
@@ -1007,6 +993,43 @@
           $('#app-chat-sidebar-right-setting').css('display','none'); // 채팅방 사이드바 메뉴 사라지게
         })
         // 채팅방 나가기 클릭시 end
+        
+        // 채팅장금 시작
+        
+	          const lockSwitch = $('#lockCheckbox'); // 체크박스
+					  const chatInputSection = $('#chat-input-section'); // 채팅 입력칸
+					  const chatLock = $('#chat-lock'); // 잠금 화면
+					  const loginUserNo = '${loginUser.memNo}';
+
+					
+					  $('.form-check-input').on('change', function () {
+					    const isLocked = $(this).is(':checked') ? 'Y' : 'N'; // 체크박스 상태 확인
+					   
+					    // DB에 잠금 상태 업데이트
+					    $.ajax({
+					      url: '${contextPath}/chat/lock.do', // 서버 API URL
+					      data: { chatNo:activeChat,clLock: isLocked,memNo:loginUserNo,type:'b' },
+					      success: function () {
+					        if (isLocked == 'Y') {
+					          chatInputSection.hide(); 
+					          chatLock.show(); 
+					        } else {
+					          chatInputSection.show(); 
+					          chatLock.hide(); 
+					        }
+					      },
+					    });
+					  });
+					
+					  $('#unlockButton').on('click', function () {
+					    lockSwitch.prop('checked', false); // 체크박스 해제
+					    chatInputSection.show(); // 채팅 입력칸 표시
+					    chatLock.hide(); // 잠금 화면 숨기기
+					  });
+						  
+  //채팅잠금 끗
+        
+        
         
         // 채팅방 인원 조회
         $('#chatuserlist').on('click',function(){
@@ -1060,7 +1083,7 @@
 	   	 var socket = new SockJS("${contextPath}/chatPage");
 	     var socket2 = new SockJS("${contextPath}/chat?${loginUser.memNo}");
 	     var client = Stomp.over(socket);
-	     var activeChat = null;
+	     
 	     
 	     // sockjs 실행
 	     
@@ -1069,12 +1092,17 @@
 	     socket2.onmessage = onMessage;
 	     
        $('.chatStart').on('click',function(){ // 채팅방생성 시작
+    	   		if('${loginUser.memNo}' == inviteMem){
+    	   			alert('생성할수없습니다.');
+    	   		}else{
 		         socket2.send(JSON.stringify({ memNo: '${loginUser.memNo}',
 		        	 														memName: '${loginUser.memName}',
 																					inviteNo:inviteMem,
 																					inviteName:inviteName
 																					}));
       	
+    	   		}
+    	   			
       }) // 채팅방생성 종료
       
     		
@@ -1264,14 +1292,17 @@
 								    		}
 								    		  $('#modifyForm').val('');
 									}); // 미리보기 ajax 끝
-									    		let th = '<div style= "text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center; width: 50px;">(수정됨)</div>';
-									    		let str = '';
-									    		str += '<div style="text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center;">';
-										      str += '(수정됨)';
-										      str += '</div>';
-									    		$('#chatContent'+content.msgNo).closest('.d-flex.overflow-hidden.modifyDiv').prepend(th);
-													$('#chatContent'+content.msgNo).clodset('.d-flex overflow-hidden.othermodifyDiv').append(str);
-										
+													console.log('상태상태상태');
+													console.log(content.msgStatus);
+													if(content.msgStatus != 'M'){
+										    		let th = '<div style= "text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center; width: 50px;">(수정됨)</div>';
+										    		let str = '';
+										    		str += '<div style="text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center;">';
+											      str += '(수정됨)';
+											      str += '</div>';
+														$('#chatContent'+content.msgNo).closest('.d-flex.overflow-hidden.othermodifyDiv').append(str);
+										    		$('#chatContent'+content.msgNo).closest('.d-flex.overflow-hidden.modifyDiv').prepend(th);
+													}
 										
 									}									
 			        });  
@@ -1280,9 +1311,37 @@
 
         // 채팅방 목록 클릭시 start 	
         $(document).on('click','.chat-list-form' ,function() {
+        	
         	activeChat = $(this).children().eq(0).val(); // 활성화된 채팅방 번호 넣기
         	chatTitle = $(this).children().eq(1).val();
         	$('#testname').html(chatTitle);
+          const lockSwitch = $('#lockCheckbox'); // 체크박스
+			    const chatInputSection = $('#chat-input-section'); // 채팅 입력칸
+			    const chatLock = $('#chat-lock'); // 잠금 화면
+			    const loginUserNo = '${loginUser.memNo}'
+        	
+			  $.ajax({
+				    url: '${contextPath}/chat/lock.do',
+				    data: {chatNo:activeChat, memNo:loginUserNo, type:'a'},
+				    success: function (res) {
+
+				      if (res.lock == 'Y') {
+				    	  $('.form-check-input').prop('checked', true);
+				        chatInputSection.hide();
+				        chatLock.show(); 
+				      } else {
+				    	  $('.form-check-input').prop('checked', false);
+				        chatInputSection.show(); 
+				        chatLock.hide(); 
+				      }
+				    },
+				    error:function(xhr){
+				        console.log('에러 발생:', status, error);  // 에러 메시지 출력
+				        console.log('HTTP 상태 코드:', xhr.status);  // 상태 코드 출력
+				        console.log('응답 헤더:', xhr.getAllResponseHeaders());  // 응답 헤더 출력
+				    	console.log('실패');
+				    }
+				  });
             
         	// AJAX 메세지 조회 출력 start
             let a = '';
@@ -1376,7 +1435,9 @@
           str += '<a class="dropdown-item noticeInsert waves-effect" id="noticeInsert">공지사항 등록</a>';
           str += '<a class="dropdown-item messageModify waves-effect" id="messageModify" data-value="'+msgNo+'">수정</a>';
           str += '<input type="hidden" value="'+msgNo+'" class="msgNo">';
-          str += '<a class="dropdown-item messageDelete waves-effect" id="messageDelete" data-value="'+msgNo+'">삭제</a>';
+          if(msgStatus != 'N'){
+          	str += '<a class="dropdown-item messageDelete waves-effect" id="messageDelete" data-value="'+msgNo+'">삭제</a>';
+          }
           str += '</div>';
           str += '</div>';
           str += '<div class="d-flex overflow-hidden modifyDiv">';

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -147,7 +148,23 @@ public class ChatController {
 		
 	}
 	
-	
+	@ResponseBody
+	@GetMapping(value="/lock.do",produces="application/json")
+	public ResponseEntity<Map<String, String>> chatLock(ChatListDto msgDto) {
+		System.out.println("들어옴!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		String result = "";
+		if(msgDto.getType().equals("a")) {
+			result = chatServiceImpl.chatLock(msgDto);			
+		}else {
+			System.out.println(msgDto);
+			int result2 = chatServiceImpl.chatLockUpdate(msgDto);
+		}
+	    Map<String, String> response = new HashMap<>();
+	    response.put("lock", result); // 'Y' 또는 'N' 값을 'lockStatus' 키로 추가
+	    return ResponseEntity.ok(response);
+
+		
+	}
 
 	
 	

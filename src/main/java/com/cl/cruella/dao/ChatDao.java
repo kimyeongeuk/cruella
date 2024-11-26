@@ -97,6 +97,18 @@ public class ChatDao {
 	public int modifyMsg(MessageDto messageDto) {
 		return sqlSession.update("chatMapper.modifyMsg",messageDto);
 	}
+
+	public String msgStatus(MessageDto messageDto) {
+		return sqlSession.selectOne("chatMapper.msgStatus",messageDto);
+	}
+
+	public String chatLock(ChatListDto msgDto) {
+		return sqlSession.selectOne("chatMapper.chatLock",msgDto);
+	}
+
+	public int chatLockUpdate(ChatListDto msgDto) {
+		return sqlSession.update("chatMapper.chatLockUpdate",msgDto);
+	}
 	
 
 }

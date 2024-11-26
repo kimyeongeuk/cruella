@@ -91,9 +91,9 @@ public class StompController {
 			messageDto.setType("delete");
 		}else if(messageDto.getMsgType().equals("modify")) {
 			// 메시지 수정
+			messageDto.setMsgStatus(chatserviceImpl.msgStatus(messageDto));
 			int result = chatserviceImpl.modifyMsg(messageDto);
 			messageDto.setType("modify");
-			//messageDto.setMsgStatus("M");
 		}
 		
 		return messageDto;
