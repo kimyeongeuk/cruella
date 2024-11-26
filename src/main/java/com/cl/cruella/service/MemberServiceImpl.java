@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.cl.cruella.dao.MemberDao;
+import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
 
@@ -52,10 +53,6 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.memberNo();
 		}
 
-	@Override
-	public int updateProfileImg(MemberDto m) {
-		return memberDao.updateProfileImg(m);
-	}
 
 	@Override
 	public int saveSignPath(MemberDto m) {

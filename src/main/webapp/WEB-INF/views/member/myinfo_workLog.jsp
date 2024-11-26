@@ -294,7 +294,7 @@
                         <thead>
                           <div style="display: flex; height: 80px;">
                             <div style="display: flex; margin-top: 30px;">
-                              <p style="margin-right: 50px; margin-left: 50px;">휴가관리</p>
+                              <h5 class="card-action-title" style="margin-left: 20px; margin-right: 30px; margin-bottom: 60px;">휴가관리</h5>
                               <p style="color: #28C76F;">${loginUser.vacCount}</p>
                               &nbsp;&nbsp;/&nbsp;&nbsp;
                               <span>15</span>
@@ -305,115 +305,23 @@
                                 &nbsp;&nbsp;&nbsp;
                                 잔여 <span style="color: #28C76F;">${loginUser.vacCount}</span>
                               </div>
-                              <a href="${contextPath}/app/app_main.do" class="btn btn-success mb-1" style="height: 45px;">
+                              <a href="${contextPath}/app/form_annual.do" class="btn btn-success mb-1" style="height: 45px;">
                                 <i class="ti ti-plane-departure ti-xs me-2"></i>휴가 신청
                               </a>
                             </div>
                           </div>
                         </thead>
-                        <thead>
-                          <tr>
-                            <th style="border: 1px solid #e6e6e8;">제목</th>
-                            <th>작성자</th>
-                            <th>작성일</th>
-                            <th>진행상태</th>
-                          </tr>
-                        </thead>
+										    <thead>
+										      <tr>
+									            <th style="width: 15%;">번호</th>
+									            <th style="width: 35%;">제목</th>
+									            <th style="width: 30%;">신청일</th>
+									            <th style="width: 20%;">진행상태</th>
+										      </tr>
+										    </thead>
     
-                        <tbody class="table-border-bottom-0">
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td>
-                              <span class="badge badge-center bg-success">
-                                <i class="ti ti-check"></i> <span style="color: #444050; margin-left: 12px;">승인</span>
-                              </span>
-                            </td>
-                            
-                          </tr>
-    
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자2</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td><span>3</span></td>
-                            
-                          </tr>
-    
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자3</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td><span class="badge bg-label-primary me-1">3</span></td>
-                            
-                          </tr>
-    
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자4</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td><span class="badge bg-label-primary me-1">퇴사</span></td>
-                            
-                          </tr>
-    
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td><span class="badge bg-label-primary me-1">퇴사</span></td>
-                            
-                          </tr>
+                        <tbody class="table-border-bottom-0" id="vacListTbody">
+                         
                         </tbody>
                       </table>
                     </div>
@@ -475,6 +383,58 @@
 		 	element.classList.add("active");
 	 	
 	});
+	   
+		 // 근태일정 조회
+		 
+		 const memNo = ${loginUser.memNo};
+		 
+	   $.ajax({
+		   url: '${contextPath}/wl/loadWorkLog.do',
+		   type: 'POST',
+			 data: {memNo: memNo},
+			 success: function(res){
+				 
+			 }
+	   })
+	   
+    //팀게시판 리스트 조회
+		function fnVacList() {
+		    $.ajax({
+		        url: '${contextPath}/member/vacList.do',
+		        type: 'POST',
+		        success: function(res) {
+		            let trEl = '';
+		
+		            // 데이터가 비어 있는 경우
+		            if (!res || res.list.length == 0) {
+		                trEl += '<tr>';
+		                trEl += '<td colspan="6">신청 내역이 없습니다.</td>';
+		                trEl += '</tr>';
+		            } else {
+		                let count = 1;
+		                let pi = res.pi; // 페이지 정보
+		                res.list.forEach((board) => {
+		                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
+		
+		                    
+		                    trEl += '<tr data-boardno="' + board.boardNo + '">';
+		                    trEl += '<td>' + reverseCount + '</td>';
+		                    trEl += '<td>' + board.memName + '</td>';
+		                    trEl += '<td class="title" style="cursor: pointer;">' + board.boardTitle;
+		                    trEl += '</td>';
+		                    trEl += '<td>' + board.boardRegistDT + '</td>';
+		                    trEl += '<td>' + board.boardCount + '</td>';
+		                    trEl += '<td>' + board.replyCount + '</td>';
+		                    trEl += '</tr>';
+		
+		                    count++;
+		                });
+		            }
+		
+		            $('#boardListTbody').html(trEl);
+		        }
+		    })
+		}
    </script>
 
 

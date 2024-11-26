@@ -20,15 +20,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.BoardDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
+import com.cl.cruella.service.AppService;
 import com.cl.cruella.service.BoardService;
 import com.cl.cruella.service.MemberService;
 import com.cl.cruella.util.FileUtil;
 import com.cl.cruella.util.PagingUtil;
 
-import jakarta.mail.Session;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -47,6 +48,7 @@ public class MemberController {
 	private final FileUtil fileUtil;
 	private final PagingUtil pagingUtil;
 	private final BoardService boardService;
+	private final AppService appService;
 
 	
 	// 로그인(김동규)
@@ -260,6 +262,30 @@ public class MemberController {
          return params;
      }
 	 
+	 // 전 사원 정보 조회(이름, 메일, 사번, 사진)
+	 @PostMapping("/selectAll_db.do")
+	 @ResponseBody
+	 public List<MemberDto> selectAllMember(String memNo) {
+		 
+		 List<MemberDto> list = memberService.selectAllMember(memNo);
+		 
+		 return list;
+	 }
+	 
+	 // 내 결재 문서함 조회
+	 @PostMapping("selectAppList.do")
+	 @ResponseBody
+	 public Map<String, Integer> selectAppList(String memNo) {
+		 
+	     // 상태별 개수를 저장할 Map
+	     Map<String, Integer> statusCounts = new HashMap<>();
+	     statusCounts.put("A", appService.selectStandbyCount(memNo));  // 대기
+	     statusCounts.put("B", appService.selectProgressCount(memNo)); // 진행
+	     statusCounts.put("C", appService.selectSuccessCount(memNo));  // 완료
+	     
+	     return statusCounts;
+	 }
+	 
 	 
 	 
 	 
@@ -348,13 +374,26 @@ public class MemberController {
 	
 	// 사원등록(이예빈)
 	@PostMapping("/insert.do")
-	public String insertMember(MemberDto m, RedirectAttributes rd) {
+	public String insertMember(MemberDto m, RedirectAttributes rd, @RequestParam("uploadFile") MultipartFile uploadFile) {
 		
 		if( m.getMemPwd()== null) {
 			m.setMemPwd("111111");
 		}
 		
 		m.setMemPwd( bcryptPwdEncoder.encode(m.getMemPwd()) );
+		
+		// 파일 업로드 처리
+		
+	    if (!uploadFile.isEmpty()) {
+	        // 파일 업로드 수행
+	        Map<String, String> map = fileUtil.fileupload(uploadFile, "profile");
+	        String filePath = map.get("filePath") + "/" + map.get("filesystemName");
+
+	        // MemberDto에 프로필 URL 설정
+	        m.setProfileURL(filePath);
+	    } else {
+	        m.setProfileURL(null); // 파일이 없을 경우 null로 설정
+	    }
 		
 		int result = memberService.insertMember(m);
 			
@@ -392,21 +431,7 @@ public class MemberController {
 	}
 
 	
-	// 프로필사진변경
-	@PostMapping("/updateProfile.do")
-	public void updateProfile(@RequestParam("uploadFile") MultipartFile uploadFile, 
-								@RequestParam("memNo") String memNo, 
-								HttpSession session) {
-		// 수정 대상 회원정보 조회
-		MemberDto targetMember = memberService.selectMemberByNo(memNo); // 회원 번호로 회원 정보 조회
-		// 기존 프로필 URL 저장 
-		String originalProfileURL = targetMember.getProfileURL();
-		
-		// 파일 업로드 처리 
-//		Map<String, String> map = fileUtil.fileupload
-		
-		
-	}
+
 	
 	// 회원정보수정페이지 이동 (이예빈)
 	@GetMapping("/modifydelete.do")

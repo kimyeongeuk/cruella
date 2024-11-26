@@ -257,7 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (actionBox) {
         actionBox.style.display = actionBox.style.display === 'none' || !actionBox.style.display ? 'block' : 'none';
         hideOtherBoxes('.action-box', actionBox);
-        saveScrollPosition();
       }
     }
 

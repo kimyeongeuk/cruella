@@ -811,7 +811,7 @@
                         <li class="mb-1">
                           <a class="d-flex align-items-center" style="margin: 20px;">
                             <div class="flex-shrink-0 avatar avatar-online">
-                              <img src="${ contextPath }/resources/assets/img/avatars/13.png" alt="Avatar" class="rounded-circle" />
+                              <img src="${ contextPath }<c:out value='${ list.profileURL }'/>" alt="Avatar" class="rounded-circle" />
                             </div>
                             <div class="chat-contact-info flex-grow-1 ms-4">
                               <div class="d-flex justify-content-between align-items-center">

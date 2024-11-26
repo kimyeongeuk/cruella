@@ -373,7 +373,8 @@
     	    
    
     	    $('#delete_icon').on('click',function(){
-    	    	alert('삭제 권한이 없습니다');
+    	    	
+    	    	alert('진행중인 기안서는 삭제할 수 없습니다');
     	    })
       	
     	    

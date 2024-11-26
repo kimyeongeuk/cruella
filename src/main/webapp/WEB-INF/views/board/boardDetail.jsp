@@ -188,25 +188,6 @@
                 <div style="display: flex; justify-content: center; margin-top: 20px;">
                   <button id="back" class="btn btn-label-secondary" style="text-align: center;" onclick="boardList();">목록</button>
                 </div>
-                
-                <!-- 모달: editReplyModal -->
-								<div class="modal fade" id="editReplyModal" tabindex="-1" aria-hidden="true">
-								  <div class="modal-dialog modal-dialog-centered" role="document">
-								    <div class="modal-content">
-								      <div class="modal-header">
-								        <h5 class="modal-title">댓글 수정</h5>
-								        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-								      </div>
-								      <div class="modal-body">
-								        <textarea id="editReplyContent" class="form-control" rows="3"></textarea>
-								      </div>
-								      <div class="modal-footer">
-								        <button type="button" class="btn btn-primary" onclick="updateReply()">수정</button>
-								        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-								      </div>
-								    </div>
-								  </div>
-								</div>
 								
 								<!-- Modal -->
 								<div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">
@@ -283,14 +264,6 @@
 </body>
 <script>
 
-//수정할 댓글 번호를 저장할 변수
-let currentReplyNo;
-
-//쿠키에 스크롤 위치를 저장하는 함수
-function saveScrollPosition() {
-  var scrollPosition = window.scrollY;
-  document.cookie = "scrollPosition=" + scrollPosition + "; path=/";
-}
 
 // 쿠키에서 스크롤 위치를 가져오는 함수
 function getScrollPositionFromCookie() {
@@ -321,9 +294,15 @@ function restoreScrollPosition() {
 window.onload = restoreScrollPosition;
 
 
+
+//수정할 댓글 번호를 저장할 변수
+let currentReplyNo;
+
 $(document).ready(function(){
   fn_replyList(); // 페이지 로드 시 댓글 목록 불러오기
-
+  
+  
+  
   // 아이콘 클릭 시 액션 박스 표시
   $(document).on('click', '.icon', function() {
     $(this).next('.action-replybox').toggle();
@@ -358,60 +337,63 @@ $(document).ready(function(){
 var loginUserMemNo = "${loginUser.memNo}";
 
 function fn_replyList() {
+
   $.ajax({
     url: '${contextPath}/board/rlist.do',
     data: { no: ${b.boardNo} },
-    success: function(resData) {    
+    success: function(resData) {
       $("#rcount").text(resData.length); // 댓글 수 출력
       let tr = "";
       for (let i = 0; i < resData.length; i++) {
-    	    tr += "<tr><td colspan='3'>"
-    	        + "<div class='d-flex justify-content-between align-items-center user-info'>"
-    	        + "<div class='avatar-wrapper d-flex align-items-center'>"
-    	        + "<div class='avatar me-2'>"
-    	        + "<img src='${contextPath}/resources/assets/img/avatars/1.png' alt='Avatar' class='rounded-circle' />"
-    	        + "</div>"
-    	        + "<div class='d-flex align-items-center'>"
-    	        + "<span class='emp_name text_truncate' style='color: black; margin-right: 20px;'>" + resData[i].memName + "</span>"
-    	        + "<span>" + resData[i].replyRegistDT + "</span>"
-    	        + "</div></div>";
+        tr += "<tr data-replyno='" + resData[i].replyNo + "'><td colspan='3'>"
+            + "<div class='d-flex justify-content-between align-items-center user-info'>"
+            + "<div class='avatar-wrapper d-flex align-items-center'>"
+            + "<div class='avatar me-2'>"
+            + "<img src='${contextPath}/resources/assets/img/avatars/1.png' alt='Avatar' class='rounded-circle' />"
+            + "</div>"
+            + "<div class='d-flex align-items-center'>"
+            + "<span class='emp_name text_truncate' style='color: black; margin-right: 20px;'>" + resData[i].memName + "</span>"
+            + "<span>" + resData[i].replyRegistDT + "</span>"
+            + "</div></div>";
 
-    	    // 댓글 작성자가 로그인한 사용자와 같은지 확인
-    	    if (loginUserMemNo == resData[i].memNo) {
-    	        tr += "<div class='d-flex justify-content-end align-items-center'>"
-    	            + "<div class='icon-wrapper'>"
-    	            + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
-    	            + "<div class='action-replybox'>"
-    	            + "<form id='rfrm' action='' method='post'>"
-    	            + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
-    	            + "<a href='#' onclick='modifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
-    	            + "<i class='menu-icon tf-icons ti ti-edit'></i></a>"
-    	            + "<a href='#' onclick='deleteReply(" + resData[i].replyNo + ")'>"
-    	            + "<i class='menu-icon tf-icons ti ti-trash'></i></a>"
-    	            + "</form>"
-    	            + "</div></div></div>";
-    	    } else {
-    	        tr += "<br>";
-    	    }
+        // 댓글 작성자가 로그인한 사용자와 같은지 확인
+        if (loginUserMemNo == resData[i].memNo) {
+          tr += "<div class='d-flex justify-content-end align-items-center'>"
+              + "<div class='icon-wrapper'>"
+              + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
+              + "<div class='action-replybox'>"
+              + "<form id='rfrm' action='' method='post'>"
+              + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
+              + "<a href='#' onclick='modifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
+              + "<i class='menu-icon tf-icons ti ti-edit'></i></a>"
+              + "<a href='#' onclick='deleteReply(" + resData[i].replyNo + ")'>"
+              + "<i class='menu-icon tf-icons ti ti-trash'></i></a>"
+              + "</form>"
+              + "</div></div></div>";
+        } else {
+          tr += "<br>";
+        }
 
-    	    // 여기에서 fn_getRreplyCount 함수를 호출하여 답글 수를 가져옴
-    	    tr += "</div><br>"
-    	        + "<div style='margin-left: 30px; white-space: pre-wrap; color: black; word-break: break-all;'>" + resData[i].replyContent + "</div><br><br>"
-    	        + "<button type='button' class='btn btn-sm btn-outline-secondary' data-bs-toggle='modal' data-bs-target='#modalScrollable' data-reply-id='" + resData[i].replyNo + "' data-reply-content='" + resData[i].replyContent + "' data-reply-author='" + resData[i].memName + "' data-reply-date='" + resData[i].replyRegistDT + "' data-reply-memno='" + resData[i].memNo + "'>답글 <span id='reply-count-" + resData[i].replyNo + "'>(0)</span></button>"
-    	        + "</td></tr>";
+        tr += "</div><br>"
+            + "<div class='reply-content' style='margin-left: 30px; white-space: pre-wrap; color: black; word-break: break-all;'>" + resData[i].replyContent + "</div><br><br>"
+            + "<button type='button' class='btn btn-sm btn-outline-secondary' data-bs-toggle='modal' data-bs-target='#modalScrollable' data-reply-id='" + resData[i].replyNo + "' data-reply-content='" + resData[i].replyContent + "' data-reply-author='" + resData[i].memName + "' data-reply-date='" + resData[i].replyRegistDT + "' data-reply-memno='" + resData[i].memNo + "'>답글 <span id='reply-count-" + resData[i].replyNo + "'>(0)</span></button>"
+            + "</td></tr>";
 
-    	    // 답글 수를 가져와서 버튼에 표시
-    	    fn_getRreplyCount(resData[i].replyNo);
-    	}
-
+        // 답글 수를 가져와서 버튼에 표시
+        fn_getRreplyCount(resData[i].replyNo);
+      }
 
       $("#reply_area tbody").html(tr);
+   		
+      
     },
     error: function(xhr, status, error) {
       console.error("에러 발생:", status, error);
     }
   });
 }
+
+
 
 // 답글 수를 가져오는 함수
 function fn_getRreplyCount(replyId) {
@@ -463,6 +445,7 @@ function fn_insertRreply(replyId) {
     },
     success: function(resData){
       if (resData === "SUCCESS") {
+    	  fn_replyList(); // 댓글 목록 갱신
         fn_rreplyList(replyId); // 대댓글 목록 새로고침
         $("#rreply_content").val(""); // 입력 필드 초기화
       } else {
@@ -484,43 +467,42 @@ function fn_rreplyList(replyId) {
 
       let tr = "";
       for (let i = 0; i < resData.length; i++) {
-    	    tr += "<tr><td colspan='3'>"
-    	        + "<div class='d-flex justify-content-between align-items-center user-info'>"
-    	        + "<div class='avatar-wrapper d-flex align-items-center'>"
-    	        + "<div class='avatar me-2 d-flex justify-content-between'>"
-    	        + "<i class='menu-icon tf-icons ti ti-currency-leu' style='margin-right: auto; font-size: 40px; margin-top: -10px;'></i>"
-    	        + "<img src='${contextPath}/resources/assets/img/avatars/1.png' alt='Avatar' class='rounded-circle' />"
-    	        + "</div>"
-    	        + "<div class='d-flex flex-column'>"
-    	        + "<span class='emp_name text_truncate' style='color: black; margin-left: 40px;'>" + resData[i].memName + "</span>"
-    	        + "</div>"
-    	        + "<div class='d-flex flex-column' style='margin-left: 20px;'>"
-    	        + "<span>" + resData[i].replyRegistDT + "</span>"
-    	        + "</div></div>";
+        tr += "<tr data-replyno='" + resData[i].replyNo + "'><td colspan='3'>"
+            + "<div class='d-flex justify-content-between align-items-center user-info'>"
+            + "<div class='avatar-wrapper d-flex align-items-center'>"
+            + "<div class='avatar me-2 d-flex justify-content-between'>"
+            + "<i class='menu-icon tf-icons ti ti-currency-leu' style='margin-right: auto; font-size: 40px; margin-top: -10px;'></i>"
+            + "<img src='${contextPath}/resources/assets/img/avatars/1.png' alt='Avatar' class='rounded-circle' />"
+            + "</div>"
+            + "<div class='d-flex flex-column'>"
+            + "<span class='emp_name text_truncate' style='color: black; margin-left: 40px;'>" + resData[i].memName + "</span>"
+            + "</div>"
+            + "<div class='d-flex flex-column' style='margin-left: 20px;'>"
+            + "<span>" + resData[i].replyRegistDT + "</span>"
+            + "</div></div>";
 
-    	    // 댓글 작성자가 로그인한 사용자와 같은지 확인
-    	    if (loginUserMemNo == resData[i].memNo) {
-    	        tr += "<div class='d-flex justify-content-end align-items-center'>"
-    	            + "<div class='icon-wrapper'>"
-    	            + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
-    	            + "<div class='action-replybox'>"
-    	            + "<form id='rfrm' action='' method='post'>"
-    	            + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
-    	            + "<a href='#' onclick='modifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
-    	            + "<i class='menu-icon tf-icons ti ti-edit'></i></a>"
-    	            + "<a href='#' onclick='deleteReply(" + resData[i].replyNo + ")'>"
-    	            + "<i class='menu-icon tf-icons ti ti-trash'></i></a>"
-    	            + "</form>"
-    	            + "</div></div></div>";
-    	    } else {
-    	        tr += "<br>";
-    	    }
+        // 댓글 작성자가 로그인한 사용자와 같은지 확인
+        if (loginUserMemNo == resData[i].memNo) {
+          tr += "<div class='d-flex justify-content-end align-items-center'>"
+              + "<div class='icon-wrapper'>"
+              + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
+              + "<div class='action-replybox'>"
+              + "<form id='rfrm' action='' method='post'>"
+              + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
+              + "<a href='#' onclick='modalModifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
+              + "<i class='menu-icon tf-icons ti ti-edit'></i></a>"
+              + "<a href='#' onclick='modalDeleteReply(" + resData[i].replyNo + ")'>"
+              + "<i class='menu-icon tf-icons ti ti-trash'></i></a>"
+              + "</form>"
+              + "</div></div></div>";
+        } else {
+          tr += "<br>";
+        }
 
-    	    tr += "</div><br>"
-    	        + "<div style='margin-left: 30px; white-space: pre-wrap; color: black; word-break: break-all;'>" + resData[i].replyContent + "</div><br><br>"
-    	        + "</td></tr>";
-    	}
-
+        tr += "</div><br>"
+            + "<div class='reply-content' style='margin-left: 30px; white-space: pre-wrap; color: black; word-break: break-all;'>" + resData[i].replyContent + "</div><br><br>"
+            + "</td></tr>";
+      }
 
       // reply_table HTML 업데이트
       $("#reply_table tbody").html(tr);
@@ -541,6 +523,9 @@ function fn_rreplyList(replyId) {
     }
   });
 }
+
+
+
 
 
 //게시글 수정
@@ -586,11 +571,9 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
 
   // 수정 및 삭제 버튼에 이벤트 핸들러 설정
   modal.find('#modal-modify').off('click').on('click', function() {
-    saveScrollPosition();  // 수정 시 스크롤 위치 저장
     modifyReply(replyId, replyContent);
   });
   modal.find('#modal-delete').off('click').on('click', function() {
-    saveScrollPosition();  // 삭제 시 스크롤 위치 저장
     deleteReply(replyId);
   });
 
@@ -601,68 +584,104 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   fn_rreplyList(replyId);
 });
 
-// 서버로 수정된 댓글 내용을 전송하는 함수
-function updateReply() {
-  const updatedContent = document.getElementById('editReplyContent').value;
+function modifyReply(replyNo, replyContent) {
+  // 현재 수정 중인 댓글의 최신 내용을 가져옴
+  let replyRow = $("tr[data-replyno='" + replyNo + "']");
+  let contentDiv = replyRow.find(".reply-content");
+
+  // 최신 내용을 가져옴
+  let latestContent = replyRow.data('replycontent') || replyContent;
+
+  // 기존 댓글 내용을 백업
+  let originalContent = contentDiv.html();
+
+  // 기존 내용을 텍스트로 변환하여 input 창에 표시
+  let decodedContent = $('<div/>').html(latestContent).text();
+
+  let inputHtml = "<textarea class='form-control reply-edit-content' aria-label='With textarea' style='width: 80%; resize: none;'>" + decodedContent + "</textarea>";
+  let saveButtonHtml = "<button class='btn btn-sm btn-label-info' style='text-align: center; margin-left: 10px; margin-top: 5px;' onclick='saveReply(" + replyNo + ");'>수정</button>";
+  let cancelButtonHtml = "<button class='btn btn-sm btn-label-dark' style='text-align: center; margin-left: 10px; margin-top: 5px;' onclick='cancelModifyReply(" + replyNo + ", `" + originalContent + "`);'>취소</button>";
+
+  contentDiv.html(inputHtml + saveButtonHtml + cancelButtonHtml);
+
+  // 수정 아이콘이 있던 box 닫기
+  let iconWrapper = replyRow.find(".icon-wrapper");
+  iconWrapper.hide();
+  $('#modalScrollable').modal('hide');
+  
+  // input 창에 포커스 맞추기
+  setTimeout(function() {
+    contentDiv.find('.reply-edit-content').focus();
+  }, 300);
+  
+}
+
+function saveReply(replyNo) {
+  
+  let replyRow = $("tr[data-replyno='" + replyNo + "']");
+  let editedContent = replyRow.find(".reply-edit-content").val();
+
+  // 서버에 댓글 수정 요청 전송
   $.ajax({
+    url: '${contextPath}/board/updateReply.do',
     type: 'POST',
-    url: `${contextPath}/board/updateReply.do`,
-    data: {
-      replyNo: currentReplyNo,
-      content: updatedContent
-    },
-    success: function(response) {
-      if (response.status === "SUCCESS") {
-        alert("댓글이 수정되었습니다.");
-        $('#editReplyModal').modal('hide');  // 수정 모달 닫기
-        fn_replyList(); // 댓글 목록 갱신
-        restoreScrollPosition(); // 스크롤 위치 복원
-      } else {
-        alert("댓글 수정에 실패하였습니다. 다시 시도해주세요.");
-      }
+    data: { replyNo: replyNo, content: editedContent }, // 'content' 파라미터 추가
+    success: function(resData) {
+      // 수정된 댓글 내용으로 업데이트
+      replyRow.find(".reply-content").html(editedContent);
+      replyRow.find(".icon-wrapper").show(); // 수정 완료 후 아이콘 다시 표시
+
+      // replyRow에 데이터 속성으로 업데이트된 내용을 저장
+      replyRow.data('replycontent', editedContent);
+      fn_replyList(); // 댓글 목록 갱신
     },
     error: function(xhr, status, error) {
-      console.error("에러 발생:", status, error);
+      console.error("댓글 수정 중 에러 발생:", status, error);
     }
   });
 }
 
-// 수정할 댓글 번호를 설정하는 함수
-function modifyReply(replyNo, content) {
-  currentReplyNo = replyNo; // currentReplyNo 설정
-  if (typeof content === 'string') {
-    // <br> 태그를 줄바꿈 문자(\n)로 변환
-    const formattedContent = content.replace(/<br\s*\/?>/gi, "\n");
-    document.getElementById('editReplyContent').value = formattedContent;
-  } else {
-    document.getElementById('editReplyContent').value = content;
-  }
-  $('#modalScrollable').modal('hide');  // 첫 번째 모달 닫기
-  $('#editReplyModal').modal('show');  // 두 번째 모달 열기
+function cancelModifyReply(replyNo, originalContent) {
+  
+  let replyRow = $("tr[data-replyno='" + replyNo + "']");
+  let contentDiv = replyRow.find(".reply-content");
+
+  // 수정 취소 시 원래 내용으로 복원
+  contentDiv.html(originalContent);
+
+  // 수정 취소 후 아이콘 다시 표시
+  replyRow.find(".icon-wrapper").show();
 }
 
-// 댓글 삭제 함수
 function deleteReply(replyNo) {
-  if (confirm('정말로 삭제하시겠습니까?')) {
+  
+
+  // 삭제 확인 알림
+  if (confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
+		
+	  
+		
+    // 서버에 댓글 삭제 요청 전송
     $.ajax({
+      url: '${contextPath}/board/deleteReplyCompletely.do',
       type: 'POST',
-      url: `${contextPath}/board/deleteReplyCompletely.do`,
       data: { replyNo: replyNo },
-      success: function(response) {
-        if (response.status === "SUCCESS") {
-          alert("댓글이 삭제되었습니다.");
-          fn_replyList(); // 댓글 목록 갱신
-          restoreScrollPosition(); // 스크롤 위치 복원
-        } else {
-          alert("댓글 삭제에 실패하였습니다. 다시 시도해주세요.");
-        }
+      success: function(resData) {
+        // 댓글 삭제 후 목록 갱신
+        $("tr[data-replyno='" + replyNo + "']").remove();
+        
+        
+        
+        fn_replyList(); // 댓글 목록 갱신
+        $('#modalScrollable').modal('hide');    
       },
       error: function(xhr, status, error) {
-        console.error("에러 발생:", status, error);
+        console.error("댓글 삭제 중 에러 발생:", status, error);
       }
     });
   }
 }
+
 
 // 모달 내의 ... 아이콘 클릭 시 액션 박스를 토글하는 함수
 function toggleModalActionBox(icon) {
@@ -673,6 +692,92 @@ function toggleModalActionBox(icon) {
     actionBox.style.display = 'none';
   }
 }
+
+
+function modalModifyReply(replyNo, replyContent) {
+  // 현재 수정 중인 대댓글의 최신 내용을 가져옴
+  let replyRow = $("tr[data-replyno='" + replyNo + "']");
+  let contentDiv = replyRow.find(".reply-content");
+
+  // 최신 내용을 가져옴
+  let latestContent = replyRow.data('replycontent') || replyContent;
+
+  // 기존 대댓글 내용을 백업
+  let originalContent = contentDiv.html();
+
+  // 기존 내용을 텍스트로 변환하여 input 창에 표시
+  let decodedContent = $('<div/>').html(latestContent).text();
+
+  let inputHtml = "<textarea class='form-control reply-edit-content' aria-label='With textarea' style='width: 80%; resize: none;'>" + decodedContent + "</textarea>";
+  let saveButtonHtml = "<button class='btn btn-sm btn-label-info' style='text-align: center; margin-left: 10px; margin-top: 5px;' onclick='modalSaveReply(" + replyNo + ");'>수정</button>";
+  let cancelButtonHtml = "<button class='btn btn-sm btn-label-dark' style='text-align: center; margin-left: 10px; margin-top: 5px;' onclick='cancelModifyReply(" + replyNo + ", `" + originalContent + "`);'>취소</button>";
+
+  contentDiv.html(inputHtml + saveButtonHtml + cancelButtonHtml);
+
+  // 수정 아이콘이 있던 box 닫기
+  let iconWrapper = replyRow.find(".icon-wrapper");
+  iconWrapper.hide();
+}
+
+
+function modalSaveReply(replyNo) {
+  let replyRow = $("tr[data-replyno='" + replyNo + "']");
+  let editedContent = replyRow.find(".reply-edit-content").val();
+
+  // 서버에 대댓글 수정 요청 전송
+  $.ajax({
+    url: '${contextPath}/board/updateReply.do',
+    type: 'POST',
+    data: { replyNo: replyNo, content: editedContent }, // 'content' 파라미터 추가
+    success: function(resData) {
+      // 수정된 대댓글 내용으로 업데이트
+      replyRow.find(".reply-content").html(editedContent);
+      replyRow.find(".icon-wrapper").show(); // 수정 완료 후 아이콘 다시 표시
+
+      // replyRow에 데이터 속성으로 업데이트된 내용을 저장
+      replyRow.data('replycontent', editedContent);
+    },
+    error: function(xhr, status, error) {
+      console.error("대댓글 수정 중 에러 발생:", status, error);
+    }
+  });
+}
+
+
+function cancelModifyReply(replyNo, originalContent) {
+  let replyRow = $("tr[data-replyno='" + replyNo + "']");
+  let contentDiv = replyRow.find(".reply-content");
+
+  // 수정 취소 시 원래 내용으로 복원
+  contentDiv.html(originalContent);
+
+  // 수정 취소 후 아이콘 다시 표시
+  replyRow.find(".icon-wrapper").show();
+}
+
+
+
+function modalDeleteReply(replyNo) {
+	  // 삭제 확인 알림
+	  if (confirm('정말로 이 대댓글을 삭제하시겠습니까?')) {
+	    // 서버에 대댓글 삭제 요청 전송
+	    $.ajax({
+	      url: '${contextPath}/board/deleteReplyCompletely.do',
+	      type: 'POST',
+	      data: { replyNo: replyNo },
+	      success: function(resData) {
+	        // 대댓글 삭제 후 목록 갱신
+	        $("tr[data-replyno='" + replyNo + "']").remove();
+	        fn_replyList(); // 댓글 목록 갱신
+	      },
+	      error: function(xhr, status, error) {
+	        console.error("대댓글 삭제 중 에러 발생:", status, error);
+	      }
+	    });
+	  }
+	}
+
+
 
 
 
@@ -689,7 +794,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (actionBox) {
         actionBox.style.display = actionBox.style.display === 'none' || !actionBox.style.display ? 'block' : 'none';
         hideOtherBoxes('.action-box', actionBox);
-        saveScrollPosition();
+        
       }
     }
 
@@ -699,7 +804,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (replyBox) {
         replyBox.style.display = replyBox.style.display === 'none' || !replyBox.style.display ? 'block' : 'none';
         hideOtherBoxes('.action-replybox', replyBox);
-        saveScrollPosition();
+        
       }
     }
 
@@ -748,14 +853,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-  
-  // 모달이 닫힐 때 액션 박스를 닫는 코드 추가
-  $('#editReplyModal').on('hide.bs.modal', function () {
-    const actionBoxes = document.querySelectorAll('.modal-action-box');
-    actionBoxes.forEach(box => {
-      box.style.display = 'none';
-    });
-  });
 
   // 첫 번째 모달이 닫힐 때도 액션 박스를 닫도록 설정
   $('#modalScrollable').on('hide.bs.modal', function () {
@@ -770,8 +867,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function toggleModalActionBox(icon) {
   var actionBox = icon.nextElementSibling;
   if (actionBox.style.display === 'none' || actionBox.style.display === '') {
-    actionBox.style.display = 'block';
-    saveScrollPosition();  
+    actionBox.style.display = 'block'; 
+    
   } else {
     actionBox.style.display = 'none';
   }

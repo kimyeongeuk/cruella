@@ -38,12 +38,14 @@
 	<result column="doc_date" property="docDt"/>
 	<result column="doc_importance" property="docImpo"/>
 	<result column="doc_status" property="docStatus"/>
+	
 </resultMap>
 
 
 	  
 <resultMap  id="detailSelectAppdoc" type="AppdocDto">
 	<result column="mem_name" property="memName"/>
+	<result column="mem_no" property="memNo"/>
 	<result column="doc_no" property="docNo"/>
 	<result column="dept_name" property="deptName"/>
 	<result column="pos_name" property="posName"/>
@@ -58,6 +60,7 @@
 	<result column="doc_order" property="docOrder"/>
 	<result column="app_rej_reason" property="reason"/>
 	<result column="doc_status" property="docStatus"/>
+	<result column="ref_status" property="refStatus"/>
 </resultMap>
 
 
@@ -255,7 +258,7 @@ values
 
 
 
-<!-- 결재대기함 리스트 갯수 조회 -->
+<!-- 결재대기함 리스트 카운트(페이징용) -->
 <select id="selectStandbyCount" resultType="_int">
 select 
      count(*)
@@ -332,6 +335,7 @@ select
         ,a.doc_date as doc_date
         ,a.doc_importance as doc_importance
         ,a.doc_status as doc_status
+        ,ar.ref_status as ref_status
     from member m
     join app_doc a on(m.mem_no = a.mem_no)
     join app_ref ar on (a.mem_no = m.mem_no)
@@ -406,7 +410,7 @@ select
        
     from member m
     join app_doc a on(m.mem_no = a.mem_no)
-    where a.mem_no = #{memNo} -- 결재선/현재로그인한 사번
+    where a.mem_no = #{memNo} -- 기안서/현재로그인한 사번
    	and a.doc_status in ('A','B')
     and a.status = 'Y'
     order by a.doc_date desc
@@ -422,6 +426,47 @@ select
     join app_doc a on(m.mem_no = a.mem_no)
     where a.mem_no = #{memNo} -- 결재선/현재로그인한 사번
    	and a.doc_status in ('A','B')
+    and a.status = 'Y'
+    order by a.doc_date desc
+    
+</select>
+
+
+
+<!-- 완료리스트 조회 -->
+<select id="selectSuccess" resultMap="selectStandbyResult"> 
+select 
+        m.mem_name as mem_name
+        ,a.doc_no as doc_no
+        ,a.doc_type as doc_type
+        ,
+         CASE 
+	     WHEN LENGTH(a.doc_title) > 15 THEN SUBSTR(a.doc_title, 1, 15) || '...'
+	     ELSE a.doc_title
+	  	 END as doc_title
+	  	 
+        ,a.doc_content as doc_content
+        ,a.doc_date as doc_date
+        ,a.doc_importance as doc_importance
+        ,a.doc_status as doc_status
+       
+    from member m
+    join app_doc a on(m.mem_no = a.mem_no)
+    where a.mem_no = #{memNo} -- 기안서/현재로그인한 사번
+   	and a.doc_status = 'C'
+    and a.status = 'Y'
+    order by a.doc_date desc
+
+</select>
+
+<!-- 완료리스트 카운트 -->
+<select id="selectSuccessCount" resultType="_int">
+select count(*)
+       
+    from member m
+    join app_doc a on(m.mem_no = a.mem_no)
+    where a.mem_no = #{memNo} -- 기안서/현재로그인한 사번
+   	and a.doc_status = 'C'
     and a.status = 'Y'
     order by a.doc_date desc
     
@@ -460,6 +505,7 @@ select
 <select id="appdocDetailSelectAll" resultMap="detailSelectAppdoc">
  select 
 	   m.mem_name as mem_name
+	   ,ad.mem_no as mem_no
 	  ,ad.doc_no as doc_no
 	  ,ad.doc_order as doc_order
 	  ,d.dept_name as dept_name
@@ -481,7 +527,7 @@ select
                 and a.doc_no = #{docNo}
      )as max_order  -- 기안문서의 결재선 마지막 순서
      ,ad.app_rej_reason as app_rej_reason -- 반려사유
-
+	 --,ar.ref_status as ref_status -- 참조상태
  from 
  	 member m
  join 
@@ -494,6 +540,8 @@ select
           app_form_ann af on(af.doc_no = ad.doc_no)
  left join 
           app_form_coe ac on(ad.doc_no = ac.doc_no)
+ --full join 
+    --  	   app_ref ar on (ad.doc_no = ar.doc_no)
  
  where ad.doc_no = #{docNo}
  and ad.status = 'Y'
@@ -595,6 +643,71 @@ update app_doc
 set    STATUS = 'N'
 where  doc_no = #{docNo}
 </update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 최종승인시 휴가테이블 insert -->
+<insert id="vacation">
+
+ INSERT INTO  vacation
+(
+	 VAC_NO
+	,VAC_DATE
+  ,VAC_START_DATE
+  ,VAC_END_DATE
+  ,MEM_NO
+)
+ select 
+ 				seq_vac.nextval
+ 				,(app_date_end-app_date_start)+1  
+ 				, app_date_start 
+ 				, app_date_end
+ 				,#{docMemNo}
+ from app_form_ann 
+ where doc_no = #{docNo}
+        
+
+
+
+</insert>
+
+
+
+<!-- 최종결재시 멤버연차일 업데이트 -->
+<update id="memberVacation">
+update member 
+set VAC_COUNT = VAC_COUNT - (
+															select
+															      (app_date_end-app_date_start)+1 
+															 from 
+															      app_form_ann
+															  where doc_no = #{docNo}
+														)
+where mem_No = #{docMemNo}
+
+</update>
+
+
+
+
+
+
+
+
+
 
 
 

@@ -2,6 +2,7 @@ package com.cl.cruella.service;
 
 import java.util.List;
 
+import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
 
@@ -30,9 +31,6 @@ public interface MemberService {
 	// 사번등록
 	String memberNo();
 
-	// 프로필이미지업로드 
-	int updateProfileImg(MemberDto m);
-
 	// 전자서명 저장
 	int saveSignPath(MemberDto m);
 
@@ -47,7 +45,7 @@ public interface MemberService {
 	
 	// 전체사원조회(사번, 이름, 메일, 사진)
 	List<MemberDto> selectAllMember(String memNo);
-	
+
 
 
 

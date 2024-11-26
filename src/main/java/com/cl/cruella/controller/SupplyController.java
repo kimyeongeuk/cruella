@@ -71,6 +71,7 @@ public class SupplyController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
 		map.put("pi", pi);
+
 		
 		model.addAttribute("pi", pi);
 		//log.debug("결과값{}", list);

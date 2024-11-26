@@ -352,7 +352,7 @@
 
                       <!-- 서명이 메인에 보일 영역 -->
                       <div style="height: 322px; width: 100%; border: 1px solid;">
-                        <img id="sign_image" style="max-width: 100%; max-height: 100%; object-fit: contain;" />  
+                        <img id="sign_image" alt="" style="max-width: 100%; max-height: 100%; object-fit: contain;" />  
                         <!-- object-fit: contain; : 비율은 유지하되 이미지가 왜곡되지 않게 하는 속성 -->
                       </div>
 
@@ -631,7 +631,7 @@
                       </div>
                     </div>
                     <!--/ 나의 소속팀 목록 -->
-                    <!-- 워크플로우 -->
+                    <!-- 나의 결재 문서함 -->
                     <div class="col-lg-12 col-xl-6">
                       <div class="card card-action mb-6 mt-6">
                         <div class="card-header align-items-center">
@@ -641,32 +641,32 @@
                         <div class="card-body">
                           <div style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px;">
                             <div>
-                              <img src="${ contextPath }/assets/img/customizer/workflow-green.png"
+                              <img src="${ contextPath }/assets/img/customizer/wlblue.png"
                                   style="width: 70px; height: 70px; margin-top: 10px;"/>
                             </div>
                             <div style="margin-top: 35px;">
-                              <span style="font-size: 20px;">최근 작성 문서</span>
-                              <span style="font-size: 20px; margin-left: 24px;">2</span>
+                              <span style="font-size: 20px; cursor: pointer;" onclick="location.href='${contextPath}/app/box_standby.do'">결재 대기함</span>
+                              <span style="font-size: 20px; margin-left: 24px;" id="app_standby"></span>
                             </div>
                           </div>
                           <div style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px;">
                             <div>
-                              <img src="${ contextPath }/assets/img/customizer/workflow-gray.png"
+                              <img src="${ contextPath }/assets/img/customizer/wlgray.png"
                                   style="width: 70px; height: 70px; margin-top: 10px;"/>
                             </div>
                             <div style="margin-top: 35px;">
-                              <span style="font-size: 20px;">진행 중 문서</span>
-                              <span style="font-size: 20px; margin-left: 44px;">5</span>
+                              <span style="font-size: 20px; cursor: pointer;" onclick="location.href='${contextPath}/app/box_progress.do'">결재 진행함</span>
+                              <span style="font-size: 20px; margin-left: 20px;" id="app_progress"></span>
                             </div>
                           </div>
                           <div style="width: 320px; height: 100px; margin-left: 20px; display: flex; gap: 45px;">
                             <div>
-                              <img src="${ contextPath }/assets/img/customizer/workflow-blue.png"
+                              <img src="${ contextPath }/assets/img/customizer/wlgreen.png"
                                   style="width: 70px; height: 70px; margin-top: 10px;"/>
                             </div>
                             <div style="margin-top: 35px;">
-                              <span style="font-size: 20px;">결재 대기 문서</span>
-                              <span style="font-size: 20px; margin-left: 24px;">1</span>
+                              <span style="font-size: 20px; cursor: pointer;" onclick="location.href='${contextPath}/app/box_complete.do'">결재 완료함</span>
+                              <span style="font-size: 20px; margin-left: 24px;" id="app_success"></span>
                             </div>
                           </div>
                         </div>
@@ -719,7 +719,7 @@
     	fnTeamList();  //	소속팀 전체 리스트 조회
     	fnLoadSign();  // 전자서명 조회
     	fnBoardList(); // 게시판 리스트 조회
-			    	
+			fnAppList();   // 내 결재 문서함 조회
     }
     
     // 메모 전체 리스트 조회(김동규)
@@ -899,43 +899,63 @@
     }
     
     //팀게시판 리스트 조회
-function fnBoardList() {
-    $.ajax({
-        url: '${contextPath}/member/boardList.do',
-        type: 'POST',
-        success: function(res) {
-            let trEl = '';
+		function fnBoardList() {
+		    $.ajax({
+		        url: '${contextPath}/member/boardList.do',
+		        type: 'POST',
+		        success: function(res) {
+		            let trEl = '';
+		
+		            // 데이터가 비어 있는 경우
+		            if (!res || res.list.length == 0) {
+		                trEl += '<tr>';
+		                trEl += '<td colspan="6">조회된 게시글이 없습니다.</td>';
+		                trEl += '</tr>';
+		            } else {
+		                let count = 1;
+		                let pi = res.pi; // 페이지 정보
+		                res.list.forEach((board) => {
+		                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
+		
+		                    
+		                    trEl += '<tr data-boardno="' + board.boardNo + '">';
+		                    trEl += '<td>' + reverseCount + '</td>';
+		                    trEl += '<td>' + board.memName + '</td>';
+		                    trEl += '<td class="title" style="cursor: pointer;">' + board.boardTitle;
+		                    trEl += '</td>';
+		                    trEl += '<td>' + board.boardRegistDT + '</td>';
+		                    trEl += '<td>' + board.boardCount + '</td>';
+		                    trEl += '<td>' + board.replyCount + '</td>';
+		                    trEl += '</tr>';
+		
+		                    count++;
+		                });
+		            }
+		
+		            $('#boardListTbody').html(trEl);
+		        }
+		    })
+		}
+    
+		// 내 결재 문서함 조회
+		function fnAppList(){
+			
+			let memNo = '${loginUser.getMemNo()}';
+			
+			$.ajax({
+				url: '${contextPath}/member/selectAppList.do',
+				type: 'POST',
+				data: {memNo: memNo},
+				success: function(res){
+					
+					$('#app_standby').html(res.A);
+					$('#app_progress').html(res.B);
+					$('#app_success').html(res.C);
 
-            // 데이터가 비어 있는 경우
-            if (!res || res.list.length == 0) {
-                trEl += '<tr>';
-                trEl += '<td colspan="6">조회된 게시글이 없습니다.</td>';
-                trEl += '</tr>';
-            } else {
-                let count = 1;
-                let pi = res.pi; // 페이지 정보
-                res.list.forEach((board) => {
-                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
-
-                    
-                    trEl += '<tr data-boardno="' + board.boardNo + '">';
-                    trEl += '<td>' + reverseCount + '</td>';
-                    trEl += '<td>' + board.memName + '</td>';
-                    trEl += '<td class="title" style="cursor: pointer;">' + board.boardTitle;
-                    trEl += '</td>';
-                    trEl += '<td>' + board.boardRegistDT + '</td>';
-                    trEl += '<td>' + board.boardCount + '</td>';
-                    trEl += '<td>' + board.replyCount + '</td>';
-                    trEl += '</tr>';
-
-                    count++;
-                });
-            }
-
-            $('#boardListTbody').html(trEl);
-        }
-    })
-}
+				}
+			})
+			
+		}
     
     // 사이드바 처리
 		document.addEventListener("DOMContentLoaded", function () {

@@ -118,16 +118,16 @@
                               class="select form-select form-select-lg select2-hidden-accessible"
                               style="width: 240px;">
                               <option value="선택">선택해주세요</option>
-                              <option value="결재대기함">결재대기함</option>
-                              <option value="결재진행함">결재진행함</option>
-                              <option value="결재완료함">결재완료함</option>
+                              <option value="결재대기함" >결재대기함</option>
+                              <option value="결재진행함" >결재진행함</option>
+                              <option value="결재완료함" selected>결재완료함</option>
                               <option value="결재반려함">결재반려함</option>
-                              <option value="참조열람함" selected>참조열람함</option>
+                              <option value="참조열람함">참조열람함</option>
                              
                             </select>
                           </span>
 
-                          <span style="position: relative; left: 964px; top: 25px; cursor: pointer;">
+                          <span id="delete_icon" style="position: relative; left: 964px; top: 25px; cursor: pointer;">
                             <i class="ti ti-trash" style="font-size: 25px;"></i>
                           </span>
 
@@ -172,7 +172,7 @@
                     </style>
                     
                     
-                	<tr>
+                	<tr >
                       <th></th>
                       <th><input type="checkbox" id="all_checkBox"></th>
                       <th><span class="header_title"><b>기안자</b></span></th>
@@ -189,15 +189,17 @@
 					<c:forEach var="a" items="${ list }">
                     <tr class="detail_tr" onclick="location.href='${contextPath}/app/detail.do?docNo=${a.docNo}'">
                       <td></td>
-                      <td><input type="checkbox" class="deleteCheck_box"></td>
+                      <td onclick="event.stopPropagation();"><input type="checkbox" class="deleteCheck_box" ></td>
                       <td><span class="name_box">${a.memName }</span></td>
                       <td></td>
                       <td style="text-align: center;"><span class="title_box">${a.docTitle}</span></td>
                       <td></td>
                       <td>
+                      
 	                      <span class="appDate_box">${a.docDt }</span>
 	                      <input type="hidden" value="${a.docType}" >
 						  <input type="hidden" value="${a.docNo}" >
+						  
                       </td>     
                       <td>
 	                      	<c:choose>
@@ -221,9 +223,11 @@
                       </td>
                       <td>
                        
-                      	<span class="status_box" style="color:#70C3FF;">
-                      		참조
+                       
+                      	<span class="status_box" style="color:green;">
+                      		완료
                       	</span>
+                      	
                        
                       </td>
                     </tr> 
@@ -258,7 +262,7 @@
                             
                             <li class="page-item prev ${ pi.currentPage == 1 ? 'disabled' : '' }">
                               <a class="page-link" 
-                              		href="${ contextPath }/app/box_view.do?page=${pi.currentPage-1}">
+                              		href="${ contextPath }/app/box_complete.do?page=${pi.currentPage-1}">
                                 <i class="ti ti-chevron-left ti-sm"></i>
                               </a>
                             </li>
@@ -268,7 +272,7 @@
                             <!-- 페이징 숫자 / for문돌려서 생성 -->
                             <li class="page-item ${pi.currentPage == i ? 'active' : '' }">
                               <a class="page-link" 
-                              	href="${ contextPath }/app/box_view.do?page=${i}">${ i }</a>
+                              	href="${ contextPath }/app/box_complete.do?page=${i}">${ i }</a>
                             </li>
                             </c:forEach>
                            
@@ -276,7 +280,7 @@
                             <!-- 페이징 다음버튼 -->
                             <li class="page-item next ${ pi.currentPage == pi.maxPage ? 'disabled' : '' }">
                               <a class="page-link" 
-                              		href="${ contextPath }/app/box_view.do?page=${pi.currentPage+1}">
+                              		href="${ contextPath }/app/box_complete.do?page=${pi.currentPage+1}">
                                 <i class="ti ti-chevron-right ti-sm"></i>
                               </a>
                             </li>
@@ -317,7 +321,7 @@
       // 다수 페이징버튼          
      function goPage(pNum){
                         	   
-       window.location.href = '${contextPath}/app/box_ref.do?page=' + pNum;
+       window.location.href = '${contextPath}/app/box_complete.do?page=' + pNum;
  	}
      
      
@@ -338,7 +342,10 @@
     	    });
     	    
     	    
-   
+    	    
+    	    
+    	    
+    	    
     	    $('#select_formType1').change(function(){
       		  
       		  var selectedValue = $(this).val();
@@ -350,7 +357,7 @@
       		  case "결재완료함" : location.href = "${contextPath}/app/box_complete.do"; break;
       		  case "결재반려함" : location.href = "${contextPath}/app/box_companion.do"; break;
       		  case "참조열람함" : location.href = "${contextPath}/app/box_view.do"; break;
-      		 
+      		  
       		  
       		  }
       		  
@@ -358,17 +365,25 @@
       		  
       	  })
       	  
-      	  
-      	  
-      	  function rowClick(event, url) {
+    	    
+    	     function rowClick(event, url) {
     				// 추가적으로 필요하면 조건을 확인한 뒤 URL 이동
     				window.location.href = url;
   			}
     	    
    
     	    $('#delete_icon').on('click',function(){
-    	    	alert('삭제 권한이 없습니다');
+    	    	
+    	    	$.ajax({
+    	    		url : '${contextPath}/app/deleteApp.do',
+    	    		data:{
+    	    			
+    	    		}
+    	    	})
+    	    	
     	    })
+      	
+    	    
     	    
     	    
     	    

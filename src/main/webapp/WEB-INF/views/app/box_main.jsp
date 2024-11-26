@@ -124,7 +124,7 @@
                               <option value="결재완료함">결재완료함</option>
                               <option value="결재반려함">결재반려함</option>
                               <option value="참조열람함">참조열람함</option>
-                              <option value="공문수신함">공문수신함</option>
+                            
                             </select>
                           </span>
                           
@@ -141,7 +141,7 @@
                         		  case "결재완료함" : location.href = "${contextPath}/app/box_complete.do"; break;
                         		  case "결재반려함" : location.href = "${contextPath}/app/box_companion.do"; break;
                         		  case "참조열람함" : location.href = "${contextPath}/app/box_view.do"; break;
-                        		  case "공문수신함" : location.href = "${contextPath}/app/box_official.do"; break;
+                        		  
                         		  
                         		  }
                         		  

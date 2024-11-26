@@ -25,7 +25,11 @@
 		<result column="dept_name" property="deptName" />
 		<result column="salary" property="salary" />
 		<result column="wl_status" property="wlStatus" />
-		
+	</resultMap>
+	
+	<resultMap id="appResultMap" type="AppdocDto">
+		<result column="mem_no" property="memNo" />
+		<result column="doc_status" property="docStatus" />
 	</resultMap>
 
 	<!-- 로그인(김동규) 수정페이지조회(예빈) -->
@@ -142,6 +146,7 @@
 		, pos_code
 		, dept_code
 		, salary
+		, profile_url
 		)
 		values
 		(
@@ -158,6 +163,7 @@
 		, #{posCode}
 		, #{deptCode}
 		, #{salary}
+		, #{profileURL}
 		)
 	</insert>
 	
@@ -228,6 +234,8 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 					 member
 	
 	</update>
+	
+	<!-- 전체사원조회(본인제외) -->
 	<select id="selectAllMember" resultMap="memberResultMap">
 		select
 					 mem_no
@@ -237,6 +245,7 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		  from member
 		 where mem_no != #{memNo}
 	</select>
+
 	
 
 
