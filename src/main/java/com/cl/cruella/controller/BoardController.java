@@ -276,8 +276,14 @@ public class BoardController {
 	}
 
 	@PostMapping("/deleteSelectedPosts.do")
-	public String deleteSelectedPosts(@RequestParam("boardNos") List<Integer> boardNos) {
-	    boardService.deleteSelectedPosts(boardNos);
+	public String deleteSelectedPosts(@RequestParam("boardNos") List<Integer> boardNos,  RedirectAttributes rdAttributes) {
+		int result = boardService.deleteSelectedPosts(boardNos);
+	    
+        if (result > 0) {
+            rdAttributes.addFlashAttribute("alertMsg", "선택된 게시글이 성공적으로 삭제되었습니다.");
+        } else {
+            rdAttributes.addFlashAttribute("alertMsg", "게시글 삭제에 실패하였습니다.");
+        }
 	    return "redirect:/board/boardList.do";
 	}
 
