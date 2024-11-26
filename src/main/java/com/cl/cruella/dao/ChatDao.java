@@ -93,6 +93,10 @@ public class ChatDao {
 	public int changeNewMsg(int chatNo) {
 		return sqlSession.update("chatMapper.changeNewMsg",chatNo);
 	}
+
+	public int modifyMsg(MessageDto messageDto) {
+		return sqlSession.update("chatMapper.modifyMsg",messageDto);
+	}
 	
 
 }

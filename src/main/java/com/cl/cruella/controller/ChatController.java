@@ -117,8 +117,10 @@ public class ChatController {
 	@GetMapping(value="/updateNewMsg.do",produces="application/json")
 	public int updateNewMsg(MessageDto message) {
 		
-		
+		// 메시지 번호 가져오기
+		message.setMsgNo(chatServiceImpl.msgNum());
 		int result = chatServiceImpl.updateNewMsg(message);
+		
 		
 		return result;
 		

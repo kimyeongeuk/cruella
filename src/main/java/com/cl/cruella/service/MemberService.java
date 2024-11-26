@@ -1,6 +1,7 @@
 package com.cl.cruella.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.MemberDto;
@@ -46,10 +47,15 @@ public interface MemberService {
 	// 전체사원조회(사번, 이름, 메일, 사진)
 	List<MemberDto> selectAllMember(String memNo);
 
-	// 프로필이미지변경
-	int updateProfileImg(MemberDto targetMember);
+	List<Map<String, String>> getAllDepartments();
+
+	List<Map<String, String>> getEmployeesByDeptCode(String deptCode);
 
 
+	// 휴가내역 조회
+	int selectVacListCount(String memNo); // 리스트카운트
+	List<AppdocDto> selectVacList(Map<String, Object> params);
+	
 
 
 

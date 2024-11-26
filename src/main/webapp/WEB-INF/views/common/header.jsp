@@ -255,7 +255,7 @@
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="${ contextPath }/member/signup.do" class="menu-link">
+                  <a href="${ contextPath }/member/organization.do" class="menu-link">
                     <div data-i18n="조직도">조직도</div>
                   </a>
                 </li>

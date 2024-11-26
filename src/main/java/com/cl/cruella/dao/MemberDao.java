@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
+import com.cl.cruella.dto.VacationDto;
 
-import jakarta.websocket.Session;
 import lombok.RequiredArgsConstructor;
 
 @Repository
@@ -35,7 +35,13 @@ public class MemberDao {
 	}
 
 	public int insertMember(MemberDto m) {
-		return sqlSession.insert("memberMapper.insertMember", m);
+
+		int result =  sqlSession.insert("memberMapper.insertMember", m);
+		if(result > 0) {
+			result = 0;
+			result = sqlSession.insert("memberMapper.chatProfile", m);
+		}
+		return result;
 	}
 	
 	public List<MemberDto> selectTeamList(MemberDto m) {
@@ -84,10 +90,25 @@ public class MemberDao {
 		return sqlSession.selectList("memberMapper.selectAllMember", memNo);
 	}
 
-	public int updateProfileImg(MemberDto targetMember) {
-		return sqlSession.update("memberMapper.updateProfileImg", targetMember);
+	public List<AppdocDto> selectVacList(Map<String, Object> params) {
+        PageInfoDto pi = (PageInfoDto) params.get("pi");
+        RowBounds rowBounds = new RowBounds((pi.getCurrentPage() - 1) * pi.getBoardLimit(), pi.getBoardLimit());
+        return sqlSession.selectList("memberMapper.selectVacList", params, rowBounds);
 	}
 	
+	public int selectVacListCount(String memNo) {
+		return sqlSession.selectOne("memberMapper.selectVacListCount", memNo);
+	}
+	
+	public List<Map<String, String>> getAllDepartments() {
+		return sqlSession.selectList("memberMapper.getAllDepartments");
+	}
+
+	public List<Map<String, String>> getEmployeesByDeptCode(String deptCode) {
+		return sqlSession.selectList("memberMapper.getEmployeesByDeptCode", deptCode);
+	}
+
+
 }
 
 
