@@ -77,12 +77,21 @@
 	    padding: 0 5px; /* 내부 패딩을 추가하여 글자가 잘리지 않도록 합니다 */
 	    font-size: 14px; /* 글자 크기를 조금 줄입니다 */
 	    white-space: nowrap; /* 글자가 한 줄로 나오도록 합니다 */
+	    margin-top: -50px;
 	}
 	.pinned {
 	  background-color: #fff8dc; /* 예: 배경색을 밝은 노란색으로 설정 */
 	  font-weight: bold; /* 예: 글씨를 굵게 설정 */
 	}
-
+	.pagination {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+  }
+  .btn-group {
+    display: flex;
+    align-items: center;
+  }
 </style>
 
 </head>
@@ -114,40 +123,9 @@
                   <div style="margin: 20px;">
                     <span style="font-size: 20px;">
                     	공지사항                                        
-                    </span>
-                    <span class="text-primary" style="font-size: 14px; margin-left: 20px;">    
-                    <c:choose>
-                      <c:when test="${loginUser.deptCode eq 'S1'}">영업총괄팀 </c:when>
-                      <c:when test="${loginUser.deptCode eq 'S2'}">인사팀 </c:when>
-                      <c:when test="${loginUser.deptCode eq 'S3'}">지원팀 </c:when>
-                      <c:when test="${loginUser.deptCode eq 'T1'}">남성의류팀 </c:when>
-                      <c:when test="${loginUser.deptCode eq 'T2'}">여성의류팀 </c:when>
-                      <c:when test="${loginUser.deptCode eq 'T3'}">식품팀 </c:when>
-                      <c:when test="${loginUser.deptCode eq 'T4'}">스포츠팀 </c:when>
-                      <c:when test="${loginUser.deptCode eq 'T5'}">뷰티팀 </c:when>
-                      <c:when test="${loginUser.deptCode eq 'T6'}">명품팀 </c:when>
-                      <c:when test="${loginUser.deptCode eq 'T7'}">문화센터팀 </c:when>
-                      <c:when test="${loginUser.deptCode eq 'T8'}">디지털 및 가전팀 </c:when>
-                      <c:otherwise>기타부서팀</c:otherwise>
-                    </c:choose>      
-                    </span>         
+                    </span>        
                   </div>
-
-                  <c:choose>
-                    <c:when test="${ loginUser.deptCode == 'S2'}">
-                      <div class="ms-5">
-											  <button id="create" class="btn btn-primary waves-effect waves-light" onclick="regist();">
-											    <span class="ti-xs ti ti-edit me-2"></span>작성
-											  </button>  
-											  <button id="create" class="btn btn-danger" onclick="deleteSelectedPosts();">
-											    <span class="ti-xs ti ti-trash me-2"></span>삭제
-											  </button>          
-											</div>
-                    </c:when>
-                    <c:otherwise></c:otherwise>
-                  </c:choose>
-                  
-                  
+                               
                   <div class="ms-auto d-flex">
 									  <form id="search_form" action="${contextPath}/notice/noticeSearch.do" method="get" class="d-flex align-items-center">
 									    <input type="hidden" name="page" value="1">
@@ -264,26 +242,49 @@
 								</div>
 								
 								<!-- 페이징 바 -->
-								<div class="card-body">
-								  <div class="row">
-								    <span class="col-lg-12 d-flex justify-content-center">
-								      <div class="demo-inline-spacing">
-								        <nav aria-label="Page navigation">
-								          <ul class="pagination" id="paging_area">
-								            <li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>
-								            <li class="page-item prev ${pi.currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage - 1});"><i class="ti ti-chevron-left ti-sm"></i></a></li>
-								            <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
-								              <li class="page-item ${i == pi.currentPage ? 'active' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${i});">${i}</a></li>
-								            </c:forEach>
-								            <li class="page-item next ${pi.currentPage == pi.maxPage ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage + 1});"><i class="ti ti-chevron-right ti-sm"></i></a></li>
-								            <li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.maxPage});"><i class="ti ti-chevrons-right ti-sm"></i></a></li>
-								          </ul>
-								        </nav>
-								      </div>
-								    </span>
-								  </div>
-								</div>
-
+									<div class="card-body">
+									  <c:choose>
+									    <c:when test="${ loginUser.deptCode == 'S2'}">
+									      <div class="ms-5 d-flex justify-content-between align-items-center">
+									        <button id="create" class="btn btn-danger" onclick="deleteSelectedPosts();" style="margin-left: -30px;">
+									          <span class="ti-xs ti ti-trash me-2"></span>삭제
+									        </button>
+									        
+									        <nav aria-label="Page navigation">
+									          <ul class="pagination" id="paging_area">
+									            <li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>
+									            <li class="page-item prev ${pi.currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage - 1});"><i class="ti ti-chevron-left ti-sm"></i></a></li>
+									            <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+									              <li class="page-item ${i == pi.currentPage ? 'active' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${i});">${i}</a></li>
+									            </c:forEach>
+									            <li class="page-item next ${pi.currentPage == pi.maxPage ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage + 1});"><i class="ti ti-chevron-right ti-sm"></i></a></li>
+									            <li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.maxPage});"><i class="ti ti-chevrons-right ti-sm"></i></a></li>
+									          </ul>
+									        </nav>
+									
+									        <button id="create" class="btn btn-primary waves-effect waves-light" onclick="regist();">
+									          <span class="ti-xs ti ti-edit me-2"></span>작성
+									        </button>
+									      </div>
+									    </c:when>
+									    <c:otherwise>
+									      <div class="d-flex justify-content-center">
+									        <nav aria-label="Page navigation">
+									          <ul class="pagination" id="paging_area">
+									            <li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>
+									            <li class="page-item prev ${pi.currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage - 1});"><i class="ti ti-chevron-left ti-sm"></i></a></li>
+									            <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+									              <li class="page-item ${i == pi.currentPage ? 'active' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${i});">${i}</a></li>
+									            </c:forEach>
+									            <li class="page-item next ${pi.currentPage == pi.maxPage ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage + 1});"><i class="ti ti-chevron-right ti-sm"></i></a></li>
+									            <li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.maxPage});"><i class="ti ti-chevrons-right ti-sm"></i></a></li>
+									          </ul>
+									        </nav>
+									      </div>
+									    </c:otherwise>
+									  </c:choose>             
+									</div>
+								
             </div>
           </div>
           <!-- 세션정보 끝 -->
