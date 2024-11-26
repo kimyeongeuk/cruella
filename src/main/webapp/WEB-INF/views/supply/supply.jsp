@@ -414,7 +414,7 @@
 							<div class="row">
 								<span class="col-lg-12 d-flex justify-content-center">
 									<div class="demo-inline-spacing">
-										<nav aria-label="Page navigation">
+										<nav aria-label="Page navigation" id="paginationId">
 										
 										
 										
@@ -447,7 +447,7 @@
     
     
     
-    </div>
+    
    <!-- 세션 끝 -->
 
 		<script>
@@ -503,8 +503,8 @@
 					  pageNo: pageNo
 				  },
 				  success: function(res){
-					  
-					  console.log(res.list);  // {pi: {}, list: []}
+					  //console.log(res);
+					  //console.log(res.list);  // {pi: {}, list: []}
 					  
 					  let a = "";
 					  for(let i=0; i<res.list.length; i++){
@@ -528,12 +528,43 @@
 									 
 					  }
 					  $("#tbodyId").html(a);
+
 					  
+					  console.log(res.pi);
 					  
+					// Pagination HTML
+					    let paginationHtml = "<ul class='pagination'>";
+
+					    // 첫 페이지로 이동
+					    paginationHtml += "<li class='page-item first " + (res.pi.currentPage == 1 ? 'disabled' : '') + "'>"
+					                    + "<a class='page-link' href='#' onclick='goToPage(1);'><i class='ti ti-chevrons-left ti-sm'></i></a></li>";
+
+					    // 이전 페이지로 이동
+					    paginationHtml += "<li class='page-item prev " + (res.pi.currentPage == 1 ? 'disabled' : '') + "'>"
+					                    + "<a class='page-link' href='" + res.contextPath + "/supply/list.do?page=" + (res.pi.currentPage - 1) + "'>"
+					                    + "<i class='ti ti-chevron-left ti-sm'></i></a></li>";
+
+					    // 페이지 번호 출력
+					    for (let i = res.pi.startPage; i <= res.pi.endPage; i++) {
+					        paginationHtml += "<li class='page-item " + (res.pi.currentPage == i ? 'active' : '') + "'>"
+					                        + "<a class='page-link' onclick='selectSupplyList(" + '"' + category + '", ' + i + ")'>" + i + "</a></li>";
+					    }
+
+					    // 다음 페이지로 이동
+					    paginationHtml += "<li class='page-item next " + (res.pi.currentPage == res.pi.maxPage ? 'disabled' : '') + "'>"
+					                    + "<a class='page-link' href='" + res.contextPath + "/supply/list.do?page=" + (res.pi.currentPage + 1) + "'>"
+					                    + "<i class='ti ti-chevron-right ti-sm'></i></a></li>";
+
+					    // 마지막 페이지로 이동
+					    paginationHtml += "<li class='page-item last " + (res.pi.currentPage == res.pi.maxPage ? 'disabled' : '') + "'>"
+					                    + "<a class='page-link' href='#' onclick='goToPage(" + res.pi.maxPage + ");'><i class='ti ti-chevrons-right ti-sm'></i></a></li>";
+
+					    paginationHtml += "</ul>";
+
+					    // Pagination HTML 삽입
+					    $("#paginationId").html(paginationHtml);
 					  
-					  
-					  
-										
+										/*
 											<ul class="pagination">
 												<!-- 첫 페이지로 이동 -->
 												<li
@@ -576,7 +607,7 @@
 												</a>
 												</li>
 											</ul> 
-											
+											*/
 											
 											
 							
