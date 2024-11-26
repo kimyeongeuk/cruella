@@ -10,6 +10,7 @@
 	<result column="mem_no" property="chatCreater" />
 	<result column="CHAT_NEWMSG" property="chatNewMsg" />
 	<result column="chat_count" property="chatCount"/>
+	<result column="msg_no" property="msgNo"/>
 </resultMap>
 
 
@@ -80,6 +81,7 @@ select
 			,CHAT_REGIST_DATE
 			,CL.mem_no
 			,CHAT_NEWMSG
+			,MSG_NO
   from chat c
   join chat_list cl on (c.chat_no = cl.chat_no)
  where cl.mem_no = #{memNo}
@@ -162,7 +164,7 @@ select count(chat_no) chat_count
 			 , MSG_MODIFY_DATE
   from message
  where chat_no = #{chatNo}
-   and MSG_STATUS in ('Y','N')
+   and MSG_STATUS in ('Y','N','M')
  order by msg_no
 </select>
 
@@ -204,7 +206,8 @@ select count(chat_no) chat_count
 																			     ) 
 																			        WHERE rownum = 1
 			),
-			CHAT_NEWMSG = #{msgContent}
+			CHAT_NEWMSG = #{msgContent},
+			msg_no = #{msgNo}
 			WHERE CHAT_NO = #{chatNo}
 </update>
 
@@ -322,6 +325,17 @@ update
 	 set
 	 			CHAT_NEWMSG = '삭제된 메시지입니다.'
  where	chat_no = #{chatNo}
+</update>
+
+<!-- 메시지 수정하기 -->
+<update id="modifyMsg">
+update
+				message
+	 set
+	 			msg_content = #{msgContent},
+	 			msg_status = 'M'
+ where
+ 				msg_no = #{msgNo}
 </update>
 
 </mapper>
