@@ -22,7 +22,7 @@ public class AppdocDto { // 기안문서
 	
 	
 	private int docNo; // 문서번호
-	private String memNo; // 기안자 사번
+	private String memNo; //  사번
 	private String docType; // 문서종류
 	private String docTitle; // 제목
 	private String docContent; // 내용
@@ -48,9 +48,15 @@ public class AppdocDto { // 기안문서
 	private String refStatus; // 상태: 참조
 	
 	
+	private String docMemNo; // 기안서의 사원번호
+	
+	
+	
+	
 //	연차신청서
 	private Date appDateStart; // 시작일
 	private Date appDateEnd; // 끝일
+	private long daysBetween; // 연차사용갯수
 	
 //	증명서신청서
 	private Date appCoreDt; // 발행날짜

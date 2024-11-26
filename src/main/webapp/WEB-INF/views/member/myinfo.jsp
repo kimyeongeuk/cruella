@@ -631,7 +631,7 @@
                       </div>
                     </div>
                     <!--/ 나의 소속팀 목록 -->
-                    <!-- 워크플로우 -->
+                    <!-- 나의 결재 문서함 -->
                     <div class="col-lg-12 col-xl-6">
                       <div class="card card-action mb-6 mt-6">
                         <div class="card-header align-items-center">

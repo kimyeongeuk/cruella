@@ -206,6 +206,31 @@ public class AppDao {
 	 public int appDeleteBack(AppdocDto ad) {
 		 return sqlSession.update("appMapper.appDeleteBack",ad);
 	 }
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 // 연차신청서 최종 승인시 // 휴가테이블 insert / member 테이블 휴가일수 update
+	 public int vacation(AppdocDto ad) {
+		 return sqlSession.insert("appMapper.vacation",ad);
+	 }
+	 
+	 public int memberVacation(AppdocDto ad) {
+		 return sqlSession.update("appMapper.memberVacation",ad);
+	 }
+	 
+	 
+	 
 	
 	
 	

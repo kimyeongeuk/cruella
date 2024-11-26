@@ -500,8 +500,6 @@ select count(*)
 
 
 
-
-
 <!-- 상세페이지 -->
 <!-- 기안문서조회 (상세페이지용) -->
 <select id="appdocDetailSelectAll" resultMap="detailSelectAppdoc">
@@ -645,6 +643,71 @@ update app_doc
 set    STATUS = 'N'
 where  doc_no = #{docNo}
 </update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 최종승인시 휴가테이블 insert -->
+<insert id="vacation">
+
+ INSERT INTO  vacation
+(
+	 VAC_NO
+	,VAC_DATE
+  ,VAC_START_DATE
+  ,VAC_END_DATE
+  ,MEM_NO
+)
+ select 
+ 				seq_vac.nextval
+ 				,(app_date_end-app_date_start)+1  
+ 				, app_date_start 
+ 				, app_date_end
+ 				,#{docMemNo}
+ from app_form_ann 
+ where doc_no = #{docNo}
+        
+
+
+
+</insert>
+
+
+
+<!-- 최종결재시 멤버연차일 업데이트 -->
+<update id="memberVacation">
+update member 
+set VAC_COUNT = VAC_COUNT - (
+															select
+															      (app_date_end-app_date_start)+1 
+															 from 
+															      app_form_ann
+															  where doc_no = #{docNo}
+														)
+where mem_No = #{docMemNo}
+
+</update>
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,5 +1,8 @@
 package com.cl.cruella.service;
 
+import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -8,7 +11,6 @@ import com.cl.cruella.dao.AppDao;
 import com.cl.cruella.dto.AppRefDto;
 import com.cl.cruella.dto.AppRovalDto;
 import com.cl.cruella.dto.AppdocDto;
-
 import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.PageInfoDto;
@@ -213,6 +215,8 @@ public class AppService {
 	
 	
 	
+	
+	
 //	상세페이지 결재 시
 	public int detailClear(AppdocDto ad) {
 		
@@ -221,12 +225,24 @@ public class AppService {
 		
 		int result = 0;
 		
+		
+		
+		
 		if(ad.getMaxOrder() == ad.getAppLevel()) {
 			
 			result = appDao.detailLastClear(ad); // 최종승인 / 기안문서
 			
+			
 			if(result>0) {
-				result = appDao.detailAppRoval(ad); // 최종승인 / 결재선
+				if(ad.getDocType().equals("연차신청서")) {
+					result = appDao.detailAppRoval(ad); // 최종승인 / 결재선
+					result += appDao.vacation(ad); // 최종승인 / 휴가테이블 insert
+					result += appDao.memberVacation(ad); // 최종승인 / 멤버테이블 휴가갯수 update
+				}else {
+					result = appDao.detailAppRoval(ad); // 최종승인 / 결재선
+				}
+				
+				
 			}
 			
 		}else if(ad.getMaxOrder() > ad.getAppLevel()) {
