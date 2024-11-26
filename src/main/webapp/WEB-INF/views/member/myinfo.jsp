@@ -40,8 +40,8 @@
    	 overflow-y: scroll;
    	 }
    	 #teamListDiv{
-   	 max-height: 345px;
-   	 overflow-y: auto;
+   	 max-height: 300px;
+   	 overflow-y: scroll;
    	 }
 		 #memoDiv::-webkit-scrollbar,
 		 #teamListDiv::-webkit-scrollbar {
@@ -594,27 +594,38 @@
 		                  </div>
 
 		                  <div class="ms-auto d-flex">
-		
 		                  </div>
 		                </div>
-		             <div class="card-datatable table-responsive pt-3">
-								  <table class="datatables-basic table text-center">
-								    <thead>
-								      <tr>
-							            <th style="width: 10%;">번호</th>
-							            <th style="width: 15%;">작성자</th>
-							            <th style="width: 40%;">제목</th>
-							            <th style="width: 15%;">작성일</th>
-							            <th style="width: 10%;">조회수</th>
-							            <th style="width: 10%;">댓글수</th>
-								      </tr>
-								    </thead>
-								    <tbody id="boardListTbody">
-								      
-								    </tbody>
-								  </table>
-								</div>
-               </div>
+		             		<div class="card-datatable table-responsive pt-3">
+								  		<table class="datatables-basic table text-center">
+								    		<thead>
+								      		<tr>
+								            <th style="width: 10%;">번호</th>
+								            <th style="width: 15%;">작성자</th>
+								            <th style="width: 40%;">제목</th>
+								            <th style="width: 15%;">작성일</th>
+								            <th style="width: 10%;">조회수</th>
+								            <th style="width: 10%;">댓글수</th>
+								      		</tr>
+								    		</thead>
+										    <tbody id="boardListTbody">
+										      
+										    </tbody>
+								  		</table>
+								  		</div>
+											<div class="card-body">
+											  <div class="row">
+											    <span class="col-lg-12 d-flex justify-content-center">
+											      <div class="demo-inline-spacing">
+											        <nav aria-label="Page navigation">
+											          <ul class="pagination" id="paging_area">
+											          </ul>
+											        </nav>
+											      </div>
+											    </span>
+											  </div>
+			                </div>
+                		</div>
                   
                   <!--/ 팀게시판 영역 -->                  
                   <!--/ Activity Timeline -->
@@ -626,7 +637,9 @@
                           <i class="ti ti-users ti-lg"></i>
                           <h5 class="card-action-title mb-0" style="margin-left: 15px;">${ loginUser.getDeptName() }</h5> <!-- 나의 소속팀이 보이게 -->
                         </div>
-                        <div class="card-body" id="teamListDiv"> <!-- 나의 소속팀 전체 리스트 조회 영역 -->
+                        <div class="card-body"> <!-- 나의 소속팀 전체 리스트 조회 영역 -->
+                        	<div id="teamListDiv">
+                        	</div>
                         </div>
                       </div>
                     </div>
@@ -904,6 +917,7 @@
 		        url: '${contextPath}/member/boardList.do',
 		        type: 'POST',
 		        success: function(res) {
+	              let pi = res.pi; // 페이지 정보
 		            let trEl = '';
 		
 		            // 데이터가 비어 있는 경우
@@ -913,7 +927,6 @@
 		                trEl += '</tr>';
 		            } else {
 		                let count = 1;
-		                let pi = res.pi; // 페이지 정보
 		                res.list.forEach((board) => {
 		                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
 		
@@ -933,6 +946,22 @@
 		            }
 		
 		            $('#boardListTbody').html(trEl);
+		            
+		            // 페이징바
+		            let pagingEl = '';
+		            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
+
+		            // 페이지 번호 생성
+		            for (let i = pi.startPage; i <= pi.endPage; i++) {
+		                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + i + ');">' + i + '</a></li>';
+		            }
+
+		            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
+
+		            // 페이징바 업데이트
+		            $('#paging_area').html(pagingEl);
 		        }
 		    })
 		}
@@ -951,7 +980,7 @@
 					$('#app_standby').html(res.A);
 					$('#app_progress').html(res.B);
 					$('#app_success').html(res.C);
-
+					
 				}
 			})
 			

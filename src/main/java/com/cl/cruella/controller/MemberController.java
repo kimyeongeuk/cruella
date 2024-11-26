@@ -273,7 +273,7 @@ public class MemberController {
 	 }
 	 
 	 // 내 결재 문서함 조회
-	 @PostMapping("selectAppList.do")
+	 @PostMapping("/selectAppList.do")
 	 @ResponseBody
 	 public Map<String, Integer> selectAppList(String memNo) {
 		 
@@ -284,6 +284,26 @@ public class MemberController {
 	     statusCounts.put("C", appService.selectSuccessCount(memNo));  // 완료
 	     
 	     return statusCounts;
+	 }
+	 
+	 // 휴가 신청 목록 조회
+	 @PostMapping("/vacList.do")
+	 @ResponseBody
+	 public Map<String, Object> selectVacList(String memNo, @RequestParam(value = "page", defaultValue = "1") int currentPage, Model model) {
+		 
+		 
+		 int listCount = memberService.selectVacListCount(memNo);
+		 
+		 PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+		 
+         Map<String, Object> params = new HashMap<>();
+         params.put("pi", pi);
+         params.put("memNo", memNo);
+         
+
+         List<AppdocDto> list = memberService.selectVacList(params);
+         params.put("list", list);
+         return params;
 	 }
 	 
 	 

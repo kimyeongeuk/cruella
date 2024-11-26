@@ -313,18 +313,29 @@
                         </thead>
 										    <thead>
 										      <tr>
-									            <th style="width: 15%;">번호</th>
+									            <th style="width: 20%;">번호</th>
 									            <th style="width: 35%;">제목</th>
-									            <th style="width: 30%;">신청일</th>
+									            <th style="width: 25%;">신청일</th>
 									            <th style="width: 20%;">진행상태</th>
 										      </tr>
 										    </thead>
-    
                         <tbody class="table-border-bottom-0" id="vacListTbody">
                          
                         </tbody>
                       </table>
                     </div>
+										<div class="card-body">
+										  <div class="row">
+										    <span class="col-lg-12 d-flex justify-content-center">
+										      <div class="demo-inline-spacing">
+										        <nav aria-label="Page navigation">
+										          <ul class="pagination" id="paging_area">
+										          </ul>
+										        </nav>
+										      </div>
+										    </span>
+										  </div>
+		                </div>
                   </div>
                   <!--/ Projects table -->                  
                   <!--/ Activity Timeline -->
@@ -372,8 +383,15 @@
     
    
    <script>
-	   // 사이드바 처리
-		document.addEventListener("DOMContentLoaded", function () {
+   
+	  	// 페이지 로드 시 실행시킬 함수(김동규)
+	   window.onload = function(){
+	   	
+		   fnVacList(); // 휴가목록 조회
+
+	   }
+	   	// 사이드바 처리
+			document.addEventListener("DOMContentLoaded", function () {
 	 	
 			const element = document.getElementById("side_myworklog");
 			
@@ -382,11 +400,11 @@
 		 	element.style.color = "white";
 		 	element.classList.add("active");
 	 	
-	});
+		});
 	   
 		 // 근태일정 조회
 		 
-		 const memNo = ${loginUser.memNo};
+/* 		 const memNo = '${loginUser.getMemNo()}'; 
 		 
 	   $.ajax({
 		   url: '${contextPath}/wl/loadWorkLog.do',
@@ -395,14 +413,20 @@
 			 success: function(res){
 				 
 			 }
-	   })
+	   }) */
 	   
-    //팀게시판 리스트 조회
+    // 휴가목록 조회
 		function fnVacList() {
+		   
+		   const memNo = '${loginUser.getMemNo()}'; 
+		   
 		    $.ajax({
 		        url: '${contextPath}/member/vacList.do',
 		        type: 'POST',
+		        data: {memNo: memNo},
 		        success: function(res) {
+		        	console.log(res);
+		        	  let pi = res.pi; // 페이징 정보
 		            let trEl = '';
 		
 		            // 데이터가 비어 있는 경우
@@ -413,25 +437,37 @@
 		            } else {
 		                let count = 1;
 		                let pi = res.pi; // 페이지 정보
-		                res.list.forEach((board) => {
+		                res.list.forEach((vac) => {
 		                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
 		
-		                    
-		                    trEl += '<tr data-boardno="' + board.boardNo + '">';
+		                    trEl += '<tr>';
 		                    trEl += '<td>' + reverseCount + '</td>';
-		                    trEl += '<td>' + board.memName + '</td>';
-		                    trEl += '<td class="title" style="cursor: pointer;">' + board.boardTitle;
-		                    trEl += '</td>';
-		                    trEl += '<td>' + board.boardRegistDT + '</td>';
-		                    trEl += '<td>' + board.boardCount + '</td>';
-		                    trEl += '<td>' + board.replyCount + '</td>';
+		                    trEl += '<td>' + vac.docTitle + '</td>';
+		                    trEl += '<td>' + vac.docDt + '</td>';
+		                    trEl += '<td>' + vac.docStatus + '</td>';
 		                    trEl += '</tr>';
 		
 		                    count++;
 		                });
 		            }
-		
-		            $('#boardListTbody').html(trEl);
+								console.log(trEl);
+		            $('#vacListTbody').html(trEl);
+		            
+		            // 페이징바
+		            let pagingEl = '';
+		            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
+
+		            // 페이지 번호 생성
+		            for (let i = pi.startPage; i <= pi.endPage; i++) {
+		                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + i + ');">' + i + '</a></li>';
+		            }
+
+		            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
+
+		            // 페이징바 업데이트
+		            $('#paging_area').html(pagingEl);		            
 		        }
 		    })
 		}
