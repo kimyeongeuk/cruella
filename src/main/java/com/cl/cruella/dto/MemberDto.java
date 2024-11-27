@@ -46,5 +46,12 @@ public class MemberDto {
 		private String deptName;
 		private String wlStatus;
 		
+		// 예빈(급여지급 jsp에서 쓸거)
+	    private int pension;         // 국민연금
+	    private int health;         // 건강보험
+	    private int employment;     // 고용보험
+	    private int care;   // 장기요양보험
+	    private int totalSalary;               // 실지급액
+	    private Date paymentDate;            // 지급 날짜
 		
 }

@@ -108,6 +108,17 @@ public class MemberDao {
 		return sqlSession.selectList("memberMapper.getEmployeesByDeptCode", deptCode);
 	}
 
+	public int insertPayment(MemberDto m) {
+		return sqlSession.insert("memberMapper.insertPayment", m);
+	}
+
+	public List<MemberDto> salarypaymentList() {
+		return sqlSession.selectList("memberMapper.salarypayment");
+	}
+
+
+
+
 
 }
 

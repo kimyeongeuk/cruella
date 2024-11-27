@@ -245,7 +245,7 @@
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="" class="menu-link">
+                  <a href="${ contextPath }/member/salarypayment.do" class="menu-link">
                     <div data-i18n="급여지급">급여지급</div>
                   </a>
                 </li>

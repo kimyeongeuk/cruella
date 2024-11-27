@@ -46,16 +46,19 @@ public interface MemberService {
 	
 	// 전체사원조회(사번, 이름, 메일, 사진)
 	List<MemberDto> selectAllMember(String memNo);
-
-	List<Map<String, String>> getAllDepartments();
-
-	List<Map<String, String>> getEmployeesByDeptCode(String deptCode);
-
-
-	// 휴가내역 조회
-	int selectVacListCount(String memNo); // 리스트카운트
-	List<AppdocDto> selectVacList(Map<String, Object> params);
 	
+	// 직원등록시 급여테이블에 insert될 정보
+	int insertPayment(MemberDto m);
+
+	// 급여테이블직원리스트불러오기
+	List<MemberDto> salarypaymentList();
+
+
+
+
+
+
+
 
 
 
