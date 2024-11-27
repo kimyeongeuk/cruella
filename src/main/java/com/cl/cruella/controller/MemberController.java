@@ -23,10 +23,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.BoardDto;
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.dto.NoticeDto;
 import com.cl.cruella.dto.PageInfoDto;
 import com.cl.cruella.service.AppService;
 import com.cl.cruella.service.BoardService;
 import com.cl.cruella.service.MemberService;
+import com.cl.cruella.service.NoticeService;
 import com.cl.cruella.util.FileUtil;
 import com.cl.cruella.util.PagingUtil;
 
@@ -49,6 +51,7 @@ public class MemberController {
 	private final PagingUtil pagingUtil;
 	private final BoardService boardService;
 	private final AppService appService;
+	private final NoticeService noticeService;
 
 	
 	// 로그인(김동규)
@@ -268,21 +271,20 @@ public class MemberController {
 	 public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session){
 		 
          MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
-
          String deptCode = loginUser.getDeptCode();
-        
 
-         int listCount = boardService.selectBoardListCount(deptCode);
+         String loggedInDeptCode = deptCode != null ? deptCode : loginUser.getDeptCode();
+        
+         Map<String, Object> params = new HashMap<>();
+         params.put("deptCode", loggedInDeptCode);
+
+         int listCount = noticeService.selectNoticeListCount(params);
 
          PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
-
-         Map<String, Object> params = new HashMap<>();
          params.put("pi", pi);
-         params.put("deptCode", deptCode);
 
-         List<BoardDto> list = boardService.selectBoardList(params);
+         List<NoticeDto> list = noticeService.selectNoticeList(params);
          params.put("list", list);
-
          
 
          return params;		 

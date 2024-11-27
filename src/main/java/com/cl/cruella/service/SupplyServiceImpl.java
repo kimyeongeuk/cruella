@@ -26,6 +26,11 @@ public class SupplyServiceImpl implements SupplyService {
 		return  supplyDao.countSupply(supCategory);
 	}
 
+	@Override
+	public int insertSupply(SupplyDto s) {
+		return supplyDao.insertSupply(s);
+	}
+
 
 
 }

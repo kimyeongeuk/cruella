@@ -29,6 +29,10 @@ public class SupplyDao {
 		return sqlSession.selectOne("supplyMapper.countSupply", supCategory);
 	}
 	
+	public int insertSupply(SupplyDto s) {
+		return sqlSession.insert("supplyMapper.insertSupply", s);
+				
+	}
 	
 	
 }

@@ -306,8 +306,8 @@
         </div>
         <!--/ Popular Instructors -->
 
-				<!-- 팀게시판 영역 (재운님 코드)-->
-				<div class="card">
+				<!-- 공지사항 영역 (재운님 코드)-->
+				<div class="card" style="width: 920px;">
   				<div class="d-flex align-items-center">
    					<div style="margin: 20px;">
          			<h5>공지사항</h5>
@@ -324,7 +324,7 @@
 									<th style="width: 10%;">조회수</th>
   							</tr>
 							</thead>
-  						<tbody id="boardListTbody">
+  						<tbody id="noticeListTbody">
     
 							</tbody>
 						</table>
@@ -416,10 +416,14 @@
     
 		<script>
 	  		
+				// 페이지 로드시 실행시킬 함수
 	  		window.onload = function(){
 	  			
-	  			checkClockInStatus();
-	      
+	  			checkClockInStatus(); // 출근상태 체크
+	  			fnNoticeList();			  // 공지사항 조회
+		    	fnMemoList();	        // 메모 전체 리스트 조회
+		    	fnMemberList();       // 전체 사원 리스트 조회
+		    	
 	  		}
 	  	
 	  		// 출근 등록여부 확인
@@ -691,13 +695,7 @@
 		 	element.classList.add("active");
 	 	
 		});
-	   
-	    window.onload = function(){
-	    	
-	    	fnMemoList();	  // 메모 전체 리스트 조회
-	    	fnMemberList(); // 전체 사원 리스트 조회
-				    	
-	    }
+
 	    
 	    // 메모 전체 리스트 조회(김동규)
 	   	function fnMemoList(){
@@ -872,11 +870,13 @@
 	    }
 	    
 	    // 공지사항 목록조회
-	    function fnNoticeList(){
+	    function fnNoticeList(page){
 	    	$.ajax({
 	    		url: '${contextPath}/member/noticeList.do',
 	    		type: 'POST',
+	    		data: {page: page},
 	    		success: function(res) {
+	    			console.log(res);
 		              let pi = res.pi; // 페이지 정보
 			            let trEl = '';
 			
@@ -887,44 +887,44 @@
 			                trEl += '</tr>';
 			            } else {
 			                let count = 1;
-			                res.list.forEach((board) => {
+			                res.list.forEach((notice) => {
 			                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
 			
 			                    
-			                    trEl += '<tr data-boardno="' + board.boardNo + '">';
+			                    trEl += '<tr data-boardno="' + notice.noticeNo + '">';
 			                    trEl += '<td>' + reverseCount + '</td>';
-			                    trEl += '<td>' + board.memName + '</td>';
-			                    trEl += '<td class="title" style="cursor: pointer;">' + board.boardTitle;
+			                    trEl += '<td>' + notice.memName + '</td>';
+			                    trEl += '<td class="title" style="cursor: pointer;">' + notice.noticeTitle;
 			                    trEl += '</td>';
-			                    trEl += '<td>' + board.boardRegistDT + '</td>';
-			                    trEl += '<td>' + board.boardCount + '</td>';
-			                    trEl += '<td>' + board.replyCount + '</td>';
+			                    trEl += '<td>' + notice.noticeRegistDT + '</td>';
+			                    trEl += '<td>' + notice.noticeCount + '</td>';
 			                    trEl += '</tr>';
 			
 			                    count++;
 			                });
 			            }
 			
-			            $('#boardListTbody').html(trEl);
+			            $('#noticeListTbody').html(trEl);
 			            
-			            // 페이징바
+			            // 페이징바 생성 및 업데이트
 			            let pagingEl = '';
-			            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
-			            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
+			            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="fnNoticeList(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
+			            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnNoticeList(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
 
-			            // 페이지 번호 생성
 			            for (let i = pi.startPage; i <= pi.endPage; i++) {
-			                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + i + ');">' + i + '</a></li>';
+			                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnNoticeList(' + i + ');">' + i + '</a></li>';
 			            }
 
-			            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
-			            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
+			            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnNoticeList(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
+			            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="fnNoticeList(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
 
-			            // 페이징바 업데이트
-			            $('#paging_area').html(pagingEl);	    			
+			            $('#paging_area').html(pagingEl);			
 	    		}
 	    	})
 	    }
+	    function goToPage(pageNumber) {
+	        window.location.href = "${contextPath}/member/noticeList.do?page=" + pageNumber;
+	      }
 	    
    </script>
 	

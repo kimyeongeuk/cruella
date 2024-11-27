@@ -126,7 +126,7 @@
 
 
 
-                              <!-- 비품 수정 버튼 클릭시 모달 -->
+              <!-- 비품 수정 버튼 클릭시 모달 -->
               <div class="modal fade" id="modify" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
                   <div class="modal-content">

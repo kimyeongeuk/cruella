@@ -20,7 +20,8 @@ public interface SupplyService {
 	List<SupplyDto> selectSupplyList(String supCategory, PageInfoDto pi);
 	
 	
-	
+	// 비품 신청
+	int insertSupply(SupplyDto s);
 	
 	// 비품 추가
 	
