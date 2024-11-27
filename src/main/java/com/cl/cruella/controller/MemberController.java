@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -562,12 +563,24 @@ public class MemberController {
 	
 	
 	
-	// 급여지급 
+	// 급여지급페이지
 	@GetMapping("/salarypayment.do")
 	public String salarypayment(Model model) {
 		List<MemberDto> list = memberService.salarypaymentList();
 		model.addAttribute("list", list);
 		return "member/salarypayment";
+	}
+	
+	// 급여지급버튼
+	@ResponseBody
+	@PostMapping("/payBtn.do")
+	public int payBtn(@RequestBody Map<String,List<String>> request) {
+		List<String> memNos = request.get("memNo");
+		int result = memberService.payBtn(memNos);
+		
+		return result;
+		
+		
 	}
 	
 	
@@ -589,6 +602,13 @@ public class MemberController {
 	@GetMapping("/organization.do")
 	public void organization() {}
 
+//	// 급여명세표(이예빈)
+//	@GetMapping("/paystub.do")
+//	public String paystub(Model model) {
+//		List<MemberDto> list = memberService.paystub();
+//		model.addAttribute("list", list);
+//		return "member/paystub";
+//	}
 	
 	
 

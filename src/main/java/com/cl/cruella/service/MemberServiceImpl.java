@@ -96,6 +96,14 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public int payBtn(List<String> memNos) {
+		int result = 0;
+		for( String no : memNos) {
+			result += memberDao.payBtn(no);
+			
+		}
+		return result;
+	}
 	public int selectVacListCount(String memNo) {
 		return memberDao.selectVacListCount(memNo);
 	}

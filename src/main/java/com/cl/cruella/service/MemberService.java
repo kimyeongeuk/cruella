@@ -52,6 +52,12 @@ public interface MemberService {
 
 	// 급여테이블직원리스트불러오기
 	List<MemberDto> salarypaymentList();
+
+	int payBtn(List<String> memNos);
+
+	
+
+
 	
 	// 휴가내역 조회
 	int selectVacListCount(String memNo); // 리스트카운트

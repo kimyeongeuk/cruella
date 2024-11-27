@@ -88,7 +88,7 @@
 														tabindex="0"> <span class="d-none d-sm-block">첨부파일
 															업로드</span> <i class="ti ti-upload d-block d-sm-none"></i> <input
 														type="file" id="upload" class="account-file-input" hidden
-														accept="image/png, image/jpg" name="uploadFile" />
+														accept="image/*" name="uploadFile" />
 													</label>
 													<button type="button"
 														class="btn btn-label-secondary account-image-reset mb-4">
@@ -152,7 +152,8 @@
 														</div>
 													</div>
 													<div class="mb-4 col-md-6">
-														<label for="posCode" class="form-label">직급</label> <select
+														<label for="posCode" class="form-label">직급</label> 
+														<select
 															id="posCode" class="select form-select" name="posCode">
 															<option value="">선택</option>
 															<option value="C1">점장</option>
@@ -164,15 +165,47 @@
 															<option value="C7">사원</option>
 														</select>
 													</div>
+													
+													<script>
+													$(document).ready(function() {
+														$('#posCode').on("change",function(){
+															
+															/* if($('#posCode').val() === 'C1'){
+																$('#salary').val('20000000');
+															}else if(){
+																
+															} */
+															
+															switch($('#posCode').val()){
+															case 'C1' : $('#salary').val('20000000'); break;
+															case 'C2' : $('#salary').val('10000000'); break;
+															case 'C3' : $('#salary').val('5500000'); break;
+															case 'C4' : $('#salary').val('4000000'); break;
+															case 'C5' : $('#salary').val('3000000'); break;
+															case 'C6' : $('#salary').val('2600000'); break;
+															case 'C7' : $('#salary').val('2300000'); break;
+															}
+															
+														})
+													})
+	                        </script>
+
+
+
+
+
+
+
 													<div class="mb-4 col-md-6">
 														<label for="email" class="form-label">Email</label> <input
 															class="form-control" type="text" id="email" name="email"
 															required />
 													</div>
 													<div class="mb-4 col-md-6">
-														<label for="salary" class="form-label">급여</label> <input
+														<label for="salary" class="form-label">급여</label> 
+														<input
 															type="text" class="form-control" id="salary"
-															name="salary" required />
+															name="salary"  value="" required />
 													</div>
 													<div class="mb-4 col-md-6">
 														<label class="hireDate" for="country">입사날짜</label> <input

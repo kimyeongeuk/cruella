@@ -116,6 +116,10 @@ public class MemberDao {
 		return sqlSession.selectList("memberMapper.salarypayment");
 	}
 
+	public int payBtn(String no) {
+		return sqlSession.update("memberMapper.payBtn", no);
+	}
+
 
 
 

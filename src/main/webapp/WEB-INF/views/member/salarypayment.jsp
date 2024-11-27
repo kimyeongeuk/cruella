@@ -73,7 +73,7 @@
 
 
 						<div
-							class="faq-header d-flex flex-column justify-content-center align-items-center ">
+							class="faq-header d-flex flex-column justify-content-center align-items-center " style="margin-bottom: -36px;">
 							<img src="${contextPath }/assets/img/pages/header.png" class=""
 								alt="background image" style="width: 100%; height: 102px;" />
 							<div class="input-wrapper mt-4 input-group input-group-merge"
@@ -121,7 +121,7 @@
 									style="width: 10%; text-align: right; align-content: center; margin-right: 15px;">
 
 									<button type="button"
-										class="btn btn-primary waves-effect waves-light">급여지급</button>
+										class="btn btn-primary waves-effect waves-light" id="pay_btn">급여지급</button>
 								</div>
 							</div>
 							<div class="table-responsive text-nowrap">
@@ -155,7 +155,7 @@
 									<tbody class="table-border-bottom-0">
 										<c:forEach var="member" items="${list}">
 											<tr>
-												<td><input type="checkbox" class="form-check-input">
+												<td><input type="checkbox" class="dd form-check-input" value="${ member.memNo }" >
 												</td>
 												<!-- 사번 -->
 												<td><span>${member.memNo}</span></td>
@@ -179,6 +179,8 @@
 												<td>${member.totalSalary}</td>
 												<!-- 지급날짜 -->
 												<td>${member.paymentDate}</td>
+												<!-- 급여명세표 -->
+												<td><a href="${ contextPath }/member/paystub.do" type="button"><i class="far fa-file-alt"></i></a></td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -187,7 +189,74 @@
 							</div>
 						</div>
 
-
+						<script>
+							$(document).ready(function() {
+								
+								
+								$('#pay_btn').on('click', function() {
+									
+									
+									const check = [];
+									
+									$('.dd:checked').each(function() {
+										var memNo = $(this).val();
+										check.push(memNo);
+										console.log("나다",check);
+										
+											
+											
+									})
+									
+									
+										if(check.length == 0){
+											alert('사원을 체크해주세요');
+											return;
+										}
+									
+									
+									if(confirm('급여를 지급하시겠습니까?')){
+										
+											if(check.length > 0){
+												
+										
+												$.ajax({
+													url: '${contextPath}/member/payBtn.do',
+													contentType: "application/json",
+													type : 'POST',
+													data: JSON.stringify({
+														memNo:check
+													}),
+													success:function(res){
+														if(res > 0){
+															alert("성공적으로 지급되었습니다.")
+															location.href="${contextPath}/member/salarypayment.do";
+															
+															/* let div = "" ;
+															
+															for(let i=0; i<res.length; i++){
+																div += "<>"
+															}
+															 */
+															
+														}
+													}
+												})
+		
+											}
+									}
+									
+									
+									
+									
+								})
+								
+								
+								
+								
+								
+								
+							})
+						</script>
 
 
 					</div>
