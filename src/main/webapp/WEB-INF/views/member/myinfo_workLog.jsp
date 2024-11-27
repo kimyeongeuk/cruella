@@ -15,6 +15,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
    <script src="${ contextPath }/resources/assets/js/config.js"></script>
+   
    <link rel="stylesheet" href="${contextPath}/assets/vendor/libs/fullcalendar/fullcalendar.css" />
    <link rel="stylesheet" href="${contextPath}/assets/vendor/css/pages/app-calendar.css" />
    <style>
@@ -31,6 +32,59 @@
 		  border: 2px solid white; /* 테두리만 흰색으로 변경 */
 		}
    </style>
+    <script type="text/javascript">
+
+      
+
+      document.addEventListener('DOMContentLoaded', function() {
+      var calendar;  // global(전역) 변수로 calendar 선언
+      var calendarEl = document.getElementById('calendar');
+        
+        // Fullcalendar 옵션 설정 부분
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth', // 로드 될때 캘린더 화면 기본 설정
+          selectable: true, // 달력 셀 부분 클릭, 드래그 선택 가능
+          aspectRatio: 2.2,
+          contentHeight: 850,
+          dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
+          editable: true, // default | false 이벤트 드래그 등의 편집여부를 설정함
+          selectMirror: true, 
+          textColor: 'black',
+          displayEventTime: false,      
+          
+          
+        // 이벤트 조회
+        events: [ 
+               <c:forEach var="list" items="${wlList}"> // List로 불러오는거는 for문으로!
+          {
+            
+       	    id: '${list.workNo}', // 작업 번호
+       	    title: '${list.status}', // 제목에 근무 상태 표시
+       	    start: '${list.clockInTime}', // 근무 시작 시간
+       	    end: '${list.clockOutTime}', // 근무 종료 시간
+       	    extendedProps: { // 추가 데이터
+       	      workDate: '${list.workDate}', // 근무 날짜
+       	      status: '${list.status}', // 근무 상태
+            }
+            
+            
+
+                allDay: true
+
+          },
+          
+          </c:forEach>
+        ],
+               
+            
+          });
+
+        calendar.render();
+
+      });
+
+    </script>
+  
 </head>
 
 <body>
@@ -388,8 +442,11 @@
 	   window.onload = function(){
 	   	
 		   fnVacList(); // 휴가목록 조회
+		   fnWlList();
 
 	   }
+
+ 
 	   	// 사이드바 처리
 			document.addEventListener("DOMContentLoaded", function () {
 	 	
@@ -401,20 +458,8 @@
 		 	element.classList.add("active");
 	 	
 		});
-	   
-		 // 근태일정 조회
-		 
-/* 		 const memNo = '${loginUser.getMemNo()}'; 
-		 
-	   $.ajax({
-		   url: '${contextPath}/wl/loadWorkLog.do',
-		   type: 'POST',
-			 data: {memNo: memNo},
-			 success: function(res){
-				 
-			 }
-	   }) */
-	   
+	   	
+
     // 휴가목록 조회
 		function fnVacList() {
 		   
@@ -430,14 +475,14 @@
 		            let trEl = '';
 		
 		            // 데이터가 비어 있는 경우
-		            if (!res || res.list.length == 0) {
+		            if (!res || res.length == 0) {
 		                trEl += '<tr>';
 		                trEl += '<td colspan="6">신청 내역이 없습니다.</td>';
 		                trEl += '</tr>';
 		            } else {
 		                let count = 1;
 		                let pi = res.pi; // 페이지 정보
-		                res.list.forEach((vac) => {
+		                res.forEach((vac) => {
 		                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
 		
 		                    trEl += '<tr>';
@@ -481,7 +526,7 @@
 		            $('#paging_area').html(pagingEl);		            
 		        }
 		    })
-		}
+		}   	
    </script>
 
 

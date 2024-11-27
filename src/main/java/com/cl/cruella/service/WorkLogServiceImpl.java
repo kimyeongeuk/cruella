@@ -37,4 +37,9 @@ public class WorkLogServiceImpl implements WorkLogService {
 		return wlDao.loadWorkLog(memNo);
 	}
 
+	@Override
+	public List<WorkLogDto> allWorkTime(String memNo) {
+		return wlDao.allWorkTime(memNo);
+	}
+
 }

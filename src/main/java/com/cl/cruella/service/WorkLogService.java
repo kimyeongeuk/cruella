@@ -18,4 +18,7 @@ public interface WorkLogService {
 	
 	// 근태기록조회
 	List<CalendarDto> loadWorkLog(String memNo);
+	
+	// 출퇴근 시간 조회
+	List<WorkLogDto> allWorkTime(String memNo);
 }

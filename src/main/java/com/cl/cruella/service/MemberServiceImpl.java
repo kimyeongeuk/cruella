@@ -95,6 +95,16 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.salarypaymentList();
 	}
 
+	@Override
+	public int selectVacListCount(String memNo) {
+		return 0;
+	}
+
+	@Override
+	public List<AppdocDto> selectVacList(Map<String, Object> params) {
+		return null;
+	}
+
 
 
 

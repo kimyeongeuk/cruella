@@ -22,13 +22,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.BoardDto;
+import com.cl.cruella.dto.CalendarDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.NoticeDto;
 import com.cl.cruella.dto.PageInfoDto;
+import com.cl.cruella.dto.WorkLogDto;
 import com.cl.cruella.service.AppService;
 import com.cl.cruella.service.BoardService;
 import com.cl.cruella.service.MemberService;
 import com.cl.cruella.service.NoticeService;
+import com.cl.cruella.service.WorkLogService;
 import com.cl.cruella.util.FileUtil;
 import com.cl.cruella.util.PagingUtil;
 
@@ -52,6 +55,7 @@ public class MemberController {
 	private final BoardService boardService;
 	private final AppService appService;
 	private final NoticeService noticeService;
+	private final WorkLogService wlService;
 
 	
 	// 로그인(김동규)
@@ -237,12 +241,21 @@ public class MemberController {
 	 
 	 // 근태관리 탭 클릭
 	 @GetMapping("/myinfo_workLog.do")
-	 public void myinfoWorkLog() {}
+	 public void myinfoWorkLog(HttpSession session, Model model) {
+		 
+		 MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+		 String memNo = loginUser.getMemNo();	
+			
+		 List<WorkLogDto> list = wlService.allWorkTime(memNo);
+			 
+		model.addAttribute("wlList", list);
+
+	 }
 	 
 	 // 내정보 - 팀게시판리스트 조회
 	 @PostMapping("/boardList.do")
 	 @ResponseBody
-     public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session) {
+     public Map<String, Object> boardList(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session) {
 		 
          MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
 
@@ -268,7 +281,7 @@ public class MemberController {
 	 // 대시보드 - 공지사항 조회
 	 @PostMapping("/noticeList.do")
 	 @ResponseBody
-	 public Map<String, Object> list2(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session){
+	 public Map<String, Object> noticeList(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session){
 		 
          MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
          String deptCode = loginUser.getDeptCode();
@@ -302,7 +315,7 @@ public class MemberController {
 	 }
 	 
 	 // 내 결재 문서함 조회
-	 @PostMapping("selectAppList.do")
+	 @PostMapping("/selectAppList.do")
 	 @ResponseBody
 	 public Map<String, Integer> selectAppList(String memNo) {
 		 
@@ -313,6 +326,26 @@ public class MemberController {
 	     statusCounts.put("C", appService.selectSuccessCount(memNo));  // 완료
 	     
 	     return statusCounts;
+	 }
+	 
+	 // 휴가 신청 목록 조회
+	 @PostMapping("/vacList.do")
+	 @ResponseBody
+	 public Map<String, Object> selectVacList(String memNo, @RequestParam(value = "page", defaultValue = "1") int currentPage, Model model) {
+		 
+		 
+		 int listCount = memberService.selectVacListCount(memNo);
+		 
+		 PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+		 
+         Map<String, Object> params = new HashMap<>();
+         params.put("pi", pi);
+         params.put("memNo", memNo);
+         
+
+         List<AppdocDto> list = memberService.selectVacList(params);
+         params.put("list", list);
+         return params;
 	 }
 	 
 	 
