@@ -239,7 +239,7 @@ public class MemberController {
 	 // 내정보 - 팀게시판리스트 조회
 	 @PostMapping("/boardList.do")
 	 @ResponseBody
-     public Map<String, Object> boardList(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session) {
+     public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session) {
 		 
          MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
 
@@ -262,33 +262,6 @@ public class MemberController {
          return params;
      }
 	 
-	 // 대시보드 - 공지사항 조회
-	 @PostMapping("/noticeList.do")
-	 @ResponseBody
-	 public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session){
-		 
-         MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
-
-         String deptCode = loginUser.getDeptCode();
-        
-
-         int listCount = boardService.selectBoardListCount(deptCode);
-
-         PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
-
-         Map<String, Object> params = new HashMap<>();
-         params.put("pi", pi);
-         params.put("deptCode", deptCode);
-
-         List<BoardDto> list = boardService.selectBoardList(params);
-         params.put("list", list);
-
-         
-
-         return params;		 
-	 }
-	 
-	 
 	 // 전 사원 정보 조회(이름, 메일, 사번, 사진)
 	 @PostMapping("/selectAll_db.do")
 	 @ResponseBody
@@ -300,7 +273,7 @@ public class MemberController {
 	 }
 	 
 	 // 내 결재 문서함 조회
-	 @PostMapping("/selectAppList.do")
+	 @PostMapping("selectAppList.do")
 	 @ResponseBody
 	 public Map<String, Integer> selectAppList(String memNo) {
 		 
@@ -313,25 +286,9 @@ public class MemberController {
 	     return statusCounts;
 	 }
 	 
-	 // 휴가 신청 목록 조회
-	 @PostMapping("/vacList.do")
-	 @ResponseBody
-	 public Map<String, Object> selectVacList(String memNo, @RequestParam(value = "page", defaultValue = "1") int currentPage, Model model) {
-		 
-		 
-		 int listCount = memberService.selectVacListCount(memNo);
-		 
-		 PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
-		 
-         Map<String, Object> params = new HashMap<>();
-         params.put("pi", pi);
-         params.put("memNo", memNo);
-         
-
-         List<AppdocDto> list = memberService.selectVacList(params);
-         params.put("list", list);
-         return params;
-	 }
+	 
+	 
+	 
 	 
 	 
 	 
@@ -421,7 +378,7 @@ public class MemberController {
 		
 		if( m.getMemPwd()== null) {
 			m.setMemPwd("111111");
-		}
+		} 
 		
 		m.setMemPwd( bcryptPwdEncoder.encode(m.getMemPwd()) );
 		
@@ -442,6 +399,18 @@ public class MemberController {
 			
 		if(result > 0) {
 			rd.addFlashAttribute("alertMsg", "성공적으로 회원가입 되었습니다");
+			
+			// 급여테이블에 insert됨 
+			m.setPension((int)(m.getSalary()*0.045)); // 기본급에 공제항목 계산한거
+			m.setHealth((int)(m.getSalary()*0.039));
+			m.setCare((int)(m.getHealth()*0.05));
+			m.setEmployment((int)(m.getSalary()*0.09));  
+			m.setTotalSalary(m.getSalary() - (m.getPension() + m.getHealth() + m.getCare() + m.getEmployment()));
+			
+			log.debug("m:{}", m);
+			result = memberService.insertPayment(m);
+			
+			
 			
 		}else {
 			rd.addFlashAttribute("alertMsg", "회원가입실패");
@@ -531,6 +500,22 @@ public class MemberController {
 	
 	
 	
+	
+	// 급여지급 
+	@GetMapping("/salarypayment.do")
+	public String salarypayment(Model model) {
+		List<MemberDto> list = memberService.salarypaymentList();
+		model.addAttribute("list", list);
+		return "member/salarypayment";
+	}
+	
+	
+	
+	
+
+
+	
+	
 	// 출퇴근조회(이예빈)
 	@GetMapping("/checkinrecordview.do")
 	public void checkinrecodeview() {}
@@ -542,26 +527,6 @@ public class MemberController {
 	// 조직도조회(이예빈)
 	@GetMapping("/organization.do")
 	public void organization() {}
-	
-	
-	
-	
-	@GetMapping("/departments.do")
-	@ResponseBody
-	public List<Map<String, String>> getDepartments() {
-	    // memberService를 이용해 부서 데이터를 가져옵니다.
-	    return memberService.getAllDepartments();
-	}
-
-	@GetMapping("/employees.do")
-	@ResponseBody
-	public List<Map<String, String>> getEmployees(@RequestParam("deptCode") String deptCode) {
-	    // memberService를 이용해 특정 부서에 속한 직원 데이터를 가져옵니다.
-	    return memberService.getEmployeesByDeptCode(deptCode);
-	}
-
-	
-	
 
 	
 	

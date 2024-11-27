@@ -25,6 +25,12 @@
 		<result column="dept_name" property="deptName" />
 		<result column="salary" property="salary" />
 		<result column="wl_status" property="wlStatus" />
+		<result column="sal_pension" property="pension" />
+		<result column="sal_health" property="health" />
+		<result column="sal_care" property="care" />
+		<result column="sal_employment" property="employment" />
+		<result column="sal_total" property="totalSalary" />
+		<result column="sal_payment_date" property="paymentDate" />
 	</resultMap>
 	
 
@@ -36,6 +42,7 @@
 		<result column="doc_date" property="docDt"/>
 		<result column="doc_status" property="docStatus"/>
 	</resultMap>
+
 
 	<!-- 로그인(김동규) 수정페이지조회(예빈) -->
 	<select id="selectMember" resultMap="memberResultMap">
@@ -195,7 +202,7 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		 where mem_no = #{memNo}
 	</update>
 	
-	<!-- 전체직원불러오기 -->
+	<!-- 전체직원수조회 -->
 	<select id="getMemberCount" resultType="_int">
 		select
 					count(*)
@@ -234,7 +241,7 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		 where mem_no = #{memNo} 
 	</update>
 	
-	<!-- 사원탈퇴 -->
+	<!-- 사원탈퇴(미완성) -->
 	<update id="deleteMember">
 		update
 					 member
@@ -300,8 +307,47 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 	    where DEPT_CODE = #{deptCode}
 	</select>
 	
+	<insert id="insertPayment" >
+		insert
+		  into salary
+		  (
+		    mem_no
+		  , sal_total
+		  , sal_pension
+		  , sal_health
+		  , sal_care
+		  , sal_employment
+		  )
+		  values
+		  (
+		    #{memNo}
+		  , #{totalSalary}
+		  , #{pension}
+		  , #{health}
+		  , #{care}
+		  , #{employment}
+		  )
+		  
+	</insert>
 	
-
+	<select id="salarypayment" resultMap="memberResultMap">
+		select 
+		        m.mem_no
+		      , mem_name
+		      , dept_name
+		      , pos_name
+		      , salary
+		      , sal_pension
+		      , sal_health
+		      , sal_employment
+		      , sal_care
+		      , sal_total
+		 from member m
+			    join department d on (d.dept_code = m.dept_code)
+			    join position p on (p.pos_code = m.pos_code)
+			    join salary s on(s.mem_no = m.mem_no)
+			    order by mem_no
+	</select>
 
 
 </mapper>

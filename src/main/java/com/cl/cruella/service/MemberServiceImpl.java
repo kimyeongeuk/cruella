@@ -9,7 +9,6 @@ import com.cl.cruella.dao.MemberDao;
 import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
-import com.cl.cruella.dto.VacationDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -86,26 +85,18 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectAllMember(memNo);
 	}
 
-
 	@Override
-	public List<AppdocDto> selectVacList(Map<String, Object> params) {
-		return memberDao.selectVacList(params);
+	public int insertPayment(MemberDto m) {
+		return memberDao.insertPayment(m);
 	}
 
 	@Override
-	public int selectVacListCount(String memNo) {
-		return memberDao.selectVacListCount(memNo);
-	}
-	
-	@Override
-	public List<Map<String, String>> getAllDepartments() {
-		return memberDao.getAllDepartments();
+	public List<MemberDto> salarypaymentList() {
+		return memberDao.salarypaymentList();
 	}
 
-	@Override
-	public List<Map<String, String>> getEmployeesByDeptCode(String deptCode) {
-		return memberDao.getEmployeesByDeptCode(deptCode);
-	}
+
+
 
 
 
