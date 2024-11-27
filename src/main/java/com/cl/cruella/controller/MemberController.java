@@ -557,11 +557,6 @@ public class MemberController {
 	
 	
 	
-	// 조직도
-	@GetMapping("/organization.do")
-	public void organization() {}
-	
-	
 	
 	
 	
