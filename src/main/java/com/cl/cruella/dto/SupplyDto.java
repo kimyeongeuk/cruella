@@ -30,6 +30,8 @@ public class SupplyDto {
 	private int repairSupply;
 	private int workSupply;
 	
+	private String memNo;
+	
 	
 	
 }

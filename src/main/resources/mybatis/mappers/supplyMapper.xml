@@ -50,5 +50,9 @@
    
 </select>
 
+<insert id="insertSupply">
+	insert
+</insert>
+
 
 </mapper>
