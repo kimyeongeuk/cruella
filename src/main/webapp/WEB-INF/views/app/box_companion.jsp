@@ -172,7 +172,7 @@
                     </style>
                     
                     
-                	<tr >
+                	<tr id="order_tr">
                       <th></th>
                       <th><input type="checkbox" id="all_checkBox"></th>
                       <th><span class="header_title"><b>기안자</b></span></th>
@@ -185,11 +185,15 @@
                       <th ><span class="header_title" style="position: relative; right: 13px;"><b>중요사항</b></span></th>
                       <th ><span class="header_title" style="position: relative;right: 0px;"><b>상태</b></span></th>
                     </tr>
+                    
+                    
 
 					<c:forEach var="a" items="${ list }">
                     <tr class="detail_tr" onclick="location.href='${contextPath}/app/detail.do?docNo=${a.docNo}'">
                       <td></td>
-                      <td onclick="event.stopPropagation();"><input type="checkbox" class="deleteCheck_box" ></td>
+                      <td onclick="event.stopPropagation();">
+                      <input type="checkbox" class="deleteCheck_box" value="${a.docNo}">
+                      </td>
                       <td><span class="name_box">${a.memName }</span></td>
                       <td></td>
                       <td style="text-align: center;"><span class="title_box">${a.docTitle}</span></td>
@@ -372,8 +376,56 @@
   			}
     	    
    
+    	    
+    	    
+    	    
+    		// 체크한 기안서들 삭제
     	    $('#delete_icon').on('click',function(){
-    	    	alert('삭제 권한이 없습니다');
+    	    	
+    	    	var selectedDocNos = [];
+    	    	
+    	    if(confirm('기안서를 삭제하시겠습니까?')){
+    	    	
+    	        $('.deleteCheck_box:checked').each(function() {
+    	        	
+    	          var docNo = $(this).val(); 
+    	          selectedDocNos.push(docNo);
+    	          console.log("Selected docNo: ", selectedDocNos);
+    	          
+    	        });
+    	        
+    	        
+    	        
+				if(selectedDocNos.length > 0){
+    	    		
+    	    		$.ajax({
+    	    		    url: '${contextPath}/app/deleteApp.do',
+    	    		    type: 'POST',
+    	    		    contentType: 'application/json',  
+    	    		    data: JSON.stringify({ 
+    	    		    	docNos: selectedDocNos 
+    	    		    	}),  
+    	    		    success: function(res) {
+    	    		        if (res > 0) {
+    	    		            alert('성공적으로 삭제했습니다');
+    	    		            location.href = "${contextPath}/app/box_complete.do";
+    	    		        }
+    	    		    }
+    	    		});
+	    	    	
+    	    	}
+    	        
+    	      
+    	    	
+    	    	
+    	    	
+    	    }
+    	        
+    	       
+    	    	
+    	    	
+    	    	
+    	    	
     	    })
       	
     	    

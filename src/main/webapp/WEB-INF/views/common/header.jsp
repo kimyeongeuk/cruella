@@ -245,7 +245,7 @@
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="" class="menu-link">
+                  <a href="${ contextPath }/member/salarypayment.do" class="menu-link">
                     <div data-i18n="급여지급">급여지급</div>
                   </a>
                 </li>
@@ -255,7 +255,7 @@
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="${ contextPath }/member/signup.do" class="menu-link">
+                  <a href="${ contextPath }/member/organization.do" class="menu-link">
                     <div data-i18n="조직도">조직도</div>
                   </a>
                 </li>

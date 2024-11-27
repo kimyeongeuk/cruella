@@ -15,8 +15,17 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <script src="${ contextPath }/resources/assets/js/config.js"></script>
+    
+   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+
+    
 </head>
 <body>
+
+
 <div class="layout-wrapper layout-content-navbar">
    <div class="layout-container">
    
@@ -48,10 +57,19 @@
             
             		<div style="display: flex; justify-content: left;">
             			<span style=""><button type="button"  id="backBtn" class="btn btn-primary" onclick="historyBack();">목록</button></span>
-            			<c:if test="${app.docStatus eq 'A' }">
-            				<span style="position: relative;
-   										 left: 89%;"><button type="button"  id="delect_Btn" class="btn btn-danger" >회수</button></span>
-            			</c:if>
+            			    <c:if test="${app.docStatus eq 'A' and app.memNo eq memNo}">
+	            				<span style="position: relative; left: 89%;">
+	            					<button type="button"  id="delect_Btn" class="btn btn-danger" >회수</button>
+	            				</span>
+	            			</c:if>
+	            			<c:if test="${app.docStatus eq 'C' and app.memNo eq memNo}">
+	            				<span style="position: relative; left: 89%; cursor: pointer;" onclick="pdf_down();">
+	            					<!-- <button type="button"  onclick="ff();" class="btn btn-success" >다운받기</button> -->
+	            					<img src="${contextPath}/resources/assets/img/free-icon-pdf-5453995.png"
+	            					     style="width: 38px;"/>
+	            				</span>
+	            			</c:if>
+            			
             		</div>
             		
             	
@@ -100,7 +118,7 @@
 
 
 
-						<div class="col-12" style="margin-top: 20px;">
+				<div class="col-12" style="margin-top: 20px;" id="content_div">
                   <div class="card mb-6">
 
 
@@ -411,8 +429,15 @@
                         </td>
                       </tr>
                     </table>
-
-
+                    
+                    
+                <c:if test="${app.docType eq '지각사유서' }">    
+                 <table>
+                  <tr>
+                   <td style="border: 1px solid black;width: 169px; text-align: center;">사유</td>
+                   <td>
+				</c:if>
+				
                     <div style="border: 1px solid black;">
                       <div class="content-wrapper">
                         <div class="container-xxl flex-grow-1 container-p-y">
@@ -426,7 +451,7 @@
 		
 									${app.docContent } 
 									<br>
-									
+									<br>
 									<span style="color:red;">${app.reason}</span>
 
                                 </div>
@@ -437,6 +462,18 @@
                         </div>
                       </div>
                     </div>
+                    
+                    
+                 <c:if test="${app.docType eq '지각사유서' }">  
+                   </td>
+                 </tr>
+           	   </table>
+                </c:if> 
+                    
+                    
+                    
+              
+                    
 
                     <!-- file input -->
                     <div class="card" style="border: 1px solid; border-radius: 0;">
@@ -445,14 +482,35 @@
                         <div class="mb-4">
                         <!-- 파일 -->
                         
-                        	<div>
-                        	<c:forEach var="a" items="${app.attachList}">
-                        		<a href="${contextPath}${a.filePath}/${a.filesystemName}"  download="${a.originalName}">
-                        			${a.originalName}
-                        		</a>
-                        		<br>
-                        	</c:forEach>
-                        	</div>
+                     <div class="btn-group">
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        첨부파일(${app.attachCount})
+                      </button>
+                      <ul class="dropdown-menu">
+                        
+                       <c:forEach var="a" items="${app.attachList}">
+                       	  <li>
+		                      <a href="${contextPath}${a.filePath}/${a.filesystemName}"  download="${a.originalName}">
+		                        ${a.originalName}
+		                       </a>
+		                       <br>
+		                 </li>      
+		               </c:forEach>
+                      </ul>
+                      
+                      
+                    </div>
+                    
+                    
+                    
+                        	
+                        	
+                        	
+                        	
                           
                         </div>
 
@@ -460,8 +518,8 @@
                     </div>
                     <!-- /file input -->
 					<input type="hidden" name="docContent" id="docContentInput" />
-
-
+					
+					
 
 
           </div>
@@ -540,7 +598,12 @@ $(document).ready(function(){
 			        maxOrder: parseInt($('#maxOrder').val(), 10),  // 결재선 최종 순서 
 			        docOrder: parseInt($('#docOrder').val(), 10),  // 결재선 현재 순서 
 			        appLevel: parseInt($('#app_roval_level').val(), 10),  // 현재 결재자의 순서 
-			      	memNo: '${memNo}'
+			      	memNo: '${memNo}',
+			      	appDateStart : '${app.appDateStart }',
+			      	appDateEnd : '${app.appDateEnd }',
+			      	docType : '${app.docType}',
+			      	docMemNo : '${app.memNo}'
+			      	
 			      }),
 			   success: function(res){
 				   	if(res>0){
@@ -623,22 +686,46 @@ $(document).ready(function(){
 	
 })
 
-	  
-	  
-	  
-	  
-		
+
+	// pdf 다운 함수
+function pdf_down() {
+	   const element = document.getElementById('content_div');  // PDF로 변환할 요소
+	    
+	    const options = {
+	        margin:       10,    // 여백
+	        filename:     '${app.docType}.pdf', // 파일 이름
+	        image:        { type: 'jpeg', quality: 0.98 },
+	        html2canvas:  { scale: 1 },   // 해상도 설정
+	        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+	    };
+
+	    // html2pdf 라이브러리를 사용하여 선택한 요소를 PDF로 변환
+	    html2pdf()
+	        .from(element)   // PDF로 변환할 요소
+	        .set(options)     // 옵션 설정
+	        .save();          // PDF 파일 저장
+  }
+
+
 
 </script>
+
+
+
+
+
+
+   
+
 
      
 <c:forEach var="i" items="${app.rovalList }">
 <c:if test="${ i.rvNo eq memNo}">
  <div style="display: flex; justify-content: right;">
              			
-       <button type="button" class="btn btn-success" id="last_sign_success">결재</button>
-        <span style="width: 52px;"></span>
         <button type="button" class="btn btn-warning" id="last_sign_fail" data-bs-toggle="modal" data-bs-target="#myModal">반려</button>
+        <span style="width: 52px;"></span>
+        <button type="button" class="btn btn-success" id="last_sign_success">결재</button>
                         
   </div>
 </c:if>
@@ -670,7 +757,12 @@ $(document).ready(function(){
    </div>
    
    
+ 
+  
    
+
+
+
    
    
 </body>

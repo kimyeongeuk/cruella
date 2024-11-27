@@ -1,50 +1,49 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
-<html
-  lang="en"
-  class="light-style layout-navbar-fixed layout-menu-fixed layout-compact"
-  dir="ltr"
-  data-theme="theme-default"
-  data-assets-path="${ contextPath }/assets/"
-  data-template="views"
-  data-style="light">
+<html lang="en"
+	class="light-style layout-navbar-fixed layout-menu-fixed layout-compact"
+	dir="ltr" data-theme="theme-default"
+	data-assets-path="${ contextPath }/assets/" data-template="views"
+	data-style="light">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-    <script src="${ contextPath }/resources/assets/js/config.js"></script>
+<script src="${ contextPath }/resources/assets/js/config.js"></script>
 </head>
 <body>
-<div class="layout-wrapper layout-content-navbar">
-   <div class="layout-container">
-   
-   
-    <!-- 헤더 시작 -->
-      <jsp:include page="/WEB-INF/views/common/header.jsp"/>
-    <!-- 헤더 끝 -->
-    
-      <div class="layout-page">
-
-    <!-- nav 시작 -->
-      <jsp:include page="/WEB-INF/views/common/nav.jsp" />
-      <!-- nav 끗 -->
+	<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
 
 
-   <div class="content-wrapper">
-   <!-- 세션 시작 -->
-    <div class="container-xxl flex-grow-1 container-p-y">
-     <!-- 이쪽에 세션정보 넣어야합니다 -->
-    
-    
-                  <div class="row">
-                <div class="col-md-12">
-                  <div class="nav-align-top">
-                    <ul class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
+			<!-- 헤더 시작 -->
+			<jsp:include page="/WEB-INF/views/common/header.jsp" />
+			<!-- 헤더 끝 -->
+
+			<div class="layout-page">
+
+				<!-- nav 시작 -->
+				<jsp:include page="/WEB-INF/views/common/nav.jsp" />
+				<!-- nav 끗 -->
+
+
+				<div class="content-wrapper">
+					<!-- 세션 시작 -->
+					<div class="container-xxl flex-grow-1 container-p-y">
+						<!-- 이쪽에 세션정보 넣어야합니다 -->
+
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="nav-align-top">
+									<ul
+										class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
 
 										<li class="nav-item"><a class="nav-link" href="#"> <i
-												class="ti-sm ti ti-user-check me-1_5"></i> 직원등록</a></li>
+												class="ti-sm ti ti-user-check me-1_5"></i> 직원등록
+										</a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
 												class="ti-sm ti ti-users me-1_5"></i> 직원조회 </a></li>
@@ -57,387 +56,244 @@
 
 										<li class="nav-item"><a class="nav-link active" href="#"><i
 												class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
-												
+
 										<li class="nav-item"><a class="nav-link" href="#"><i
 												class="ti-sm ti ti-users me-1_5"></i> 급여내역확인 </a></li>
 
 										<li class="nav-item"><a class="nav-link" href="#"><i
 												class="ti-sm ti ti-users me-1_5"></i> 조직도 </a></li>
 
-                    </ul>
-                  </div>
-                </div>
-              </div>
+									</ul>
+								</div>
+							</div>
+						</div>
 
 
 
 
 
-              <div
-                class="faq-header d-flex flex-column justify-content-center align-items-center h-px-100 position-relative" style="margin-bottom: 10px;">
-                <img
-                  src="${ contextPath }/assets/img/pages/header.png"
-                  class="scaleX-n1-rtl faq-banner-img z-n1 rounded"
-                  alt="background image" />
-                <div class="input-wrapper mt-4 input-group input-group-merge px-lg-5">
-                  <span class="input-group-text" id="basic-addon1"><i class="ti ti-search"></i></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="직원/부서명을 입력해주세요"
-                    aria-label="Search"
-                    aria-describedby="basic-addon1" />
-                </div>
-              </div>
+						<div
+							class="faq-header d-flex flex-column justify-content-center align-items-center " style="margin-bottom: -36px;">
+							<img src="${contextPath }/assets/img/pages/header.png" class=""
+								alt="background image" style="width: 100%; height: 102px;" />
+							<div class="input-wrapper mt-4 input-group input-group-merge"
+								style="position: relative; bottom: 84px; background: white; width: 52%;">
+								<span class="input-group-text" id="basic-addon1"><i
+									class="ti ti-search"></i></span> <input type="text"
+									class="form-control" placeholder="Search articles..."
+									aria-label="Search" aria-describedby="basic-addon1" />
+							</div>
+						</div>
 
 
 
-              <div class="card">
-                <div class="d-flex">
-                  <h5 class="card-header" style="width: 15%;">급여 지급</h5>
+						<div class="card">
+							<div class="d-flex">
+								<h5 class="card-header" style="width: 15%;">급여 지급</h5>
 
 
-                  <div style="display: flex;">
-                    <h5 class="card-header" style="display: flex; align-items: center;">
-                      <select class="form-select" style="width: 100px; margin-right: 10px;" >
-                          <option value="">2024</option>
-                          <option value="">2023</option>
-                      </select> 
-                      <span>년</span>
-                    </h5>
-                  <h5 class="card-header" style="display: flex; align-items: center; padding: 0;">
-                      <select class="form-select" style="width: 70px; margin-right: 10px;">
-                          <option value="">1</option>
-                          <option value="">2</option>
-                          <option value="">3</option>
-                          <option value="">4</option>
-                      </select> 
-                      <span>월</span>
-                  </h5>
-                  </div>
+								<div style="display: flex;">
+									<h5 class="card-header"
+										style="display: flex; align-items: center;">
+										<select class="form-select"
+											style="width: 100px; margin-right: 10px;">
+											<option value="">2024</option>
+											<option value="">2023</option>
+										</select> <span>년</span>
+									</h5>
+									<h5 class="card-header"
+										style="display: flex; align-items: center; padding: 0;">
+										<select class="form-select"
+											style="width: 70px; margin-right: 10px;">
+											<option value="">1</option>
+											<option value="">2</option>
+											<option value="">3</option>
+											<option value="">4</option>
+										</select> <span>월</span>
+									</h5>
+								</div>
 
 
-                  <div style="width: 75%; align-items: center; justify-content: right;" class="d-flex">
+								<div
+									style="width: 75%; align-items: center; justify-content: right;"
+									class="d-flex"></div>
+								<div
+									style="width: 10%; text-align: right; align-content: center; margin-right: 15px;">
 
-                  </div>
-                  <div style="width: 10%;text-align: right;align-content: center;margin-right: 15px;">
-                    
-                    <button type="button" class="btn btn-primary waves-effect waves-light">급여지급</button>  
-                  </div>
-                </div>
-                <div class="table-responsive text-nowrap">
-                  <table class="table" style="text-align: center;">
-                    
-                      <tr>
-                        <th class="sorting_disabled dt-checkboxes-cell dt-checkboxes-select-all" 
-                            rowspan="2" colspan="1">
-                          <input type="checkbox" class="form-check-input">
-                        </th>
-                        <th rowspan="2">사번</th>
-                        <th rowspan="2">사원명</th>
-                        <th rowspan="2">부서</th>
-                        <th rowspan="2">직급</th>
-                        <th colspan="3" style="text-align: center;">급여상세</th>
-                        <th colspan="4" style="text-align: center;">공제항목</th>
-                        <th rowspan="2">지급예정금액</th>
-                        <th rowspan="2">지급날짜</th>
+									<button type="button"
+										class="btn btn-primary waves-effect waves-light" id="pay_btn">급여지급</button>
+								</div>
+							</div>
+							<div class="table-responsive text-nowrap">
+								<table class="table" style="text-align: center;">
 
-                      </tr>
-                      <tr>
-                        <th>기본급</th>
-                        <th>상여금</th>
-                        <th>야근수당</th>
-                        <th>국민연금</th>
-                        <th>건강보험</th>
-                        <th>고용보험</th>
-                        <th>장기요양</th>
+									<tr>
+										<th
+											class="sorting_disabled dt-checkboxes-cell dt-checkboxes-select-all"
+											rowspan="2" colspan="1"><input type="checkbox"
+											class="form-check-input"></th>
+										<th rowspan="2">사번</th>
+										<th rowspan="2">사원명</th>
+										<th rowspan="2">부서</th>
+										<th rowspan="2">직급</th>
+										<th rowspan="2" style="text-align: center;">기본급</th>
+										<th colspan="4" style="text-align: center;">공제항목</th>
+										<th rowspan="2">지급예정금액</th>
+										<th rowspan="2">지급날짜</th>
+										<th rowspan="2">급여명세표</th>
 
-                      </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0">
-                      <tr>
-                        <td>
-                          <input type="checkbox" class="form-check-input">
-                        </td>
-                        <!-- 사번자리 -->
-                        <td>
-                          <span>2024001</span>
-                        </td>
-                        <!-- 사원명 -->
-                        <td>
-                          도존
-                        </td>
-                        <!-- 부서명 -->
-                        <td>
-                          인사팀
-                        </td>
-                        <!-- 직급명 -->
-                        <td>
-                          대리
-                        </td>
-                        <!-- 기본급 -->
-                        <td>
-                          2000000
-                        </td>
-                        <!-- 상여금 -->
-                        <td>
-                          1231230
-                        </td>
-                        <!-- 야근수당 -->
-                        <td>
-                          0
-                        </td>
-                        <!-- 국민연금 -->
-                        <td>
-                          30495
-                        </td>
-                        <!-- 건강보험 -->
-                        <td>
-                          42200
-                        </td>
-                        <!-- 고용보험 -->
-                        <td>
-                          5000
-                        </td>
-                        <!-- 장기요양 -->
-                        <td>
-                          12000
-                        </td>
-                        <!-- 지급예정금액 -->
-                        <td>
-                          200000000
-                        </td>
-                        <!-- 지급날짜 -->
-                        <td>
-                          2024-11-12                          
-                        </td>
-                      </tr>
+									</tr>
+									<tr>
 
+										<th>국민연금</th>
+										<th>건강보험</th>
+										<th>고용보험</th>
+										<th>장기요양</th>
 
-                      <tr>
-                        <td>
-                          <input type="checkbox" class="form-check-input">
-                        </td>
-                        <!-- 사번자리 -->
-                        <td>
-                          <span>2024001</span>
-                        </td>
-                        <!-- 사원명 -->
-                        <td>
-                          도존
-                        </td>
-                        <!-- 부서명 -->
-                        <td>
-                          인사팀
-                        </td>
-                        <!-- 직급명 -->
-                        <td>
-                          대리
-                        </td>
-                        <!-- 기본급 -->
-                        <td>
-                          2000000
-                        </td>
-                        <!-- 상여금 -->
-                        <td>
-                          1231230
-                        </td>
-                        <!-- 야근수당 -->
-                        <td>
-                          hello world
-                        </td>
-                        <!-- 국민연금 -->
-                        <td>
-                          30495
-                        </td>
-                        <!-- 건강보험 -->
-                        <td>
-                          42200
-                        </td>
-                        <!-- 고용보험 -->
-                        <td>
-                          5000
-                        </td>
-                        <!-- 장기요양 -->
-                        <td>
-                          12000
-                        </td>
-                        <!-- 지급예정금액 -->
-                        <td>
-                          200000000
-                        </td>
-                        <!-- 지급날짜 -->
-                        <td>
-                          2024-11-12                          
-                        </td>
-                        
-                      </tr>
+									</tr>
+									</thead>
+									<tbody class="table-border-bottom-0">
+										<c:forEach var="member" items="${list}">
+											<tr>
+												<td><input type="checkbox" class="dd form-check-input" value="${ member.memNo }" >
+												</td>
+												<!-- 사번 -->
+												<td><span>${member.memNo}</span></td>
+												<!-- 사원명 -->
+												<td>${member.memName}</td>
+												<!-- 부서명 -->
+												<td>${member.deptName}</td>
+												<!-- 직급명 -->
+												<td>${member.posName}</td>
+												<!-- 기본급 -->
+												<td>${member.salary}</td>
+												<!-- 국민연금 -->
+												<td>${member.pension}</td>
+												<!-- 건강보험 -->
+												<td>${member.health}</td>
+												<!-- 고용보험 -->
+												<td>${member.employment}</td>
+												<!-- 장기요양 -->
+												<td>${member.care}</td>
+												<!-- 지급예정금액 -->
+												<td>${member.totalSalary}</td>
+												<!-- 지급날짜 -->
+												<td>${member.paymentDate}</td>
+												<!-- 급여명세표 -->
+												<td><a href="${ contextPath }/member/paystub.do" type="button"><i class="far fa-file-alt"></i></a></td>
+											</tr>
+										</c:forEach>
+									</tbody>
+
+								</table>
+							</div>
+						</div>
+
+						<script>
+							$(document).ready(function() {
+								
+								
+								$('#pay_btn').on('click', function() {
+									
+									
+									const check = [];
+									
+									$('.dd:checked').each(function() {
+										var memNo = $(this).val();
+										check.push(memNo);
+										console.log("나다",check);
+										
+											
+											
+									})
+									
+									
+										if(check.length == 0){
+											alert('사원을 체크해주세요');
+											return;
+										}
+									
+									
+									if(confirm('급여를 지급하시겠습니까?')){
+										
+											if(check.length > 0){
+												
+										
+												$.ajax({
+													url: '${contextPath}/member/payBtn.do',
+													contentType: "application/json",
+													type : 'POST',
+													data: JSON.stringify({
+														memNo:check
+													}),
+													success:function(res){
+														if(res > 0){
+															alert("성공적으로 지급되었습니다.")
+															location.href="${contextPath}/member/salarypayment.do";
+															
+															/* let div = "" ;
+															
+															for(let i=0; i<res.length; i++){
+																div += "<>"
+															}
+															 */
+															
+														}
+													}
+												})
+		
+											}
+									}
+									
+									
+									
+									
+								})
+								
+								
+								
+								
+								
+								
+							})
+						</script>
 
 
-                      <tr>
-                        <td>
-                          <input type="checkbox" class="form-check-input">
-                        </td>
-                        <!-- 사번자리 -->
-                        <td>
-                          <span>2024001</span>
-                        </td>
-                        <!-- 사원명 -->
-                        <td>
-                          도존
-                        </td>
-                        <!-- 부서명 -->
-                        <td>
-                          인사팀
-                        </td>
-                        <!-- 직급명 -->
-                        <td>
-                          대리
-                        </td>
-                        <!-- 기본급 -->
-                        <td>
-                          2000000
-                        </td>
-                        <!-- 상여금 -->
-                        <td>
-                          1231230
-                        </td>
-                        <!-- 야근수당 -->
-                        <td>
-
-                        </td>
-                        <!-- 국민연금 -->
-                        <td>
-                          30495
-                        </td>
-                        <!-- 건강보험 -->
-                        <td>
-                          42200
-                        </td>
-                        <!-- 고용보험 -->
-                        <td>
-                          5000
-                        </td>
-                        <!-- 장기요양 -->
-                        <td>
-                          12000
-                        </td>
-                        <!-- 지급예정금액 -->
-                        <td>
-                          200000000
-                        </td>
-                        <!-- 지급날짜 -->
-                        <td>
-                          2024-11-12                          
-                        </td>
-
-                      </tr>
-
-
-                      <tr>
-                        <td>
-                          <input type="checkbox" class="form-check-input">
-                        </td>
-                        <!-- 사번자리 -->
-                        <td>
-                          <span>2024001</span>
-                        </td>
-                        <!-- 사원명 -->
-                        <td>
-                          도존
-                        </td>
-                        <!-- 부서명 -->
-                        <td>
-                          인사팀
-                        </td>
-                        <!-- 직급명 -->
-                        <td>
-                          대리
-                        </td>
-                        <!-- 기본급 -->
-                        <td>
-                          2000000
-                        </td>
-                        <!-- 상여금 -->
-                        <td>
-                          1231230
-                        </td>
-                        <!-- 야근수당 -->
-                        <td>
-
-                        </td>
-                        <!-- 국민연금 -->
-                        <td>
-                          30495
-                        </td>
-                        <!-- 건강보험 -->
-                        <td>
-                          42200
-                        </td>
-                        <!-- 고용보험 -->
-                        <td>
-                          5000
-                        </td>
-                        <!-- 장기요양 -->
-                        <td>
-                          12000
-                        </td>
-                        <!-- 지급예정금액 -->
-                        <td>
-                          200000000
-                        </td>
-                        <!-- 지급날짜 -->
-                        <td>
-
-                        </td>
-
-                      </tr>
-
-            
-
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+					</div>
 
 
 
-              
-            </div>
-    
-    
-    
-    </div>
-   <!-- 세션 끝 -->
+				</div>
+				<!-- 세션 끝 -->
 
 
 
-   <!-- 푸터 시작 -->
-   <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-   <!-- 푸터 끝 -->
-   
-   <div class="content-backdrop fade"></div>
-   <!-- wrapper 닫기 -->
-   </div>
-   
-   <!-- nav layout page 닫기 -->
-   </div>
-   
-   <!-- layout-container 닫기 -->
-   </div>
-     <!-- Overlay -->
-    <div class="layout-overlay layout-menu-toggle"></div>
+				<!-- 푸터 시작 -->
+				<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+				<!-- 푸터 끝 -->
 
-    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-    <div class="drag-target"></div>
-   
-   
-   <!-- layout wrapper 닫기 -->
-   </div>
-   
-   
-   
-   
-   
+				<div class="content-backdrop fade"></div>
+				<!-- wrapper 닫기 -->
+			</div>
+
+			<!-- nav layout page 닫기 -->
+		</div>
+
+		<!-- layout-container 닫기 -->
+	</div>
+	<!-- Overlay -->
+	<div class="layout-overlay layout-menu-toggle"></div>
+
+	<!-- Drag Target Area To SlideIn Menu On Small Screens -->
+	<div class="drag-target"></div>
+
+
+	<!-- layout wrapper 닫기 -->
+	</div>
+
+
+
+
+
 </body>
 </html>

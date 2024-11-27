@@ -148,14 +148,14 @@
                     <div class="d-flex justify-content-end align-items-center">
                       <div class="icon-wrapper">
                         <i class="ti ti-dots-vertical ti-md icon"></i>
-                        <div class="action-box">
+                        <div class="action-box dropdown-replymenu dropdown-menu-end" style="margin-left: -60px;">
                           <form id="frm" action="" method="post">
                             <input type="hidden" id="no" name="no" value="" />
-                            <a href="#" onclick="modifyNoticePost(${n.noticeNo})">
-                              <i class="menu-icon tf-icons ti ti-edit"></i>
+                            <a class="dropdown-item" href="#" onclick="modifyNoticePost(${n.noticeNo})">
+                              <i class="menu-icon tf-icons ti ti-edit"></i><span>수정</span>
                             </a>
-                            <a href="#" onclick="deleteNoticePost(${n.noticeNo})">
-                              <i class="menu-icon tf-icons ti ti-trash"></i>
+                            <a class="dropdown-item" href="#" onclick="deleteNoticePost(${n.noticeNo})">
+                              <i class="menu-icon tf-icons ti ti-trash"></i><span>삭제</span>
                             </a>
                           </form>
                         </div>
@@ -257,7 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (actionBox) {
         actionBox.style.display = actionBox.style.display === 'none' || !actionBox.style.display ? 'block' : 'none';
         hideOtherBoxes('.action-box', actionBox);
-        saveScrollPosition();
       }
     }
 

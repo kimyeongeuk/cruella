@@ -23,9 +23,9 @@
 	SELECT 
 		     SUP_CATEGORY, 
 		     SUP_TYPE,
-		     COUNT(CASE WHEN SUP_STATUS = 'N' THEN 1 END) AS LEFTSUPPLY,
-		     COUNT(CASE WHEN SUP_REPAIR = 'Y' THEN 1 END) AS REPAIRSUPPLY,
-		     COUNT(CASE WHEN SUP_REPAIR = 'Y' AND SUP_STATUS != 'N' THEN 1 END) AS WORKSUPPLY
+		     COUNT(CASE WHEN SUP_STATUS = 'Y' THEN 1 END) AS LEFTSUPPLY,
+		     COUNT(CASE WHEN SUP_REPAIR = 'N' THEN 1 END) AS REPAIRSUPPLY,
+		     COUNT(CASE WHEN SUP_REPAIR = 'N' AND SUP_STATUS != 'Y' THEN 1 END) AS WORKSUPPLY
 		FROM 
 		     SUPPLIES
 	  <if test="supCategory != '전체'">
@@ -41,13 +41,18 @@
 
 
 <select id="countSupply" resultType="_int">
-	SELECT count(*)
+	SELECT count(distinct sup_type)
 		FROM 
 		     SUPPLIES
    <if test="supCategory != '전체'">
       where sup_category = #{supCategory}
    </if>
+   
 </select>
+
+<insert id="insertSupply">
+	insert
+</insert>
 
 
 </mapper>

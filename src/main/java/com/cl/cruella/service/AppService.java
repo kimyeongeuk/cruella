@@ -1,5 +1,8 @@
 package com.cl.cruella.service;
 
+import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -8,15 +11,15 @@ import com.cl.cruella.dao.AppDao;
 import com.cl.cruella.dto.AppRefDto;
 import com.cl.cruella.dto.AppRovalDto;
 import com.cl.cruella.dto.AppdocDto;
-
 import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.PageInfoDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AppService {
@@ -31,9 +34,9 @@ public class AppService {
 	 * jstree 조직도 조회
 	 * @return list
 	 */
-	public List<DeptDto> ajaxJstree(){
+	public List<DeptDto> ajaxJstree(String memNo){
 		
-		List<DeptDto> list = appDao.ajaxJstree();
+		List<DeptDto> list = appDao.ajaxJstree(memNo);
 		
 		return list;
 		
@@ -167,6 +170,23 @@ public class AppService {
 	
 	
 	
+//	결재완료함 카운트
+	public int selectSuccessCount(String memNo) {
+		int result = appDao.selectSuccessCount(memNo);
+		return result;
+	}
+//	결재완료함 조회
+	public List<AppdocDto> selectSuccess(String memNo,PageInfoDto pi){
+		List<AppdocDto> list = appDao.selectSuccess(memNo,pi);
+		return list;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -177,8 +197,11 @@ public class AppService {
 		
 		AppdocDto app = appDao.detailPage(docNo);
 		
+		
 		List<AppRovalDto> rovalList = appDao.detailPageRoval(docNo);
+		
 		List<AttachDto> attachList = appDao.detailPageAttach(docNo);
+		
 		
 		
 		app.setRovalList(rovalList);
@@ -192,6 +215,8 @@ public class AppService {
 	
 	
 	
+	
+	
 //	상세페이지 결재 시
 	public int detailClear(AppdocDto ad) {
 		
@@ -200,12 +225,24 @@ public class AppService {
 		
 		int result = 0;
 		
+		
+		
+		
 		if(ad.getMaxOrder() == ad.getAppLevel()) {
 			
 			result = appDao.detailLastClear(ad); // 최종승인 / 기안문서
 			
+			
 			if(result>0) {
-				result = appDao.detailAppRoval(ad); // 최종승인 / 결재선
+				if(ad.getDocType().equals("연차신청서")) {
+					result = appDao.detailAppRoval(ad); // 최종승인 / 결재선
+					result += appDao.vacation(ad); // 최종승인 / 휴가테이블 insert
+					result += appDao.memberVacation(ad); // 최종승인 / 멤버테이블 휴가갯수 update
+				}else {
+					result = appDao.detailAppRoval(ad); // 최종승인 / 결재선
+				}
+				
+				
 			}
 			
 		}else if(ad.getMaxOrder() > ad.getAppLevel()) {
@@ -246,6 +283,23 @@ public class AppService {
 	public int appDeleteBack(AppdocDto ad) {
 		int result = appDao.appDeleteBack(ad);
 		return result;
+	}
+	
+	
+	
+//	체크한 기안서 삭제
+	public int ajaxDeleteCheckApp(List<String> docNos) {
+		
+		
+		int result = 0;
+		
+		for(String a : docNos) {
+			result += appDao.ajaxDeleteCheckApp(a);
+		}
+		
+		return result;
+		
+		
 	}
 	
 	

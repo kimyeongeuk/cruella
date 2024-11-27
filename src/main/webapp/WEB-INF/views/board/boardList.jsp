@@ -77,8 +77,18 @@
 	    padding: 0 5px; /* 내부 패딩을 추가하여 글자가 잘리지 않도록 합니다 */
 	    font-size: 14px; /* 글자 크기를 조금 줄입니다 */
 	    white-space: nowrap; /* 글자가 한 줄로 나오도록 합니다 */
+	    margin-top: -50px;
 	}
-
+  .btn-group {
+    display: flex;
+    align-items: center;
+  }
+  .ms-5 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
 </style>
 
 </head>
@@ -127,19 +137,6 @@
                     </span>                   
                   </div>
 
-                  <c:choose>
-                    <c:when test="${ loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4' }">
-                      <div class="ms-5">
-                        <button id="create" class="btn btn-primary waves-effect waves-light" onclick="regist();">
-                        	<span class="ti-xs ti ti-edit me-2"></span>작성
-                        </button>  
-                        <button id="create" class="btn btn-danger" onclick="deleteSelectedPosts();">
-                        	<span class="ti-xs ti ti-trash me-2"></span>삭제
-                        </button>      	 
-                      </div>
-                    </c:when>
-                    <c:otherwise></c:otherwise>
-                  </c:choose>
                   <div class="ms-auto d-flex">
                                      
                     <form id="search_form" action="${contextPath}/board/boardSearch.do" method="get" class="d-flex align-items-center">
@@ -260,9 +257,32 @@
                           	
 	              <!-- 페이징 바 -->
 								<div class="card-body">
-								  <div class="row">
-								    <span class="col-lg-12 d-flex justify-content-center">
-								      <div class="demo-inline-spacing">
+								  <c:choose>
+								    <c:when test="${ loginUser.posCode == 'C1' || loginUser.posCode == 'C2' || loginUser.posCode == 'C3' || loginUser.posCode == 'C4' }">
+								      <div class="ms-5"> 
+								        <button id="create" class="btn btn-danger" onclick="deleteSelectedPosts();" style="margin-left: -30px;">
+								          <span class="ti-xs ti ti-trash me-2"></span>삭제
+								        </button>      
+								
+								        <nav aria-label="Page navigation">
+								          <ul class="pagination" id="paging_area">
+								            <li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>
+								            <li class="page-item prev ${pi.currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage - 1});"><i class="ti ti-chevron-left ti-sm"></i></a></li>
+								            <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+								              <li class="page-item ${i == pi.currentPage ? 'active' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${i});">${i}</a></li>
+								            </c:forEach>
+								            <li class="page-item next ${pi.currentPage == pi.maxPage ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.currentPage + 1});"><i class="ti ti-chevron-right ti-sm"></i></a></li>
+								            <li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(${pi.maxPage});"><i class="ti ti-chevrons-right ti-sm"></i></a></li>
+								          </ul>
+								        </nav>
+								
+								        <button id="create" class="btn btn-primary waves-effect waves-light" onclick="regist();">
+								          <span class="ti-xs ti ti-edit me-2"></span>작성
+								        </button>    
+								      </div>
+								    </c:when>
+								    <c:otherwise>
+								      <div class="d-flex justify-content-center">
 								        <nav aria-label="Page navigation">
 								          <ul class="pagination" id="paging_area">
 								            <li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>
@@ -275,8 +295,8 @@
 								          </ul>
 								        </nav>
 								      </div>
-								    </span>
-								  </div>
+								    </c:otherwise>
+								  </c:choose>             
 								</div>
 	              
 	            </div>

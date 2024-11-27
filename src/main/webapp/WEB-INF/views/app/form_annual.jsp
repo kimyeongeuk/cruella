@@ -968,7 +968,7 @@
                       const date1 = new Date(d1);
                       const date2 = new Date(d2);
                       const diffDate = date1.getTime() - date2.getTime();
-                      return Math.abs(diffDate / (1000 * 60 * 60 * 24));
+                      return Math.abs(diffDate / (1000 * 60 * 60 * 24)) + 1;
                     }
 
 
@@ -989,7 +989,7 @@
 							alert('내용을 입력해주세요')
 							return;
 						}else if($('#drag_line_div span').text() == "드래그하여 추가할 수 있습니다."){
-							alert('결재선을 지정해주세요')
+							alert('결재정보에서 결재선을 지정해주세요')
 							return;
 						}
 						

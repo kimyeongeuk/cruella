@@ -25,8 +25,24 @@
 		<result column="dept_name" property="deptName" />
 		<result column="salary" property="salary" />
 		<result column="wl_status" property="wlStatus" />
-		
+		<result column="sal_pension" property="pension" />
+		<result column="sal_health" property="health" />
+		<result column="sal_care" property="care" />
+		<result column="sal_employment" property="employment" />
+		<result column="sal_total" property="totalSalary" />
+		<result column="sal_payment_date" property="paymentDate" />
 	</resultMap>
+	
+
+	<resultMap id="appDocResultMap" type="AppdocDto">
+		<result column="mem_no" property="memNo"/>
+		<result column="doc_no" property="docNo"/>
+		<result column="doc_type" property="docType"/>
+		<result column="doc_title" property="docTitle"/>
+		<result column="doc_date" property="docDt"/>
+		<result column="doc_status" property="docStatus"/>
+	</resultMap>
+
 
 	<!-- 로그인(김동규) 수정페이지조회(예빈) -->
 	<select id="selectMember" resultMap="memberResultMap">
@@ -142,6 +158,7 @@
 		, pos_code
 		, dept_code
 		, salary
+		, profile_url
 		)
 		values
 		(
@@ -158,6 +175,7 @@
 		, #{posCode}
 		, #{deptCode}
 		, #{salary}
+		, #{profileURL}
 		)
 	</insert>
 	
@@ -184,7 +202,7 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		 where mem_no = #{memNo}
 	</update>
 	
-	<!-- 전체직원불러오기 -->
+	<!-- 전체직원수조회 -->
 	<select id="getMemberCount" resultType="_int">
 		select
 					count(*)
@@ -219,15 +237,18 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 			 	 , address = #{address}
 			 	 , phone = #{phone}		
 			 	 , salary = #{salary}
+			 	 , profile_url = #{profileURL}
 		 where mem_no = #{memNo} 
 	</update>
 	
-	<!-- 사원탈퇴 -->
+	<!-- 사원탈퇴(미완성) -->
 	<update id="deleteMember">
 		update
 					 member
 	
 	</update>
+	
+	<!-- 전체사원조회(본인제외) -->
 	<select id="selectAllMember" resultMap="memberResultMap">
 		select
 					 mem_no
@@ -238,7 +259,115 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		 where mem_no != #{memNo}
 	</select>
 	
-
+	<!-- 휴가내역 조회 -->
+	<select id="selectVacList" resultMap="appDocResultMap">
+		select
+					 doc_title
+				 , doc_date
+				 , doc_status
+			from app_doc
+		 where mem_no = #{memNo}
+		   and doc_type = '연차신청서'
+	</select>
+	
+	<!-- 휴가내역조회 리스트갯수 -->
+  <select id="selectVacListCount" resultType="_int">
+		select
+					 count(*)
+			from app_doc
+		 where mem_no = #{memNo}
+		   and doc_type = '연차신청서'
+	</select>
+	<insert id="chatProfile">
+		insert 
+			into chat_profile
+			(
+			  mem_no
+			) 
+			values
+			(
+			  #{memNo}
+			)
+	</insert>
+	
+	<!-- 부서 데이터 가져오기 -->
+	<select id="getAllDepartments" >
+	    SELECT 
+	    			 DEPT_CODE 
+	    		 , dept_name
+	    from department
+	</select>
+	
+	<!-- 특정 부서에 속한 직원 데이터 가져오기 -->
+	<select id="getEmployeesByDeptCode" >
+	    select 
+	    mem_name,
+	    mem_no 
+	    from member
+	    where DEPT_CODE = #{deptCode}
+	</select>
+	
+	<insert id="insertPayment" >
+		insert
+		  into salary
+		  (
+		    mem_no
+		  , sal_total
+		  , sal_pension
+		  , sal_health
+		  , sal_care
+		  , sal_employment
+		  )
+		  values
+		  (
+		    #{memNo}
+		  , #{totalSalary}
+		  , #{pension}
+		  , #{health}
+		  , #{care}
+		  , #{employment}
+		  )
+		  
+	</insert>
+	
+	<select id="salarypayment" resultMap="memberResultMap">
+		select 
+		        m.mem_no
+		      , mem_name
+		      , dept_name
+		      , pos_name
+		      , salary
+		      , sal_pension
+		      , sal_health
+		      , sal_employment
+		      , sal_care
+		      , sal_total
+		      , sal_payment_date
+		 from member m
+			    join department d on (d.dept_code = m.dept_code)
+			    join position p on (p.pos_code = m.pos_code)
+			    join salary s on(s.mem_no = m.mem_no)
+			    order by mem_no
+	</select>
+	
+	
+	
+	
+	
+	<update id="payBtn">
+		update salary 
+		set SAL_STATUS = 'Y'
+	    , SAL_PAYMENT_DATE = sysdate
+	    where mem_no = #{no}
+					
+	</update>
+	
+	
+	
+	
+	
+	
+	
 
 
 </mapper>

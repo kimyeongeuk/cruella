@@ -115,7 +115,7 @@
 									style="padding: 10px; font-size: 18px; font-weight: bold; border-bottom: 1px solid lightgray;">
 									사원 목록</div>
 								<!-- 본문 내용 영역 -->
-								<div style="padding: 10px; margin-top: 10px; margin-left: 10px;">
+								<div id="employeeList" style="padding: 10px; margin-top: 10px; margin-left: 10px;">
 									직원 리스트</div>
 							</div>
 
@@ -126,7 +126,7 @@
 									style="padding: 10px; font-size: 18px; font-weight: bold; border-bottom: 1px solid lightgray;">
 									사원 정보</div>
 								<!-- 본문 내용 영역 -->
-								<div style="padding: 10px; margin-top: 10px; margin-left: 10px;">
+								<div id="employeeInfo" style="padding: 10px; margin-top: 10px; margin-left: 10px;">
 									사원 정보 사번 이름 직급 이메일</div>
 							</div>
 						</div>
@@ -176,8 +176,16 @@
                                 "children": [
                                     { "text": "인사팀" },
                                     { "text": "영업총괄팀" },
-                                    { "text": "지원팀" }
-                                    // 추가적인 하위 요소들...
+                                    { "text": "지원팀" },
+                                    { "text": "남성의류팀" },
+                                    { "text": "여성의류팀" },
+                                    { "text": "식품팀" },
+                                    { "text": "스포츠팀" },
+                                    { "text": "가전/디지털팀" },
+                                    { "text": "뷰티팀" },
+                                    { "text": "명품팀" },
+                                    { "text": "문화센터팀" }
+
                                 ]
                             }
                         ]
@@ -187,6 +195,62 @@
         });
     });
 </script>
+
+<script>
+    $(document).ready(function () {
+        // 조직도 트리 초기화
+        $.ajax({
+            url: "${contextPath}/member/departments.do", // 부서 데이터를 가져오는 URL
+            type: "GET",
+            success: function (departments) {
+                // JSTree를 초기화
+                const treeData = departments.map((dept) => ({
+                    id: dept.deptCode, // 부서 코드
+                    text: dept.deptName, // 부서 이름
+                    icon: "ti ti-folder", // 아이콘 설정
+                }));
+
+                $("#jstree-basic").jstree({
+                    core: {
+                        data: [
+                            {
+                                text: "신세계 백화점 크루엘라점", // 최상위 노드
+                                children: treeData, // 부서 데이터 삽입
+                            },
+                        ],
+                    },
+                });
+            },
+            error: function () {
+                alert("부서 데이터를 불러오는 데 실패했습니다.");
+            },
+        });
+
+        // 부서 클릭 시 사원 목록 가져오기
+        $("#jstree-basic").on("select_node.jstree", function (e, data) {
+            const deptCode = data.node.id; // 선택한 부서의 ID (부서 코드)
+
+            // 사원 목록 가져오기
+            $.ajax({
+                url: "${contextPath}/member/employees.do",
+                type: "GET",
+                data: { deptCode: deptCode },
+                success: function (employees) {
+                    // 사원 목록을 화면에 출력
+                    const employeeList = employees
+                        .map((emp) => `<li>${emp.empName}</li>`)
+                        .join("");
+
+                    $("#employeeList").html(`<ul>${employeeList}</ul>`);
+                },
+                error: function () {
+                    alert("사원 목록을 불러오는 데 실패했습니다.");
+                },
+            });
+        });
+    });
+</script>
+
 
 
 </body>

@@ -25,6 +25,8 @@ public class AttachDto {
 	private Date uploadDt;
 	private String refType;
 	private int refNo;
+	
+	
 
 }
 

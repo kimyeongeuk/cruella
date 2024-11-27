@@ -105,9 +105,11 @@ public class AppController {
 //	jstree 조직도 조회
 	@ResponseBody
 	@GetMapping(value="/jstreeList.do", produces="application/json")
-	public List<DeptDto> ajaxJstree() {
+	public List<DeptDto> ajaxJstree(HttpSession session) {
 		
-		List<DeptDto> list = appService.ajaxJstree();
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		
+		List<DeptDto> list = appService.ajaxJstree(memNo);
 		
 		return list;
 		
@@ -145,7 +147,7 @@ public class AppController {
 		}
 		
 		
-		return "redirect:/app/app_main.do";
+		return "redirect:/app/box_progress.do";
 		
 		
 		
@@ -225,9 +227,6 @@ public class AppController {
 	
 	
 	
-	
-	
-	
 	// 참조열람함 조회
 	@GetMapping("/box_view.do")
 	public void boxViewPage(@RequestParam(value="page", defaultValue="1") int currentPage
@@ -248,17 +247,37 @@ public class AppController {
 	}
 	
 	
+	// 결재완료함 조회
+	@GetMapping("/box_complete.do")
+	public void boxCompletePage(@RequestParam(value="page", defaultValue="1") int currentPage
+			,HttpSession session
+			,Model model) {
+		
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		
+		int listCount = appService.selectSuccessCount(memNo);
+		
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
+		
+		List<AppdocDto> list = appService.selectSuccess(memNo,pi);
+		
+		model.addAttribute("list",list);
+		model.addAttribute("pi",pi);
+		
+	}
 	
 	
 	
-//	결재문서함(대기,반려) 상세조회
+	
+	
+//	결재문서함(대기,반려,진행,참조,완료) 상세조회
 	@GetMapping("/detail.do")
 	public void detailPage(AppdocDto docNo,Model model,HttpSession session) {
 		
 		AppdocDto appdoc = appService.detailPage(docNo);
 		
-		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
 		
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
 		
 		model.addAttribute("app",appdoc);
 		model.addAttribute("memNo",memNo);
@@ -295,6 +314,25 @@ public class AppController {
 	@PostMapping("/ajaxAppDeleteBack.do")
 	public int appDeleteBack(AppdocDto ad) {
 		int result = appService.appDeleteBack(ad);
+		
+		return result;
+	}
+	
+	
+	
+//	체크한 기안서 삭제
+	@ResponseBody
+	@PostMapping("/deleteApp.do")
+	public int ajaxDeleteCheckApp(@RequestBody Map<String, List<String> >requestBody) {
+		
+		
+		List<String> docNos = requestBody.get("docNos");
+		
+		log.debug("docNos : {}",requestBody.get("docNos"));
+		log.debug("docNos : {}",docNos);
+		
+		int result = appService.ajaxDeleteCheckApp(docNos);
+		
 		
 		return result;
 	}

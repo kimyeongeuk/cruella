@@ -15,6 +15,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
    <script src="${ contextPath }/resources/assets/js/config.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+   
    <link rel="stylesheet" href="${contextPath}/assets/vendor/libs/fullcalendar/fullcalendar.css" />
    <link rel="stylesheet" href="${contextPath}/assets/vendor/css/pages/app-calendar.css" />
    <style>
@@ -30,7 +32,20 @@
 		#side_myworklog.active::before {
 		  border: 2px solid white; /* 테두리만 흰색으로 변경 */
 		}
+		.fc-event-time{
+			display: none;
+		}
+		.late-in {
+    	background-color: #FFC6C7; 
+    	color: white;
+  	}
+  	.normal {
+  		background-color: #EBEBED;
+  	}
    </style>
+   
+
+  
 </head>
 
 <body>
@@ -294,129 +309,48 @@
                         <thead>
                           <div style="display: flex; height: 80px;">
                             <div style="display: flex; margin-top: 30px;">
-                              <p style="margin-right: 50px; margin-left: 50px;">휴가관리</p>
+                              <h5 class="card-action-title" style="margin-left: 20px; margin-right: 30px; margin-bottom: 60px;">휴가관리</h5>
                               <p style="color: #28C76F;">${loginUser.vacCount}</p>
                               &nbsp;&nbsp;/&nbsp;&nbsp;
                               <span>15</span>
                             </div>
-                            <div style="position: relative; top: 20px; left: 400px; display: flex; gap: 30px;">
+                            <div style="position: relative; top: 20px; left: 400px; display: flex; gap: 60px;">
                               <div style="position: relative; top: 10px;">
                                 사용 <span>${15-loginUser.vacCount}</span>
                                 &nbsp;&nbsp;&nbsp;
                                 잔여 <span style="color: #28C76F;">${loginUser.vacCount}</span>
                               </div>
-                              <a href="${contextPath}/app/app_main.do" class="btn btn-success mb-1" style="height: 45px;">
+                              <a href="${contextPath}/app/form_annual.do" class="btn btn-success mb-1" style="height: 45px;">
                                 <i class="ti ti-plane-departure ti-xs me-2"></i>휴가 신청
                               </a>
                             </div>
                           </div>
                         </thead>
-                        <thead>
-                          <tr>
-                            <th style="border: 1px solid #e6e6e8;">제목</th>
-                            <th>작성자</th>
-                            <th>작성일</th>
-                            <th>진행상태</th>
-                          </tr>
-                        </thead>
-    
-                        <tbody class="table-border-bottom-0">
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td>
-                              <span class="badge badge-center bg-success">
-                                <i class="ti ti-check"></i> <span style="color: #444050; margin-left: 12px;">승인</span>
-                              </span>
-                            </td>
-                            
-                          </tr>
-    
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자2</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td><span>3</span></td>
-                            
-                          </tr>
-    
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자3</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td><span class="badge bg-label-primary me-1">3</span></td>
-                            
-                          </tr>
-    
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자4</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td><span class="badge bg-label-primary me-1">퇴사</span></td>
-                            
-                          </tr>
-    
-                          <tr>
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            <td>관리자</td>
-    
-                            <td>
-                              <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                              <span class="fw-medium">인사팀</span>
-                            </td>
-    
-                            
-                            <td><span class="badge bg-label-primary me-1">퇴사</span></td>
-                            
-                          </tr>
+										    <thead>
+										      <tr>
+									            <th style="width: 20%;">번호</th>
+									            <th style="width: 35%;">제목</th>
+									            <th style="width: 25%;">신청일</th>
+									            <th style="width: 20%;">진행상태</th>
+										      </tr>
+										    </thead>
+                        <tbody class="table-border-bottom-0" id="vacListTbody">
+                         
                         </tbody>
                       </table>
                     </div>
+										<div class="card-body">
+										  <div class="row">
+										    <span class="col-lg-12 d-flex justify-content-center">
+										      <div class="demo-inline-spacing">
+										        <nav aria-label="Page navigation">
+										          <ul class="pagination" id="paging_area">
+										          </ul>
+										        </nav>
+										      </div>
+										    </span>
+										  </div>
+		                </div>
                   </div>
                   <!--/ Projects table -->                  
                   <!--/ Activity Timeline -->
@@ -464,8 +398,16 @@
     
    
    <script>
-	   // 사이드바 처리
-		document.addEventListener("DOMContentLoaded", function () {
+   
+	  	// 페이지 로드 시 실행시킬 함수(김동규)
+	   window.onload = function(){
+	   	
+		   fnVacList(); // 휴가목록 조회
+	   }
+
+ 
+	   	// 사이드바 처리
+			document.addEventListener("DOMContentLoaded", function () {
 	 	
 			const element = document.getElementById("side_myworklog");
 			
@@ -474,8 +416,134 @@
 		 	element.style.color = "white";
 		 	element.classList.add("active");
 	 	
-	});
+		});
+	   	
+
+    // 휴가목록 조회
+		function fnVacList() {
+		   
+		   const memNo = '${loginUser.getMemNo()}'; 
+		   
+		    $.ajax({
+		        url: '${contextPath}/member/vacList.do',
+		        type: 'POST',
+		        data: {memNo: memNo},
+		        success: function(res) {
+		        	console.log(res);
+		        	  let pi = res.pi; // 페이징 정보
+		            let trEl = '';
+		
+		            // 데이터가 비어 있는 경우
+		            if (!res || res.length == 0) {
+		                trEl += '<tr>';
+		                trEl += '<td colspan="6">신청 내역이 없습니다.</td>';
+		                trEl += '</tr>';
+		            } else {
+		                let count = 1;
+		                res.list.forEach((vac) => {
+		                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
+		
+		                    trEl += '<tr>';
+		                    trEl += '<td>' + reverseCount + '</td>';
+		                    trEl += '<td>' + vac.docTitle + '</td>';
+		                    trEl += '<td>' + vac.docDt + '</td>';
+		                    
+		                    // docStatus에 따라 이미지 삽입
+		                    let statusImage = '';
+		                    if (vac.docStatus == 'A' || vac.docStatus == 'B') {
+		                        statusImage = '<img src="${contextPath}/assets/img/customizer/checkGray.png" alt="대기" />';
+		                    } else if (vac.docStatus == 'C') {
+		                        statusImage = '<img src="${contextPath}/assets/img/customizer/checkGreen.png" alt="승인" />';
+		                    } else if (vac.docStatus == 'D') {
+		                        statusImage = '<img src="${contextPath}/assets/img/customizer/checkRed.png" alt="반려" />';
+		                    }
+		                    
+		                    trEl += '<td>' + statusImage + '</td>';
+		                    trEl += '</tr>';
+		
+		                    count++;
+		                });
+		            }
+		            $('#vacListTbody').html(trEl);
+		            
+		            // 페이징바
+		            let pagingEl = '';
+		            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
+
+		            // 페이지 번호 생성
+		            for (let i = pi.startPage; i <= pi.endPage; i++) {
+		                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + i + ');">' + i + '</a></li>';
+		            }
+
+		            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
+
+		            // 페이징바 업데이트
+		            $('#paging_area').html(pagingEl);		            
+		        }
+		    })
+		}   	
    </script>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    if (calendarEl) {
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        selectable: true,
+        aspectRatio: 2.2,
+        contentHeight: 850,
+        dayMaxEvents: true,
+        editable: true,
+        selectMirror: true,
+        textColor: 'black',
+        displayEventTime: true,
+        events: [
+        	  <c:forEach var="list" items="${wlList}" varStatus="status">
+        	    {
+        	      id: '${list.workNo}_in', // 출근 이벤트 ID
+        	      title: '출근 ${list.clockInTime}', // 출근 시간 표시
+        	      start: '${list.workDate}T${list.clockInTime}', // 출근 시간
+        	      end: '${list.workDate}T${list.clockInTime}', // 출근 시간은 끝 시간이 없으므로 start와 end가 동일
+        	      extendedProps: { // 추가 데이터
+        	        workDate: '${list.workDate}', // 근무 날짜
+        	        status: '출근'
+        	      },
+        	      allDay: false // 시간 기반 이벤트
+        	    },
+        	    
+        	    {
+        	      id: '${list.workNo}_out', // 퇴근 이벤트 ID
+        	      title: '퇴근 ${list.clockOutTime}', // 퇴근 시간 표시
+        	      start: '${list.workDate}T${list.clockOutTime}', // 퇴근 시간
+        	      end: '${list.workDate}T${list.clockOutTime}', // 퇴근 시간은 끝 시간이 없으므로 start와 end가 동일
+        	      extendedProps: { // 추가 데이터
+        	        workDate: '${list.workDate}', // 근무 날짜
+        	        status: '퇴근'
+        	      },
+        	      allDay: false // 시간 기반 이벤트
+        	    }
+        	    <c:if test="${!status.last}">,</c:if>
+        	  </c:forEach>
+        	],
+        	  eventClassNames: function(info) {
+        		    var startTime = new Date(info.event.start);
+
+        		    // 출근 이벤트이고, 시간이 9시 이후일 경우에만 색상 변경
+        		    if (info.event.extendedProps.status === '출근' && startTime.getHours() >= 9) {
+        		      return ['late-in']; // 'late-in' 클래스를 추가
+        		    }
+        		    return ['normal']; // 퇴근 이벤트나 출근이 9시 이전이면 기본 스타일 사용
+        	  }
+      });
+      calendar.render();
+    } else {
+      console.error("Calendar element not found!");
+    }
+  });
+</script>
 
 
 </body>

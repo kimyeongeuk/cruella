@@ -306,135 +306,45 @@
         </div>
         <!--/ Popular Instructors -->
 
-        <!-- Projects table -->
-        <div class="card" style="width: 920px;">
-          <div class="table-responsive text-nowrap">
-            <table class="table">
-              <thead>
-                <div style="display: flex; height: 80px;">
-                  <div style="display: flex; margin-top: 30px; margin-left: 20px;">
-                    <i class="ti ti-news ti-lg"></i>
-                    <p style="margin-right: 50px; margin-left: 15px; font-size: 18px;">공지사항</p>
-                    <a style="color: blue;" href="#">전체</a>
-                    &nbsp;&nbsp;/&nbsp;&nbsp;
-                    <a href="#">${ loginUser.getDeptCode() }</a>
-                  </div>
-                  <div style="position: relative; top: 20px; left: 200px; display: flex; gap: 30px;">
-                    <div>
-                      <input
-                        style="margin-top: 3px;"
-                        type="text"
-                        class="form-control"
-                        id="defaultFormControlInput"
-                        placeholder="검색어 입력"
-                        aria-describedby="defaultFormControlHelp" />
-                    </div>
-                    <a href="javascript:void(0)" class="btn btn-primary mb-1" style="height: 45px;">
-                      <i class="ti ti-search ti-xs me-2"></i>검색
-                    </a>
-                  </div>
-                </div>
-              </thead>
-              <thead>
-                <tr>
-                  <th style="border: 1px solid #e6e6e8;">제목</th>
-                  <th>작성자</th>
-                  <th>작성일</th>
-                  <th>조회수</th>
-                </tr>
-              </thead>
-
-              <tbody class="table-border-bottom-0">
-                <tr>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    관리자
-                  </td>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    <span>3</span>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    관리자2
-                  </td>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    <span>3</span>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    관리자3
-                  </td>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    <span class="badge bg-label-primary me-1">3</span>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    관리자4
-                  </td>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    <span class="badge bg-label-primary me-1">퇴사</span>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    관리자
-                  </td>
-                  <td>
-                    <i class="ti ti-brand-angular ti-md text-danger me-4"></i>
-                    <span class="fw-medium">인사팀</span>
-                  </td>
-                  <td>
-                    <span class="badge bg-label-primary me-1">퇴사</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!--/ Projects table -->
-      </div>    
+				<!-- 공지사항 영역 (재운님 코드)-->
+				<div class="card" style="width: 920px;">
+  				<div class="d-flex align-items-center">
+   					<div style="margin: 20px;">
+         			<h5>공지사항</h5>
+     				</div>
+  	 			</div>
+	 				<div class="card-datatable table-responsive pt-3">
+						<table class="datatables-basic table text-center">
+							<thead>
+  							<tr>
+        					<th style="width: 10%;">번호</th>
+									<th style="width: 15%;">작성자</th>
+									<th style="width: 40%;">제목</th>
+									<th style="width: 15%;">작성일</th>
+									<th style="width: 10%;">조회수</th>
+  							</tr>
+							</thead>
+  						<tbody id="noticeListTbody">
+    
+							</tbody>
+						</table>
+					</div>
+					<div class="card-body">
+					  <div class="row">
+					    <span class="col-lg-12 d-flex justify-content-center">
+					      <div class="demo-inline-spacing">
+					        <nav aria-label="Page navigation">
+					          <ul class="pagination" id="paging_area">
+					          </ul>
+					        </nav>
+					      </div>
+					    </span>
+					  </div>
+	        </div>
+	     		</div>
+	       
+	       <!--/ 팀게시판 영역 -->         
+     </div>    
     
     
     
@@ -506,14 +416,19 @@
     
 		<script>
 	  		
+				// 페이지 로드시 실행시킬 함수
 	  		window.onload = function(){
 	  			
-	  			checkClockInStatus();
-	      
+	  			checkClockInStatus(); // 출근상태 체크
+	  			fnNoticeList();			  // 공지사항 조회
+		    	fnMemoList();	        // 메모 전체 리스트 조회
+		    	fnMemberList();       // 전체 사원 리스트 조회
+		    	
 	  		}
 	  	
 	  		// 출근 등록여부 확인
 	  		function checkClockInStatus(){
+	  			
 	  			
 	  			$.ajax({
 	  				url: '${contextPath}/wl/checkStatus.do',
@@ -586,191 +501,191 @@
 
 
 
-              <!-- 매장별 매출 점유율 -->
-              <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                  const ctx = document.getElementById('doughnutChart').getContext('2d');
-                  const chartCenterText = document.getElementById('chartCenterText');
-            
-                  const data = {
-                    labels: ['남성의류', '여성의류', '식품', '스포츠', '뷰티', '명품', '문화센터', '디지털 및 가전'],
-                    datasets: [{
-                      data: [5000000, 10000000, 10000000, 8000000, 9000000, 20000000, 9000000, 6000000],
-                      backgroundColor: ['rgb(102, 110, 232)', 'rgb(40, 208, 148)', 'rgb(253, 172, 52)', 'rgb(253, 233, 52)', 'rgb(223, 253, 52)', 'rgb(52, 223, 253)', 'rgb(196, 52, 253)', 'rgb(253, 52, 193)']
-                    }]
-                  };
-            
-                  const config = {
-                    type: 'doughnut',
-                    data: data,
-                    options: {
-                      responsive: true,
-                      maintainAspectRatio: false,
-                      plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                          callbacks: {
-                            label: (context) => {
-                              let label = context.label || '';
-                              if (label) label += ': ';
-                              if (context.parsed !== null) {
-                                const total = context.chart.getDatasetMeta(context.datasetIndex).total;
-                                const percentage = (context.parsed / total * 100).toFixed(2);
-                                label += `${percentage}% (${context.parsed.toLocaleString()} 원)`;
-                              }
-                              return label;
-                            }
-                          }
-                        },
-                        datalabels: {
-                          formatter: (value, context) => {
-                            const dataset = context.chart.data.datasets[0];
-                            const meta = context.chart.getDatasetMeta(0);
-                            const total = dataset.data.reduce((a, b, i) => a + (!meta.data[i].hidden ? b : 0), 0);
-                            const percentage = (value / total * 100).toFixed(2) + '%';
-                            return meta.data[context.dataIndex].hidden ? '' : percentage;
-                          },
-                          color: '#fff',
-                          labels: { title: { font: { weight: 'bold' } } }
-                        }
-                      }
-                    },
-                    plugins: [ChartDataLabels]
-                  };
-            
-                  const chart = new Chart(ctx, config);
-                  updateCenterText();
-            
-                  const legendContainer = document.getElementById('legendContainer');
-                  data.labels.forEach((label, index) => {
-                    const legendItem = document.createElement('div');
-                    legendItem.className = 'legend-item';
-                    const legendColor = document.createElement('div');
-                    legendColor.className = 'legend-color';
-                    legendColor.style.backgroundColor = data.datasets[0].backgroundColor[index];
-                    const legendText = document.createElement('span');
-                    legendText.innerText = label;
-                    legendItem.appendChild(legendColor);
-                    legendItem.appendChild(legendText);
-            
-                    legendItem.addEventListener('click', () => {
-                      legendItem.classList.toggle('active');
-                      const meta = chart.getDatasetMeta(0);
-                      meta.data[index].hidden = !meta.data[index].hidden;
-                      chart.options.plugins.datalabels.formatter = (value, context) => {
-                        const dataset = context.chart.data.datasets[0];
-                        const total = dataset.data.reduce((a, b, i) => a + (!meta.data[i].hidden ? b : 0), 0);
-                        const percentage = (value / total * 100).toFixed(2) + '%';
-                        return meta.data[context.dataIndex].hidden ? '' : percentage;
-                      };
-                      chart.update();
-                      updateCenterText();
-                    });
-            
-                    legendContainer.appendChild(legendItem);
-                  });
-                });
-    
-    
-              </script>
-              <script>
-                const div1 = document.getElementById("div1");
-                div1.style.backgroundColor = 'rgba(75, 192, 192, 0.2)';
-                div1.style.borderColor = 'rgba(75, 192, 192, 1)';
-
-                const div2 = document.getElementById("div2");
-                div2.style.backgroundColor = 'rgba(255, 159, 64, 0.2)';
-                div2.style.borderColor = 'rgba(255, 159, 64, 1)';
-              </script>
-              <!-- 매장매출 차트 -->
-              <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                  const ctx = document.getElementById('barChart').getContext('2d');
-                  const categorySelect = document.getElementById('categorySelect');
-                  const startDate = document.getElementById('startDate');
-                  const endDate = document.getElementById('endDate');
-            
-                  const dataSets = {
-                    '남성의류': { '레노마셔츠': 5000000, '라코스테': 7000000 },
-                    '여성의류': { '샤넬': 10000000, '구찌': 12000000 },
-                    '식품': { '롯데마트': 10000000, '홈플러스': 9500000 },
-                    '스포츠': { '나이키': 8000000, '아디다스': 8500000 },
-                    '뷰티': { '아모레퍼시픽': 9000000, 'LG생활건강': 11000000 },
-                    '명품': { '루이비통': 20000000, '에르메스': 25000000 },
-                    '문화센터': { 'CGV': 9000000, '롯데시네마': 8000000 },
-                    '디지털 및 가전': { '삼성전자': 6000000, 'LG전자': 7500000 }
-                  };
-            
-                  let chart;
-            
-                  const createChart = (category) => {
-                    const data = {
-                      labels: Object.keys(dataSets[category]),
-                      datasets: [{
-                        label: '매출',
-                        data: Object.values(dataSets[category]),
-                        backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)'],
-                        borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)'],
-                        borderWidth: 1,
-                        barThickness: 40 // 막대의 두께를 설정합니다
-                      },
-                      {
-                        label: '', // 가짜 데이터셋
-                        data: [], // 데이터는 비워둡니다.
-                        backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)'], // 새로운 색상
-                        borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)'],
-                        borderWidth: 1,
-                        barThickness: 40
-                      }]
-                    };
-            
-                    const config = {
-                      type: 'bar',
-                      data: data,
-                      options: {
-                        responsive: true, // 반응형 설정
-                        maintainAspectRatio: false,
-                        scales: {
-                          y: {
-                            beginAtZero: true,
-                            ticks: {
-                              callback: function(value) {
-                                return value.toLocaleString() + ' 원';
-                              }
-                            }
-                          }
-                        },
-                        plugins: {
-                          legend: { 
-                            display: false,
-                          },
-                          
-                          tooltip: {
-                            callbacks: {
-                              label: function(context) {
-                                return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + ' 원';
-                              }
-                            }
-                          }
-                        }
-                      }
-                    };
-            
-                    if (chart) {
-                      chart.destroy();
-                    }
-                    chart = new Chart(ctx, config);
-                  };
-            
-                  categorySelect.addEventListener('change', (event) => {
-                    createChart(event.target.value);
-                  });
-            
-                  createChart('남성의류');  // 초기화 시 첫 번째 카테고리로 차트를 만듭니다.
-                });
-              </script>
+   <!-- 매장별 매출 점유율 -->
    <script>
-	   // 사이드바 처리
+     document.addEventListener('DOMContentLoaded', () => {
+       const ctx = document.getElementById('doughnutChart').getContext('2d');
+       const chartCenterText = document.getElementById('chartCenterText');
+ 
+       const data = {
+         labels: ['남성의류', '여성의류', '식품', '스포츠', '뷰티', '명품', '문화센터', '디지털 및 가전'],
+         datasets: [{
+           data: [5000000, 10000000, 10000000, 8000000, 9000000, 20000000, 9000000, 6000000],
+           backgroundColor: ['rgb(102, 110, 232)', 'rgb(40, 208, 148)', 'rgb(253, 172, 52)', 'rgb(253, 233, 52)', 'rgb(223, 253, 52)', 'rgb(52, 223, 253)', 'rgb(196, 52, 253)', 'rgb(253, 52, 193)']
+         }]
+       };
+ 
+       const config = {
+         type: 'doughnut',
+         data: data,
+         options: {
+           responsive: true,
+           maintainAspectRatio: false,
+           plugins: {
+             legend: { display: false },
+             tooltip: {
+               callbacks: {
+                 label: (context) => {
+                   let label = context.label || '';
+                   if (label) label += ': ';
+                   if (context.parsed !== null) {
+                     const total = context.chart.getDatasetMeta(context.datasetIndex).total;
+                     const percentage = (context.parsed / total * 100).toFixed(2);
+                     label += `${percentage}% (${context.parsed.toLocaleString()} 원)`;
+                   }
+                   return label;
+                 }
+               }
+             },
+             datalabels: {
+               formatter: (value, context) => {
+                 const dataset = context.chart.data.datasets[0];
+                 const meta = context.chart.getDatasetMeta(0);
+                 const total = dataset.data.reduce((a, b, i) => a + (!meta.data[i].hidden ? b : 0), 0);
+                 const percentage = (value / total * 100).toFixed(2) + '%';
+                 return meta.data[context.dataIndex].hidden ? '' : percentage;
+               },
+               color: '#fff',
+               labels: { title: { font: { weight: 'bold' } } }
+             }
+           }
+         },
+         plugins: [ChartDataLabels]
+       };
+ 
+       const chart = new Chart(ctx, config);
+       updateCenterText();
+ 
+       const legendContainer = document.getElementById('legendContainer');
+       data.labels.forEach((label, index) => {
+         const legendItem = document.createElement('div');
+         legendItem.className = 'legend-item';
+         const legendColor = document.createElement('div');
+         legendColor.className = 'legend-color';
+         legendColor.style.backgroundColor = data.datasets[0].backgroundColor[index];
+         const legendText = document.createElement('span');
+         legendText.innerText = label;
+         legendItem.appendChild(legendColor);
+         legendItem.appendChild(legendText);
+ 
+         legendItem.addEventListener('click', () => {
+           legendItem.classList.toggle('active');
+           const meta = chart.getDatasetMeta(0);
+           meta.data[index].hidden = !meta.data[index].hidden;
+           chart.options.plugins.datalabels.formatter = (value, context) => {
+             const dataset = context.chart.data.datasets[0];
+             const total = dataset.data.reduce((a, b, i) => a + (!meta.data[i].hidden ? b : 0), 0);
+             const percentage = (value / total * 100).toFixed(2) + '%';
+             return meta.data[context.dataIndex].hidden ? '' : percentage;
+           };
+           chart.update();
+           updateCenterText();
+         });
+ 
+         legendContainer.appendChild(legendItem);
+       });
+     });
+
+
+   </script>
+   <script>
+     const div1 = document.getElementById("div1");
+     div1.style.backgroundColor = 'rgba(75, 192, 192, 0.2)';
+     div1.style.borderColor = 'rgba(75, 192, 192, 1)';
+
+     const div2 = document.getElementById("div2");
+     div2.style.backgroundColor = 'rgba(255, 159, 64, 0.2)';
+     div2.style.borderColor = 'rgba(255, 159, 64, 1)';
+   </script>
+   <!-- 매장매출 차트 -->
+   <script>
+     document.addEventListener('DOMContentLoaded', () => {
+       const ctx = document.getElementById('barChart').getContext('2d');
+       const categorySelect = document.getElementById('categorySelect');
+       const startDate = document.getElementById('startDate');
+       const endDate = document.getElementById('endDate');
+ 
+       const dataSets = {
+         '남성의류': { '레노마셔츠': 5000000, '라코스테': 7000000 },
+         '여성의류': { '샤넬': 10000000, '구찌': 12000000 },
+         '식품': { '롯데마트': 10000000, '홈플러스': 9500000 },
+         '스포츠': { '나이키': 8000000, '아디다스': 8500000 },
+         '뷰티': { '아모레퍼시픽': 9000000, 'LG생활건강': 11000000 },
+         '명품': { '루이비통': 20000000, '에르메스': 25000000 },
+         '문화센터': { 'CGV': 9000000, '롯데시네마': 8000000 },
+         '디지털 및 가전': { '삼성전자': 6000000, 'LG전자': 7500000 }
+       };
+ 
+       let chart;
+ 
+       const createChart = (category) => {
+         const data = {
+           labels: Object.keys(dataSets[category]),
+           datasets: [{
+             label: '매출',
+             data: Object.values(dataSets[category]),
+             backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+             borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)'],
+             borderWidth: 1,
+             barThickness: 40 // 막대의 두께를 설정합니다
+           },
+           {
+             label: '', // 가짜 데이터셋
+             data: [], // 데이터는 비워둡니다.
+             backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)'], // 새로운 색상
+             borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)'],
+             borderWidth: 1,
+             barThickness: 40
+           }]
+         };
+ 
+         const config = {
+           type: 'bar',
+           data: data,
+           options: {
+             responsive: true, // 반응형 설정
+             maintainAspectRatio: false,
+             scales: {
+               y: {
+                 beginAtZero: true,
+                 ticks: {
+                   callback: function(value) {
+                     return value.toLocaleString() + ' 원';
+                   }
+                 }
+               }
+             },
+             plugins: {
+               legend: { 
+                 display: false,
+               },
+               
+               tooltip: {
+                 callbacks: {
+                   label: function(context) {
+                     return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + ' 원';
+                   }
+                 }
+               }
+             }
+           }
+         };
+ 
+         if (chart) {
+           chart.destroy();
+         }
+         chart = new Chart(ctx, config);
+       };
+ 
+       categorySelect.addEventListener('change', (event) => {
+         createChart(event.target.value);
+       });
+ 
+       createChart('남성의류');  // 초기화 시 첫 번째 카테고리로 차트를 만듭니다.
+     });
+   </script>
+   <script>
+	  // 사이드바 처리
 		document.addEventListener("DOMContentLoaded", function () {
 	 	
 			const element = document.getElementById("dashboard");
@@ -780,13 +695,7 @@
 		 	element.classList.add("active");
 	 	
 		});
-	   
-	    window.onload = function(){
-	    	
-	    	fnMemoList();	  // 메모 전체 리스트 조회
-	    	fnMemberList(); // 전체 사원 리스트 조회
-				    	
-	    }
+
 	    
 	    // 메모 전체 리스트 조회(김동규)
 	   	function fnMemoList(){
@@ -958,7 +867,64 @@
 	    		}
 	    		
 	    	})
-	    }	    
+	    }
+	    
+	    // 공지사항 목록조회
+	    function fnNoticeList(page){
+	    	$.ajax({
+	    		url: '${contextPath}/member/noticeList.do',
+	    		type: 'POST',
+	    		data: {page: page},
+	    		success: function(res) {
+	    			console.log(res);
+		              let pi = res.pi; // 페이지 정보
+			            let trEl = '';
+			
+			            // 데이터가 비어 있는 경우
+			            if (!res || res.list.length == 0) {
+			                trEl += '<tr>';
+			                trEl += '<td colspan="6">조회된 게시글이 없습니다.</td>';
+			                trEl += '</tr>';
+			            } else {
+			                let count = 1;
+			                res.list.forEach((notice) => {
+			                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
+			
+			                    
+			                    trEl += '<tr data-boardno="' + notice.noticeNo + '">';
+			                    trEl += '<td>' + reverseCount + '</td>';
+			                    trEl += '<td>' + notice.memName + '</td>';
+			                    trEl += '<td class="title" style="cursor: pointer;">' + notice.noticeTitle;
+			                    trEl += '</td>';
+			                    trEl += '<td>' + notice.noticeRegistDT + '</td>';
+			                    trEl += '<td>' + notice.noticeCount + '</td>';
+			                    trEl += '</tr>';
+			
+			                    count++;
+			                });
+			            }
+			
+			            $('#noticeListTbody').html(trEl);
+			            
+			            // 페이징바 생성 및 업데이트
+			            let pagingEl = '';
+			            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="fnNoticeList(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
+			            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnNoticeList(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
+
+			            for (let i = pi.startPage; i <= pi.endPage; i++) {
+			                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnNoticeList(' + i + ');">' + i + '</a></li>';
+			            }
+
+			            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnNoticeList(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
+			            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="fnNoticeList(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
+
+			            $('#paging_area').html(pagingEl);			
+	    		}
+	    	})
+	    }
+	    function goToPage(pageNumber) {
+	        window.location.href = "${contextPath}/member/noticeList.do?page=" + pageNumber;
+	      }
 	    
    </script>
 	

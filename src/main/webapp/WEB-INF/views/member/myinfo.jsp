@@ -40,8 +40,8 @@
    	 overflow-y: scroll;
    	 }
    	 #teamListDiv{
-   	 max-height: 345px;
-   	 overflow-y: auto;
+   	 max-height: 300px;
+   	 overflow-y: scroll;
    	 }
 		 #memoDiv::-webkit-scrollbar,
 		 #teamListDiv::-webkit-scrollbar {
@@ -352,7 +352,7 @@
 
                       <!-- 서명이 메인에 보일 영역 -->
                       <div style="height: 322px; width: 100%; border: 1px solid;">
-                        <img id="sign_image" style="max-width: 100%; max-height: 100%; object-fit: contain;" />  
+                        <img id="sign_image" alt="" style="max-width: 100%; max-height: 100%; object-fit: contain;" />  
                         <!-- object-fit: contain; : 비율은 유지하되 이미지가 왜곡되지 않게 하는 속성 -->
                       </div>
 
@@ -594,27 +594,38 @@
 		                  </div>
 
 		                  <div class="ms-auto d-flex">
-		
 		                  </div>
 		                </div>
-		             <div class="card-datatable table-responsive pt-3">
-								  <table class="datatables-basic table text-center">
-								    <thead>
-								      <tr>
-							            <th style="width: 10%;">번호</th>
-							            <th style="width: 15%;">작성자</th>
-							            <th style="width: 40%;">제목</th>
-							            <th style="width: 15%;">작성일</th>
-							            <th style="width: 10%;">조회수</th>
-							            <th style="width: 10%;">댓글수</th>
-								      </tr>
-								    </thead>
-								    <tbody id="boardListTbody">
-								      
-								    </tbody>
-								  </table>
-								</div>
-               </div>
+		             		<div class="card-datatable table-responsive pt-3">
+								  		<table class="datatables-basic table text-center">
+								    		<thead>
+								      		<tr>
+								            <th style="width: 10%;">번호</th>
+								            <th style="width: 15%;">작성자</th>
+								            <th style="width: 40%;">제목</th>
+								            <th style="width: 15%;">작성일</th>
+								            <th style="width: 10%;">조회수</th>
+								            <th style="width: 10%;">댓글수</th>
+								      		</tr>
+								    		</thead>
+										    <tbody id="boardListTbody">
+										      
+										    </tbody>
+								  		</table>
+								  		</div>
+											<div class="card-body">
+											  <div class="row">
+											    <span class="col-lg-12 d-flex justify-content-center">
+											      <div class="demo-inline-spacing">
+											        <nav aria-label="Page navigation">
+											          <ul class="pagination" id="paging_area">
+											          </ul>
+											        </nav>
+											      </div>
+											    </span>
+											  </div>
+			                </div>
+                		</div>
                   
                   <!--/ 팀게시판 영역 -->                  
                   <!--/ Activity Timeline -->
@@ -626,12 +637,14 @@
                           <i class="ti ti-users ti-lg"></i>
                           <h5 class="card-action-title mb-0" style="margin-left: 15px;">${ loginUser.getDeptName() }</h5> <!-- 나의 소속팀이 보이게 -->
                         </div>
-                        <div class="card-body" id="teamListDiv"> <!-- 나의 소속팀 전체 리스트 조회 영역 -->
+                        <div class="card-body"> <!-- 나의 소속팀 전체 리스트 조회 영역 -->
+                        	<div id="teamListDiv">
+                        	</div>
                         </div>
                       </div>
                     </div>
                     <!--/ 나의 소속팀 목록 -->
-                    <!-- 워크플로우 -->
+                    <!-- 나의 결재 문서함 -->
                     <div class="col-lg-12 col-xl-6">
                       <div class="card card-action mb-6 mt-6">
                         <div class="card-header align-items-center">
@@ -641,32 +654,32 @@
                         <div class="card-body">
                           <div style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px;">
                             <div>
-                              <img src="${ contextPath }/assets/img/customizer/workflow-green.png"
+                              <img src="${ contextPath }/assets/img/customizer/wlblue.png"
                                   style="width: 70px; height: 70px; margin-top: 10px;"/>
                             </div>
                             <div style="margin-top: 35px;">
-                              <span style="font-size: 20px;">최근 작성 문서</span>
-                              <span style="font-size: 20px; margin-left: 24px;">2</span>
+                              <span style="font-size: 20px; cursor: pointer;" onclick="location.href='${contextPath}/app/box_standby.do'">결재 대기함</span>
+                              <span style="font-size: 20px; margin-left: 24px;" id="app_standby"></span>
                             </div>
                           </div>
                           <div style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px;">
                             <div>
-                              <img src="${ contextPath }/assets/img/customizer/workflow-gray.png"
+                              <img src="${ contextPath }/assets/img/customizer/wlgray.png"
                                   style="width: 70px; height: 70px; margin-top: 10px;"/>
                             </div>
                             <div style="margin-top: 35px;">
-                              <span style="font-size: 20px;">진행 중 문서</span>
-                              <span style="font-size: 20px; margin-left: 44px;">5</span>
+                              <span style="font-size: 20px; cursor: pointer;" onclick="location.href='${contextPath}/app/box_progress.do'">결재 진행함</span>
+                              <span style="font-size: 20px; margin-left: 20px;" id="app_progress"></span>
                             </div>
                           </div>
                           <div style="width: 320px; height: 100px; margin-left: 20px; display: flex; gap: 45px;">
                             <div>
-                              <img src="${ contextPath }/assets/img/customizer/workflow-blue.png"
+                              <img src="${ contextPath }/assets/img/customizer/wlgreen.png"
                                   style="width: 70px; height: 70px; margin-top: 10px;"/>
                             </div>
                             <div style="margin-top: 35px;">
-                              <span style="font-size: 20px;">결재 대기 문서</span>
-                              <span style="font-size: 20px; margin-left: 24px;">1</span>
+                              <span style="font-size: 20px; cursor: pointer;" onclick="location.href='${contextPath}/app/box_complete.do'">결재 완료함</span>
+                              <span style="font-size: 20px; margin-left: 24px;" id="app_success"></span>
                             </div>
                           </div>
                         </div>
@@ -719,7 +732,7 @@
     	fnTeamList();  //	소속팀 전체 리스트 조회
     	fnLoadSign();  // 전자서명 조회
     	fnBoardList(); // 게시판 리스트 조회
-			    	
+			fnAppList();   // 내 결재 문서함 조회
     }
     
     // 메모 전체 리스트 조회(김동규)
@@ -898,44 +911,80 @@
     	})
     }
     
-    //팀게시판 리스트 조회
-function fnBoardList() {
-    $.ajax({
-        url: '${contextPath}/member/boardList.do',
-        type: 'POST',
-        success: function(res) {
-            let trEl = '';
+    // 팀게시판 리스트 조회
+		function fnBoardList() {
+		    $.ajax({
+		        url: '${contextPath}/member/boardList.do',
+		        type: 'POST',
+		        success: function(res) {
+	              let pi = res.pi; // 페이지 정보
+		            let trEl = '';
+		
+		            // 데이터가 비어 있는 경우
+		            if (!res || res.list.length == 0) {
+		                trEl += '<tr>';
+		                trEl += '<td colspan="6">조회된 게시글이 없습니다.</td>';
+		                trEl += '</tr>';
+		            } else {
+		                let count = 1;
+		                res.list.forEach((board) => {
+		                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
+		
+		                    
+		                    trEl += '<tr data-boardno="' + board.boardNo + '">';
+		                    trEl += '<td>' + reverseCount + '</td>';
+		                    trEl += '<td>' + board.memName + '</td>';
+		                    trEl += '<td class="title" style="cursor: pointer;">' + board.boardTitle;
+		                    trEl += '</td>';
+		                    trEl += '<td>' + board.boardRegistDT + '</td>';
+		                    trEl += '<td>' + board.boardCount + '</td>';
+		                    trEl += '<td>' + board.replyCount + '</td>';
+		                    trEl += '</tr>';
+		
+		                    count++;
+		                });
+		            }
+		
+		            $('#boardListTbody').html(trEl);
+		            
+		            // 페이징바
+		            let pagingEl = '';
+		            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
 
-            // 데이터가 비어 있는 경우
-            if (!res || res.list.length == 0) {
-                trEl += '<tr>';
-                trEl += '<td colspan="6">조회된 게시글이 없습니다.</td>';
-                trEl += '</tr>';
-            } else {
-                let count = 1;
-                let pi = res.pi; // 페이지 정보
-                res.list.forEach((board) => {
-                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
+		            // 페이지 번호 생성
+		            for (let i = pi.startPage; i <= pi.endPage; i++) {
+		                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + i + ');">' + i + '</a></li>';
+		            }
 
-                    
-                    trEl += '<tr data-boardno="' + board.boardNo + '">';
-                    trEl += '<td>' + reverseCount + '</td>';
-                    trEl += '<td>' + board.memName + '</td>';
-                    trEl += '<td class="title" style="cursor: pointer;">' + board.boardTitle;
-                    trEl += '</td>';
-                    trEl += '<td>' + board.boardRegistDT + '</td>';
-                    trEl += '<td>' + board.boardCount + '</td>';
-                    trEl += '<td>' + board.replyCount + '</td>';
-                    trEl += '</tr>';
+		            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
 
-                    count++;
-                });
-            }
-
-            $('#boardListTbody').html(trEl);
-        }
-    })
-}
+		            // 페이징바 업데이트
+		            $('#paging_area').html(pagingEl);
+		        }
+		    })
+		}
+    
+		// 내 결재 문서함 조회
+		function fnAppList(){
+			
+			let memNo = '${loginUser.getMemNo()}';
+			
+			$.ajax({
+				url: '${contextPath}/member/selectAppList.do',
+				type: 'POST',
+				data: {memNo: memNo},
+				success: function(res){
+					
+					$('#app_standby').html(res.A);
+					$('#app_progress').html(res.B);
+					$('#app_success').html(res.C);
+					
+				}
+			})
+			
+		}
     
     // 사이드바 처리
 		document.addEventListener("DOMContentLoaded", function () {

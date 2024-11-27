@@ -25,8 +25,8 @@ public class AppDao {
 	private final SqlSessionTemplate sqlSession;
 	
 	// 조직도 조회
-	public List<DeptDto> ajaxJstree(){
-		return sqlSession.selectList("appMapper.ajaxJstree");
+	public List<DeptDto> ajaxJstree(String memNo){
+		return sqlSession.selectList("appMapper.ajaxJstree",memNo);
 	}
 	// 해당 양식에 기본값 적용할 값 조회
 	public DeptDto formDraftPage(String userNo) {
@@ -125,6 +125,21 @@ public class AppDao {
 	 
 	 
 	 
+	 // 결재완료함 (listCount용)
+	 public int selectSuccessCount(String memNo) {
+		 return sqlSession.selectOne("appMapper.selectSuccessCount",memNo);
+	 }
+	 
+	 // 결재완료함 리스트 조회
+	 public List<AppdocDto> selectSuccess(String memNo,PageInfoDto pi){
+		 RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit() ,pi.getBoardLimit());
+		 return sqlSession.selectList("appMapper.selectSuccess",memNo,rowBounds);
+	 }
+	 
+	 
+	 
+	 
+	 
 	 
 	 
 	 
@@ -191,6 +206,40 @@ public class AppDao {
 	 public int appDeleteBack(AppdocDto ad) {
 		 return sqlSession.update("appMapper.appDeleteBack",ad);
 	 }
+	 
+	 
+	 
+	 
+	 // 체크한 기안서들 삭제
+	 public int ajaxDeleteCheckApp(String a) {
+		 return sqlSession.update("appMapper.ajaxDeleteCheckApp",a);
+	 }
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 // 연차신청서 최종 승인시 // 휴가테이블 insert / member 테이블 휴가일수 update
+	 public int vacation(AppdocDto ad) {
+		 return sqlSession.insert("appMapper.vacation",ad);
+	 }
+	 
+	 public int memberVacation(AppdocDto ad) {
+		 return sqlSession.update("appMapper.memberVacation",ad);
+	 }
+	 
+	 
+	 
 	
 	
 	

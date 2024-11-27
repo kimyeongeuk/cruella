@@ -18,7 +18,17 @@
     
     
 
+<style>
 
+	.select2-selection__placeholder{
+		display: none;
+	}
+	
+	.select2-selection__rendered{
+		display: none;
+	}
+
+</style>
     
     
     
@@ -90,12 +100,12 @@
                 type="button"
                 class="btn btn-outline-primary"
                 style="float:inline-end; margin-left:10px;">
-                비품 신청서
+                비품 신청목록
               </button>
 
               <!-- /비품 신청서 버튼 -->
 
-              <!-- 비품 추가 모달 버튼 --> <!-- 지원팀만 보이게 -->
+              <!-- 비품 추가 모달 버튼 --> <!-- 지원팀만 보이게 쿼리문 수정-->
                 <button
                   type="button"
                   class="btn btn-outline-primary"
@@ -127,7 +137,7 @@
                     <div class="modal-body">
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       <div class="text-center mb-6">
-                        <h4 class="address-title mb-2" style="padding-bottom:30px;">비품 추가</h4>
+                        <h4 class="address-title mb-2" style="padding-bottom:10px;">비품 추가</h4>
                       </div>
                       <form id="addNewItemForm" class="row g-6" onsubmit="return false">
                         <div class="col-12">
@@ -266,13 +276,13 @@
               <!-- 비품 신청 모달창 -->
               <div class="modal fade" id="applySupply" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
-                  <div class="modal-content" style="width:600px;">
+                  <div class="modal-content" style="width:600px; margin-left: 100px;">
                     <div class="modal-body">
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       <div class="text-center mb-6">
                         <h4 class="address-title mb-2" style="padding-bottom:30px;">비품 신청</h4>
                       </div>
-                      <form id="applySupplyForm" class="row g-6" onsubmit="return false">
+                      <form id="applySupplyForm" action="${ contextPath }/supply/insert.do" method="post" class="row g-6">
                         <div class="col-12 col-md-6" style="margin-top:20px; width:500px;">
                           <label class="form-label" for="supplyCategory">카테고리</label>
                           <select
@@ -327,7 +337,58 @@
 
 
 
+	<script>
+	
+	$('#supplyCategory').change(function() {
+        // id="supplyCategory"에 들어있는 value 값 가져오기 ( val 은 jquery문 )
+        const selectedValue = $(this).val();
 
+        console.log(supplyCategory);
+        
+        
+        
+        $('#supplyType').html("");
+
+        let a = "";
+        if(selectedValue === '전자기기'){
+          a += '<option value="선택" disabled selected style="display:none;">선택</option>'
+          a += '<option value="컴퓨터 본체">컴퓨터 본체</option>'
+          a += '<option value="노트북">노트북</option>'
+          a += '<option value="마우스">마우스</option>'
+          a += '<option value="결제 단말기">결제 단말기</option>'
+          a += '<option value="키보드">키보드</option>'
+          a += '<option value="복합기">복합기</option>'
+          a += '<option value="빔 프로젝터">빔 프로젝터</option>'
+          
+        }else if(selectedValue === '사무용품'){
+        	a += '<option value="선택" disabled selected style="display:none;">선택</option>'
+          a += '<option value="펜">펜</option>'
+          a += '<option value="포스트잇">포스트잇</option>'
+          a += '<option value="A4용지">A4용지</option>'
+          a += '<option value="가위">가위</option>'
+          a += '<option value="자">자</option>'
+          a += '<option value="형광펜">형광펜</option>'
+          a += '<option value="수첩">수첩</option>'
+          a += '<option value="연필">연필</option>'
+        }else{ // '기타'
+        	a += '<option value="선택" disabled selected style="display:none;">선택</option>'
+          a += '<option value="이동식 탈의실">이동식 탈의실</option>'
+          a += '<option value="옷걸이">옷걸이</option>'
+          a += '<option value="행사 매대">행사 매대</option>'
+          a += '<option value="전신거울">전신거울</option>'
+        }
+
+       
+        
+        $('#supplyType').html(a); // jQuery문으로 innerHTML에 넣는 구문이 .html이다.
+
+
+
+    });
+	
+	
+	
+	</script>
 
 
                             
@@ -414,7 +475,7 @@
 							<div class="row">
 								<span class="col-lg-12 d-flex justify-content-center">
 									<div class="demo-inline-spacing">
-										<nav aria-label="Page navigation">
+										<nav aria-label="Page navigation" id="paginationId">
 										
 										
 										
@@ -447,7 +508,7 @@
     
     
     
-    </div>
+    
    <!-- 세션 끝 -->
 
 		<script>
@@ -503,8 +564,8 @@
 					  pageNo: pageNo
 				  },
 				  success: function(res){
-					  
-					  console.log(res.list);  // {pi: {}, list: []}
+					  //console.log(res);
+					  //console.log(res.list);  // {pi: {}, list: []}
 					  
 					  let a = "";
 					  for(let i=0; i<res.list.length; i++){
@@ -528,12 +589,57 @@
 									 
 					  }
 					  $("#tbodyId").html(a);
+
 					  
+					  console.log(res.pi);
 					  
+					// Pagination HTML
+					    let paginationHtml = "<ul class='pagination'>";
+
+					    
+					    
 					  
+
+					    // 첫 페이지로 이동
+							paginationHtml += "<li class='page-item first " + (res.pi.currentPage == 1 ? 'disabled' : '') + "'>"
+							                + "<a class='page-link' onclick='selectSupplyList(" + '"' + category + '", ' + 1 + ")'>"
+							                + "<i class='ti ti-chevrons-left ti-sm'></i></a></li>";
+
+							// 이전 페이지로 이동
+							paginationHtml += "<li class='page-item prev " + (pageNo == 1 ? 'disabled' : '') + "'>"
+							                + "<a class='page-link' onclick='selectSupplyList(" + '"' + category + '", ' + (pageNo -1) + ")'>"
+							                + "<i class='ti ti-chevron-left ti-sm'></i></a></li>";
+					    
+
+					    // 페이지 번호 출력
+					    for (let i = res.pi.startPage; i <= res.pi.endPage; i++) {
+					        paginationHtml += "<li class='page-item " + (res.pi.currentPage == i ? 'active' : '') + "'>"
+					                        + "<a class='page-link' onclick='selectSupplyList(" + '"' + category + '", ' + i + ")'>" + i + "</a></li>";
+					    }
+					     
+					     // 다음 페이지로 이동
+							paginationHtml += "<li class='page-item next " + (res.pi.currentPage == res.pi.maxPage ? 'disabled' : '') + "'>"
+							                + "<a class='page-link' onclick='selectSupplyList(" + '"' + category + '", ' + (pageNo + 1) + ")'>"
+							                + "<i class='ti ti-chevron-right ti-sm'></i></a></li>";
+
+							// 마지막 페이지로 이동
+							paginationHtml += "<li class='page-item last " + (res.pi.currentPage == res.pi.maxPage ? 'disabled' : '') + "'>"
+							                + "<a class='page-link' onclick='selectSupplyList(" + '"' + category + '", ' + res.pi.maxPage + ")'>"
+							                + "<i class='ti ti-chevrons-right ti-sm'></i></a></li>";
+
+					     
+					     
+					     
+					    paginationHtml += "</ul>";
+					    
+					    
+					    
+					    
+
+					    // Pagination HTML 삽입
+					    $("#paginationId").html(paginationHtml);
 					  
-					  
-										
+										/*
 											<ul class="pagination">
 												<!-- 첫 페이지로 이동 -->
 												<li
@@ -576,7 +682,7 @@
 												</a>
 												</li>
 											</ul> 
-											
+											*/
 											
 											
 							

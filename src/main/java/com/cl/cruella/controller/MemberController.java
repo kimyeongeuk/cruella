@@ -14,21 +14,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.BoardDto;
+import com.cl.cruella.dto.CalendarDto;
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.dto.NoticeDto;
 import com.cl.cruella.dto.PageInfoDto;
+import com.cl.cruella.dto.WorkLogDto;
+import com.cl.cruella.service.AppService;
 import com.cl.cruella.service.BoardService;
 import com.cl.cruella.service.MemberService;
+import com.cl.cruella.service.NoticeService;
+import com.cl.cruella.service.WorkLogService;
 import com.cl.cruella.util.FileUtil;
 import com.cl.cruella.util.PagingUtil;
 
-import jakarta.mail.Session;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -47,6 +54,9 @@ public class MemberController {
 	private final FileUtil fileUtil;
 	private final PagingUtil pagingUtil;
 	private final BoardService boardService;
+	private final AppService appService;
+	private final NoticeService noticeService;
+	private final WorkLogService wlService;
 
 	
 	// 로그인(김동규)
@@ -232,12 +242,20 @@ public class MemberController {
 	 
 	 // 근태관리 탭 클릭
 	 @GetMapping("/myinfo_workLog.do")
-	 public void myinfoWorkLog() {}
+	 public void myinfoWorkLog(HttpSession session, Model model) {
+		 
+		 MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+		 String memNo = loginUser.getMemNo();	
+			
+		 List<WorkLogDto> list = wlService.allWorkTime(memNo);
+		 model.addAttribute("wlList", list);
+
+	 }
 	 
 	 // 내정보 - 팀게시판리스트 조회
 	 @PostMapping("/boardList.do")
 	 @ResponseBody
-     public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session) {
+     public Map<String, Object> boardList(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session) {
 		 
          MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
 
@@ -259,6 +277,76 @@ public class MemberController {
 
          return params;
      }
+	 
+	 // 대시보드 - 공지사항 조회
+	 @PostMapping("/noticeList.do")
+	 @ResponseBody
+	 public Map<String, Object> noticeList(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session){
+		 
+         MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+         String deptCode = loginUser.getDeptCode();
+
+         String loggedInDeptCode = deptCode != null ? deptCode : loginUser.getDeptCode();
+        
+         Map<String, Object> params = new HashMap<>();
+         params.put("deptCode", loggedInDeptCode);
+
+         int listCount = noticeService.selectNoticeListCount(params);
+
+         PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+         params.put("pi", pi);
+
+         List<NoticeDto> list = noticeService.selectNoticeList(params);
+         params.put("list", list);
+         
+
+         return params;		 
+	 }
+	 
+	 
+	 // 전 사원 정보 조회(이름, 메일, 사번, 사진)
+	 @PostMapping("/selectAll_db.do")
+	 @ResponseBody
+	 public List<MemberDto> selectAllMember(String memNo) {
+		 
+		 List<MemberDto> list = memberService.selectAllMember(memNo);
+		 
+		 return list;
+	 }
+	 
+	 // 내 결재 문서함 조회
+	 @PostMapping("/selectAppList.do")
+	 @ResponseBody
+	 public Map<String, Integer> selectAppList(String memNo) {
+		 
+	     // 상태별 개수를 저장할 Map
+	     Map<String, Integer> statusCounts = new HashMap<>();
+	     statusCounts.put("A", appService.selectStandbyCount(memNo));  // 대기
+	     statusCounts.put("B", appService.selectProgressCount(memNo)); // 진행
+	     statusCounts.put("C", appService.selectSuccessCount(memNo));  // 완료
+	     
+	     return statusCounts;
+	 }
+	 
+	 // 휴가 신청 목록 조회
+	 @PostMapping("/vacList.do")
+	 @ResponseBody
+	 public Map<String, Object> selectVacList(String memNo, @RequestParam(value = "page", defaultValue = "1") int currentPage, Model model) {
+		 
+		 
+		 int listCount = memberService.selectVacListCount(memNo);
+		 
+		 PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+		 
+         Map<String, Object> params = new HashMap<>();
+         params.put("pi", pi);
+         params.put("memNo", memNo);
+         
+
+         List<AppdocDto> list = memberService.selectVacList(params);
+         params.put("list", list);
+         return params;
+	 }
 	 
 	 
 	 
@@ -348,18 +436,43 @@ public class MemberController {
 	
 	// 사원등록(이예빈)
 	@PostMapping("/insert.do")
-	public String insertMember(MemberDto m, RedirectAttributes rd) {
+	public String insertMember(MemberDto m, RedirectAttributes rd, @RequestParam("uploadFile") MultipartFile uploadFile) {
 		
 		if( m.getMemPwd()== null) {
 			m.setMemPwd("111111");
-		}
+		} 
 		
 		m.setMemPwd( bcryptPwdEncoder.encode(m.getMemPwd()) );
+		
+		// 파일 업로드 처리
+		
+	    if (!uploadFile.isEmpty()) {
+	        // 파일 업로드 수행
+	        Map<String, String> map = fileUtil.fileupload(uploadFile, "profile");
+	        String filePath = map.get("filePath") + "/" + map.get("filesystemName");
+
+	        // MemberDto에 프로필 URL 설정
+	        m.setProfileURL(filePath);
+	    } else {
+	        m.setProfileURL(null); // 파일이 없을 경우 null로 설정
+	    }
 		
 		int result = memberService.insertMember(m);
 			
 		if(result > 0) {
 			rd.addFlashAttribute("alertMsg", "성공적으로 회원가입 되었습니다");
+			
+			// 급여테이블에 insert됨 
+			m.setPension((int)(m.getSalary()*0.045)); // 기본급에 공제항목 계산한거
+			m.setHealth((int)(m.getSalary()*0.039));
+			m.setCare((int)(m.getHealth()*0.05));
+			m.setEmployment((int)(m.getSalary()*0.09));  
+			m.setTotalSalary(m.getSalary() - (m.getPension() + m.getHealth() + m.getCare() + m.getEmployment()));
+			
+			log.debug("m:{}", m);
+			result = memberService.insertPayment(m);
+			
+			
 			
 		}else {
 			rd.addFlashAttribute("alertMsg", "회원가입실패");
@@ -392,36 +505,7 @@ public class MemberController {
 	}
 
 	
-	// 프로필사진변경
-	@ResponseBody
-	@PostMapping("/updateProfile.do")
-	public String updateProfile( MultipartFile uploadFile) {
-		// 수정 대상 회원정보 조회
-		System.out.println("들어옴");
-		String memNo = "C2024005";
-		MemberDto targetMember = memberService.selectMemberByNo(memNo); // 회원 번호로 회원 정보 조회
-		// 기존 프로필 URL 저장 
-		String originalProfileURL = targetMember.getProfileURL();
-		
-		// 파일 업로드 처리 
-		Map<String, String> map = fileUtil.fileupload(uploadFile, "profile");
-		// 새 프로필 URL 설정
-		targetMember.setProfileURL(map.get("filePath") + "/" + map.get("filesystemName"));
-		int result = memberService.updateProfileImg(targetMember);
-			if(result > 0) {
-				// 성공시 => 기존 프로필이 존재했을 경우 파일 삭제
-				if(originalProfileURL != null) {
-					new File(originalProfileURL).delete();
-				}
-				return "SUCCESS";
-			}else {
-				// 실패시 => 변경요청시 전달된 파일 삭제
-				new File(targetMember.getProfileURL()).delete();
-				targetMember.setProfileURL(originalProfileURL);
-				return "FAIL";
-			}
-			
-	}
+
 	
 	// 회원정보수정페이지 이동 (이예빈)
 	@GetMapping("/modifydelete.do")
@@ -436,8 +520,22 @@ public class MemberController {
 	    return "member/modifydelete";
 	}
 
+	// 회원정보수정
 	@PostMapping("/updateMember.do")
-	public String updateMember(MemberDto m, RedirectAttributes rd ) {
+	public String updateMember(MemberDto m, RedirectAttributes rd, @RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile ) {
+		
+	    // 1. 파일 업로드 처리
+	    if (!uploadFile.isEmpty()) {
+	        // 파일 업로드 수행
+	        Map<String, String> map = fileUtil.fileupload(uploadFile, "profile");
+	        String filePath = map.get("filePath") + "/" + map.get("filesystemName");
+
+	        // MemberDto에 프로필 URL 설정
+	        m.setProfileURL(filePath);
+	    } else {
+	        m.setProfileURL(null); // 파일이 없을 경우 null로 설정
+	    }
+		// 사원정보 업데이트
 		int result = memberService.updateMember(m);
 		
 		if(result > 0) {
@@ -466,6 +564,34 @@ public class MemberController {
 	
 	
 	
+	
+	// 급여지급페이지
+	@GetMapping("/salarypayment.do")
+	public String salarypayment(Model model) {
+		List<MemberDto> list = memberService.salarypaymentList();
+		model.addAttribute("list", list);
+		return "member/salarypayment";
+	}
+	
+	// 급여지급버튼
+	@ResponseBody
+	@PostMapping("/payBtn.do")
+	public int payBtn(@RequestBody Map<String,List<String>> request) {
+		List<String> memNos = request.get("memNo");
+		int result = memberService.payBtn(memNos);
+		
+		return result;
+		
+		
+	}
+	
+	
+	
+	
+
+
+	
+	
 	// 출퇴근조회(이예빈)
 	@GetMapping("/checkinrecordview.do")
 	public void checkinrecodeview() {}
@@ -473,7 +599,18 @@ public class MemberController {
 	// 근무시간조회(이예빈)
 	@GetMapping("/workhoursview.do")
 	public void workhoursview() {}
+	
+	// 조직도조회(이예빈)
+	@GetMapping("/organization.do")
+	public void organization() {}
 
+//	// 급여명세표(이예빈)
+//	@GetMapping("/paystub.do")
+//	public String paystub(Model model) {
+//		List<MemberDto> list = memberService.paystub();
+//		model.addAttribute("list", list);
+//		return "member/paystub";
+//	}
 	
 	
 

@@ -9,22 +9,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
+@Getter
 @ToString
 @Builder
-public class ChatListDto {
+public class VacationDto {
 	
-	 private int chatNo;
-	 private String memNo;
-	 private Date clRegistDate;
-	 private String chatNoticeNo;
-	 private String clLock;
-	 private String clAlram;
-	 private String type;
-	 private String clTitle;
+	private int vacNo;
+	private int vacDate;
+	private Date vacStartDate;
+	private Date vacEndDate;
+	private String memNo;
 
 }

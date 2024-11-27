@@ -11,7 +11,13 @@ function jstreeRendering(jstreeView, theme, nodeData){
         themes: {
           name: theme,
         },
-        check_callback: true,
+        //check_callback: true,
+		check_callback: function (op, node, par, pos, more) { // 노드 이동,추가,삭제 동작이 발생할때 허용할지 ,차단할 수 있는 함수
+							if (op === "move_node") {
+								return false;
+							}
+							return true;
+						},
         data: nodeData 
 		
       },
@@ -73,6 +79,7 @@ $(function () {
 					text: memList[j].memName + " " + memList[j].posName,
 				    memName: memList[j].memName,
 					memNo: memList[j].memNo,
+					posCode: memList[j].posCode,
 					teamName: list[i].deptName,
 					icon: 'ti ti-user'
 				};
@@ -104,29 +111,33 @@ $(function () {
   // Drag Drop
   // --------------------------------------------------------------------
   if (dragDrop.length) {
-    
+	
+	
+
 
     let count = 0; // 드래그 카운트
 	let refIndex = 0; // 참조 index count
 	
     
     $(document).on('dnd_stop.vakata.dragDrop', function (e, data) {
+		
+		
      
-      var tt = $(data.event.target); // drop된 위치의 요소 => 여기에 노드 정보를 append 시키면됨
-      console.log(tt);
+      var dropDiv = $(data.event.target); // drop된 위치의 요소 => 여기에 노드 정보를 append 시키면됨
+      console.log(dropDiv);
       //t.text("떨궈짐");
 
 
       var node = data.data.origin.get_node(data.element); // {..., original:{text:xx, memNo:xx}, ..}
 
-      if (tt.closest('tbody').hasClass('aa2')) { // closest : 드래그 시 가장 가까운 태그 찾음
+      if (dropDiv.closest('tbody').hasClass('aa2')) { // closest : 드래그 시 가장 가까운 태그 찾음
 
-        console.log(tt.closest('tbody'));
+        console.log(dropDiv.closest('tbody'));
 
 
         // 중복 검사 (input value에서 memNo를 비교)
         var memNo = node.original.memNo;
-        var isDuplicate = tt.closest('tbody').find('tr').toArray().some(function (row) {
+        var isDuplicate = dropDiv.closest('tbody').find('tr').toArray().some(function (row) {
           var existingMemNo = $(row).find('input[type="hidden"]').val(); // hidden input에서 memNo 가져오기
           return existingMemNo == memNo;
         });
@@ -144,7 +155,7 @@ $(function () {
 
         if (count == 0) {
 
-          tt.closest("tbody").html(
+          dropDiv.closest("tbody").html(
 
             '<tr style="height: 50px; border: 1px solid;">'
             + '<input type="hidden" value="' + node.original.memNo + '"/>'
@@ -159,7 +170,7 @@ $(function () {
           );
 
         } else if (count > 0) {
-          tt.closest("tbody").append(
+          dropDiv.closest("tbody").append(
 
 
             '<tr style="height: 50px; border: 1px solid;">'
@@ -275,7 +286,7 @@ $(function () {
     console.log(d); //node
 
 
-    // 현재 드랍된 node 객체 가지고 db에 반영시켜주는 ajax 기술
+   
 
   });
 	
@@ -312,27 +323,104 @@ $(function () {
     
     $(document).on('dnd_stop.vakata.dragDrop2', function (e, data) {
 		
+		
+		
 		console.log('dnd_stop 작동됨');
-      var t = $(data.event.target); // drop된 위치의 요소 => 여기에 노드 정보를 append 시키면됨
-		console.log(t);
+		
+      var dropDiv = $(data.event.target); // drop된 위치의 요소 => 여기에 노드 정보를 append 시키면됨
+	  
+		console.log(dropDiv);
 
       var node = data.data.origin.get_node(data.element); // {..., original:{text:xx, memNo:xx}, ..}
-
 	  
+	  
+	  
+	  console.log("드랍된 위치", dropDiv);
+	  
+	  
+	// jstree 내에 드롭 막기
+	  if(dropDiv.hasClass('jstree-node') 
+		|| dropDiv.hasClass('jstree-anchor') 
+		|| dropDiv.hasClass('jstree-default') ){
+		  
+          alert('이 영역에는 드롭할 수 없습니다.'); 
+          return false; 
+	  }
+		  
+		  
+		  
+		  
+		  
 
-      if (t.closest('tbody').hasClass('aa')) { // closest : 드래그 시 가장 가까운 태그 찾음
+      if (dropDiv.closest('tbody').hasClass('aa')) { // closest : 드래그 시 가장 가까운 태그 찾음
 
         // 중복 검사 (input value에서 memNo를 비교)
         var memNo = node.original.memNo;
 		console.log('현재 옮겨지는 노드의 memNo', memNo);
-        var isDuplicate = t.closest('tbody').find('tr').toArray().some(function (row) {
+		
+		
+		
+        var isDuplicate = dropDiv.closest('tbody').find('tr').toArray().some(function (row) {
           var existingMemNo = $(row).find('input[type="hidden"]').val(); // hidden input에서 memNo 가져오기
 		  console.log('현재 결재선에 등록된 memNo', existingMemNo);
           return existingMemNo == memNo;
         });
 		
-		console.log(isDuplicate);
+		
+		// 결재선에 등록된 직급들
+		var posCodeOrder = dropDiv.closest('tbody').find('tr').toArray().map(function (row) {
+		   return $(row).find('input[name="posCode"]').val(); // 직급을 배열로 가져오기
+		});
 
+		    console.log('등록된 직급들:', posCodeOrder);
+
+		    // 현재 추가하려는 직급
+		    var newPosCode = node.original.posCode;
+		
+		
+		  // 직급 점장이 등록되어 있으면 아래 직급들은 추가할 수 없음
+		   if (posCodeOrder.includes('C1')) {
+				if (newPosCode !== 'C1') {
+				    alert('직급순서에 맞게 먼저 지정해주세요');
+				    return; 
+				}
+		   }
+
+		   // 직급 부점장이 등록되어 있으면 점장만 추가할 수 있음
+		   if (posCodeOrder.includes('C2')) {
+		       if (newPosCode !== 'C1' && newPosCode !== 'C2' ) {
+		           alert('직급순서에 맞게 먼저 지정해주세요');
+		           return; 
+		       }
+		   }
+
+		   // 직급 부장이 등록되어 있으면 점장과 부점장만 추가할 수 있음
+		   if (posCodeOrder.includes('C3')) {
+		       if (newPosCode !== 'C1' && newPosCode !== 'C2' && newPosCode !== 'C3') {
+		           alert('직급순서에 맞게 먼저 지정해주세요');
+		           return;
+		       }
+		   }
+
+		   // 직급 팀장이 등록되어 있으면 팀장 윗 직급들만 추가할 수 있음
+		   if (posCodeOrder.includes('C4')) {
+				if (newPosCode !== 'C1' && newPosCode !== 'C2' && newPosCode !== 'C3'&& newPosCode !== 'C4') {
+					alert('직급순서에 맞게 먼저 지정해주세요');
+					return; 
+				}
+		   }
+		   
+		   
+		   // 직급 대리부턴 결재권한이 없음
+		    var restrictedPosCodes = ['C5', 'C6', 'C7']; 
+		       if (restrictedPosCodes.includes(newPosCode)) {
+		           alert('결재권한이 없습니다');
+		           return; 
+		       }
+		   
+		   
+		   
+		
         if (isDuplicate) {
           alert('이미 추가된 사용자입니다.');
           return; // 중복되면 추가하지 않음
@@ -341,16 +429,19 @@ $(function () {
 
         if (countDnd >= 3) {
           alert('더이상 추가할 수 없습니다');
-          return; // 3개 이상일 경우 함수 종료
+          return; // 3개 이상일 경우 추가 못함
         }
-
+		
+		
+		// 드롭시 첫 번째 항목일 때 기존 데이터에 덮어씌우기
         if (countDnd == 0) {
 
-          t.closest("tbody").html(
+          dropDiv.closest("tbody").html(
             '<tr style="height: 50px; border: 1px solid;">'
             + '<td style="width: 138px;">결재서</td>'
             + '<td style="width: 150px;">' + node.original.memName
-            + '<input type="hidden" value=' + node.original.memNo + '>' + '</td>'
+            + '<input type="hidden" value=' + node.original.memNo + '>'
+			+ '<input type="hidden" name="posCode" value=' + node.original.posCode + '></td>'
             + '<td style="width: 150px;">' + node.original.teamName + '</td>'
             + '<td style="padding-left: 70px;">결재</td>'
             + '<td style="width: 153px; padding-left: 33px;"><i class="ti ti-trash"></i></td>'
@@ -359,20 +450,21 @@ $(function () {
           );
 
           
-
+		  // 드롭시 두 번째 항목일 때 연달아 추가
         } else if (countDnd > 0) {
-          t.closest("tbody").append(
+          dropDiv.closest("tbody").append(
             '<tr style="height: 50px; border: 1px solid;">'
             + '<td style="width: 138px;">결재서</td>'
             + '<td style="width: 150px;">' + node.original.memName
-            + '<input type="hidden" value=' + node.original.memNo + '></td>'
+            + '<input type="hidden" value=' + node.original.memNo + '>'
+			+ '<input type="hidden" name="posCode" value=' + node.original.posCode + '></td>'
             + '<td style="width: 150px;">' + node.original.teamName + '</td>'
             + '<td style="padding-left: 70px;">결재</td>'
             + '<td style="width: 153px; padding-left: 33px;"><i class="ti ti-trash"></i></td>'
             // + '<input type="hidden" value="' +  orderCount++ + '>'
             + '</tr>'
           );
-
+	
 
         }
 
@@ -382,10 +474,11 @@ $(function () {
 
 
     });
-
-
-
-     // >> 버튼 클릭 시 선택된 노드 추가
+	
+	
+	
+	
+     //   '>>' 버튼 클릭 시 선택된 노드 추가
      $('#move_button2').on('click', function () {
       // 선택된 jstree 노드 가져오기
       var selectedNode = dragDrop2.jstree('get_selected', true);
@@ -395,10 +488,64 @@ $(function () {
         selectedNode.forEach(function (node) {
           // 중복 검사 (input value에서 memNo를 비교)
           var memNo = node.original.memNo;
-          var isDuplicate = $('#drag_line_div').find('tr').toArray().some(function (row) {
+		  
+		  
+          var isDuplicate = $('#drag_line_div').find('tr').toArray().some(function (row) { // 배열형태로 요소 찾기
             var existingMemNo = $(row).find('input[type="hidden"]').val(); // hidden input에서 memNo 가져오기
             return existingMemNo == memNo;
           });
+		  
+
+			// 직급 조건 체크 (직급에 맞는지 검사)
+			var posCodeOrder = $('#drag_line_div').find('tr').toArray().map(function(row) { // 배열형태로 새로 생성
+				return $(row).find('input[name="posCode"]').val(); // 직급을 배열로 가져오기
+			});
+
+			console.log('등록된 직급들:', posCodeOrder);
+
+			// 현재 추가하려는 직급
+			var newPosCode = node.original.posCode;
+
+
+			// 직급 점장이 등록되어 있으면 아래 직급들은 추가할 수 없음
+			if (posCodeOrder.includes('C1')) {
+				alert('직급순서에 맞게 먼저 지정해주세요');
+				return;
+			}
+
+			// 직급 부점장이 등록되어 있으면 점장만 추가할 수 있음
+			if (posCodeOrder.includes('C2')) {
+				if (newPosCode !== 'C1') {
+					alert('직급순서에 맞게 먼저 지정해주세요');
+					return;
+				}
+			}
+
+			// 직급 부장이 등록되어 있으면 점장과 부점장만 추가할 수 있음
+			if (posCodeOrder.includes('C3')) {
+				if (newPosCode !== 'C1' && newPosCode !== 'C2') {
+					alert('직급순서에 맞게 먼저 지정해주세요');
+					return;
+				}
+			}
+
+			// 직급 팀장이 등록되어 있으면 팀장 윗 직급들만 추가할 수 있음
+			if (posCodeOrder.includes('C4')) {
+				if (newPosCode !== 'C1' && newPosCode !== 'C2' && newPosCode !== 'C3') {
+					alert('직급순서에 맞게 먼저 지정해주세요');
+					return;
+				}
+			}
+
+
+			// 직급 대리부턴 결재권한이 없음
+			var restrictedPosCodes = ['C5', 'C6', 'C7'];
+			if (restrictedPosCodes.includes(newPosCode)) {
+				alert('결재권한이 없습니다');
+				return;
+			}
+		  
+		  
 
           if (isDuplicate) {
             alert('이미 추가된 사용자입니다.');
@@ -411,25 +558,28 @@ $(function () {
           }
   
 
-          // 첫 번째 항목일 때 테이블 초기화
+          // 클릭시 첫 번째 항목일 때 기존 데이터에 덮어씌우기
           if (countDnd === 0) {
             $('#drag_line_div').html(
               '<tr style="height: 50px; border: 1px solid;">'
               + '<td style="width: 138px;">결재서</td>'
               + '<td style="width: 150px;">' + node.original.memName
-              + '<input type="hidden" value=' + node.original.memNo + '></td>'
+              + '<input type="hidden" value=' + node.original.memNo + '>'
+			  + '<input type="hidden" name="posCode" value=' + node.original.posCode + '></td>'
               + '<td style="width: 150px;">' + node.original.teamName + '</td>'
               + '<td style="padding-left: 70px;">결재</td>'
               + '<td style="width: 153px; padding-left: 33px;"><i class="ti ti-trash"></i></td>'
               + '</tr>'
             );
+			
           } else {
-            // 두 번째 이후 항목은 추가
+            // 두 번째 이후 항목은 연달아 추가
             $('#drag_line_div').append(
               '<tr style="height: 50px; border: 1px solid;">'
             + '<td style="width: 138px;">결재서</td>'
             + '<td style="width: 150px;" class="mem_name">' + node.original.memName
-            + '<input type="hidden" value=' + node.original.memNo + '></td>'
+            + '<input type="hidden" value=' + node.original.memNo + '>'
+			+ '<input type="hidden" name="posCode"  value=' + node.original.posCode + '></td>'
             + '<td style="width: 150px;">' + node.original.teamName + '</td>'
             + '<td style="padding-left: 70px;">결재</td>'
             + '<td style="width: 153px; padding-left: 33px;"><i class="ti ti-trash"></i></td>'
@@ -471,7 +621,8 @@ $(function () {
   dragDrop2.bind("move_node.jstree", function (e, d) {
     //console.log(e); //event
     //console.log(d); //node
-
+	
+	
     
 
 
@@ -515,58 +666,56 @@ $(function () {
   $(document).on('click','#app_success_btn', function(){
 
 
-
-    $('.app_line_div').html(
-      '<span class="line_title"><b>결재선</b></span>'
-      +'<span class="line_user">'
-       + '<span>부서명</span>'
-        +'<span class="signLine">서명</span>'
-        +'<span class="sign_date">이름</span>'
-      +'</span>'
-    );
-
-
      
      var countLevel = 1; // 순서지정
 	 
 	 //var idcount = 0; // 아이디 카운트
 	 var rovalIndex = 0;
+	 
+	 
 
-     $('#drag_line_div tr').each(function() {
-      // 각 row에서 필요한 데이터 가져오기
-      var memNo = $(this).find('input[type="hidden"]').val();
-      var memName = $(this).find('td').eq(1).text().trim(); // 두 번째 td (memName)
-      var teamName = $(this).find('td').eq(2).text().trim(); // 세 번째 td (teamName)
+	 $('.app_line_div').html('');
 
-      
-      
-       
-        // 결재선
+	 // #drag_line_div의 각 tr에 대해 데이터를 가져와서 append
+	 $('#drag_line_div tr').each(function() {
+	     // 각 row에서 필요한 데이터 가져오기
+	     var memNo = $(this).find('input[type="hidden"]').val();
+	     var memName = $(this).find('td').eq(1).text().trim(); // 두 번째 td (memName)
+	     var teamName = $(this).find('td').eq(2).text().trim(); // 세 번째 td (teamName)
+
+	     // 결재선 추가할 div 
+	     var div = '<span class="line_user">'
+	                 + '<span>' + teamName + '</span>'
+	                 + '<span class="signLine">서명</span>'
+	                 + '<span class="app_line_date">' + memName + '</span>'
+	                 + '<input type="hidden" value="' + memNo + '" name="rovalList[' + rovalIndex + '].rvNo">'
+	                 + '<input type="hidden" name="rovalList[' + rovalIndex++ + '].appLevel" value="' + countLevel++ + '">'
+	             + '</span>';
+
+	     // 각 div를 계속해서 append
+	     $('.app_line_div').append(div);
 		 
-		var div = '<span class="line_user">'
-		                + '<span>' + teamName + '</span>'
-		                + '<span class="signLine">서명</span>'
-		                + '<span class="app_line_date">' + memName + '</span>'
-		                + '<input type="hidden" value="' + memNo + '" name="rovalList[' + rovalIndex + '].rvNo">'
-		                + '<input type="hidden" name="rovalList[' + rovalIndex++ +'].appLevel" value="' + countLevel++ + '">'
-		        + '</span>';
-        
-							
-								
-      if($('#drag_line_div tr').length > 1){
-        $('.app_line_div').append(div);
-		//idcount++;
-        //countLevel++;
-      }else if($('#drag_line_div tr').length == 1){
-		$('.app_line_div').html(div);
-		//idcount++;
-		//countLevel++;
-	  }
-	  
-	  
-
-  	});
+		 
+		 if($('#drag_line_div tr').text() == '드래그하여 추가할 수 있습니다.'){
+			
+			$('.app_line_div').html(
+			      '<span class="line_title"><b>결재선</b></span>'
+			      +'<span class="line_user">'
+			       + '<span>부서명</span>'
+			        +'<span class="signLine">서명</span>'
+			        +'<span class="sign_date">이름</span>'
+			      +'</span>'
+			    );
+		 }
+		 
+	 });
 	
+	 
+	 
+	 
+	 
+	 
+	 
 	
 	// 참조
 	var refIndex = 0;
@@ -594,23 +743,12 @@ $(function () {
 	
 	
 	
-	
-	
-	
-	
-	
-	
   
   });
-
-
-
-
-
-
-
-
-
+	
+	
+	
+	
 
 
 

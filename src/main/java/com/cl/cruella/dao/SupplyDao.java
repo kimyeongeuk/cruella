@@ -20,6 +20,7 @@ public class SupplyDao {
 	
 	public List<SupplyDto> selectSupplyList(String supCategory, PageInfoDto pi){
 		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() - 1) * pi.getBoardLimit() , pi.getBoardLimit());
+
 		return sqlSession.selectList("supplyMapper.selectSupplyList", supCategory, rowBounds);
 	}
 	
@@ -28,6 +29,10 @@ public class SupplyDao {
 		return sqlSession.selectOne("supplyMapper.countSupply", supCategory);
 	}
 	
+	public int insertSupply(SupplyDto s) {
+		return sqlSession.insert("supplyMapper.insertSupply", s);
+				
+	}
 	
 	
 }

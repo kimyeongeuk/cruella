@@ -10,6 +10,7 @@
 	<result column="mem_no" property="chatCreater" />
 	<result column="CHAT_NEWMSG" property="chatNewMsg" />
 	<result column="chat_count" property="chatCount"/>
+	<result column="msg_no" property="msgNo"/>
 </resultMap>
 
 
@@ -80,6 +81,7 @@ select
 			,CHAT_REGIST_DATE
 			,CL.mem_no
 			,CHAT_NEWMSG
+			,MSG_NO
   from chat c
   join chat_list cl on (c.chat_no = cl.chat_no)
  where cl.mem_no = #{memNo}
@@ -91,8 +93,8 @@ select
 		   , CP_MESSAGE
 		   , CP_STATUS
 	  from chat_profile cp
-	  join member m on (cp.mem_no = m.mem_no)
-   where m.status in ('Y','S')
+	 full join member m on (cp.mem_no = m.mem_no)
+   where m.status in ('Y','S','A')
 </select>
 
 <!-- 사원 목록 불러오기 -->
@@ -109,7 +111,7 @@ select
 	  from member m
       join department d on (m.dept_code = d.dept_code)
       join position p on (m.pos_code = p.pos_code)
-   where status in ('Y','S')  
+   where status in ('Y','S','A')  
 </select>
 
 <!-- 채팅방 인원 체크 -->
@@ -162,7 +164,7 @@ select count(chat_no) chat_count
 			 , MSG_MODIFY_DATE
   from message
  where chat_no = #{chatNo}
-   and MSG_STATUS in ('Y','N')
+   and MSG_STATUS in ('Y','N','M')
  order by msg_no
 </select>
 
@@ -204,7 +206,8 @@ select count(chat_no) chat_count
 																			     ) 
 																			        WHERE rownum = 1
 			),
-			CHAT_NEWMSG = #{msgContent}
+			CHAT_NEWMSG = #{msgContent},
+			msg_no = #{msgNo}
 			WHERE CHAT_NO = #{chatNo}
 </update>
 
@@ -320,8 +323,148 @@ update
 update
 				chat
 	 set
-	 			CHAT_NEWMSG = '삭제된 메시지입니다.'
+	 			CHAT_NEWMSG = #{msgContent}
  where	chat_no = #{chatNo}
 </update>
+
+<!-- 메시지 수정하기 -->
+<update id="modifyMsg">
+update
+				message
+	 set
+	 			msg_content = #{msgContent},
+	 			msg_status = 'M'
+ where
+ 				msg_no = #{msgNo}
+</update>
+
+<!-- 메시지 상태 불러오기 -->
+<select id="msgStatus" resultType="string">
+select
+				msg_status
+	from
+				message
+ where
+ 				msg_no = #{msgNo}
+</select>
+
+<!-- 잠금상태 확인 -->
+<select id="chatLock" resultType="string">
+select
+				cl_lock
+	from
+				chat_list
+ where
+ 				chat_no = #{chatNo}
+   and  mem_no = #{memNo}
+</select>
+
+<!-- 잠금상태 변경하기 -->
+<update id="chatLockUpdate">
+update
+				chat_list
+	 set	cl_lock = #{clLock}
+ where	chat_no = #{chatNo}
+   and  mem_no = #{memNo}
+</update>
+
+<!-- 해당 채팅방 최근 메시지 번호 불러오기 -->
+
+<select id="newMsgNo" resultType="_int">
+SELECT
+    	msg_no
+FROM
+	    (SELECT
+	         msg_no
+	     FROM
+	         message
+        where 
+            chat_no = #{chatNo}
+	     ORDER BY
+	          msg_no DESC)
+WHERE
+   		 ROWNUM = 1
+</select>
+
+<update id="titleChange">
+update
+				chat_list
+	 set	
+	 			cl_title = #{clTitle}
+ where	chat_no = #{chatNo}
+ 	 and	mem_no = #{memNo}
+
+</update>
+
+<insert id="inviteMem">
+insert
+	into
+				chat_list
+				(
+					chat_no
+				,	mem_no
+				,	cl_title
+				)
+				values
+				(
+					#{chatNo}
+				,	#{inviteNo}
+				, #{memName}||' 단체방'
+				)
+
+</insert>
+
+<update id="updateChatStatus">
+
+update
+				chat_list
+	 set
+	 			cl_type = 'G'
+	 		, cl_title = #{memName}||' 단체방'
+ where
+				chat_no = #{chatNo}
+</update>
+
+<select id="chatMember" resultType="string">
+select
+        mem_no
+  from
+        chat_list
+ where
+        chat_no = #{chatNo}
+</select>
+
+<select id="chatMemberName" resultType="string">
+select
+				mem_name
+	from
+				member
+ where
+ 				mem_no = #{inviteNo}
+
+</select>
+
+<select id="memberIMG" resultType="string">
+select
+				profile_url
+	from
+				member
+ where
+ 				MEM_NO IN 
+				<foreach collection="list" item="memNo" open="(" separator="," close=")">
+			   	#{memNo}
+			 	</foreach>
+</select>
+
+<select id="chatNewChat" resultType="string">
+select
+				chat_newmsg
+	from
+				chat
+ where
+ 				chat_no = #{chatNo}
+
+</select>
+
 
 </mapper>

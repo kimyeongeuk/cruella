@@ -1,10 +1,12 @@
 package com.cl.cruella.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.cl.cruella.dao.MemberDao;
+import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
 
@@ -84,9 +86,35 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int updateProfileImg(MemberDto targetMember) {
-		return memberDao.updateProfileImg(targetMember);
+	public int insertPayment(MemberDto m) {
+		return memberDao.insertPayment(m);
 	}
+
+	@Override
+	public List<MemberDto> salarypaymentList() {
+		return memberDao.salarypaymentList();
+	}
+
+	@Override
+	public int payBtn(List<String> memNos) {
+		int result = 0;
+		for( String no : memNos) {
+			result += memberDao.payBtn(no);
+			
+		}
+		return result;
+	}
+	public int selectVacListCount(String memNo) {
+		return memberDao.selectVacListCount(memNo);
+	}
+
+	@Override
+	public List<AppdocDto> selectVacList(Map<String, Object> params) {
+		return memberDao.selectVacList(params);
+	}
+
+
+
 
 
 

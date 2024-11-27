@@ -7,14 +7,17 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
 import com.cl.cruella.dto.SupplyDto;
 import com.cl.cruella.service.SupplyServiceImpl;
 import com.cl.cruella.util.PagingUtil;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -71,6 +74,7 @@ public class SupplyController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
 		map.put("pi", pi);
+
 		
 		model.addAttribute("pi", pi);
 		//log.debug("결과값{}", list);
@@ -79,6 +83,15 @@ public class SupplyController {
 	}
 	
 	
+	
+	// 비품 신청 
+	@ResponseBody
+	@PostMapping("/insert.do")
+	public int insertSupply(SupplyDto s, HttpSession session) {
+		s.setMemNo(((MemberDto)(session.getAttribute("loginUser"))).getMemNo());
+		int result = supplyServiceImpl.insertSupply(s);
+		return result;
+	}
 	
 	
 	
