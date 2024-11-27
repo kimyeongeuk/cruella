@@ -186,16 +186,7 @@
                       <th ><span class="header_title" style="position: relative;right: 0px;"><b>상태</b></span></th>
                     </tr>
                     
-                    <script>
-                    $(document).ready(function(){
-                    	$('#order_tr th').on('click',function(){
-                    		$(this).text();
-                    		console.log($(this).text());
-                    	})
-                    })
-                    
-                    
-                    </script>
+                   
                     
 
 					<c:forEach var="a" items="${ list }">

@@ -723,9 +723,9 @@ function pdf_down() {
 <c:if test="${ i.rvNo eq memNo}">
  <div style="display: flex; justify-content: right;">
              			
-       <button type="button" class="btn btn-success" id="last_sign_success">결재</button>
-        <span style="width: 52px;"></span>
         <button type="button" class="btn btn-warning" id="last_sign_fail" data-bs-toggle="modal" data-bs-target="#myModal">반려</button>
+        <span style="width: 52px;"></span>
+        <button type="button" class="btn btn-success" id="last_sign_success">결재</button>
                         
   </div>
 </c:if>
