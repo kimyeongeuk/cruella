@@ -79,10 +79,21 @@
 	    white-space: nowrap; /* 글자가 한 줄로 나오도록 합니다 */
 	    margin-top: -50px;
 	}
+	
 	.pinned {
-	  background-color: #fff8dc; /* 예: 배경색을 밝은 노란색으로 설정 */
-	  font-weight: bold; /* 예: 글씨를 굵게 설정 */
+	    background-color: #E6E6FA; 
+	    font-weight: bold; /* 글씨를 굵게 설정 */
 	}
+	
+	.pinned .item-checkbox {
+	    background-color: white; 
+	}
+	
+	.pinned td {
+	    border-top: 1px solid white !important; /* 테두리 색상 설정 */
+	    border-bottom: 1px solid white !important; /* 테두리 색상 설정 */
+	}
+	
 	.pagination {
     display: flex;
     flex-wrap: nowrap;

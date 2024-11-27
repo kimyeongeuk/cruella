@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="chartMapper">
+
+    <resultMap id="chartResultMap" type="com.cl.cruella.dto.RevenueDto">
+        <result column="mem_no" property="memNo" />
+        <result column="rv_value" property="rvValue" />
+        <result column="rv_regist_date" property="rvRegistDate" />
+        <result column="rv_store" property="rvStore" />
+    </resultMap>
+
+
+</mapper>
