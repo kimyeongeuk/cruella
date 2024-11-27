@@ -89,8 +89,6 @@
 															<li data-jstree='{"icon" : "ti ti-folder"}'>인사팀</li>
 															<li data-jstree='{"icon" : "ti ti-folder"}'>영업총괄팀</li>
 															<li data-jstree='{"icon" : "ti ti-folder"}'>지원팀</li>
-															<li data-jstree='{"icon" : "ti ti-folder"}'>영업총괄팀</li>
-															<li data-jstree='{"icon" : "ti ti-folder"}'>지원팀</li>
 															<li data-jstree='{"icon" : "ti ti-folder"}'>남성의류팀</li>
 															<li data-jstree='{"icon" : "ti ti-folder"}'>여성의류팀</li>
 															<li data-jstree='{"icon" : "ti ti-folder"}'>식품팀</li>
