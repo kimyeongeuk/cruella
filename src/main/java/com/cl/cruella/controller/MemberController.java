@@ -268,7 +268,7 @@ public class MemberController {
 	 // 대시보드 - 공지사항 조회
 	 @PostMapping("/noticeList.do")
 	 @ResponseBody
-	 public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session){
+	 public Map<String, Object> list2(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session){
 		 
          MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
          String deptCode = loginUser.getDeptCode();
