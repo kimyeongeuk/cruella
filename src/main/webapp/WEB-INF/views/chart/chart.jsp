@@ -74,53 +74,51 @@
 <div class="content-wrapper">
   <div class="container-xxl flex-grow-1 container-p-y">
     <div class="container p-3">
-      <div class="chart-wrapper card" id="totalSalesChart" style="padding: 30px; height:650px;">
+    
+    	<!-- 총매출 차트 -->
+      <div class="chart-wrapper card" id="totalSalesChart" style="padding: 30px; height:650px;">     
+	      <div style="display: flex; justify-content: space-between; align-items: center;">
+	        <div>
+	          <span>
+	            <span style="color: #7367F0;">차트</span><span> / 인사관리팀</span>
+	          </span>
+	        </div>
+	        <div style="flex: 1; margin-left: 60px;">
+	          <select class="select1 form-select form-select-lg chartSelect" data-allow-clear="true" style="width: 300px;">
+	            <option value="총매출차트" selected>총매출차트</option>
+	            <option value="팀별 매출 점유율 차트">팀별 매출 점유율 차트</option>
+	            <option value="매장 매출차트">매장 매출차트</option>
+	          </select>
+	        </div>
+	        <div>
+	          <span>today 2024-11-06</span>
+	        </div>
+	      </div>       
+	      <br>
+	     <div class="col-12 mb-6">
+	       <div class="card">
+	         <div class="card-header d-flex justify-content-between">
+	           <div>
+	             <h5 class="card-title mb-0">Balance</h5>
+	             <p class="card-subtitle my-0">Commercial networks & enterprises</p>
+	           </div>
+	           <div class="d-sm-flex d-none align-items-center">
+	             <h5 class="mb-0 me-4">$ 100,000</h5>
+	             <span class="badge bg-label-secondary">
+	               <i class="ti ti-arrow-big-down ti-xs text-danger"></i>
+	               <span class="align-middle">20%</span>
+	             </span>
+	           </div>
+	         </div>
+	         <div class="card-body">
+	           <div id="lineChart"></div>
+	         </div>
+	       </div>
+	     </div>       
+     </div>
      
-        <!-- 총매출 차트 -->
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <span>
-            <span style="color: #7367F0;">차트</span><span> / 인사관리팀</span>
-          </span>
-        </div>
-        <div style="flex: 1; margin-left: 60px;">
-          <select class="select1 form-select form-select-lg chartSelect" data-allow-clear="true" style="width: 300px;">
-            <option value="총매출차트" selected>총매출차트</option>
-            <option value="카테고리별 매출차트">카테고리별 매출차트</option>
-            <option value="매장 매출차트">매장 매출차트</option>
-          </select>
-        </div>
-        <div>
-          <span>today 2024-11-06</span>
-        </div>
-      </div>       
-      <br>
-     <div class="col-12 mb-6">
-       <div class="card">
-         <div class="card-header d-flex justify-content-between">
-           <div>
-             <h5 class="card-title mb-0">Balance</h5>
-             <p class="card-subtitle my-0">Commercial networks & enterprises</p>
-           </div>
-           <div class="d-sm-flex d-none align-items-center">
-             <h5 class="mb-0 me-4">$ 100,000</h5>
-             <span class="badge bg-label-secondary">
-               <i class="ti ti-arrow-big-down ti-xs text-danger"></i>
-               <span class="align-middle">20%</span>
-             </span>
-           </div>
-         </div>
-         <div class="card-body">
-           <div id="lineChart"></div>
-         </div>
-       </div>
-     </div>
-           
-           
-     </div>
+     <!-- 팀별 매출 점유율 차트 -->
      <div class="chart-wrapper card" id="categorySalesChart" style="padding: 30px; height:650px;">
-     
-       <!-- 카테고리별 매출 차트 -->
        <div style="display: flex; justify-content: space-between; align-items: center;">
         <div>
           <span>
@@ -130,7 +128,7 @@
         <div style="flex: 1; margin-left: 60px;">
           <select class="select1 form-select form-select-lg chartSelect" data-allow-clear="true" style="width: 300px;">
             <option value="총매출차트">총매출차트</option>
-            <option value="카테고리별 매출차트" selected>카테고리별 매출차트</option>
+            <option value="팀별 매출 점유율 차트" selected>팀별 매출 점유율 차트</option>
             <option value="매장 매출차트">매장 매출차트</option>
           </select>
         </div>
@@ -178,10 +176,10 @@
 			   <div class="legend-container" id="legendContainer"></div> 
 			 </div>
      </div>
+     
+     <!-- 매장 매출차트 -->
      <div class="input-wrapper card" id="storeSalesChart" style="padding: 30px; height:650px;">
-       
-       <!-- 매장 매출차트 -->
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+       <div style="display: flex; justify-content: space-between; align-items: center;">
         <div>
           <span>
             <span style="color: #7367F0;">차트</span><span> / 인사관리팀</span>
@@ -190,7 +188,7 @@
         <div style="flex: 1; margin-left: 60px;">
           <select class="select1 form-select form-select-lg chartSelect" data-allow-clear="true" style="width: 300px;">
             <option value="총매출차트">총매출차트</option>
-            <option value="카테고리별 매출차트">카테고리별 매출차트</option>
+            <option value="팀별 매출 점유율 차트">팀별 매출 점유율 차트</option>
             <option value="매장 매출차트" selected>매장 매출차트</option>
           </select>
         </div>
@@ -199,28 +197,28 @@
         </div>
       </div>
       <br>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <select id="categorySelect" class="select1 form-select form-select-lg" data-allow-clear="true" style="width: 200px;">
-              <option value="남성의류">남성의류</option>
-              <option value="여성의류">여성의류</option>
-              <option value="식품">식품</option>
-              <option value="스포츠">스포츠</option>
-              <option value="뷰티">뷰티</option>
-              <option value="명품">명품</option>
-              <option value="문화센터">문화센터</option>
-              <option value="디지털 및 가전">디지털 및 가전</option>
-            </select>
-            
-            <input
-              type="text"
-              class="form-control"
-              style="width: 25%; height: 48px;"
-              placeholder="날짜선택"
-              id="flatpickr-range" />
-          </div>
-          <div class="chart-container" style="margin-top: 20px;">
-            <canvas id="barChart" style="height: 400px;"></canvas>
-          </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <select id="categorySelect" class="select1 form-select form-select-lg" data-allow-clear="true" style="width: 200px;">
+          <option value="남성의류">남성의류</option>
+          <option value="여성의류">여성의류</option>
+          <option value="식품">식품</option>
+          <option value="스포츠">스포츠</option>
+          <option value="뷰티">뷰티</option>
+          <option value="명품">명품</option>
+          <option value="문화센터">문화센터</option>
+          <option value="디지털 및 가전">디지털 및 가전</option>
+        </select>
+        
+        <input
+          type="text"
+          class="form-control"
+          style="width: 25%; height: 48px;"
+          placeholder="날짜선택"
+          id="flatpickr-range" />
+      </div>
+      <div class="chart-container" style="margin-top: 20px;">
+        <canvas id="barChart" style="height: 400px;"></canvas>
+      </div>
      </div>
     </div>
   </div>
@@ -240,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (chartId === '총매출차트') {
       totalSalesChart.style.display = 'block';
-    } else if (chartId === '카테고리별 매출차트') {
+    } else if (chartId === '팀별 매출 점유율 차트') {
       categorySalesChart.style.display = 'block';
     } else if (chartId === '매장 매출차트') {
       storeSalesChart.style.display = 'block';
