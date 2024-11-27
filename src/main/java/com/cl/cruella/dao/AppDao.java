@@ -25,8 +25,8 @@ public class AppDao {
 	private final SqlSessionTemplate sqlSession;
 	
 	// 조직도 조회
-	public List<DeptDto> ajaxJstree(){
-		return sqlSession.selectList("appMapper.ajaxJstree");
+	public List<DeptDto> ajaxJstree(String memNo){
+		return sqlSession.selectList("appMapper.ajaxJstree",memNo);
 	}
 	// 해당 양식에 기본값 적용할 값 조회
 	public DeptDto formDraftPage(String userNo) {

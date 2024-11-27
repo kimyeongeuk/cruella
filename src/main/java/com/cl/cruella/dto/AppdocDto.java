@@ -50,7 +50,7 @@ public class AppdocDto { // 기안문서
 	
 	private String docMemNo; // 기안서의 사원번호
 	
-	
+	private int attachCount; // 첨부파일 갯수
 	
 	
 //	연차신청서

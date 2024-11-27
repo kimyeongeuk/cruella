@@ -34,9 +34,9 @@ public class AppService {
 	 * jstree 조직도 조회
 	 * @return list
 	 */
-	public List<DeptDto> ajaxJstree(){
+	public List<DeptDto> ajaxJstree(String memNo){
 		
-		List<DeptDto> list = appDao.ajaxJstree();
+		List<DeptDto> list = appDao.ajaxJstree(memNo);
 		
 		return list;
 		

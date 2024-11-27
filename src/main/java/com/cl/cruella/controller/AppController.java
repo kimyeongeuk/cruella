@@ -105,9 +105,11 @@ public class AppController {
 //	jstree 조직도 조회
 	@ResponseBody
 	@GetMapping(value="/jstreeList.do", produces="application/json")
-	public List<DeptDto> ajaxJstree() {
+	public List<DeptDto> ajaxJstree(HttpSession session) {
 		
-		List<DeptDto> list = appService.ajaxJstree();
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		
+		List<DeptDto> list = appService.ajaxJstree(memNo);
 		
 		return list;
 		

@@ -61,6 +61,7 @@
 	<result column="app_rej_reason" property="reason"/>
 	<result column="doc_status" property="docStatus"/>
 	<result column="ref_status" property="refStatus"/>
+	<result column="attachCount" property="attachCount"/>
 </resultMap>
 
 
@@ -98,6 +99,7 @@
 		POSITION P ON (M.POS_CODE = P.POS_CODE)
 	JOIN 
 		DEPARTMENT D ON (M.DEPT_CODE = D.DEPT_CODE)
+	where mem_no != #{memNo}
 	
 	
 </select>
@@ -297,7 +299,6 @@ select
     where r.mem_no = #{memNo} -- 결재선/현재로그인한 사번
     and a.doc_order = r.app_level
     and r.app_status = 'A' -- 대기
-    --and a.doc_status = 'A'
     and a.status = 'Y'
     order by a.doc_date desc
 
@@ -527,7 +528,12 @@ select count(*)
                 and a.doc_no = #{docNo}
      )as max_order  -- 기안문서의 결재선 마지막 순서
      ,ad.app_rej_reason as app_rej_reason -- 반려사유
-	 --,ar.ref_status as ref_status -- 참조상태
+	 ,(
+	 	select count(*)
+		 from attachment
+		 where FILE_REF_TYPE = 'A'
+		 and FILE_REF_NO = #{docNo}
+	 ) as attachCount
  from 
  	 member m
  join 
@@ -540,8 +546,7 @@ select count(*)
           app_form_ann af on(af.doc_no = ad.doc_no)
  left join 
           app_form_coe ac on(ad.doc_no = ac.doc_no)
- --full join 
-    --  	   app_ref ar on (ad.doc_no = ar.doc_no)
+
  
  where ad.doc_no = #{docNo}
  and ad.status = 'Y'

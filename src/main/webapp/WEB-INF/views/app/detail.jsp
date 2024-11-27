@@ -482,14 +482,35 @@
                         <div class="mb-4">
                         <!-- 파일 -->
                         
-                        	<div>
-                        	<c:forEach var="a" items="${app.attachList}">
-                        		<a href="${contextPath}${a.filePath}/${a.filesystemName}"  download="${a.originalName}">
-                        			${a.originalName}
-                        		</a>
-                        		<br>
-                        	</c:forEach>
-                        	</div>
+                     <div class="btn-group">
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        첨부파일(${app.attachCount})
+                      </button>
+                      <ul class="dropdown-menu">
+                        
+                       <c:forEach var="a" items="${app.attachList}">
+                       	  <li>
+		                      <a href="${contextPath}${a.filePath}/${a.filesystemName}"  download="${a.originalName}">
+		                        ${a.originalName}
+		                       </a>
+		                       <br>
+		                 </li>      
+		               </c:forEach>
+                      </ul>
+                      
+                      
+                    </div>
+                    
+                    
+                    
+                        	
+                        	
+                        	
+                        	
                           
                         </div>
 

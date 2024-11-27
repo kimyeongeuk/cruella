@@ -172,7 +172,7 @@
                     </style>
                     
                     
-                	<tr>
+                	<tr id="order_tr">
                       <th></th>
                       
                       <!-- 삭제 체크박스 -->

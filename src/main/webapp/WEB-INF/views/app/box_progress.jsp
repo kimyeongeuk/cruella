@@ -172,7 +172,7 @@
                     </style>
                     
                     
-                	<tr >
+                	<tr id="order_tr">
                       <th></th>
                       <th><input type="checkbox" id="all_checkBox"></th>
                       <th><span class="header_title"><b>기안자</b></span></th>
@@ -185,6 +185,18 @@
                       <th ><span class="header_title" style="position: relative; right: 13px;"><b>중요사항</b></span></th>
                       <th ><span class="header_title" style="position: relative;right: 0px;"><b>상태</b></span></th>
                     </tr>
+                    
+                    <script>
+                    $(document).ready(function(){
+                    	$('#order_tr th').on('click',function(){
+                    		$(this).text();
+                    		console.log($(this).text());
+                    	})
+                    })
+                    
+                    
+                    </script>
+                    
 
 					<c:forEach var="a" items="${ list }">
                     <tr class="detail_tr" onclick="location.href='${contextPath}/app/detail.do?docNo=${a.docNo}'">
