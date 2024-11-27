@@ -103,6 +103,13 @@ public class MemberServiceImpl implements MemberService {
 			
 		}
 		return result;
+	public int selectVacListCount(String memNo) {
+		return memberDao.selectVacListCount(memNo);
+	}
+
+	@Override
+	public List<AppdocDto> selectVacList(Map<String, Object> params) {
+		return memberDao.selectVacList(params);
 	}
 
 

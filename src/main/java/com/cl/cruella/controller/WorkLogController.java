@@ -3,6 +3,7 @@ package com.cl.cruella.controller;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,6 +13,7 @@ import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.WorkLogDto;
 import com.cl.cruella.service.WorkLogService;
 
+import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -90,7 +92,7 @@ public class WorkLogController {
 		
 		return list;
 	}
-	
+
 	
 	
 	

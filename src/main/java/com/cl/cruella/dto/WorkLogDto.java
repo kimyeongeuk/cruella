@@ -26,4 +26,6 @@ public class WorkLogDto {
 	private int workTime;
 	private Date workDate;
 	
+	private String color;
+	
 }

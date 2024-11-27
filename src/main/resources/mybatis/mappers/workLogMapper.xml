@@ -55,4 +55,16 @@
   		 and trunc(wl_work_date) = trunc(sysdate)
 	</update>
 
+	<!-- 출퇴근 시간조회 -->
+	<select id="allWorkTime" resultMap="workLogResultMap">
+		select
+		       wl_no
+				 , wl_clock_in
+				 , wl_clock_out
+				 , wl_status
+				 , wl_work_date
+		  from work_log
+		 where mem_no = #{memNo}
+	</select>
+
 </mapper>

@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-<!-- 카테고리 차트 -->
+<!-- 팀별 매출 점유율 차트 -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const ctx = document.getElementById('doughnutChart').getContext('2d');

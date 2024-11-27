@@ -58,6 +58,11 @@ public interface MemberService {
 	
 
 
+	
+	// 휴가내역 조회
+	int selectVacListCount(String memNo); // 리스트카운트
+	List<AppdocDto> selectVacList(Map<String, Object> params);
+	
 
 
 

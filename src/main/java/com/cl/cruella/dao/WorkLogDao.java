@@ -34,5 +34,9 @@ public class WorkLogDao {
 		return sqlSession.selectList("wlMapper.loadWorkLog", memNo);
 	}
 	
+	public List<WorkLogDto> allWorkTime(String memNo) {
+		return sqlSession.selectList("wlMapper.allWorkTime", memNo);
+	}
+	
 	
 }
