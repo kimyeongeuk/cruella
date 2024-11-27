@@ -95,6 +95,16 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.salarypaymentList();
 	}
 
+	@Override
+	public int payBtn(List<String> memNos) {
+		int result = 0;
+		for( String no : memNos) {
+			result += memberDao.payBtn(no);
+			
+		}
+		return result;
+	}
+
 
 
 

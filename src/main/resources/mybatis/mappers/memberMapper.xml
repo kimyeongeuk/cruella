@@ -342,12 +342,32 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		      , sal_employment
 		      , sal_care
 		      , sal_total
+		      , sal_payment_date
 		 from member m
 			    join department d on (d.dept_code = m.dept_code)
 			    join position p on (p.pos_code = m.pos_code)
 			    join salary s on(s.mem_no = m.mem_no)
 			    order by mem_no
 	</select>
+	
+	
+	
+	
+	
+	<update id="payBtn">
+		update salary 
+		set SAL_STATUS = 'Y'
+	    , SAL_PAYMENT_DATE = sysdate
+	    where mem_no = #{no}
+					
+	</update>
+	
+	
+	
+	
+	
+	
+	
 
 
 </mapper>
