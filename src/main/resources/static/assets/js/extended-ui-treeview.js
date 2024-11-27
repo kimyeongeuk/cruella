@@ -429,9 +429,11 @@ $(function () {
 
         if (countDnd >= 3) {
           alert('더이상 추가할 수 없습니다');
-          return; // 3개 이상일 경우 함수 종료
+          return; // 3개 이상일 경우 추가 못함
         }
-
+		
+		
+		// 드롭시 첫 번째 항목일 때 기존 데이터에 덮어씌우기
         if (countDnd == 0) {
 
           dropDiv.closest("tbody").html(
@@ -448,7 +450,7 @@ $(function () {
           );
 
           
-
+		  // 드롭시 두 번째 항목일 때 연달아 추가
         } else if (countDnd > 0) {
           dropDiv.closest("tbody").append(
             '<tr style="height: 50px; border: 1px solid;">'
@@ -476,7 +478,7 @@ $(function () {
 	
 	
 	
-     // >> 버튼 클릭 시 선택된 노드 추가
+     //   '>>' 버튼 클릭 시 선택된 노드 추가
      $('#move_button2').on('click', function () {
       // 선택된 jstree 노드 가져오기
       var selectedNode = dragDrop2.jstree('get_selected', true);
@@ -488,14 +490,14 @@ $(function () {
           var memNo = node.original.memNo;
 		  
 		  
-          var isDuplicate = $('#drag_line_div').find('tr').toArray().some(function (row) {
+          var isDuplicate = $('#drag_line_div').find('tr').toArray().some(function (row) { // 배열형태로 요소 찾기
             var existingMemNo = $(row).find('input[type="hidden"]').val(); // hidden input에서 memNo 가져오기
             return existingMemNo == memNo;
           });
 		  
 
 			// 직급 조건 체크 (직급에 맞는지 검사)
-			var posCodeOrder = $('#drag_line_div').find('tr').toArray().map(function(row) {
+			var posCodeOrder = $('#drag_line_div').find('tr').toArray().map(function(row) { // 배열형태로 새로 생성
 				return $(row).find('input[name="posCode"]').val(); // 직급을 배열로 가져오기
 			});
 
@@ -556,7 +558,7 @@ $(function () {
           }
   
 
-          // 첫 번째 항목일 때 테이블 초기화
+          // 클릭시 첫 번째 항목일 때 기존 데이터에 덮어씌우기
           if (countDnd === 0) {
             $('#drag_line_div').html(
               '<tr style="height: 50px; border: 1px solid;">'
@@ -571,7 +573,7 @@ $(function () {
             );
 			
           } else {
-            // 두 번째 이후 항목은 추가
+            // 두 번째 이후 항목은 연달아 추가
             $('#drag_line_div').append(
               '<tr style="height: 50px; border: 1px solid;">'
             + '<td style="width: 138px;">결재서</td>'
