@@ -323,7 +323,7 @@ update
 update
 				chat
 	 set
-	 			CHAT_NEWMSG = '삭제된 메시지입니다.'
+	 			CHAT_NEWMSG = #{msgContent}
  where	chat_no = #{chatNo}
 </update>
 
@@ -367,5 +367,104 @@ update
  where	chat_no = #{chatNo}
    and  mem_no = #{memNo}
 </update>
+
+<!-- 해당 채팅방 최근 메시지 번호 불러오기 -->
+
+<select id="newMsgNo" resultType="_int">
+SELECT
+    	msg_no
+FROM
+	    (SELECT
+	         msg_no
+	     FROM
+	         message
+        where 
+            chat_no = #{chatNo}
+	     ORDER BY
+	          msg_no DESC)
+WHERE
+   		 ROWNUM = 1
+</select>
+
+<update id="titleChange">
+update
+				chat_list
+	 set	
+	 			cl_title = #{clTitle}
+ where	chat_no = #{chatNo}
+ 	 and	mem_no = #{memNo}
+
+</update>
+
+<insert id="inviteMem">
+insert
+	into
+				chat_list
+				(
+					chat_no
+				,	mem_no
+				,	cl_title
+				)
+				values
+				(
+					#{chatNo}
+				,	#{inviteNo}
+				, #{memName}||' 단체방'
+				)
+
+</insert>
+
+<update id="updateChatStatus">
+
+update
+				chat_list
+	 set
+	 			cl_type = 'G'
+	 		, cl_title = #{memName}||' 단체방'
+ where
+				chat_no = #{chatNo}
+</update>
+
+<select id="chatMember" resultType="string">
+select
+        mem_no
+  from
+        chat_list
+ where
+        chat_no = #{chatNo}
+</select>
+
+<select id="chatMemberName" resultType="string">
+select
+				mem_name
+	from
+				member
+ where
+ 				mem_no = #{inviteNo}
+
+</select>
+
+<select id="memberIMG" resultType="string">
+select
+				profile_url
+	from
+				member
+ where
+ 				MEM_NO IN 
+				<foreach collection="list" item="memNo" open="(" separator="," close=")">
+			   	#{memNo}
+			 	</foreach>
+</select>
+
+<select id="chatNewChat" resultType="string">
+select
+				chat_newmsg
+	from
+				chat
+ where
+ 				chat_no = #{chatNo}
+
+</select>
+
 
 </mapper>

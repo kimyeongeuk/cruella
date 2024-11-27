@@ -28,5 +28,6 @@ public class ChatDto {
 	private String strDate;
 	private String chatTitle2;
 	private int msgNo;
+	private String type;
 	
 }

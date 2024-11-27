@@ -90,8 +90,8 @@ public class ChatDao {
 		return sqlSession.update("chatMapper.deleteMsg",msgNo);
 	}
 
-	public int changeNewMsg(int chatNo) {
-		return sqlSession.update("chatMapper.changeNewMsg",chatNo);
+	public int changeNewMsg(MessageDto messageDto) {
+		return sqlSession.update("chatMapper.changeNewMsg",messageDto);
 	}
 
 	public int modifyMsg(MessageDto messageDto) {
@@ -108,6 +108,38 @@ public class ChatDao {
 
 	public int chatLockUpdate(ChatListDto msgDto) {
 		return sqlSession.update("chatMapper.chatLockUpdate",msgDto);
+	}
+
+	public int newMsgNo(int chatNo) {
+		return sqlSession.selectOne("chatMapper.newMsgNo",chatNo);
+	}
+
+	public int titleChange(ChatListDto msgDto) {
+		return sqlSession.update("chatMapper.titleChange",msgDto);
+	}
+
+	public int inviteMem(Map<String, Object> map3) {
+		return sqlSession.insert("chatMapper.inviteMem",map3);
+	}
+
+	public int updateChatStatus(Map<String, Object> map3) {
+		return sqlSession.update("chatMapper.updateChatStatus",map3);
+	}
+
+	public List<String> chatMember(Map<String, Object> map3) {
+		return sqlSession.selectList("chatMapper.chatMember",map3);
+	}
+
+	public String chatMemberName(String inviteNo) {
+		return sqlSession.selectOne("chatMapper.chatMemberName",inviteNo);
+	}
+
+	public List<String> memberIMG(List<String> targetMemNo) {
+		return sqlSession.selectList("chatMapper.memberIMG",targetMemNo);
+	}
+
+	public String chatNewChat(String chatNo) {
+		return sqlSession.selectOne("chatMapper.chatNewChat",chatNo);
 	}
 	
 
