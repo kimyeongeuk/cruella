@@ -36,8 +36,11 @@
 			display: none;
 		}
 		.late-in {
-    	background-color: #FFC6C7; /* 원하는 색깔로 변경 */
+    	background-color: #FFC6C7; 
     	color: white;
+  	}
+  	.normal {
+  		background-color: #EBEBED;
   	}
    </style>
    
@@ -532,7 +535,7 @@
         		    if (info.event.extendedProps.status === '출근' && startTime.getHours() >= 9) {
         		      return ['late-in']; // 'late-in' 클래스를 추가
         		    }
-        		    return []; // 퇴근 이벤트나 출근이 9시 이전이면 기본 스타일 사용
+        		    return ['normal']; // 퇴근 이벤트나 출근이 9시 이전이면 기본 스타일 사용
         	  }
       });
       calendar.render();
