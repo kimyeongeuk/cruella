@@ -103,6 +103,7 @@ public class MemberServiceImpl implements MemberService {
 			
 		}
 		return result;
+	}
 	public int selectVacListCount(String memNo) {
 		return memberDao.selectVacListCount(memNo);
 	}
