@@ -481,8 +481,7 @@
 		                trEl += '</tr>';
 		            } else {
 		                let count = 1;
-		                let pi = res.pi; // 페이지 정보
-		                res.forEach((vac) => {
+		                res.list.forEach((vac) => {
 		                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
 		
 		                    trEl += '<tr>';
@@ -506,7 +505,6 @@
 		                    count++;
 		                });
 		            }
-								console.log(trEl);
 		            $('#vacListTbody').html(trEl);
 		            
 		            // 페이징바

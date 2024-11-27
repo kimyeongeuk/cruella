@@ -345,6 +345,7 @@ public class MemberController {
 
          List<AppdocDto> list = memberService.selectVacList(params);
          params.put("list", list);
+         System.out.println(list);
          return params;
 	 }
 	 
