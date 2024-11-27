@@ -111,6 +111,15 @@ public class ChatServiceImpl implements ChatService{
 	public int modifyMsg(MessageDto messageDto) {
 		return chatDao.modifyMsg(messageDto);
 	}
+	public String msgStatus(MessageDto messageDto) {
+		return chatDao.msgStatus(messageDto);
+	}
+	public String chatLock(ChatListDto msgDto) {
+		return chatDao.chatLock(msgDto);
+	}
+	public int chatLockUpdate(ChatListDto msgDto) {
+		return chatDao.chatLockUpdate(msgDto);
+	}
 
 
 

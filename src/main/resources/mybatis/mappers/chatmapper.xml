@@ -93,8 +93,8 @@ select
 		   , CP_MESSAGE
 		   , CP_STATUS
 	  from chat_profile cp
-	  join member m on (cp.mem_no = m.mem_no)
-   where m.status in ('Y','S')
+	 full join member m on (cp.mem_no = m.mem_no)
+   where m.status in ('Y','S','A')
 </select>
 
 <!-- 사원 목록 불러오기 -->
@@ -336,6 +336,36 @@ update
 	 			msg_status = 'M'
  where
  				msg_no = #{msgNo}
+</update>
+
+<!-- 메시지 상태 불러오기 -->
+<select id="msgStatus" resultType="string">
+select
+				msg_status
+	from
+				message
+ where
+ 				msg_no = #{msgNo}
+</select>
+
+<!-- 잠금상태 확인 -->
+<select id="chatLock" resultType="string">
+select
+				cl_lock
+	from
+				chat_list
+ where
+ 				chat_no = #{chatNo}
+   and  mem_no = #{memNo}
+</select>
+
+<!-- 잠금상태 변경하기 -->
+<update id="chatLockUpdate">
+update
+				chat_list
+	 set	cl_lock = #{clLock}
+ where	chat_no = #{chatNo}
+   and  mem_no = #{memNo}
 </update>
 
 </mapper>

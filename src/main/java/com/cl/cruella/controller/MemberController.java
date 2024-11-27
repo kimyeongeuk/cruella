@@ -23,10 +23,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.BoardDto;
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.dto.NoticeDto;
 import com.cl.cruella.dto.PageInfoDto;
 import com.cl.cruella.service.AppService;
 import com.cl.cruella.service.BoardService;
 import com.cl.cruella.service.MemberService;
+import com.cl.cruella.service.NoticeService;
 import com.cl.cruella.util.FileUtil;
 import com.cl.cruella.util.PagingUtil;
 
@@ -49,6 +51,7 @@ public class MemberController {
 	private final PagingUtil pagingUtil;
 	private final BoardService boardService;
 	private final AppService appService;
+	private final NoticeService noticeService;
 
 	
 	// 로그인(김동규)
@@ -261,6 +264,32 @@ public class MemberController {
 
          return params;
      }
+	 
+	 // 대시보드 - 공지사항 조회
+	 @PostMapping("/noticeList.do")
+	 @ResponseBody
+	 public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session){
+		 
+         MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+         String deptCode = loginUser.getDeptCode();
+
+         String loggedInDeptCode = deptCode != null ? deptCode : loginUser.getDeptCode();
+        
+         Map<String, Object> params = new HashMap<>();
+         params.put("deptCode", loggedInDeptCode);
+
+         int listCount = noticeService.selectNoticeListCount(params);
+
+         PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+         params.put("pi", pi);
+
+         List<NoticeDto> list = noticeService.selectNoticeList(params);
+         params.put("list", list);
+         
+
+         return params;		 
+	 }
+	 
 	 
 	 // 전 사원 정보 조회(이름, 메일, 사번, 사진)
 	 @PostMapping("/selectAll_db.do")

@@ -645,6 +645,14 @@ where  doc_no = #{docNo}
 </update>
 
 
+<!-- 회수버튼 클릭스 기안서 회수 -->
+<update id="ajaxDeleteCheckApp">
+update app_doc 
+set status = 'N'
+where doc_no = #{a}
+</update>
+
+
 
 
 
@@ -690,12 +698,12 @@ where  doc_no = #{docNo}
 <update id="memberVacation">
 update member 
 set VAC_COUNT = VAC_COUNT - (
-															select
-															      (app_date_end-app_date_start)+1 
-															 from 
-															      app_form_ann
-															  where doc_no = #{docNo}
-														)
+								select
+									(app_date_end-app_date_start)+1 
+								 from 
+									app_form_ann
+								where doc_no = #{docNo}
+							)
 where mem_No = #{docMemNo}
 
 </update>

@@ -210,6 +210,15 @@ public class AppDao {
 	 
 	 
 	 
+	 // 체크한 기안서들 삭제
+	 public int ajaxDeleteCheckApp(String a) {
+		 return sqlSession.update("appMapper.ajaxDeleteCheckApp",a);
+	 }
+	 
+	 
+	 
+	 
+	 
 	 
 	 
 	 

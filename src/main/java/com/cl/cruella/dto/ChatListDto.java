@@ -24,6 +24,6 @@ public class ChatListDto {
 	 private String chatNoticeNo;
 	 private String clLock;
 	 private String clAlram;
-	 
+	 private String type;
 
 }

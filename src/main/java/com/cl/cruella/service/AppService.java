@@ -287,6 +287,23 @@ public class AppService {
 	
 	
 	
+//	체크한 기안서 삭제
+	public int ajaxDeleteCheckApp(List<String> docNos) {
+		
+		
+		int result = 0;
+		
+		for(String a : docNos) {
+			result += appDao.ajaxDeleteCheckApp(a);
+		}
+		
+		return result;
+		
+		
+	}
+	
+	
+	
 	
 }
 
