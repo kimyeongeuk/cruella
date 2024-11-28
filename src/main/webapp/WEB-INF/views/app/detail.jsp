@@ -595,7 +595,7 @@ $(document).ready(function(){
  
  
  
- $('#last_sign_success').on('click',function(){
+ $('#last_sign_success').on('click',function(){ // 결재 버튼
 	 
 	
 	 const imgSrc = '${loginUser.signPath}';
@@ -628,7 +628,7 @@ $(document).ready(function(){
 			   success: function(res){
 				   	if(res>0){
 				   		alert('성공적으로 결재하였습니다');
-				   		location.href = '${contextPath}/app/box_standby.do';
+				   		location.href = '${contextPath}/app/box_main.do';
 				   		
 				   	}
 			   }
@@ -645,7 +645,7 @@ $(document).ready(function(){
  
  
  
- $('#success_btn').on('click',function(){
+ $('#success_btn').on('click',function(){ // 반려버튼
 	 
 	 
 		if($('#reason_result').val() == ""){
@@ -668,7 +668,7 @@ $(document).ready(function(){
 						if(res>0){
 							$('#myModal').modal('hide'); 
 							alert('성공적으로 반려하였습니다');
-							location.href = '${contextPath}/app/box_standby.do';
+							location.href = '${contextPath}/app/box_main.do';
 												
 						}
 					}
@@ -693,7 +693,7 @@ $(document).ready(function(){
             		success:function(res){
             			if(res>0){
             				alert('기안서를 회수하였습니다');
-            				location.href = '${contextPath}/app/box_progress.do';
+            				location.href = '${contextPath}/app/box_main.do';
             									
             			}
             		}
