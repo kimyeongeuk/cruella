@@ -89,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
 	public int insertPayment(MemberDto m) {
 		return memberDao.insertPayment(m);
 	}
-
+	
 	@Override
 	public List<MemberDto> salarypaymentList() {
 		return memberDao.salarypaymentList();
@@ -111,6 +111,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public List<AppdocDto> selectVacList(Map<String, Object> params) {
 		return memberDao.selectVacList(params);
+	}
+
+	@Override
+	public List<MemberDto> getSalaryByDate(int year, int month) {
+		return memberDao.getSalaryByDate(year, month);
 	}
 
 

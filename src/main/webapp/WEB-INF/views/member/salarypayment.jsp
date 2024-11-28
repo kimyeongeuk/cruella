@@ -95,20 +95,42 @@
 								<div style="display: flex;">
 									<h5 class="card-header"
 										style="display: flex; align-items: center;">
-										<select class="form-select"
+										<select id="yearSelect" class="form-select"
 											style="width: 100px; margin-right: 10px;">
 											<option value="">2024</option>
 											<option value="">2023</option>
+											<option value="">2022</option>
+											<option value="">2021</option>
+											<option value="">2020</option>
+											<option value="">2019</option>
+											<option value="">2018</option>
+											<option value="">2017</option>
+											<option value="">2016</option>
+											<option value="">2015</option>
+											<option value="">2014</option>
+											<option value="">2013</option>
+											<option value="">2012</option>
+											<option value="">2011</option>
+											<option value="">2010</option>
+											<option value="">2009</option>
 										</select> <span>년</span>
 									</h5>
 									<h5 class="card-header"
 										style="display: flex; align-items: center; padding: 0;">
-										<select class="form-select"
+										<select id="monthSelect" class="form-select"
 											style="width: 70px; margin-right: 10px;">
 											<option value="">1</option>
 											<option value="">2</option>
 											<option value="">3</option>
 											<option value="">4</option>
+											<option value="">5</option>
+											<option value="">6</option>
+											<option value="">7</option>
+											<option value="">8</option>
+											<option value="">9</option>
+											<option value="">10</option>
+											<option value="">11</option>
+											<option value="">12</option>
 										</select> <span>월</span>
 									</h5>
 								</div>
@@ -190,72 +212,103 @@
 						</div>
 
 						<script>
-							$(document).ready(function() {
-								
-								
-								$('#pay_btn').on('click', function() {
-									
-									
-									const check = [];
-									
-									$('.dd:checked').each(function() {
-										var memNo = $(this).val();
-										check.push(memNo);
-										console.log("나다",check);
-										
-											
-											
-									})
-									
-									
-										if(check.length == 0){
-											alert('사원을 체크해주세요');
-											return;
-										}
-									
-									
-									if(confirm('급여를 지급하시겠습니까?')){
-										
-											if(check.length > 0){
-												
-										
-												$.ajax({
-													url: '${contextPath}/member/payBtn.do',
-													contentType: "application/json",
-													type : 'POST',
-													data: JSON.stringify({
-														memNo:check
-													}),
-													success:function(res){
-														if(res > 0){
-															alert("성공적으로 지급되었습니다.")
-															location.href="${contextPath}/member/salarypayment.do";
-															
-															/* let div = "" ;
-															
-															for(let i=0; i<res.length; i++){
-																div += "<>"
-															}
-															 */
-															
-														}
-													}
-												})
-		
-											}
-									}
-									
-									
-									
-									
-								})
-								
-								
-								
-								
-								
-								
-							})
+						$(document).ready(function () {
+
+						    $('#pay_btn').on('click', function () {
+						        const check = [];
+						        $('.dd:checked').each(function () {
+						            var memNo = $(this).val();
+						            check.push(memNo);
+						        });
+
+						        if (check.length == 0) {
+						            alert('사원을 체크해주세요');
+						            return;
+						        }
+
+						        const year = $('#yearSelect').val();
+						        const month = $('#monthSelect').val();
+
+						        if (!year || !month) {
+						            alert('년도와 월을 선택해주세요.');
+						            return;
+						        }
+
+						        if (confirm('급여를 지급하시겠습니까?')) {
+						            // 1. 년도/월에 맞는 데이터 조회
+						            $.ajax({
+						                url: '${contextPath}/member/salaryByDate.do',
+						                type: 'POST',
+						                contentType: 'application/json',
+						                data: JSON.stringify({ year: year, month: month }),
+						                success: function (res) {
+						                    if (res.length === 0) {
+						                        alert('해당 년도와 월에 해당하는 데이터가 없습니다.');
+						                        return;
+						                    }
+
+						                    // 테이블 업데이트
+						                    let tableBody = '';
+						                    res.forEach(member => {
+						                        tableBody += `
+						                            <tr>
+						                                <td><input type="checkbox" class="dd form-check-input" value="${member.memNo}" ></td>
+						                                <!-- 사번 -->
+						                                <td><span>${member.memNo}</span></td>
+						                                <!-- 사원명 -->
+						                                <td>${member.memName}</td>
+						                                <!-- 부서명 -->
+						                                <td>${member.deptName}</td>
+						                                <!-- 직급명 -->
+						                                <td>${member.posName}</td>
+						                                <!-- 기본급 -->
+						                                <td>${member.salary}</td>
+						                                <!-- 국민연금 -->
+						                                <td>${member.pension}</td>
+						                                <!-- 건강보험 -->
+						                                <td>${member.health}</td>
+						                                <!-- 고용보험 -->
+						                                <td>${member.employment}</td>
+						                                <!-- 장기요양 -->
+						                                <td>${member.care}</td>
+						                                <!-- 지급예정금액 -->
+						                                <td>${member.totalSalary}</td>
+						                                <!-- 지급날짜 -->
+						                                <td>${member.paymentDate}</td>
+						                            </tr>
+						                        `;
+						                    });
+						                    $('#salaryTableBody').html(tableBody);
+
+						                    // 2. 급여 지급 로직 실행
+						                    $.ajax({
+						                        url: '${contextPath}/member/payBtn.do',
+						                        contentType: 'application/json',
+						                        type: 'POST',
+						                        data: JSON.stringify({ memNo: check }),
+						                        success: function (payRes) {
+						                            if (payRes > 0) {
+						                                alert('성공적으로 지급되었습니다.');
+						                                location.href = '${contextPath}/member/salarypayment.do';
+						                            } else {
+						                                alert('지급할 급여 정보가 없습니다.');
+						                            }
+						                        },
+						                        error: function (xhr, status, error) {
+						                            console.error('급여 지급 처리 중 오류 발생:', error);
+						                        }
+						                    });
+						                },
+						                error: function (xhr, status, error) {
+						                    alert('데이터 조회 중 문제가 발생했습니다.');
+						                    console.error('조회 오류:', error);
+						                }
+						            });
+						        }
+						    });
+
+						});
+
 						</script>
 
 

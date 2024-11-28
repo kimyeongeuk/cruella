@@ -120,6 +120,13 @@ public class MemberDao {
 		return sqlSession.update("memberMapper.payBtn", no);
 	}
 
+	public List<MemberDto> getSalaryByDate(int year, int month) {
+        Map<String, Integer> params = new HashMap<>();
+        params.put("year", year);
+        params.put("month", month);
+        return sqlSession.selectList("memberMapper.getSalaryByDate", params);
+	}
+
 
 
 

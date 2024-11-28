@@ -362,6 +362,28 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 					
 	</update>
 	
+	<!-- 급여날짜조회 (이예빈) -->
+	<select id="getSalaryByDate" resultMap="memberResultMap">
+    select 
+          m.mem_no
+        , m.mem_name
+        , d.dept_name
+        , p.pos_name
+        , s.salary
+        , s.sal_pension
+        , s.sal_health
+        , s.sal_employment
+        , s.sal_care
+        , s.sal_total
+        , s.sal_payment_date
+    from member m
+    join department d on (d.dept_code = m.dept_code)
+    join position p on (p.pos_code = m.pos_code)
+    join salary s on (s.mem_no = m.mem_no)
+    where year(s.sal_payment_date) = #{year}
+      and month(s.sal_payment_date) = #{month}
+    order by m.mem_no
+</select>
 	
 	
 	

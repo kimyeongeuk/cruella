@@ -580,6 +580,14 @@ public class MemberController {
 		
 	}
 	
+	@ResponseBody
+	@PostMapping("/salaryByDate.do")
+	public List<MemberDto> getSalaryByDate(@RequestBody Map<String, Integer> params) {
+	    int year = params.get("year");
+	    int month = params.get("month");
+	    return memberService.getSalaryByDate(year, month);
+	}
+	
 	
 	
 	
