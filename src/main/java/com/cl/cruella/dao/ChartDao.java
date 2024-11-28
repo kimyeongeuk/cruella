@@ -1,15 +1,20 @@
 package com.cl.cruella.dao;
 
-import org.mybatis.spring.SqlSessionTemplate;
+import java.util.List;
+import java.util.Map;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
-
+import com.cl.cruella.dto.RevenueDto;
 import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
 public class ChartDao {
 
-    private final SqlSessionTemplate sqlSession;
+    private final SqlSession sqlSession;
+    private static final String NAMESPACE = "com.cl.cruella.mapper.ChartMapper";
 
-
+    public List<RevenueDto> findDeptIncomeByMonth(Map<String, String> params) {
+        return sqlSession.selectList(NAMESPACE + ".findDeptIncomeByMonth", params);
+    }
 }
