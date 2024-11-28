@@ -51,161 +51,301 @@ canvas#myChart {
   <div class="container-xxl flex-grow-1 container-p-y">
     <div class="container card py-5">
     <!-- 여기부터 -->
- 
-<div>
-  <select id="yearSelect" class="select1 form-select form-select-lg" data-allow-clear="true" style="width: 120px;">
-    <option value="2023">2023</option>
-    <option value="2024" selected>2024</option>
-  </select>
-  <select id="monthSelect" class="select1 form-select form-select-lg" data-allow-clear="true" style="width: 100px; margin-left: 10px;">
-    <option value="01">1월</option>
-    <option value="02">2월</option>
-    <option value="03">3월</option>
-    <option value="04">4월</option>
-    <option value="05">5월</option>
-    <option value="06">6월</option>
-    <option value="07">7월</option>
-    <option value="08">8월</option>
-    <option value="09">9월</option>
-    <option value="10">10월</option>
-    <option value="11">11월</option>
-    <option value="12">12월</option>
-  </select>
+    
+<div style="display: none; margin: 20px;" id="totalSalesChart">
+<div style="display: flex; justify-content: space-between; align-items: center;">
+  <div>
+    <span>
+      <span style="font-size: 20px;">매출차트</span>
+    </span>
+  </div>
+  <div style="flex: 1; margin-left: 60px;">
+    <select class="select1 form-select form-select-lg chartSelect" data-allow-clear="true" style="width: 300px;">
+      <option value="총매출차트" selected>총매출차트</option>
+      <option value="팀별 매출 점유율 차트">팀별 매출 점유율 차트</option>
+      <option value="매장 매출차트">매장 매출차트</option>
+    </select>
+  </div>
+  <div>
+    <span>${currentDate}</span>
+  </div>
+</div>
+<!-- 총매출 차트 -->
+  
+  
+</div>  
+    
+<div style="display: none; margin: 20px;" id="categorySalesChart">
+<!-- 팀별 매출 점유율 차트 --> 
+<div style="display: flex; justify-content: space-between; align-items: center;">
+ <div>
+   <span>
+      <span style="font-size: 20px;">매출차트</span>
+   </span>
+ </div>
+ <div style="flex: 1; margin-left: 60px;">
+   <select class="select1 form-select form-select-lg chartSelect" data-allow-clear="true" style="width: 300px;">
+      <option value="총매출차트">총매출차트</option>
+      <option value="팀별 매출 점유율 차트" selected>팀별 매출 점유율 차트</option>
+      <option value="매장 매출차트">매장 매출차트</option>
+    </select>
+  </div>
+  <div>
+    <span>${currentDate}</span>
+  </div>
+</div>
+<br>   
+<div class="justify-content-between" style="display: flex;">
+  <div id="chartCenterText"></div>
+</div>
+<div class="d-flex justify-content-end">
+	<div>
+	  <select id="yearSelect" class="select1 form-select form-select-lg" data-allow-clear="true">
+	    <option value="2023">2023</option>
+	    <option value="2024" selected>2024</option>
+	  </select>
+	</div>
+	<div>
+	  <select id="monthSelect" class="select1 form-select form-select-lg" data-allow-clear="true" style="margin-left: 10px;">
+	    <option value="01">1월</option>
+	    <option value="02">2월</option>
+	    <option value="03">3월</option>
+	    <option value="04">4월</option>
+	    <option value="05">5월</option>
+	    <option value="06">6월</option>
+	    <option value="07">7월</option>
+	    <option value="08">8월</option>
+	    <option value="09">9월</option>
+	    <option value="10">10월</option>
+	    <option value="11">11월</option>
+	    <option value="12">12월</option>
+	  </select>
+	</div>
 </div>
 <div>
-  <canvas id="myChart" style="width: 100%; height: 400px;"></canvas>
-</div>
+	<div class="chart-container" style="position: relative; width: 80%;">
+	  <canvas id="myChart" style="width: 100%; height: 400px;"></canvas>
+	</div>
+</div>		
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
 $(function() {
-	  const ctx = document.getElementById('myChart').getContext('2d');
-	  const myChart = new Chart(ctx, {
-	    type: 'doughnut',
-	    data: {
-	      labels: [],
-	      datasets: [{
-	        label: '매출',
-	        data: [],
-	        backgroundColor: [
-	          'rgb(102, 110, 232)', 'rgb(40, 208, 148)', 'rgb(253, 172, 52)', 'rgb(253, 233, 52)',
-	          'rgb(223, 253, 52)', 'rgb(52, 223, 253)', 'rgb(196, 52, 253)', 'rgb(253, 52, 193)'
-	        ],
-	        borderWidth: 1
-	      }]
-	    },
-	    options: {
-	      responsive: true,
-	      maintainAspectRatio: false,
-	      plugins: {
-	        legend: {
-	          display: true
-	        },
-	        tooltip: {
-	       	  callbacks: {
-	       	    label: (context) => {
-	       	      let label = context.label || '';
-	       	      if (label) label += ': ';
-	       	      
-	       	      // 디버깅: context.raw 값 출력
-	       	      console.log("툴팁 context.raw 값:", context.raw);
-	
-	       	      // 전체 매출 계산하기 전에 총 매출을 계산
-	       	      const totalSales = context.chart.data.datasets[0].data.reduce((a, b) => a + (b || 0), 0);
-	       	      console.log("전체 매출(totalSales):", totalSales);
-	
-	       	      if (context.raw !== null && context.raw !== undefined) {
-	       	        // 퍼센트 계산
-	       	        const percentage = totalSales > 0 ? ((context.raw / totalSales) * 100).toFixed(2) : 0;
-	       	        
-	       	        // 매출과 퍼센트 표시
-	       	        label += percentage+"% ("+ context.raw.toLocaleString()+"원)";
-	       	      }
-	       	      
-	       	      return label;
-	       	    }
-	       	  }
-	       	}
-	      }
-	    }
-	  });
+  const ctx = document.getElementById('myChart').getContext('2d');
+  const myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: [],
+      datasets: [{
+        label: '매출',
+        data: [],
+        backgroundColor: [
+          'rgb(102, 110, 232)', 'rgb(40, 208, 148)', 'rgb(253, 172, 52)', 'rgb(253, 233, 52)',
+          'rgb(223, 253, 52)', 'rgb(52, 223, 253)', 'rgb(196, 52, 253)', 'rgb(253, 52, 193)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'right', // 범례 위치
+          labels: {
+        	  font: {
+        		  size: 16, // 글꼴 크기
+        		  family: 'Arial', // 글꼴 종류
+        		  style: 'italic', // 글꼴 스타일
+        		  weight: 'bold' // 글꼴 두께
+        	  },
+        	  color: 'gray', // 글꼴 색상
+        	  padding: 20, // 아이템 간격
+        	  usePointStyle: true,
+        	  pointStyle: 'round',
+        	  borderRadius: 10
+          },
+          onClick: function() {}
+        },
+        tooltip: {
+       	  callbacks: {
+       	    label: (context) => {
+       	      let label = context.label || '';
+       	      if (label) label += ': ';
+       	      
+       	      // 디버깅: context.raw 값 출력
+       	      console.log("툴팁 context.raw 값:", context.raw);
 
-	  function updateChart(year, month) {
-	    console.log("AJAX 요청 시작:", { year: year, month: month });
+       	      // 전체 매출 계산하기 전에 총 매출을 계산
+       	      const totalSales = context.chart.data.datasets[0].data.reduce((a, b) => a + (b || 0), 0);
+       	      console.log("전체 매출(totalSales):", totalSales);
 
-	    $.ajax({
-	      url: `${contextPath}/chart/teamSales.do`,
-	      type: "POST",
-	      data: JSON.stringify({ year: year, month: month }),
-	      contentType: "application/json; charset=utf-8",
-	      dataType: "json",
-	      success: function(data) {
-	        console.log("AJAX 요청 성공, 반환 데이터:", data);
+       	      if (context.raw !== null && context.raw !== undefined) {
+       	        // 퍼센트 계산
+       	        const percentage = totalSales > 0 ? ((context.raw / totalSales) * 100).toFixed(2) : 0;
+       	        
+       	        // 매출과 퍼센트 표시
+       	        label += percentage+"% ("+ context.raw.toLocaleString()+"원)";
+       	      }
+       	      
+       	      return label;
+       	    }
+       	  }
+       	}
+      }
+    }
+  });
+  
+  function setInitialDate() {
+	  const today = new Date();
+	  const year = today.getFullYear();
+	  const month = ("0" + (today.getMonth() + 1)).slice(-2);
+	  
+	  $('#yearSelect').val(year);
+	  $('#monthSelect').val(month);
+	  
+	  updateChart(year, month);
+  }
 
-	        // 데이터 배열 초기화
-	        var departments = [];
-	        var sales = [];
+  function updateChart(year, month) {
+    console.log("AJAX 요청 시작:", { year: year, month: month });
 
-	        // deptCode를 매핑하여 레이블 추가
-	        const deptCodeToLabel = {
-	          T1: '남성의류',
-	          T2: '여성의류',
-	          T3: '식품',
-	          T4: '스포츠',
-	          T5: '뷰티',
-	          T6: '명품',
-	          T7: '문화센터',
-	          T8: '디지털 및 가전'
-	        };
+    $.ajax({
+      url: `${contextPath}/chart/teamSales.do`,
+      type: "POST",
+      data: JSON.stringify({ year: year, month: month }),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data) {
+        console.log("AJAX 요청 성공, 반환 데이터:", data);
 
-	        let totalSales = 0; // 총 매출 변수
+        // 데이터 배열 초기화
+        var departments = [];
+        var sales = [];
 
-	        // 데이터 처리
-	        $.each(data, function(index, item) {
-	          const deptLabel = deptCodeToLabel[item["deptCode"]] || item["deptCode"];
-	          departments.push(deptLabel);
-	          sales.push(item["sale"]);
-	          totalSales += item["sale"]; // 총 매출 계산
-	        });
+        // deptCode를 매핑하여 레이블 추가
+        const deptCodeToLabel = {
+          T1: '남성의류',
+          T2: '여성의류',
+          T3: '식품',
+          T4: '스포츠',
+          T5: '뷰티',
+          T6: '명품',
+          T7: '문화센터',
+          T8: '디지털 및 가전'
+        };
 
-	        console.log("차트 업데이트 데이터:", { departments: departments, sales: sales });
+        let totalSales = 0; // 총 매출 변수
 
-	        // 차트 데이터 업데이트
-	        myChart.data.labels = departments;
-	        myChart.data.datasets[0].data = sales;
+        // 데이터 처리
+        $.each(data, function(index, item) {
+          const deptLabel = deptCodeToLabel[item["deptCode"]] || item["deptCode"];
+          departments.push(deptLabel);
+          sales.push(item["sale"]);
+          totalSales += item["sale"]; // 총 매출 계산
+        });
 
-	        // 차트 갱신
-	        myChart.update();
-	      },
-	      error: function(jqXHR, textStatus, errorThrown) {
-	        console.error("AJAX 요청 실패:", {
-	          status: textStatus,
-	          error: errorThrown,
-	          response: jqXHR.responseText,
-	        });
-	        alert("데이터를 가져오는 데 실패했습니다.");
-	      },
-	    });
-	  }
+        console.log("차트 업데이트 데이터:", { departments: departments, sales: sales });
 
-	  $('#yearSelect, #monthSelect').change(function() {
-	    const year = $('#yearSelect').val();
-	    const month = $('#monthSelect').val();
-	    updateChart(year, month);
-	  });
+        // 차트 데이터 업데이트
+        myChart.data.labels = departments;
+        myChart.data.datasets[0].data = sales;
 
-	  // 초기 데이터 로드
-	  const initialYear = $('#yearSelect').val();
-	  const initialMonth = $('#monthSelect').val();
-	  updateChart(initialYear, initialMonth);
-	});
+        // 차트 갱신
+        myChart.update();
+        
+        // 차트 중앙 텍스트 업데이트
+        $('#chartCenterText').text("총 매출: " + totalSales.toLocaleString() + "원");
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error("AJAX 요청 실패:", {
+          status: textStatus,
+          error: errorThrown,
+          response: jqXHR.responseText,
+        });
+        alert("데이터를 가져오는 데 실패했습니다.");
+      },
+    });
+  }
+
+  $('#yearSelect, #monthSelect').change(function() {
+    const year = $('#yearSelect').val();
+    const month = $('#monthSelect').val();
+    updateChart(year, month);
+  });
+  
+  setInitialDate();
+});
 
 </script>
+<!-- /팀별 매출 점유율 차트 -->
+</div>
 
+<div style="display: none; margin: 20px;" id="storeSalesChart">
+<!-- 매장 매출 차트 -->
+<div style="display: flex; justify-content: space-between; align-items: center;">
+  <div>
+    <span>
+      <span style="font-size: 20px;">매출차트</span>
+    </span>
+  </div>
+  <div style="flex: 1; margin-left: 60px;">
+    <select class="select1 form-select form-select-lg chartSelect" data-allow-clear="true" style="width: 300px;">
+      <option value="총매출차트">총매출차트</option>
+      <option value="팀별 매출 점유율 차트">팀별 매출 점유율 차트</option>
+      <option value="매장 매출차트" selected>매장 매출차트</option>
+    </select>
+  </div>
+  <div>
+    <span>${currentDate}</span>
+  </div>
+</div>
 
+</div>
 
+<!-- 차트셀렉트 -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const chartSelectElements = document.querySelectorAll('.chartSelect');
+  const totalSalesChart = document.getElementById('totalSalesChart');
+  const categorySalesChart = document.getElementById('categorySalesChart');
+  const storeSalesChart = document.getElementById('storeSalesChart');
+
+  const showChart = (chartId) => {
+    totalSalesChart.style.display = 'none';
+    categorySalesChart.style.display = 'none';
+    storeSalesChart.style.display = 'none';
+
+    if (chartId === '총매출차트') {
+      totalSalesChart.style.display = 'block';
+    } else if (chartId === '팀별 매출 점유율 차트') {
+      categorySalesChart.style.display = 'block';
+    } else if (chartId === '매장 매출차트') {
+      storeSalesChart.style.display = 'block';
+    }
+  };
+
+  chartSelectElements.forEach(selectElement => {
+    selectElement.addEventListener('change', (event) => {
+      const selectedChart = event.target.value;
+      
+      // Update all select elements to show the selected chart option
+      chartSelectElements.forEach(elem => {
+        elem.value = selectedChart;
+      });
+      
+      showChart(selectedChart);
+    });
+  });
+
+  // 초기화 시 첫 번째 차트를 표시
+  showChart(chartSelectElements[0].value);
+});
+</script>
+<!-- /차트셀렉트 -->
 
      
 		<!-- 여기까지 -->
