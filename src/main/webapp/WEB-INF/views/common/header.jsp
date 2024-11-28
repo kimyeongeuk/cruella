@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 
@@ -285,24 +286,28 @@
             </li>
 						
 						<!-- 매출분석 -->
-            <li class="menu-item">
-              <a href="#" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ti ti-chart-dots"></i>
-                <div data-i18n="매출분석">매출분석</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="${ contextPath }/chart/chart.do" class="menu-link">
-                    <div data-i18n="차트">차트</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="${ contextPath }/revenue/revenue.do" class="menu-link">
-                    <div data-i18n="매출등록">매출등록</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
+						<li class="menu-item">
+						  <a href="#" class="menu-link menu-toggle">
+						    <i class="menu-icon tf-icons ti ti-chart-dots"></i>
+						    <div data-i18n="매출분석">매출분석</div>
+						  </a>
+						  <ul class="menu-sub">
+						    <li class="menu-item">
+						      <a href="${contextPath}/chart/chart.do" class="menu-link">
+						        <div data-i18n="차트">차트</div>
+						      </a>
+						    </li>
+						    <c:set var="validDeptCodes" value="T1,T2,T3,T4,T5,T6,T7,T8" />
+						    <c:set var="validPosCodes" value="C1,C2,C3,C4" />
+						    <c:if test="${fn:contains(validDeptCodes, loginUser.deptCode) && fn:contains(validPosCodes, loginUser.posCode)}">
+						      <li class="menu-item">
+						        <a href="${contextPath}/revenue/revenue.do" class="menu-link">
+						          <div data-i18n="매출등록">매출등록</div>
+						        </a>
+						      </li>
+						    </c:if>
+						  </ul>
+						</li>
 
             <!-- 메신저 -->
             <li class="menu-item">

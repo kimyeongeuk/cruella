@@ -48,12 +48,8 @@ canvas#doughnutChart {
 <div class="container-xxl flex-grow-1 container-p-y">
 <!-- 이쪽에 세션정보 넣어야합니다 ----------------------------------------------------------------------- -->
     	
-<!-- Content wrapper -->
-<div class="content-wrapper">
-  <!-- Content -->
-  <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="container card py-5">
-    <!-- 여기부터 -->
+<div class="container card py-5">
+<!-- 여기부터 -->
     
 <div style="display: none; margin: 20px;" id="totalSalesChart">
 <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -388,9 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- /차트셀렉트 -->
 
      
-		<!-- 여기까지 -->
-	  </div>
-	</div> 
+<!-- 여기까지 -->
 <!-- 세션정보 끝 ---------------------------------------------------------------------------------------- -->
 </div>
 <!-- 세션 끝 -->
