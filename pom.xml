@@ -151,6 +151,11 @@
 		  <version>20230227</version>
 		</dependency>
 		
+		<!-- schedule -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter</artifactId>
+		</dependency>		
 	</dependencies>
 
 	<build>
