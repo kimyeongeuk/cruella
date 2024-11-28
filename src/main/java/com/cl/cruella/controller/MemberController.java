@@ -264,7 +264,7 @@ public class MemberController {
 
          int listCount = boardService.selectBoardListCount(deptCode);
 
-         PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+         PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 5);
 
          Map<String, Object> params = new HashMap<>();
          params.put("pi", pi);
@@ -336,7 +336,7 @@ public class MemberController {
 		 
 		 int listCount = memberService.selectVacListCount(memNo);
 		 
-		 PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+		 PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 5);
 		 
          Map<String, Object> params = new HashMap<>();
          params.put("pi", pi);

@@ -525,7 +525,7 @@
         	      <c:otherwise>
         	        {
         	          id: '${list.workNo}_in', // 출근 이벤트 ID
-        	          title: '출근 ${list.clockInTime}', // 출근 시간 표시
+        	          title: '출근 ${list.clockInTime.substring(0, 5)}', // 출근 시간 표시
         	          start: '${list.workDate}T${list.clockInTime}', // 출근 시간
         	          end: '${list.workDate}T${list.clockInTime}', // 출근 시간은 끝 시간이 없으므로 start와 end가 동일
         	          extendedProps: { // 추가 데이터
@@ -537,7 +537,7 @@
         	        },
         	        {
         	          id: '${list.workNo}_out', // 퇴근 이벤트 ID
-        	          title: '퇴근 ${list.clockOutTime}', // 퇴근 시간 표시
+        	          title: '퇴근 ${list.clockOutTime.substring(0, 5)}', // 퇴근 시간 표시
         	          start: '${list.workDate}T${list.clockOutTime}', // 퇴근 시간
         	          end: '${list.workDate}T${list.clockOutTime}', // 퇴근 시간은 끝 시간이 없으므로 start와 end가 동일
         	          extendedProps: { // 추가 데이터

@@ -35,7 +35,7 @@
    	 overflow: hidden;
    	 }
    	 #memoDiv{
-   	 height: 220px;
+   	 height: 280px;
    	 margin-top: 15px;
    	 overflow-y: scroll;
    	 }
@@ -250,7 +250,7 @@
                   <!--/ About User -->
                   
                   <!-- 메모목록 -->
-                  <div class="card mb-6" style="height: 331px;">
+                  <div class="card mb-6" style="height: 420px;">
                     <div class="card-body">
                       <small class="card-text text-uppercase text-muted small">Memo</small> 
                       <i class="ti ti-edit ti-sm" style="margin-left: 310px; cursor: pointer;" onclick="fnOpenMemoModal();"></i>
@@ -584,7 +584,7 @@
                     </div>
                   </div>
                   <!-- 팀게시판 영역 (재운님 코드)-->
-                  <div class="card">
+                  <div class="card" style="height: 503px;">
                     <div class="d-flex align-items-center">
 		                  <div style="margin: 20px;">
 		                    <a id="board" class="" style="font-size: 20px;" href="${contextPath}/board/boardList.do">
@@ -927,10 +927,11 @@
     }
     
     // 팀게시판 리스트 조회
-		function fnBoardList() {
+		function fnBoardList(page) {
 		    $.ajax({
 		        url: '${contextPath}/member/boardList.do',
 		        type: 'POST',
+		        data: {page: page},
 		        success: function(res) {
 	              let pi = res.pi; // 페이지 정보
 		            let trEl = '';
@@ -962,24 +963,25 @@
 		
 		            $('#boardListTbody').html(trEl);
 		            
-		            // 페이징바
+		            // 페이징바 생성 및 업데이트
 		            let pagingEl = '';
-		            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
-		            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="fnBoardList(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnBoardList(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
 
-		            // 페이지 번호 생성
 		            for (let i = pi.startPage; i <= pi.endPage; i++) {
-		                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + i + ');">' + i + '</a></li>';
+		                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnBoardList(' + i + ');">' + i + '</a></li>';
 		            }
 
-		            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
-		            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnBoardList(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="fnBoardList(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
 
-		            // 페이징바 업데이트
-		            $('#paging_area').html(pagingEl);
-		        }
-		    })
-		}
+		            $('#paging_area').html(pagingEl);			
+    		}
+    	})
+    }
+    function goToPage(pageNumber) {
+        window.location.href = "${contextPath}/member/boardList.do?page=" + pageNumber;
+      }
     
 		// 내 결재 문서함 조회
 		function fnAppList(){
