@@ -466,5 +466,35 @@ select
 
 </select>
 
+<select id="checkChatListMem" resultType="_int">
+
+select count(*)
+  from chat_list
+ where chat_no = #{chatNo}
+   and mem_no = #{inviteNo}
+
+</select>
+
+<delete id="deleteChat">
+delete
+	from	chat_list
+ where	chat_no = #{chatNo}
+ 	 and	mem_no = #{memNo}
+</delete>
+
+
+<select id="ChatMember2" resultType="string">
+select
+        mem_no
+  from
+        chat_list
+ where
+        chat_no = #{chatNo}
+   and  mem_no = #{memNo}
+
+
+
+</select>
+
 
 </mapper>

@@ -159,7 +159,7 @@ public class ChatController {
 			int result2 = chatServiceImpl.chatLockUpdate(msgDto);
 		}
 	    Map<String, String> response = new HashMap<>();
-	    response.put("lock", result); // 'Y' 또는 'N' 값을 'lockStatus' 키로 추가
+	    response.put("lock", result);
 	    return ResponseEntity.ok(response);
 
 		
@@ -177,7 +177,16 @@ public class ChatController {
 	}
 	
 	
-	
+//	@ResponseBody
+//	@GetMapping(value="/deleteChat.do",produces="application/json")
+//	public int deleteChat(ChatListDto cl) {
+//
+//		int result = chatServiceImpl.deleteChat(cl);
+//		
+//		
+//		return result;
+//		
+//	}
 
 	
 	

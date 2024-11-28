@@ -144,6 +144,15 @@ public class ChatServiceImpl implements ChatService{
 	public String chatNewChat(String chatNo) {
 		return chatDao.chatNewChat(chatNo);
 	}
+	public int checkChatListMem(Map<String, Object> map3) {
+		return chatDao.checkChatListMem(map3);
+	}
+	public int deleteChat(Map<String, Object> map4) {
+		return chatDao.deleteChat(map4);
+	}
+	public List<String> chatMember2(Map<String, Object> map4) {
+		return chatDao.ChatMember2(map4);
+	}
 
 
 

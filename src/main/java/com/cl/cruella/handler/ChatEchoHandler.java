@@ -135,44 +135,78 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 	    	
 	    	if(memNo.equals(inviteNo)) {
 	    		mySession.sendMessage(new TextMessage("1"));
-	    	}else{
-	    		// chat_list 테이블에 초대한 인원정보 추가
-	    		int result = chatServiceImpl.inviteMem(map3);
-	    		if(result > 0) {
-	    			// chat_list 해당 채팅방 종류 'G' 로 변경
-	    			result = 0;
-	    			result = chatServiceImpl.updateChatStatus(map3);
-	    			// 해당 채팅방에 있는 멤버 정보 다불러오기
-	    			targetMemNo = chatServiceImpl.chatMember(map3);
-	    			List<String> imgURL = chatServiceImpl.memberIMG(targetMemNo);
-	    			
-	    			ChatDto cd = new ChatDto();
-	    			cd.setChatNo(Integer.parseInt(inviteName));
-    				cd.setChatTitle(memName+" 단체방");
-    				cd.setChatTitle2(chatServiceImpl.chatMemberName(inviteNo));
-    				cd.setType("invite");
-    				map3.put("type", "invite");
-    				map3.put("chatTitle", memName+"단체방");
-    				map3.put("chatTitle2",chatServiceImpl.chatMemberName(inviteNo));
-    				// 맵에 채팅방 맴버 이미지 경로 받아오기
-    				map3.put("memIMG", imgURL);
-    				// 맵에 채팅방 최신메시지 받아오기
-    				map3.put("newMsg", chatServiceImpl.chatNewChat(inviteName));
-	    			ObjectMapper objectMapper = new ObjectMapper();
-	    			String cdJson = objectMapper.writeValueAsString(map3); 
-	    			for(String target : targetMemNo) {
-	    				WebSocketSession targetSession = map.get(target);
-	    				if (targetSession != null) {
-	    					targetSession.sendMessage(new TextMessage(cdJson));
-	    				}
-	    			}
-	    			
-	    			
-	    		}
 	    	}
+	    	else{
+	    		int check = chatServiceImpl.checkChatListMem(map3);
+	    		if(check == 1) {
+	    			mySession.sendMessage(new TextMessage("2"));
+	    		}else {
+		    			// chat_list 테이블에 초대한 인원정보 추가
+		    			int result = chatServiceImpl.inviteMem(map3);
+		    			if(result > 0) {
+		    				// chat_list 해당 채팅방 종류 'G' 로 변경
+		    				result = 0;
+		    				result = chatServiceImpl.updateChatStatus(map3);
+		    				// 해당 채팅방에 있는 멤버 정보 다불러오기
+		    				targetMemNo = chatServiceImpl.chatMember(map3);
+		    				List<String> imgURL = chatServiceImpl.memberIMG(targetMemNo);
+		    				
+		    				ChatDto cd = new ChatDto();
+		    				cd.setChatNo(Integer.parseInt(inviteName));
+		    				cd.setChatTitle(memName+" 단체방");
+		    				cd.setChatTitle2(chatServiceImpl.chatMemberName(inviteNo));
+		    				cd.setType("invite");
+		    				map3.put("type", "invite");
+		    				map3.put("chatTitle", memName+"단체방");
+		    				map3.put("chatTitle2",chatServiceImpl.chatMemberName(inviteNo));
+		    				// 맵에 채팅방 맴버 이미지 경로 받아오기
+		    				map3.put("memIMG", imgURL);
+		    				// 맵에 채팅방 최신메시지 받아오기
+		    				map3.put("newMsg", chatServiceImpl.chatNewChat(inviteName));
+		    				ObjectMapper objectMapper = new ObjectMapper();
+		    				String cdJson = objectMapper.writeValueAsString(map3); 
+		    				for(String target : targetMemNo) {
+		    					WebSocketSession targetSession = map.get(target);
+		    					if (targetSession != null) {
+		    						targetSession.sendMessage(new TextMessage(cdJson));
+								}
+							}
+
+						}
+
+					}
+
+				}
 	    		
 	    	
 	    	
+	    }else if(msgType.equals("delete")) {
+	    	
+	   
+	    	System.out.println(memNo);		// 초대하는 사원번호
+	    	System.out.println(memName);	// 초대하는 사람이름
+	    	System.out.println(inviteNo);	// 초대받는 사원번호
+	    	System.out.println(inviteName); // 채팅방 번호
+	    	
+	    	
+	    	Map<String,Object> map4 = new HashMap<>();
+	    	map4.put("memNo", memNo);
+	    	map4.put("chatNo", inviteNo);
+	    	map4.put("type", "delete");
+	    	targetMemNo = chatServiceImpl.chatMember(map4);
+			int result = chatServiceImpl.deleteChat(map4);
+			ObjectMapper objectMapper = new ObjectMapper();
+			String cdJson = objectMapper.writeValueAsString(map4); 
+			System.out.println(targetMemNo);
+			if(result > 0) {
+				for(String target : targetMemNo) {
+					WebSocketSession targetSession = map.get(target);
+					if (targetSession != null) {
+						targetSession.sendMessage(new TextMessage(cdJson));
+					
+				}
+			}
+			}
 	    }
 	    
 	    
