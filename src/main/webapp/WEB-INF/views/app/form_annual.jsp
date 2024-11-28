@@ -973,13 +973,35 @@
 
 
                     var resdays = getDateDiff(inDate, outDate);
+                    
                     $('#date_minus_result').html(resdays);
+                    
                   });
                 });
 				 
 				 
 				
 					$('#last_app_btn').on('click', function() {
+						
+						
+						 var inDate = $('#start-date').val();
+		                    var outDate = $('#end-date').val();
+
+
+		                    if (!inDate || !outDate) {
+		                      $('#date_minus_result').html('??');
+		                      return;
+		                    }
+
+		                    const getDateDiff = function (d1, d2) {
+		                      const date1 = new Date(d1);
+		                      const date2 = new Date(d2);
+		                      const diffDate = date1.getTime() - date2.getTime();
+		                      return Math.abs(diffDate / (1000 * 60 * 60 * 24)) + 1;
+		                    }
+
+
+		                    var resdays = getDateDiff(inDate, outDate);
 						
 						
 						if($('#defaultFormControlInput').val() == ""){
@@ -990,6 +1012,9 @@
 							return;
 						}else if($('#drag_line_div span').text() == "드래그하여 추가할 수 있습니다."){
 							alert('결재정보에서 결재선을 지정해주세요')
+							return;
+						}else if(resdays > ${loginUser.vacCount}){
+							alert('보유한 연차일수가 부족합니다');
 							return;
 						}
 						

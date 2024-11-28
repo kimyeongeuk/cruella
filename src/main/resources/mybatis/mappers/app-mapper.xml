@@ -704,7 +704,7 @@ where doc_no = #{a}
 update member 
 set VAC_COUNT = VAC_COUNT - (
 								select
-									(app_date_end-app_date_start)+1 
+									(app_date_end - app_date_start)+1 
 								 from 
 									app_form_ann
 								where doc_no = #{docNo}

@@ -130,13 +130,6 @@
             <div class="card">
               <div class="card-body text-center">
                 <div class="dropdown btn-pinned">
-                  <button
-                    type="button"
-                    class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow p-4"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <i class="ti ti-dots-vertical ti-md text-muted"></i>
-                  </button>
                   <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="javascript:void(0);">Share connection</a></li>
                     <li><a class="dropdown-item" href="javascript:void(0);">Block connection</a></li>
@@ -147,7 +140,7 @@
                   </ul>
                 </div>
                 <div class="mx-auto my-6">
-                  <img src="${ contextPath }/assets/img/avatars/3.png" alt="Avatar Image" class="rounded-circle w-px-100" />
+                  <img src="${ contextPath }/assets/img/default_profile.png" style="border: 1px solid gray;" alt="Avatar Image" class="rounded-circle w-px-100" />
                 </div>
                 <h5 class="mb-0 card-title">${ loginUser.getMemName() }</h5>
                 <div class="d-flex align-items-center justify-content-center my-6 gap-2">
@@ -156,17 +149,17 @@
                 </div>
 
                 <div class="d-flex align-items-center justify-content-around mb-6">
-                  <div>
-                    <h5 class="mb-0">18</h5>
-                    <span>메세지</span>
+                  <div onclick="location.href='${contextPath}/app/box_standby.do'" style="cursor: pointer;">
+                    <h5 class="mb-0" id="app_standby"></h5>
+                    <span>결재 대기</span>
                   </div>
-                  <div>
+                  <div onclick="location.href='${contextPath}/member/myinfo_workLog.do'" style="cursor: pointer;">
                     <h5 class="mb-0">${loginUser.vacCount}</h5>
                     <span>잔여 휴가</span>
                   </div>
                   <div>
-                    <h5 class="mb-0">129</h5>
-                    <span>뭐적을까</span>
+                    <h5 class="mb-0" id="todayDate"></h5>
+                    <span>오늘 날짜</span>
                   </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-center">
@@ -444,6 +437,7 @@
 	  			fnNoticeList();			  // 공지사항 조회
 		    	fnMemoList();	        // 메모 전체 리스트 조회
 		    	fnMemberList();       // 전체 사원 리스트 조회
+		    	fnAppList();				  // 결재 대기중인 문서 갯수 조회
 		    	
 	  		}
 	  	
@@ -946,6 +940,33 @@
 	        window.location.href = "${contextPath}/member/noticeList.do?page=" + pageNumber;
 	      }
 	    
+		// 결재 대기 갯수 조회
+		function fnAppList(){
+			
+			let memNo = '${loginUser.getMemNo()}';
+			
+			$.ajax({
+				url: '${contextPath}/member/selectAppList.do',
+				type: 'POST',
+				data: {memNo: memNo},
+				success: function(res){
+					
+					$('#app_standby').html(res.A);
+					
+				}
+			})
+			
+		}
+		
+	  // 현재 날짜 가져오기
+	  const today = new Date();
+
+	  const year = String(today.getFullYear()).slice(-2);
+	  const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+	  const day = String(today.getDate()).padStart(2, '0');
+	  
+	  const formattedDate = year + '/' + month + '/' + day;
+	  document.getElementById('todayDate').innerText = formattedDate;
    </script>
 	
 	

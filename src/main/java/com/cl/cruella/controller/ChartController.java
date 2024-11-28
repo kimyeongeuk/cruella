@@ -2,9 +2,9 @@ package com.cl.cruella.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,18 +16,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cl.cruella.dto.RevenueDto;
 import com.cl.cruella.service.ChartService;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/chart")
 @RequiredArgsConstructor
-@Slf4j
 public class ChartController {
     
     private final ChartService chartService;
@@ -74,7 +71,6 @@ public class ChartController {
         }
         
         String json = gson.toJson(jArray);
-        log.info("json 변환: " + json);
         
         return json;
     }

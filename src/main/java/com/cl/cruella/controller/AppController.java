@@ -134,6 +134,9 @@ public class AppController {
 			}
 		}
 		
+		
+		
+		
 		int result = appService.insertApp(ad,list);
 		
 		if(result > 0) {
