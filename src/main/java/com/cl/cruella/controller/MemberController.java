@@ -82,6 +82,11 @@ public class MemberController {
 			
 			loginUser.setSignPath(dataUrl); // 전자서명 경로 재인코딩
 			
+			String maskedSSN = loginUser.getMemSSN();
+			
+			maskedSSN = maskedSSN.substring(0, maskedSSN.length() - 6) + "******";
+			loginUser.setMemSSN(maskedSSN);
+			  
 			session.setAttribute("loginUser", loginUser); // 세션에 로그인 한 회원 정보 담기
 			
 			
@@ -245,11 +250,12 @@ public class MemberController {
 	 public void myinfoWorkLog(HttpSession session, Model model) {
 		 
 		 MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+		 
 		 String memNo = loginUser.getMemNo();	
 			
 		 List<WorkLogDto> list = wlService.allWorkTime(memNo);
 		 model.addAttribute("wlList", list);
-
+		 
 	 }
 	 
 	 // 내정보 - 팀게시판리스트 조회

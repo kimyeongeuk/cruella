@@ -46,6 +46,12 @@
   		background-color: #FF4C51;
   		color: white !important; 
   	}
+	  .title {
+	  	max-width: 400px;
+	  	overflow: hidden;
+	  	text-overflow: ellipsis;
+	  	white-space: nowrap;
+	  }
    </style>
    
 
@@ -449,7 +455,7 @@
 		
 		                    trEl += '<tr>';
 		                    trEl += '<td>' + reverseCount + '</td>';
-		                    trEl += '<td>' + vac.docTitle + '</td>';
+		                    trEl += '<td class="title">' + vac.docTitle + '</td>';
 		                    trEl += '<td>' + vac.docDt + '</td>';
 		                    
 		                    // docStatus에 따라 이미지 삽입

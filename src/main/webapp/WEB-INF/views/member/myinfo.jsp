@@ -113,6 +113,12 @@
 		#memoList {
 			margin-right: 10px;
 		}
+	  .title {
+	  	max-width: 400px;
+	  	overflow: hidden;
+	  	text-overflow: ellipsis;
+	  	white-space: nowrap;
+	  }
    </style>
 </head>
 
