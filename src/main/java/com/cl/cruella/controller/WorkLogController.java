@@ -2,8 +2,8 @@ package com.cl.cruella.controller;
 
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,7 +13,6 @@ import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.WorkLogDto;
 import com.cl.cruella.service.WorkLogService;
 
-import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -83,6 +82,7 @@ public class WorkLogController {
 		return clockOutTime;
 		
 	}
+	
 	// 근태기록조회
 	@PostMapping("/loadWorkLog.do")
 	@ResponseBody
@@ -91,6 +91,14 @@ public class WorkLogController {
 		List<CalendarDto> list = wlService.loadWorkLog(memNo);
 		
 		return list;
+	}
+	
+	// 결근자 확인후 결근처리(스케줄러)
+	@Scheduled(cron="0 0 23 * * MON-FRI")
+	public void updateAbsences() {
+		
+		wlService.updateAbsences(); // 결근자 update(출근기록 O, 퇴근기록 X)
+		wlService.insertAbsences(); // 결근자 insert(출근기록 X, 퇴근기록 X)
 	}
 
 	

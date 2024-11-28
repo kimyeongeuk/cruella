@@ -61,20 +61,17 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 	    JSONObject jsonObject = new JSONObject(payload); 
     	List<String> targetMemNo = new ArrayList<>();
     	String memNo = jsonObject.getString("memNo");
-	    String inviteNo = jsonObject.getString("inviteNo");
-	    String inviteName = jsonObject.getString("inviteName");
-	    String memName = jsonObject.getString("memName");
+    	String inviteNo = jsonObject.getString("inviteNo");
+    	String inviteName = jsonObject.getString("inviteName");
+    	String memName = jsonObject.getString("memName");
+	    String msgType = jsonObject.getString("msgType");
 	    /**
 	     * 내가 원하는 대상에게만 보낼 메시지
 	     */
 
-
+	    if(msgType.equals("create")) {
 	    	targetMemNo.add(memNo);
 	    	targetMemNo.add(inviteNo);
-	    	
-	    	log.debug("memNo 객체 : {}",memNo);
-	    	log.debug("inviteNo 객체 : {}",inviteNo);
-	    	log.debug("inviteName 객체 : {}",inviteName);
 	    	
 	    	Map<String,Object> map2 = new HashMap<>();
 	    	List<String> list2 = new ArrayList<>();
@@ -105,7 +102,8 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 	    				cd.setChatTitle(chatList.get(0).getChatTitle());
 	    				cd.setChatTitle2(chatList.get(1).getChatTitle());
 	    			}
-	    			log.debug("채팅리스트트트트 {} ",cd);
+	    			
+	    			cd.setType("create");
 	    			ObjectMapper objectMapper = new ObjectMapper();
 	    			String cdJson = objectMapper.writeValueAsString(cd); 
 	    			for(String target : targetMemNo) {
@@ -116,10 +114,66 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 	    			}
 	    		}
 	    	}else { // 이미 존재하는 채팅방일경우
+	    		
 	    		mySession.sendMessage(new TextMessage("0"));
 	    	}
 	    
-	  		
+	    }else if(msgType.equals("invite")) {
+
+	    	System.out.println("초대로 들어옴");
+	    	System.out.println(memNo);		// 초대하는 사원번호
+	    	System.out.println(memName);	// 초대하는 사람이름
+	    	System.out.println(inviteNo);	// 초대받는 사원번호
+	    	System.out.println(inviteName); // 채팅방 번호
+	    	
+	    	Map<String,Object> map3 = new HashMap<>();
+	    	
+	    	map3.put("inviteNo", inviteNo);
+	    	map3.put("memNo", memNo);
+	    	map3.put("memName", memName);
+	    	map3.put("chatNo", inviteName);
+	    	
+	    	if(memNo.equals(inviteNo)) {
+	    		mySession.sendMessage(new TextMessage("1"));
+	    	}else{
+	    		// chat_list 테이블에 초대한 인원정보 추가
+	    		int result = chatServiceImpl.inviteMem(map3);
+	    		if(result > 0) {
+	    			// chat_list 해당 채팅방 종류 'G' 로 변경
+	    			result = 0;
+	    			result = chatServiceImpl.updateChatStatus(map3);
+	    			// 해당 채팅방에 있는 멤버 정보 다불러오기
+	    			targetMemNo = chatServiceImpl.chatMember(map3);
+	    			List<String> imgURL = chatServiceImpl.memberIMG(targetMemNo);
+	    			
+	    			ChatDto cd = new ChatDto();
+	    			cd.setChatNo(Integer.parseInt(inviteName));
+    				cd.setChatTitle(memName+" 단체방");
+    				cd.setChatTitle2(chatServiceImpl.chatMemberName(inviteNo));
+    				cd.setType("invite");
+    				map3.put("type", "invite");
+    				map3.put("chatTitle", memName+"단체방");
+    				map3.put("chatTitle2",chatServiceImpl.chatMemberName(inviteNo));
+    				// 맵에 채팅방 맴버 이미지 경로 받아오기
+    				map3.put("memIMG", imgURL);
+    				// 맵에 채팅방 최신메시지 받아오기
+    				map3.put("newMsg", chatServiceImpl.chatNewChat(inviteName));
+	    			ObjectMapper objectMapper = new ObjectMapper();
+	    			String cdJson = objectMapper.writeValueAsString(map3); 
+	    			for(String target : targetMemNo) {
+	    				WebSocketSession targetSession = map.get(target);
+	    				if (targetSession != null) {
+	    					targetSession.sendMessage(new TextMessage(cdJson));
+	    				}
+	    			}
+	    			
+	    			
+	    		}
+	    	}
+	    		
+	    	
+	    	
+	    }
 	    
 	    
 	    

@@ -105,8 +105,8 @@ public class ChatServiceImpl implements ChatService{
 	public int deleteMsg(int msgNo) {
 		return chatDao.deleteMsg(msgNo);
 	}
-	public int changeNewMsg(int chatNo) {
-		return chatDao.changeNewMsg(chatNo);
+	public int changeNewMsg(MessageDto messageDto) {
+		return chatDao.changeNewMsg(messageDto);
 	}
 	public int modifyMsg(MessageDto messageDto) {
 		return chatDao.modifyMsg(messageDto);
@@ -119,6 +119,30 @@ public class ChatServiceImpl implements ChatService{
 	}
 	public int chatLockUpdate(ChatListDto msgDto) {
 		return chatDao.chatLockUpdate(msgDto);
+	}
+	public int newMsgNo(int chatNo) {
+		return chatDao.newMsgNo(chatNo);
+	}
+	public int titleChange(ChatListDto msgDto) {
+		return chatDao.titleChange(msgDto);
+	}
+	public int inviteMem(Map<String, Object> map3) {
+		return chatDao.inviteMem(map3);
+	}
+	public int updateChatStatus(Map<String, Object> map3) {
+		return chatDao.updateChatStatus(map3);
+	}
+	public List<String> chatMember(Map<String, Object> map3) {
+		return chatDao.chatMember(map3);
+	}
+	public String chatMemberName(String inviteNo) {
+		return chatDao.chatMemberName(inviteNo);
+	}
+	public List<String> memberIMG(List<String> targetMemNo) {
+		return chatDao.memberIMG(targetMemNo);
+	}
+	public String chatNewChat(String chatNo) {
+		return chatDao.chatNewChat(chatNo);
 	}
 
 

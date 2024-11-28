@@ -151,7 +151,6 @@ public class ChatController {
 	@ResponseBody
 	@GetMapping(value="/lock.do",produces="application/json")
 	public ResponseEntity<Map<String, String>> chatLock(ChatListDto msgDto) {
-		System.out.println("들어옴!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		String result = "";
 		if(msgDto.getType().equals("a")) {
 			result = chatServiceImpl.chatLock(msgDto);			
@@ -165,6 +164,20 @@ public class ChatController {
 
 		
 	}
+	
+	@ResponseBody
+	@GetMapping(value="/titleChange.do",produces="application/json")
+	public int titleChange(ChatListDto msgDto) {
+
+		int result = chatServiceImpl.titleChange(msgDto);
+		
+		
+		return result;
+		
+	}
+	
+	
+	
 
 	
 	

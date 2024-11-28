@@ -15,6 +15,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
    <script src="${ contextPath }/resources/assets/js/config.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
    
    <link rel="stylesheet" href="${contextPath}/assets/vendor/libs/fullcalendar/fullcalendar.css" />
    <link rel="stylesheet" href="${contextPath}/assets/vendor/css/pages/app-calendar.css" />
@@ -31,59 +32,19 @@
 		#side_myworklog.active::before {
 		  border: 2px solid white; /* 테두리만 흰색으로 변경 */
 		}
+		.fc-event-time{
+			display: none;
+		}
+		.late-in {
+    	background-color: #FFC6C7; 
+    	color: white;
+  	}
+  	.normal {
+  		background-color: #EBEBED;
+  	}
    </style>
-    <script type="text/javascript">
+   
 
-      
-
-      document.addEventListener('DOMContentLoaded', function() {
-      var calendar;  // global(전역) 변수로 calendar 선언
-      var calendarEl = document.getElementById('calendar');
-        
-        // Fullcalendar 옵션 설정 부분
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth', // 로드 될때 캘린더 화면 기본 설정
-          selectable: true, // 달력 셀 부분 클릭, 드래그 선택 가능
-          aspectRatio: 2.2,
-          contentHeight: 850,
-          dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
-          editable: true, // default | false 이벤트 드래그 등의 편집여부를 설정함
-          selectMirror: true, 
-          textColor: 'black',
-          displayEventTime: false,      
-          
-          
-        // 이벤트 조회
-        events: [ 
-               <c:forEach var="list" items="${wlList}"> // List로 불러오는거는 for문으로!
-          {
-            
-       	    id: '${list.workNo}', // 작업 번호
-       	    title: '${list.status}', // 제목에 근무 상태 표시
-       	    start: '${list.clockInTime}', // 근무 시작 시간
-       	    end: '${list.clockOutTime}', // 근무 종료 시간
-       	    extendedProps: { // 추가 데이터
-       	      workDate: '${list.workDate}', // 근무 날짜
-       	      status: '${list.status}', // 근무 상태
-            }
-            
-            
-
-                allDay: true
-
-          },
-          
-          </c:forEach>
-        ],
-               
-            
-          });
-
-        calendar.render();
-
-      });
-
-    </script>
   
 </head>
 
@@ -442,8 +403,6 @@
 	   window.onload = function(){
 	   	
 		   fnVacList(); // 휴가목록 조회
-		   fnWlList();
-
 	   }
 
  
@@ -461,7 +420,7 @@
 	   	
 
     // 휴가목록 조회
-		function fnVacList() {
+		function fnVacList(page) {
 		   
 		   const memNo = '${loginUser.getMemNo()}'; 
 		   
@@ -507,25 +466,85 @@
 		            }
 		            $('#vacListTbody').html(trEl);
 		            
-		            // 페이징바
+		            // 페이징바 생성 및 업데이트
 		            let pagingEl = '';
-		            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
-		            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="fnVacList(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnVacList(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
 
-		            // 페이지 번호 생성
 		            for (let i = pi.startPage; i <= pi.endPage; i++) {
-		                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + i + ');">' + i + '</a></li>';
+		                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnVacList(' + i + ');">' + i + '</a></li>';
 		            }
 
-		            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
-		            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnVacList(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="fnVacList(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
 
-		            // 페이징바 업데이트
-		            $('#paging_area').html(pagingEl);		            
-		        }
-		    })
-		}   	
+		            $('#paging_area').html(pagingEl);			
+    		}
+    	})
+    }
+    function goToPage(pageNumber) {
+        window.location.href = "${contextPath}/member/vacList.do?page=" + pageNumber;
+      }  	
    </script>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    if (calendarEl) {
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        selectable: true,
+        aspectRatio: 2.2,
+        contentHeight: 850,
+        dayMaxEvents: true,
+        editable: true,
+        selectMirror: true,
+        textColor: 'black',
+        displayEventTime: true,
+        events: [
+        	  <c:forEach var="list" items="${wlList}" varStatus="status">
+        	    {
+        	      id: '${list.workNo}_in', // 출근 이벤트 ID
+        	      title: '출근 ${list.clockInTime}', // 출근 시간 표시
+        	      start: '${list.workDate}T${list.clockInTime}', // 출근 시간
+        	      end: '${list.workDate}T${list.clockInTime}', // 출근 시간은 끝 시간이 없으므로 start와 end가 동일
+        	      extendedProps: { // 추가 데이터
+        	        workDate: '${list.workDate}', // 근무 날짜
+        	        status: '출근'
+        	      },
+        	      allDay: false // 시간 기반 이벤트
+        	    },
+        	    
+        	    {
+        	      id: '${list.workNo}_out', // 퇴근 이벤트 ID
+        	      title: '퇴근 ${list.clockOutTime}', // 퇴근 시간 표시
+        	      start: '${list.workDate}T${list.clockOutTime}', // 퇴근 시간
+        	      end: '${list.workDate}T${list.clockOutTime}', // 퇴근 시간은 끝 시간이 없으므로 start와 end가 동일
+        	      extendedProps: { // 추가 데이터
+        	        workDate: '${list.workDate}', // 근무 날짜
+        	        status: '퇴근'
+        	      },
+        	      allDay: false // 시간 기반 이벤트
+        	    }
+        	    <c:if test="${!status.last}">,</c:if>
+        	  </c:forEach>
+        	],
+        	  eventClassNames: function(info) {
+        		    var startTime = new Date(info.event.start);
+
+        		    // 출근 이벤트이고, 시간이 9시 이후일 경우에만 색상 변경
+        		    if (info.event.extendedProps.status === '출근' && startTime.getHours() >= 9) {
+        		      return ['late-in']; // 'late-in' 클래스를 추가
+        		    }
+        		    return ['normal']; // 퇴근 이벤트나 출근이 9시 이전이면 기본 스타일 사용
+        	  }
+      });
+      calendar.render();
+    } else {
+      console.error("캘린더 업데이트 실패");
+    }
+  });
+</script>
 
 
 </body>

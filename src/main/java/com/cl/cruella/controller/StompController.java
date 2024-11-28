@@ -86,14 +86,29 @@ public class StompController {
 			if(result > 0) {
 				// 최근 메시지 변경
 				result = 0;
-				result = chatserviceImpl.changeNewMsg(messageDto.getChatNo());
+				result = chatserviceImpl.newMsgNo(messageDto.getChatNo());
+				if(result == messageDto.getMsgNo()) {
+					messageDto.setMsgContent("삭제된 메시지입니다.");
+					result = chatserviceImpl.changeNewMsg(messageDto);					
+				}
 			}
 			messageDto.setType("delete");
 		}else if(messageDto.getMsgType().equals("modify")) {
 			// 메시지 수정
 			messageDto.setMsgStatus(chatserviceImpl.msgStatus(messageDto));
 			int result = chatserviceImpl.modifyMsg(messageDto);
+			if(result > 0) {
+				// 최근 메시지 변경
+				result = 0;
+				result = chatserviceImpl.newMsgNo(messageDto.getChatNo());
+				if(result == messageDto.getMsgNo()) {
+					result = chatserviceImpl.changeNewMsg(messageDto);
+					messageDto.setType("modify");				
+				}
+			}
+			
 			messageDto.setType("modify");
+			
 		}
 		
 		return messageDto;

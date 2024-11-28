@@ -66,5 +66,40 @@
 		  from work_log
 		 where mem_no = #{memNo}
 	</select>
+	
+	<!-- 결근자 업데이트(출근있고 퇴근없는) -->
+	<update id="updateAbsences">
+		update
+					 work_log
+			 set wl_status = 'A'
+		 where trunc(wl_work_date) = trunc(sysdate)
+		   and wl_clock_out is null
+	</update>
+	
+	<!-- 결근자 insert(출근기록x) -->
+	<insert id="insertAbsences">
+   insert
+     into work_log
+   	 (
+	    wl_no
+	  , mem_no
+	  , wl_work_date
+	  , wl_status
+      )
+   select 
+    		  seq_work.nextval
+        , m.mem_no
+        , sysdate
+        , 'A'
+     from member m
+    where m.mem_no not in (
+                           select mem_no
+                             from work_log
+                            where trunc(wl_work_date) = trunc(sysdate)
+                           )
+	</insert>
+	
+	
+	
 
 </mapper>

@@ -248,8 +248,7 @@ public class MemberController {
 		 String memNo = loginUser.getMemNo();	
 			
 		 List<WorkLogDto> list = wlService.allWorkTime(memNo);
-			 
-		model.addAttribute("wlList", list);
+		 model.addAttribute("wlList", list);
 
 	 }
 	 
@@ -346,7 +345,6 @@ public class MemberController {
 
          List<AppdocDto> list = memberService.selectVacList(params);
          params.put("list", list);
-         System.out.println(list);
          return params;
 	 }
 	 
@@ -549,9 +547,6 @@ public class MemberController {
 		
 		return "redirect:/member/employeelistview.do";
 	}
-	
-	
-	
 	
 	
 	

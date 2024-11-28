@@ -42,4 +42,14 @@ public class WorkLogServiceImpl implements WorkLogService {
 		return wlDao.allWorkTime(memNo);
 	}
 
+	@Override
+	public void updateAbsences() {
+		wlDao.updateAbsences();
+	}
+
+	@Override
+	public void insertAbsences() {
+		wlDao.insertAbsences();
+	}
+
 }
