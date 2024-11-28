@@ -15,8 +15,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="${ contextPath }/resources/assets/js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>   
 <style>
-canvas#myChart {
+canvas#doughnutChart {
   display: block;
   width: 100%; /* 부모 컨테이너의 너비에 맞추기 */
   max-height: 400px; /* 차트의 최대 높이 */
@@ -70,9 +73,33 @@ canvas#myChart {
     <span>${currentDate}</span>
   </div>
 </div>
-<!-- 총매출 차트 -->
-  
-  
+<br><br>
+<div>
+  <canvas id="lineChart"></canvas>
+</div>
+
+<script>
+  const lineCtx = document.getElementById('lineChart');
+
+  new Chart(lineCtx, {
+    type: 'line',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
 </div>  
     
 <div style="display: none; margin: 20px;" id="categorySalesChart">
@@ -94,47 +121,43 @@ canvas#myChart {
     <span>${currentDate}</span>
   </div>
 </div>
-<br>   
+<br><br>  
 <div class="justify-content-between" style="display: flex;">
-  <div id="chartCenterText"></div>
-</div>
-<div class="d-flex justify-content-end">
-	<div>
-	  <select id="yearSelect" class="select1 form-select form-select-lg" data-allow-clear="true">
-	    <option value="2023">2023</option>
-	    <option value="2024" selected>2024</option>
-	  </select>
-	</div>
-	<div>
-	  <select id="monthSelect" class="select1 form-select form-select-lg" data-allow-clear="true" style="margin-left: 10px;">
-	    <option value="01">1월</option>
-	    <option value="02">2월</option>
-	    <option value="03">3월</option>
-	    <option value="04">4월</option>
-	    <option value="05">5월</option>
-	    <option value="06">6월</option>
-	    <option value="07">7월</option>
-	    <option value="08">8월</option>
-	    <option value="09">9월</option>
-	    <option value="10">10월</option>
-	    <option value="11">11월</option>
-	    <option value="12">12월</option>
-	  </select>
+  <div id="chartCenterText" style="font-size: 20px;"></div>
+	<div class="d-flex justify-content-end">
+		<div>
+		  <select id="yearSelect" class="select1 form-select form-select-lg" data-allow-clear="true">
+		    <option value="2023">2023</option>
+		    <option value="2024" selected>2024</option>
+		  </select>
+		</div>
+		<div>
+		  <select id="monthSelect" class="select1 form-select form-select-lg" data-allow-clear="true" style="margin-left: 10px;">
+		    <option value="01">1월</option>
+		    <option value="02">2월</option>
+		    <option value="03">3월</option>
+		    <option value="04">4월</option>
+		    <option value="05">5월</option>
+		    <option value="06">6월</option>
+		    <option value="07">7월</option>
+		    <option value="08">8월</option>
+		    <option value="09">9월</option>
+		    <option value="10">10월</option>
+		    <option value="11">11월</option>
+		    <option value="12">12월</option>
+		  </select>
+		</div>
 	</div>
 </div>
 <div>
-	<div class="chart-container" style="position: relative; width: 80%;">
-	  <canvas id="myChart" style="width: 100%; height: 400px;"></canvas>
+	<div class="chart-container" style="position: relative; width: 100%;">
+	  <canvas id="doughnutChart" style="width: 100%; height: 600px;"></canvas>
 	</div>
 </div>		
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 <script>
 $(function() {
-  const ctx = document.getElementById('myChart').getContext('2d');
-  const myChart = new Chart(ctx, {
+  const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+  const doughnutChart = new Chart(doughnutCtx, {
     type: 'doughnut',
     data: {
       labels: [],
@@ -174,14 +197,10 @@ $(function() {
        	  callbacks: {
        	    label: (context) => {
        	      let label = context.label || '';
-       	      if (label) label += ': ';
-       	      
-       	      // 디버깅: context.raw 값 출력
-       	      console.log("툴팁 context.raw 값:", context.raw);
+       	      if (label) label += ': ';      	     
 
        	      // 전체 매출 계산하기 전에 총 매출을 계산
        	      const totalSales = context.chart.data.datasets[0].data.reduce((a, b) => a + (b || 0), 0);
-       	      console.log("전체 매출(totalSales):", totalSales);
 
        	      if (context.raw !== null && context.raw !== undefined) {
        	        // 퍼센트 계산
@@ -211,8 +230,6 @@ $(function() {
   }
 
   function updateChart(year, month) {
-    console.log("AJAX 요청 시작:", { year: year, month: month });
-
     $.ajax({
       url: `${contextPath}/chart/teamSales.do`,
       type: "POST",
@@ -220,7 +237,6 @@ $(function() {
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       success: function(data) {
-        console.log("AJAX 요청 성공, 반환 데이터:", data);
 
         // 데이터 배열 초기화
         var departments = [];
@@ -248,14 +264,12 @@ $(function() {
           totalSales += item["sale"]; // 총 매출 계산
         });
 
-        console.log("차트 업데이트 데이터:", { departments: departments, sales: sales });
-
         // 차트 데이터 업데이트
-        myChart.data.labels = departments;
-        myChart.data.datasets[0].data = sales;
+        doughnutChart.data.labels = departments;
+        doughnutChart.data.datasets[0].data = sales;
 
         // 차트 갱신
-        myChart.update();
+        doughnutChart.update();
         
         // 차트 중앙 텍스트 업데이트
         $('#chartCenterText').text("총 매출: " + totalSales.toLocaleString() + "원");
@@ -303,7 +317,33 @@ $(function() {
     <span>${currentDate}</span>
   </div>
 </div>
+<br><br>
+<div>
+  <canvas id="barChart"></canvas>
+</div>
 
+<script>
+  const barCtx = document.getElementById('barChart');
+
+  new Chart(barCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
 </div>
 
 <!-- 차트셀렉트 -->
@@ -378,7 +418,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <!-- layout wrapper 닫기 -->
-</div>
-     
+</div> 
 </body>
 </html>
