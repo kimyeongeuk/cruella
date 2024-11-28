@@ -111,11 +111,23 @@ public class MemberDao {
 	public int insertPayment(MemberDto m) {
 		return sqlSession.insert("memberMapper.insertPayment", m);
 	}
+	
+	
+	
+	
 
 	public List<MemberDto> salarypaymentList() {
 		return sqlSession.selectList("memberMapper.salarypayment");
 	}
+	public List<MemberDto> salarypaymentList2(Map<String,Object> salDate) {
+		return sqlSession.selectList("memberMapper.salarypayment",salDate);
+	}
 
+	
+	
+	
+	
+	
 	public int payBtn(String no) {
 		return sqlSession.update("memberMapper.payBtn", no);
 	}

@@ -91,49 +91,83 @@
 							<div class="d-flex">
 								<h5 class="card-header" style="width: 15%;">급여 지급</h5>
 
-
 								<div style="display: flex;">
+								
+								
+								<h5 class="card-header"
+										style="display: flex; align-items: center;">
+										<select id="provide_status" class="form-select"
+											style="width: 100px; margin-right: 10px;">
+											
+												
+												<option value="Y">지급</option>
+												<option value="N">미지급</option>
+										
+											
+										</select> 
+									</h5>
+								
+								
+								
 									<h5 class="card-header"
 										style="display: flex; align-items: center;">
 										<select id="yearSelect" class="form-select"
 											style="width: 100px; margin-right: 10px;">
-											<option value="">2024</option>
-											<option value="">2023</option>
-											<option value="">2022</option>
-											<option value="">2021</option>
-											<option value="">2020</option>
-											<option value="">2019</option>
-											<option value="">2018</option>
-											<option value="">2017</option>
-											<option value="">2016</option>
-											<option value="">2015</option>
-											<option value="">2014</option>
-											<option value="">2013</option>
-											<option value="">2012</option>
-											<option value="">2011</option>
-											<option value="">2010</option>
-											<option value="">2009</option>
+											
+											<c:forEach var="y" begin="0" end="4" step="1">
+												<option value="2${y}">202${y}</option>
+											</c:forEach>
+											
 										</select> <span>년</span>
 									</h5>
+									
+									
+									
 									<h5 class="card-header"
 										style="display: flex; align-items: center; padding: 0;">
 										<select id="monthSelect" class="form-select"
-											style="width: 70px; margin-right: 10px;">
-											<option value="">1</option>
-											<option value="">2</option>
-											<option value="">3</option>
-											<option value="">4</option>
-											<option value="">5</option>
-											<option value="">6</option>
-											<option value="">7</option>
-											<option value="">8</option>
-											<option value="">9</option>
-											<option value="">10</option>
-											<option value="">11</option>
-											<option value="">12</option>
+											style="width: 85px; margin-right: 10px;">
+											
+											<c:forEach var="i" begin="1" end="12" step="1">
+												<option value="${i}">${i}</option>
+											</c:forEach>
+											
 										</select> <span>월</span>
 									</h5>
+									
+									
+									
+									
+									
 								</div>
+								
+								<button type="button" class="btn btn-primary" id="select_sal_date" style="
+																																													width: 110px;
+																																						  						height: 42px; 
+																																						 							position: relative; 
+																																						  						top: 20px;
+																																						  						left: 21px;">검색</button>
+																																						  						
+																																						  						
+																																						  						
+																																						  						
+										<script>
+										
+												$(document).ready(function(){
+													
+													$('#select_sal_date').on('click',function(){
+													
+															let year = $('#yearSelect').val();
+															let month = $('#monthSelect').val();
+															let provide = $('#provide_status').val();
+															
+															location.href = "${contextPath}/member/salarypayment2.do?year=" + year + "&month=" + month + "&provide=" + provide;
+														
+													})
+													
+												})
+											
+										</script>																												  						
 
 
 								<div
@@ -143,7 +177,7 @@
 									style="width: 10%; text-align: right; align-content: center; margin-right: 15px;">
 
 									<button type="button"
-										class="btn btn-primary waves-effect waves-light" id="pay_btn">급여지급</button>
+										class="btn btn-primary waves-effect waves-light" id="pay_btn" style="width:102px;">급여지급</button>
 								</div>
 							</div>
 							<div class="table-responsive text-nowrap">
@@ -175,6 +209,8 @@
 									</tr>
 									</thead>
 									<tbody class="table-border-bottom-0">
+									
+									<c:if test="${ not empty list }">
 										<c:forEach var="member" items="${list}">
 											<tr>
 												<td><input type="checkbox" class="dd form-check-input" value="${ member.memNo }" >
@@ -202,9 +238,37 @@
 												<!-- 지급날짜 -->
 												<td>${member.paymentDate}</td>
 												<!-- 급여명세표 -->
-												<td><a href="${ contextPath }/member/paystub.do" type="button"><i class="far fa-file-alt"></i></a></td>
+												<td>
+												
+												<c:if test="${member.salStatus eq 'Y' }">
+												<a href="${ contextPath }/member/paystub.do" type="button"><i class="far fa-file-alt"></i></a>
+												</c:if>
+												
+												</td>
 											</tr>
 										</c:forEach>
+										</c:if>
+										
+										
+										<c:if test="${ empty list}">
+										<tr>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td style="height: 92px;">조회된 결과가 없습니다</td>
+												
+												
+											</tr>
+											
+										
+										</c:if>
+										
+										
+										
 									</tbody>
 
 								</table>
@@ -247,12 +311,11 @@
 						                        return;
 						                    }
 
-						                    // 테이블 업데이트
 						                    let tableBody = '';
 						                    res.forEach(member => {
-						                        tableBody += `
-						                            <tr>
-						                                <td><input type="checkbox" class="dd form-check-input" value="${member.memNo}" ></td>
+						                        tableBody += 
+						                            '<tr>'
+						                                '<td><input type="checkbox" class="dd form-check-input" value="' + ${member.memNo} + '" ></td>'
 						                                <!-- 사번 -->
 						                                <td><span>${member.memNo}</span></td>
 						                                <!-- 사원명 -->
@@ -276,7 +339,7 @@
 						                                <!-- 지급날짜 -->
 						                                <td>${member.paymentDate}</td>
 						                            </tr>
-						                        `;
+						                        ';
 						                    });
 						                    $('#salaryTableBody').html(tableBody);
 

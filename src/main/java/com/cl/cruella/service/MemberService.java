@@ -52,6 +52,7 @@ public interface MemberService {
 
 	// 급여테이블직원리스트불러오기
 	List<MemberDto> salarypaymentList();
+	List<MemberDto> salarypaymentList2(Map<String,Object> salDate);
 	 
 	// 급여지급버튼
 	int payBtn(List<String> memNos);

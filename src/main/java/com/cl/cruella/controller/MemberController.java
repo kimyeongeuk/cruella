@@ -562,11 +562,45 @@ public class MemberController {
 	
 	// 급여지급페이지
 	@GetMapping("/salarypayment.do")
-	public String salarypayment(Model model) {
+	public void salarypayment(Model model) {
+		
+		
 		List<MemberDto> list = memberService.salarypaymentList();
+		
+		
 		model.addAttribute("list", list);
-		return "member/salarypayment";
+		
+		
+		
 	}
+	
+	
+	// 급여지급페이지
+	@GetMapping("/salarypayment2.do")
+	public String salarypayment2(Model model,
+			@RequestParam String year,
+			@RequestParam String month,
+			@RequestParam String provide) {
+		
+		Map<String,Object> salDate = new HashMap<>();
+		
+		salDate.put("year", year);
+		salDate.put("month", month);
+		salDate.put("provide", provide);
+		
+		
+		List<MemberDto> list = memberService.salarypaymentList2(salDate);
+		
+		
+		model.addAttribute("list", list);
+		
+		return "member/salarypayment";
+		
+		
+	}
+	
+	
+	
 	
 	// 급여지급버튼
 	@ResponseBody

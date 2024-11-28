@@ -90,10 +90,20 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.insertPayment(m);
 	}
 	
+	
+	
 	@Override
 	public List<MemberDto> salarypaymentList() {
 		return memberDao.salarypaymentList();
 	}
+	
+	@Override
+	public List<MemberDto> salarypaymentList2(Map<String,Object> salDate) {
+		return memberDao.salarypaymentList2(salDate);
+	}
+	
+	
+	
 
 	@Override
 	public int payBtn(List<String> memNos) {
