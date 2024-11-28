@@ -147,7 +147,7 @@ public class AppController {
 		}
 		
 		
-		return "redirect:/app/box_progress.do";
+		return "redirect:/app/box_main.do";
 		
 		
 		

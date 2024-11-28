@@ -490,7 +490,12 @@
                         aria-expanded="false">
                         첨부파일(${app.attachCount})
                       </button>
-                      <ul class="dropdown-menu">
+                      
+                      
+                      <c:choose>
+                      <c:when test="${app.attachCount == 0 }">
+                      
+                      <ul class="dropdown-menu" style="display:none;">
                         
                        <c:forEach var="a" items="${app.attachList}">
                        	  <li>
@@ -502,15 +507,30 @@
 		               </c:forEach>
                       </ul>
                       
+                     </c:when>
+                     <c:otherwise>
+                     
+                     <ul class="dropdown-menu">
+                        
+                       <c:forEach var="a" items="${app.attachList}">
+                       	  <li>
+		                      <a href="${contextPath}${a.filePath}/${a.filesystemName}"  download="${a.originalName}">
+		                        ${a.originalName}
+		                       </a>
+		                       <br>
+		                 </li>      
+		               </c:forEach>
+                      </ul>
+                     
+                     </c:otherwise>
+                     </c:choose>
                       
                     </div>
                     
+                   
                     
-                    
-                        	
-                        	
-                        	
-                        	
+                   
+                 
                           
                         </div>
 
