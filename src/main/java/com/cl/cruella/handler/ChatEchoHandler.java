@@ -157,7 +157,7 @@ public class ChatEchoHandler extends TextWebSocketHandler{
     				// 맵에 채팅방 맴버 이미지 경로 받아오기
     				map3.put("memIMG", imgURL);
     				// 맵에 채팅방 최신메시지 받아오기
-    				map3.put("chatDate", chatServiceImpl.chatNewChat(inviteName));
+    				map3.put("newMsg", chatServiceImpl.chatNewChat(inviteName));
 	    			ObjectMapper objectMapper = new ObjectMapper();
 	    			String cdJson = objectMapper.writeValueAsString(map3); 
 	    			for(String target : targetMemNo) {

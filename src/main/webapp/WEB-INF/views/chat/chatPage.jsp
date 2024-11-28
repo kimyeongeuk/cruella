@@ -956,6 +956,7 @@
       var chatNoData = null;
       var activeChat = null;
       var chatTitle = null;
+      var subscrips = {};
       $(document).ready(function(){
 				
         // 사원 클릭시 start
@@ -1151,12 +1152,12 @@
      	function onMessage(evt){ 
     	   
     	   var chatData = JSON.parse(evt.data);
-				
 	    	   if(evt.data == '0'){
 	   		  	alert('존재하는 채팅방입니다.');
 	   	   		}else if(evt.data == '1'){
 	   	   			alert('초대할수 없는 대상입니다.');
 	   	   		}
+				
     	   console.log(chatData);
     	   if(chatData.type == "create"){
 	    	   var loginName = '${loginUser.memName}'
@@ -1195,7 +1196,9 @@
 	    		   
 	    		   
 		    		 
-				     client.subscribe('/sub/' + chatNoData, function (chat) {
+				    				console.log('실행됨');
+				    var subscrip = client.subscribe('/sub/' + chatNoData, function (chat) {
+	    				console.log('실행됨');
 				            var content = JSON.parse(chat.body);                                  
 				            if(activeChat == chatNoData){
 					            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck);
@@ -1235,55 +1238,123 @@
 									    	} 
 					
 										}); // 미리보기 ajax 끝
+										
+								        //subscrips.push(subscrip);
+												console.log(subscrips);
+								        subscrips[chatNoData] = subscrip
 				        });   
 	    	  		 
 	    	   	}
     	   else if(chatData.type == "invite"){
     		   
-    		   console.log(chatData);
-	    	   var chatNoData = chatData.chatNo;
-	    	   var chatTitleData = chatData.chatTitle;
-	    	   var chatTitleData2 = chatData.chatTitle2;
-    		   let str = '';
-    		   if(${loginUser.memNo eq chatData.memNo}){
-	    		   alert('초대완료');
-    			   
-    		   }
-    			   
-    			   
-    		   
-    		   
-    		   
-    		   $('#chathistory').append(invitemsg(chatTitleData2));
-    		   
-    		   str += '<li class="chat-contact-list-item mb-1 chat-list-form">'
-    		   str += '<input type="hidden" value="'+chatNoData+'" class="chatlistno">'
-    		   str += '<input type="hidden" value="'+chatTitleData+'">'
-    		   str += '<a class="d-flex align-items-center">'
-    		   str += '<div class="flex-shrink-0 avatar">'
-    		   str += '<div style="flex-direction: row; display: flex;"><img src="${ contextPath }/resources/assets/img/avatars/13.png" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
-   			   str += '<img src="${ contextPath }/resources/assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
- 				   str += '</div>'
- 				   str += '<div style="flex-direction: row; display: flex;"><img src="" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
-				   str += '<img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
-				   str += '</div>'
-				   str += '</div>'
-				   str += '<div class="chat-contact-info flex-grow-1 ms-4">'
-				   str += '<div class="d-flex justify-content-between align-items-center">'
-				   str += '<h6 class="chat-contact-name text-truncate m-0 fw-normal chattitle">'+chatTitleData+'</h6>'
-				   str += '<small class="text-muted">${ list.strDate }</small>'
-				   str += '</div>'
-				   str += '<div class="d-flex justify-content-between align-items-center test1">'
-				   str += '<small class="chat-contact-status text-truncate">${ list.chatNewMsg }</small>'
-				   str += '<input type="hidden" value="'+chatNoData+'" class="mewmsg">'
-				   str += '<input type="hidden" value="" class="msgNum">'
-				   str += '<div class="badge bg-danger rounded-pill ms-auto" style="display:none;">5</div>'
-				   str += '</div>'
-				   str += '</div>'
-				   str += '</a>'
-				   str += '</li>'
-    		   
-    		   //invitemsg
+	    		   console.log(chatData);
+		    	   var chatNoData = chatData.chatNo;		// 채팅방 번호
+		    	   var chatTitleData = chatData.chatTitle;	// 채팅방 이름
+		    	   var chatTitleData2 = chatData.chatTitle2;	// 초대받은사람 입장시 나오는 알림
+		    	   var loginUserNo = '${loginUser.memNo}';
+	    		   let str = '';
+	    		   if(${loginUser.memNo eq chatData.memNo}){
+		    		   alert('초대완료');
+    		   		}
+	    		   $('.mewmsg').each(function () {
+   			 		
+	    			   if($(this).val() == chatNoData){
+	    				   $(this).closest('li.chat-contact-list-item').remove();
+	    			   }
+	    		   })
+	    		   
+	    		   $('#chathistory').append(invitemsg(chatTitleData2));
+    		   	
+		    		   str += '<li class="chat-contact-list-item mb-1 chat-list-form">'
+		    		   str += '<input type="hidden" value="'+chatNoData+'" class="chatlistno">'
+		    		   str += '<input type="hidden" value="'+chatTitleData+'">'
+		    		   str += '<a class="d-flex align-items-center">'
+		    		   str += '<div class="flex-shrink-0 avatar">'
+		    		   str += '<div style="flex-direction: row; display: flex;"><img src="${ contextPath }/resources/assets/img/avatars/13.png" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
+		   			   str += '<img src="${ contextPath }/resources/assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
+		 				   str += '</div>'
+		 				   str += '<div style="flex-direction: row; display: flex;"><img src="" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
+						   str += '<img src="${ contextPath }/resources/assets/img/avatars/4.png" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
+						   str += '</div>'
+						   str += '</div>'
+						   str += '<div class="chat-contact-info flex-grow-1 ms-4">'
+						   str += '<div class="d-flex justify-content-between align-items-center">'
+						   str += '<h6 class="chat-contact-name text-truncate m-0 fw-normal chattitle">'+chatTitleData+'</h6>'
+						   str += '<small class="text-muted"></small>'
+						   str += '</div>'
+						   str += '<div class="d-flex justify-content-between align-items-center test1">'
+						   str += '<small class="chat-contact-status text-truncate">'+chatData.newMsg == null ? '' : chatData.newMsg+'</small>'
+						   str += '<input type="hidden" value="'+chatNoData+'" class="mewmsg">'
+						   str += '<input type="hidden" value="" class="msgNum">'
+						   str += '<div class="badge bg-danger rounded-pill ms-auto" style="display:none;">5</div>'
+						   str += '</div>'
+						   str += '</div>'
+						   str += '</a>'
+						   str += '</li>' 
+							 $('#chat-list').append(str);
+							 console.log('asdasdsdgsderhsedrhgsedrhgaesrg')
+							 console.log('구독 객체가 추가된 후 subscrips:', subscrips)
+						   console.log(chatNoData);
+							 
+							 
+							    var subscription = subscrips[chatNoData];
+							    if (subscription) {
+							        subscription.unsubscribe(); 
+							        console.log('구독 취소: ', chatNoData);
+							        delete subscrips[chatNo];  // 취소된 구독은 객체에서 삭제
+							    } else {
+							        console.log('해당 chatNo의 구독을 찾을 수 없습니다: ', chatNoData);
+							    }
+							
+		
+						   
+						   
+						   
+							  var subscrip = client.subscribe('/sub/' + chatNoData, function (chat) {
+					            var content = JSON.parse(chat.body);                                  
+					            if(activeChat == chatNoData){
+						            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck);
+						            $('#chathistory').append(str);
+						            $(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
+					            }
+									        $('.mewmsg').each(function () { // 미리보기 ajax 시작
+									    		console.log('테스트 : '+$(this).val());
+									    		console.log('채팅방 번호 :'+content.chatNo);
+									    		console.log(content.msgContent);
+									    		
+											    if ($(this).val() == content.chatNo) { 
+											    	
+											    		$.ajax({ 
+											    			url:'${contextPath}/chat/updateNewMsg.do',
+											    			data:{chatNo:content.chatNo,msgContent:content.msgContent},
+											    			success:function(res){
+											    				console.log('성공');
+											    			}
+											    		})
+											    		
+											    											    		// 채팅 날짜 넣어주기
+															$(this).closest('.chat-contact-info').find('.text-muted').html(function() {
+															    var msgDate = new Date(content.msgRegistDate); // Date 객체로 변환
+															    var today = new Date();  // 오늘 날짜
+															
+															    
+															    if (msgDate.toDateString() === today.toDateString()) {
+															        
+															        return msgDate.toLocaleTimeString('en-GB', { hour12: false }); 
+															    } else {
+															        
+															        return msgDate.toLocaleDateString(); 
+															    }
+															}); // 채팅 날짜 넣어주기 끝
+											    		
+											        $(this).prev().html(content.msgContent); 
+										    	} 
+						
+											}); // 미리보기 ajax 끝
+									        //subscrips.push(subscrip);
+									        subscrips[content.chatNo] = subscrip
+					        }); 
+    		   	 
     	   }
     	}; // sockjs 메시지 종료
 	     
@@ -1296,7 +1367,7 @@
 			
 			    // 모든 채팅방 구독                                                                                                                                                                                                                                                                                                                                                                 
 			    chatNoList.forEach(function (chatNo) {
-			        client.subscribe('/sub/' + chatNo, function (chat) {
+			        var subscrip = client.subscribe('/sub/' + chatNo, function (chat) {
 			            var content = JSON.parse(chat.body);
 			            var msgNum ="";
 			            // 채팅번호 입력 및 메시지 출력 ajax 시작
@@ -1398,6 +1469,9 @@
 			            
 			            
 			        });  
+			        //subscrips.push(subscrip);
+			        console.log(subscrips);
+			        subscrips[chatNo] = subscrip
 			    }); // 모든 구독 끝
 			}); // stomp 종료
 
