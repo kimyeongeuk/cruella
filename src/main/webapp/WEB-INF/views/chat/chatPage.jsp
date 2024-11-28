@@ -1205,44 +1205,46 @@
 					            $('#chathistory').append(str);
 					            $(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
 				            }
-								        $('.mewmsg').each(function () { // 미리보기 ajax 시작
-								    		console.log('테스트 : '+$(this).val());
-								    		console.log('채팅방 번호 :'+chatNo);
-								    		
-										    if ($(this).val() == content.chatNo) { 
-										    	
-										    		$.ajax({ 
-										    			url:'${contextPath}/chat/updateNewMsg.do',
-										    			data:{chatNo:content.chatNo,msgContent:content.msgContent},
-										    			success:function(res){
-										    				console.log('성공');
-										    			}
-										    		})
-										    		
-										    											    		// 채팅 날짜 넣어주기
-														$(this).closest('.chat-contact-info').find('.text-muted').html(function() {
-														    var msgDate = new Date(content.msgRegistDate); // Date 객체로 변환
-														    var today = new Date();  // 오늘 날짜
-														
-														    
-														    if (msgDate.toDateString() === today.toDateString()) {
-														        
-														        return msgDate.toLocaleTimeString('en-GB', { hour12: false }); 
-														    } else {
-														        
-														        return msgDate.toLocaleDateString(); 
-														    }
-														}); // 채팅 날짜 넣어주기 끝
-										    		
-										        $(this).prev().html(content.msgContent); 
-									    	} 
-					
-										}); // 미리보기 ajax 끝
+				            
+					        $('.mewmsg').each(function () { // 미리보기 ajax 시작
+					    		console.log('테스트 : '+$(this).val());
+					    		console.log('채팅방 번호 :'+chatNo);
+					    		
+							    if ($(this).val() == content.chatNo) { 
+							    	
+							    		$.ajax({ 
+							    			url:'${contextPath}/chat/updateNewMsg.do',
+							    			data:{chatNo:content.chatNo,msgContent:content.msgContent},
+							    			success:function(res){
+							    				console.log('성공');
+							    			}
+							    		})
+							    		
+							    											    		// 채팅 날짜 넣어주기
+										$(this).closest('.chat-contact-info').find('.text-muted').html(function() {
+										    var msgDate = new Date(content.msgRegistDate); // Date 객체로 변환
+										    var today = new Date();  // 오늘 날짜
 										
-								        //subscrips.push(subscrip);
-												console.log(subscrips);
-								        subscrips[chatNoData] = subscrip
-				        });   
+										    
+										    if (msgDate.toDateString() === today.toDateString()) {
+										        
+										        return msgDate.toLocaleTimeString('en-GB', { hour12: false }); 
+										    } else {
+										        
+										        return msgDate.toLocaleDateString(); 
+										    }
+										}); // 채팅 날짜 넣어주기 끝
+							    		
+							        	$(this).prev().html(content.msgContent); 
+						    	} 
+		
+							}); // 미리보기 ajax 끝
+							
+				        }); 
+				    
+				        //subscrips.push(subscrip);
+						console.log(subscrips);
+				        subscrips[chatNoData] = subscrip
 	    	  		 
 	    	   	}
     	   else if(chatData.type == "invite"){
