@@ -480,6 +480,12 @@ $(function () {
 	
      //   '>>' 버튼 클릭 시 선택된 노드 추가
      $('#move_button2').on('click', function () {
+		
+		
+		
+		
+		
+		
       // 선택된 jstree 노드 가져오기
       var selectedNode = dragDrop2.jstree('get_selected', true);
 
@@ -745,6 +751,9 @@ $(function () {
 	
   
   });
+  
+  
+  
 	
 	
 	
@@ -756,3 +765,10 @@ $(function () {
 
 
 });
+
+
+
+
+
+
+
