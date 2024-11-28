@@ -35,7 +35,7 @@
    	 overflow: hidden;
    	 }
    	 #memoDiv{
-   	 height: 220px;
+   	 height: 280px;
    	 margin-top: 15px;
    	 overflow-y: scroll;
    	 }
@@ -83,6 +83,7 @@
 		}
 		#board{
 			cursor: pointer;
+			color: #444050;
 		}
 		#board:hover{
 			color: #7367f0;
@@ -99,6 +100,18 @@
 		}
 		#side_myinfo.active::before {
 		  border: 2px solid white; /* 테두리만 흰색으로 변경 */
+		}
+		#standby_box:hover {
+			background-color: #f0f0f0;
+		}
+		#progress_box:hover {
+			background-color: #f0f0f0;
+		}
+		#complete_box:hover {
+		 background-color: #f0f0f0;
+		}
+		#memoList {
+			margin-right: 10px;
 		}
    </style>
 </head>
@@ -237,7 +250,7 @@
                   <!--/ About User -->
                   
                   <!-- 메모목록 -->
-                  <div class="card mb-6" style="height: 331px;">
+                  <div class="card mb-6" style="height: 420px;">
                     <div class="card-body">
                       <small class="card-text text-uppercase text-muted small">Memo</small> 
                       <i class="ti ti-edit ti-sm" style="margin-left: 310px; cursor: pointer;" onclick="fnOpenMemoModal();"></i>
@@ -571,7 +584,7 @@
                     </div>
                   </div>
                   <!-- 팀게시판 영역 (재운님 코드)-->
-                  <div class="card">
+                  <div class="card" style="height: 503px;">
                     <div class="d-flex align-items-center">
 		                  <div style="margin: 20px;">
 		                    <a id="board" class="" style="font-size: 20px;" href="${contextPath}/board/boardList.do">
@@ -652,33 +665,36 @@
                           <h5 class="card-action-title mb-0" style="margin-left: 15px;">내 결재 문서함</h5>
                         </div>
                         <div class="card-body">
-                          <div style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px;">
+                          <div id="standby_box" style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px; cursor: pointer;"
+                           onclick="location.href='${contextPath}/app/box_standby.do'">
                             <div>
                               <img src="${ contextPath }/assets/img/customizer/wlblue.png"
                                   style="width: 70px; height: 70px; margin-top: 10px;"/>
                             </div>
                             <div style="margin-top: 35px;">
-                              <span style="font-size: 20px; cursor: pointer;" onclick="location.href='${contextPath}/app/box_standby.do'">결재 대기함</span>
+                              <span style="font-size: 20px;">결재 대기함</span>
                               <span style="font-size: 20px; margin-left: 24px;" id="app_standby"></span>
                             </div>
                           </div>
-                          <div style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px;">
+                          <div id="progress_box" style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px; cursor: pointer;"
+                           onclick="location.href='${contextPath}/app/box_progress.do'">
                             <div>
                               <img src="${ contextPath }/assets/img/customizer/wlgray.png"
                                   style="width: 70px; height: 70px; margin-top: 10px;"/>
                             </div>
                             <div style="margin-top: 35px;">
-                              <span style="font-size: 20px; cursor: pointer;" onclick="location.href='${contextPath}/app/box_progress.do'">결재 진행함</span>
+                              <span style="font-size: 20px;">결재 진행함</span>
                               <span style="font-size: 20px; margin-left: 20px;" id="app_progress"></span>
                             </div>
                           </div>
-                          <div style="width: 320px; height: 100px; margin-left: 20px; display: flex; gap: 45px;">
+                          <div id="complete_box" style="width: 320px; height: 100px; margin-left: 20px; display: flex; gap: 45px; cursor: pointer;"
+                           onclick="location.href='${contextPath}/app/box_complete.do'">
                             <div>
                               <img src="${ contextPath }/assets/img/customizer/wlgreen.png"
                                   style="width: 70px; height: 70px; margin-top: 10px;"/>
                             </div>
                             <div style="margin-top: 35px;">
-                              <span style="font-size: 20px; cursor: pointer;" onclick="location.href='${contextPath}/app/box_complete.do'">결재 완료함</span>
+                              <span style="font-size: 20px;">결재 완료함</span>
                               <span style="font-size: 20px; margin-left: 24px;" id="app_success"></span>
                             </div>
                           </div>
@@ -898,7 +914,6 @@
     										+'<small>' + res[i].email + '</small>'
     									+'</div>'
     								+'</div>'
-    								+'<div class="ms-auto"><button class="btn btn-label-primary btn-icon"><i class="ti ti-brand-telegram ti-md"></i></button></div>'
     						  +'</li>'
     			}
     			
@@ -912,10 +927,11 @@
     }
     
     // 팀게시판 리스트 조회
-		function fnBoardList() {
+		function fnBoardList(page) {
 		    $.ajax({
 		        url: '${contextPath}/member/boardList.do',
 		        type: 'POST',
+		        data: {page: page},
 		        success: function(res) {
 	              let pi = res.pi; // 페이지 정보
 		            let trEl = '';
@@ -947,24 +963,25 @@
 		
 		            $('#boardListTbody').html(trEl);
 		            
-		            // 페이징바
+		            // 페이징바 생성 및 업데이트
 		            let pagingEl = '';
-		            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
-		            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="fnBoardList(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnBoardList(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
 
-		            // 페이지 번호 생성
 		            for (let i = pi.startPage; i <= pi.endPage; i++) {
-		                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + i + ');">' + i + '</a></li>';
+		                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnBoardList(' + i + ');">' + i + '</a></li>';
 		            }
 
-		            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
-		            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnBoardList(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="fnBoardList(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
 
-		            // 페이징바 업데이트
-		            $('#paging_area').html(pagingEl);
-		        }
-		    })
-		}
+		            $('#paging_area').html(pagingEl);			
+    		}
+    	})
+    }
+    function goToPage(pageNumber) {
+        window.location.href = "${contextPath}/member/boardList.do?page=" + pageNumber;
+      }
     
 		// 내 결재 문서함 조회
 		function fnAppList(){

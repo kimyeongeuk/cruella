@@ -97,6 +97,8 @@ public class WorkLogController {
 	@Scheduled(cron="0 0 23 * * MON-FRI")
 	public void updateAbsences() {
 		
+		System.out.println("스케줄실행");
+		
 		wlService.updateAbsences(); // 결근자 update(출근기록 O, 퇴근기록 X)
 		wlService.insertAbsences(); // 결근자 insert(출근기록 X, 퇴근기록 X)
 	}

@@ -37,10 +37,14 @@
 		}
 		.late-in {
     	background-color: #FFC6C7; 
-    	color: white;
+    	color: FFC6C7;
   	}
   	.normal {
   		background-color: #EBEBED;
+  	}
+  	.absence{
+  		background-color: #FF4C51;
+  		color: white !important; 
   	}
    </style>
    
@@ -503,41 +507,66 @@
         displayEventTime: true,
         events: [
         	  <c:forEach var="list" items="${wlList}" varStatus="status">
-        	    {
-        	      id: '${list.workNo}_in', // 출근 이벤트 ID
-        	      title: '출근 ${list.clockInTime}', // 출근 시간 표시
-        	      start: '${list.workDate}T${list.clockInTime}', // 출근 시간
-        	      end: '${list.workDate}T${list.clockInTime}', // 출근 시간은 끝 시간이 없으므로 start와 end가 동일
-        	      extendedProps: { // 추가 데이터
-        	        workDate: '${list.workDate}', // 근무 날짜
-        	        status: '출근'
-        	      },
-        	      allDay: false // 시간 기반 이벤트
-        	    },
-        	    
-        	    {
-        	      id: '${list.workNo}_out', // 퇴근 이벤트 ID
-        	      title: '퇴근 ${list.clockOutTime}', // 퇴근 시간 표시
-        	      start: '${list.workDate}T${list.clockOutTime}', // 퇴근 시간
-        	      end: '${list.workDate}T${list.clockOutTime}', // 퇴근 시간은 끝 시간이 없으므로 start와 end가 동일
-        	      extendedProps: { // 추가 데이터
-        	        workDate: '${list.workDate}', // 근무 날짜
-        	        status: '퇴근'
-        	      },
-        	      allDay: false // 시간 기반 이벤트
-        	    }
+        	    <c:choose>
+        	      <c:when test="${list.status == 'A'}">
+        	        {
+        	          id: '${list.workNo}_absence', // 결근 이벤트 ID
+        	          title: '결근', // 결근 표시
+        	          start: '${list.workDate}T00:00:00', // 결근은 시간 없이 날짜만 사용
+        	          end: '${list.workDate}T23:59:59', // 결근은 하루 종일
+        	          extendedProps: { // 추가 데이터
+        	            workDate: '${list.workDate}', // 근무 날짜
+        	            workStatus: '${list.status}', // 근무 상태
+        	            status: '결근' // 결근 상태
+        	          },
+        	          allDay: true // 하루 종일 이벤트
+        	        }
+        	      </c:when>
+        	      <c:otherwise>
+        	        {
+        	          id: '${list.workNo}_in', // 출근 이벤트 ID
+        	          title: '출근 ${list.clockInTime.substring(0, 5)}', // 출근 시간 표시
+        	          start: '${list.workDate}T${list.clockInTime}', // 출근 시간
+        	          end: '${list.workDate}T${list.clockInTime}', // 출근 시간은 끝 시간이 없으므로 start와 end가 동일
+        	          extendedProps: { // 추가 데이터
+        	            workDate: '${list.workDate}', // 근무 날짜
+        	            workStatus: '${list.status}', // 근무 상태
+        	            status: '출근'
+        	          },
+        	          allDay: false // 시간 기반 이벤트
+        	        },
+        	        {
+        	          id: '${list.workNo}_out', // 퇴근 이벤트 ID
+        	          title: '퇴근 ${list.clockOutTime.substring(0, 5)}', // 퇴근 시간 표시
+        	          start: '${list.workDate}T${list.clockOutTime}', // 퇴근 시간
+        	          end: '${list.workDate}T${list.clockOutTime}', // 퇴근 시간은 끝 시간이 없으므로 start와 end가 동일
+        	          extendedProps: { // 추가 데이터
+        	            workDate: '${list.workDate}', // 근무 날짜
+        	            workStatus: '${list.status}', // 근무 상태
+        	            status: '퇴근'
+        	          },
+        	          allDay: false // 시간 기반 이벤트
+        	        }
+        	      </c:otherwise>
+        	    </c:choose>
         	    <c:if test="${!status.last}">,</c:if>
         	  </c:forEach>
         	],
-        	  eventClassNames: function(info) {
-        		    var startTime = new Date(info.event.start);
+        	eventClassNames: function(info) {
+        		  var startTime = new Date(info.event.start);
 
-        		    // 출근 이벤트이고, 시간이 9시 이후일 경우에만 색상 변경
-        		    if (info.event.extendedProps.status === '출근' && startTime.getHours() >= 9) {
-        		      return ['late-in']; // 'late-in' 클래스를 추가
-        		    }
-        		    return ['normal']; // 퇴근 이벤트나 출근이 9시 이전이면 기본 스타일 사용
-        	  }
+        		  // 출근 이벤트이고 시간이 9시 이상인경우
+        		  if (info.event.extendedProps.status === '출근' && startTime.getHours() >= 9) {
+        		    return ['late-in']; 
+        		  }
+
+        		  // 결근 
+        		  if (info.event.extendedProps.status === '결근') {
+        		    return ['absence']; 
+        		  }
+
+        		  return ['normal']; // 기본
+        		}
       });
       calendar.render();
     } else {
