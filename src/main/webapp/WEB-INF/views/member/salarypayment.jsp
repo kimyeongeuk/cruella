@@ -241,13 +241,31 @@
 												<td>
 												
 												<c:if test="${member.salStatus eq 'Y' }">
-												<a href="${ contextPath }/member/paystub.do" type="button"><i class="far fa-file-alt"></i></a>
+												
+													<form action="${contextPath }/member/paystub.do" method="post" id="submit_btn">
+													
+													
+														<input type="hidden" value="${member.memNo}" name="memNo">
+														<i class="pay_icon far fa-file-alt"></i>
+													
+													
+													</form>
 												</c:if>
 												
 												</td>
 											</tr>
 										</c:forEach>
 										</c:if>
+										
+										<script>
+										
+										$(document).on('click', '.pay_icon', function () {
+										    $(this).closest('form').submit(); 
+										});
+										
+										</script>
+										
+								
 										
 										
 										<c:if test="${ empty list}">
@@ -317,29 +335,28 @@
 						                            '<tr>'
 						                                '<td><input type="checkbox" class="dd form-check-input" value="' + ${member.memNo} + '" ></td>'
 						                                <!-- 사번 -->
-						                                <td><span>${member.memNo}</span></td>
+						                                '<td><span>' + ${member.memNo} + '</span></td>'
 						                                <!-- 사원명 -->
-						                                <td>${member.memName}</td>
+						                                '<td>' + ${member.memName} + '</td>'
 						                                <!-- 부서명 -->
-						                                <td>${member.deptName}</td>
+						                                '<td>' + ${member.deptName} + '</td>'
 						                                <!-- 직급명 -->
-						                                <td>${member.posName}</td>
+						                                '<td>' + ${member.posName} + '</td>'
 						                                <!-- 기본급 -->
-						                                <td>${member.salary}</td>
+						                                '<td>' + ${member.salary} + '</td>'
 						                                <!-- 국민연금 -->
-						                                <td>${member.pension}</td>
+						                                '<td>' + ${member.pension} + '</td>'
 						                                <!-- 건강보험 -->
-						                                <td>${member.health}</td>
+						                                '<td>' + ${member.health} + '</td>'
 						                                <!-- 고용보험 -->
-						                                <td>${member.employment}</td>
+						                                '<td>' + ${member.employment} + '</td>'
 						                                <!-- 장기요양 -->
-						                                <td>${member.care}</td>
+						                                '<td>' + ${member.care} + '</td>'
 						                                <!-- 지급예정금액 -->
-						                                <td>${member.totalSalary}</td>
+						                                '<td>' + ${member.totalSalary} '</td>'
 						                                <!-- 지급날짜 -->
-						                                <td>${member.paymentDate}</td>
-						                            </tr>
-						                        ';
+						                                '<td>' + ${member.paymentDate} + '</td>'
+						                            '</tr>'
 						                    });
 						                    $('#salaryTableBody').html(tableBody);
 

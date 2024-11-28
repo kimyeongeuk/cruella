@@ -61,21 +61,22 @@
     </style>
 </head>
 <body>
+	
 	    <div class="container">
         <div class="title">9월 급여명세서</div>
         <p>지급일: 2024년 11월 11일</p>
         <table class="salary-table">
             <tr>
                 <td style="background-color: lightgray;">부서</td>
-                <td>${ member.deptCode }</td>
+                <td>${ list.deptName }</td>
                 <td style="background-color: lightgray;">직급</td>
-                <td>${ member.posCode }</td>
+                <td>${ list.posName }</td>
             </tr>
             <tr>
                 <td style="background-color: lightgray;">성명</td>
-                <td>${ member.memName }</td>
+                <td>${ list.memName }</td>
                 <td style="background-color: lightgray;">입사일</td>
-                <td>${ member.hireDate }</td>
+                <td>${ list.hireDate }</td>
             </tr>
             <tr class="no-border" style="background-color: lightgray;">
                 <th colspan="2" style="height: 40px;">지급 항목</th>
@@ -83,27 +84,27 @@
             </tr>
             <tr>
                 <td>기본급</td>
-                <td>${ member.salary }</td>
+                <td>${ list.salary }</td>
                 <td>국민연금</td>
-                <td>44,290</td>
+                <td>${ list.pension }</td>
             </tr>
             <tr>
-                <td>상여금</td>
-                <td>400,000</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
                 <td>건강보험</td>
-                <td>4,420</td>
+                <td>${ list.health }</td>
             </tr>
             <tr>
-                <td>야근수당</td>
-                <td>120,000</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
                 <td>고용보험</td>
-                <td>103,500</td>
+                <td>${ list.employment }</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>장기요양</td>
-                <td>66,700</td>
+                <td>${ list.care }</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
@@ -137,12 +138,16 @@
             </tr>
             <tr class="total-row">
                 <td class="section-title">지급 총액</td>
-                <td class="total-amount">2,300,000</td>
+                <td class="total-amount">${ list.salary }</td>
                 <td class="section-title">공제 총액</td>
-                <td class="deduction-amount">333,620</td>
+                <td class="deduction-amount">
+                	<c:set var="deductionTotal" value="${list.pension + list.health + list.employment + list.care}" />
+                	${deductionTotal}
+                </td>
             </tr>
         </table>
-        <p class="net-pay">실지급액: 1,966,380 원정</p>
+        <p class="net-pay">실지급액: ${ list.totalSalary } 원정</p>
     </div>
+    
 </body>
 </html>

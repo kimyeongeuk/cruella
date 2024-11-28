@@ -208,7 +208,8 @@
 															name="salary"  value="" required />
 													</div>
 													<div class="mb-4 col-md-6">
-														<label class="hireDate" for="country">입사날짜</label> <input
+														<label class="hireDate" for="country">입사날짜</label> 
+														<input
 															class="form-control" type="date" id="hireDate"
 															name="hireDate" placeholder="YYYY/MM/DD" required />
 													</div>

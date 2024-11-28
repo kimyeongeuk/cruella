@@ -128,6 +128,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.getSalaryByDate(year, month);
 	}
 
+	@Override
+	public MemberDto paystub(String memNo) {
+		return memberDao.paystub(memNo);
+	}
+
 
 
 

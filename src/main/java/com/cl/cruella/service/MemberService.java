@@ -66,6 +66,9 @@ public interface MemberService {
 	List<AppdocDto> selectVacList(Map<String, Object> params);
 
 	List<MemberDto> getSalaryByDate(int year, int month);
+
+	// 급여명세표
+	MemberDto paystub(String memNo);
 	
 
 

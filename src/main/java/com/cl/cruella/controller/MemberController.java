@@ -1,8 +1,8 @@
 package com.cl.cruella.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.BoardDto;
-import com.cl.cruella.dto.CalendarDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.NoticeDto;
 import com.cl.cruella.dto.PageInfoDto;
@@ -647,14 +646,25 @@ public class MemberController {
 	@GetMapping("/organization.do")
 	public void organization() {}
 
-//	// 급여명세표(이예빈)
-//	@GetMapping("/paystub.do")
-//	public String paystub(Model model) {
-//		List<MemberDto> list = memberService.paystub();
-//		model.addAttribute("list", list);
-//		return "member/paystub";
-//	}
 	
+	
+	// 급여명세표(이예빈)
+	
+	@PostMapping("/paystub.do")
+	public String paystub(Model model,@RequestParam String memNo) {
+		log.debug("memNo :{}",memNo);
+		
+		MemberDto list = memberService.paystub(memNo);
+		
+		log.debug("date : {}",list.getHireDate());
+		
+		
+		
+		model.addAttribute("list", list);
+		log.debug("list :{}",list);
+		
+		return "/member/paystub";
+	}
 	
 
 	 

@@ -139,6 +139,10 @@ public class MemberDao {
         return sqlSession.selectList("memberMapper.getSalaryByDate", params);
 	}
 
+	public MemberDto paystub(String memNo) {
+		return sqlSession.selectOne("memberMapper.paystub",memNo);
+	}
+
 
 
 
