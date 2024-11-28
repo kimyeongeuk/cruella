@@ -38,5 +38,13 @@ public class WorkLogDao {
 		return sqlSession.selectList("wlMapper.allWorkTime", memNo);
 	}
 	
+	public void updateAbsences() {
+		sqlSession.update("wlMapper.updateAbsences");
+	}
+	
+	public void insertAbsences() {
+		sqlSession.insert("wlMapper.insertAbsences");
+	}
+	
 	
 }

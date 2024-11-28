@@ -21,4 +21,10 @@ public interface WorkLogService {
 	
 	// 출퇴근 시간 조회
 	List<WorkLogDto> allWorkTime(String memNo);
+	
+	// 결근자 update
+	void updateAbsences();
+	
+	// 결근자 insert
+	void insertAbsences();
 }

@@ -420,7 +420,7 @@
 	   	
 
     // 휴가목록 조회
-		function fnVacList() {
+		function fnVacList(page) {
 		   
 		   const memNo = '${loginUser.getMemNo()}'; 
 		   
@@ -466,24 +466,25 @@
 		            }
 		            $('#vacListTbody').html(trEl);
 		            
-		            // 페이징바
+		            // 페이징바 생성 및 업데이트
 		            let pagingEl = '';
-		            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="goToPage(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
-		            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item first"><a class="page-link" href="javascript:void(0);" onclick="fnVacList(1);"><i class="ti ti-chevrons-left ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item prev ' + (pi.currentPage == 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnVacList(' + (pi.currentPage - 1) + ');"><i class="ti ti-chevron-left ti-sm"></i></a></li>';
 
-		            // 페이지 번호 생성
 		            for (let i = pi.startPage; i <= pi.endPage; i++) {
-		                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + i + ');">' + i + '</a></li>';
+		                pagingEl += '<li class="page-item ' + (i == pi.currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnVacList(' + i + ');">' + i + '</a></li>';
 		            }
 
-		            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
-		            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="goToPage(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item next ' + (pi.currentPage == pi.maxPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:void(0);" onclick="fnVacList(' + (pi.currentPage + 1) + ');"><i class="ti ti-chevron-right ti-sm"></i></a></li>';
+		            pagingEl += '<li class="page-item last"><a class="page-link" href="javascript:void(0);" onclick="fnVacList(' + pi.maxPage + ');"><i class="ti ti-chevrons-right ti-sm"></i></a></li>';
 
-		            // 페이징바 업데이트
-		            $('#paging_area').html(pagingEl);		            
-		        }
-		    })
-		}   	
+		            $('#paging_area').html(pagingEl);			
+    		}
+    	})
+    }
+    function goToPage(pageNumber) {
+        window.location.href = "${contextPath}/member/vacList.do?page=" + pageNumber;
+      }  	
    </script>
 
 <script type="text/javascript">
@@ -540,7 +541,7 @@
       });
       calendar.render();
     } else {
-      console.error("Calendar element not found!");
+      console.error("캘린더 업데이트 실패");
     }
   });
 </script>
