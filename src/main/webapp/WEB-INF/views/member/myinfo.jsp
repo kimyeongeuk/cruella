@@ -83,6 +83,7 @@
 		}
 		#board{
 			cursor: pointer;
+			color: #444050;
 		}
 		#board:hover{
 			color: #7367f0;
@@ -99,6 +100,18 @@
 		}
 		#side_myinfo.active::before {
 		  border: 2px solid white; /* 테두리만 흰색으로 변경 */
+		}
+		#standby_box:hover {
+			background-color: #f0f0f0;
+		}
+		#progress_box:hover {
+			background-color: #f0f0f0;
+		}
+		#complete_box:hover {
+		 background-color: #f0f0f0;
+		}
+		#memoList {
+			margin-right: 10px;
 		}
    </style>
 </head>
@@ -652,33 +665,36 @@
                           <h5 class="card-action-title mb-0" style="margin-left: 15px;">내 결재 문서함</h5>
                         </div>
                         <div class="card-body">
-                          <div style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px;">
+                          <div id="standby_box" style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px; cursor: pointer;"
+                           onclick="location.href='${contextPath}/app/box_standby.do'">
                             <div>
                               <img src="${ contextPath }/assets/img/customizer/wlblue.png"
                                   style="width: 70px; height: 70px; margin-top: 10px;"/>
                             </div>
                             <div style="margin-top: 35px;">
-                              <span style="font-size: 20px; cursor: pointer;" onclick="location.href='${contextPath}/app/box_standby.do'">결재 대기함</span>
+                              <span style="font-size: 20px;">결재 대기함</span>
                               <span style="font-size: 20px; margin-left: 24px;" id="app_standby"></span>
                             </div>
                           </div>
-                          <div style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px;">
+                          <div id="progress_box" style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px; cursor: pointer;"
+                           onclick="location.href='${contextPath}/app/box_progress.do'">
                             <div>
                               <img src="${ contextPath }/assets/img/customizer/wlgray.png"
                                   style="width: 70px; height: 70px; margin-top: 10px;"/>
                             </div>
                             <div style="margin-top: 35px;">
-                              <span style="font-size: 20px; cursor: pointer;" onclick="location.href='${contextPath}/app/box_progress.do'">결재 진행함</span>
+                              <span style="font-size: 20px;">결재 진행함</span>
                               <span style="font-size: 20px; margin-left: 20px;" id="app_progress"></span>
                             </div>
                           </div>
-                          <div style="width: 320px; height: 100px; margin-left: 20px; display: flex; gap: 45px;">
+                          <div id="complete_box" style="width: 320px; height: 100px; margin-left: 20px; display: flex; gap: 45px; cursor: pointer;"
+                           onclick="location.href='${contextPath}/app/box_complete.do'">
                             <div>
                               <img src="${ contextPath }/assets/img/customizer/wlgreen.png"
                                   style="width: 70px; height: 70px; margin-top: 10px;"/>
                             </div>
                             <div style="margin-top: 35px;">
-                              <span style="font-size: 20px; cursor: pointer;" onclick="location.href='${contextPath}/app/box_complete.do'">결재 완료함</span>
+                              <span style="font-size: 20px;">결재 완료함</span>
                               <span style="font-size: 20px; margin-left: 24px;" id="app_success"></span>
                             </div>
                           </div>
@@ -898,7 +914,6 @@
     										+'<small>' + res[i].email + '</small>'
     									+'</div>'
     								+'</div>'
-    								+'<div class="ms-auto"><button class="btn btn-label-primary btn-icon"><i class="ti ti-brand-telegram ti-md"></i></button></div>'
     						  +'</li>'
     			}
     			

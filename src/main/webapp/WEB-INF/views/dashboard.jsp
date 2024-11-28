@@ -39,34 +39,36 @@
  		margin-top: 15px;
  	 	overflow-y: scroll;
  	 }
-	 #memoDiv::-webkit-scrollbar {
+	 #memoDiv::-webkit-scrollbar,
+	 #memberListDiv::-webkit-scrollbar {
 	  width: 10px;  /* 세로 스크롤바의 너비 */
 	  height: 8px; /* 가로 스크롤바의 높이 */
 	 }
 	
-	 #memoDiv::-webkit-scrollbar-track {
+	 #memoDiv::-webkit-scrollbar-track,
+	 #memberListDiv::-webkit-scrollbar-track {
 	  background-color: #f1f1f1; /* 트랙 배경색 */
 	  border-radius: 10px; /* 트랙 모서리 둥글게 */
 	 }
   	#memberListDiv{
-   	 max-height: 345px;
+   	 max-height: 600px;
    	 overflow-y: auto;
+   	 margin-right: 10px; /* 오른쪽 외부 여백 */
    	}
 	
 		/* 스크롤바의 손잡이 (사용자가 드래그할 부분) */
 		#memoDiv::-webkit-scrollbar-thumb,
-		#memberListDiv::-webkit-scrollbar {
+		#memberListDiv::-webkit-scrollbar-thumb {
 	    background-color: #7367f0; /* 손잡이 색 */
 	    border-radius: 10px;     /* 손잡이 모서리 둥글게 */
 	    border: 2px solid #f1f1f1; /* 손잡이의 테두리 색 (트랙과 구분됨) */
 	}
 		/* 스크롤바 손잡이 위에 마우스를 올렸을 때 */
 		#memoDiv::-webkit-scrollbar-thumb:hover,
-		#memberListDiv::-webkit-scrollbar {
+		#memberListDiv::-webkit-scrollbar-thumb:hover {
 	    background-color: #564EB5; /* 손잡이 색을 다르게 */
 		}
-  	#side_dashboard::before,
-		#memberListDiv::-webkit-scrollbar {
+  	#side_dashboard::before{
 		  content: ''; /* 가상 요소 필수 */
 		  display: inline-block; /* 블록 요소 */
 		  width: 10px; /* 동그라미 크기 */
@@ -75,9 +77,28 @@
 		  background-color: transparent; /* 배경을 투명으로 설정 */
 		  border: 2px solid gray; /* 초기 테두리 색상 */
 		}
-		#side_dashboard.active::before,
-		#memberListDiv::-webkit-scrollbar {
+		#side_dashboard.active::before{
 		 	border: 2px solid white; /* 테두리만 흰색으로 변경 */
+		}
+		#memoList {
+			margin-right: 10px;
+		}
+		#allMem {
+			cursor: pointer;
+			color: #444050;
+		}
+		#allMem:hover {
+			color: #7367f0;
+			transition: color 0.3s ease;
+		}
+		#notice {
+			cursor: pointer;
+			color: #444050;
+			font-size: 18px;
+		}
+		#notice:hover {
+			color: #7367f0;
+			transition: color 0.3s ease;		
 		}
   </style>
 </head>
@@ -294,11 +315,11 @@
         <!--/ 매장별 차트부분 -->
 
         <!-- Popular Instructors -->
-        <div class="col-md-6 col-xxl-4 mb-6">
+        <div class="col-md-6 col-xxl-4 mb-1">
           <div class="card h-100">
             <div class="card-header align-items-center" style="display: flex; gap: 15px;">
               <i class="ti ti-users ti-lg"></i>
-              <h5 class="card-action-title mb-0">전직원 목록</h5>
+              <a id="allMem" style="font-size: 18px;" href="${contextPath}/member/employeelistview.do">전직원 목록</a>
             </div>
             <div class="card-body" id="memberListDiv"> <!-- 전 사원의 리스트가 보여질영역 -->
             </div>
@@ -310,7 +331,7 @@
 				<div class="card" style="width: 920px;">
   				<div class="d-flex align-items-center">
    					<div style="margin: 20px;">
-         			<h5>공지사항</h5>
+         			<a id="notice" href="${contextPath}/notice/noticeList.do">공지사항</a>
      				</div>
   	 			</div>
 	 				<div class="card-datatable table-responsive pt-3">
@@ -856,7 +877,6 @@
 	    										+'<small>' + res[i].email + '</small>'
 	    									+'</div>'
 	    								+'</div>'
-	    								+'<div class="ms-auto"><button class="btn btn-label-primary btn-icon"><i class="ti ti-brand-telegram ti-md"></i></button></div>'
 	    						  +'</li>'
 	    			}
 	    			
