@@ -24,11 +24,12 @@ public class SupplyDto {
 	private String supRepair;
 	private String supRepairDetail;
 	private String supType;
+	private String supUrl;
 
-	
+	private int totalSupply;
 	private int leftSupply;
 	private int repairSupply;
-	private int workSupply;
+	private int rentSupply;
 	
 	private String memNo;
 	

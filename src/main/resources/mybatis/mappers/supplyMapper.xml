@@ -15,6 +15,7 @@
 	<result column="LEFTSUPPLY" property="leftSupply" />
 	<result column="REPAIRSUPPLY" property="repairSupply" />
 	<result column="WORKSUPPLY" property="workSupply" />
+	<result column="SUP_URL" property="supUrl" />
 </resultMap>
 
 
@@ -23,9 +24,10 @@
 	SELECT 
 		     SUP_CATEGORY, 
 		     SUP_TYPE,
+		     COUNT(CASE WHEN SUP_STATUS IN ('Y', 'N') THEN 1 END) AS TOTALSUPPLY,
 		     COUNT(CASE WHEN SUP_STATUS = 'Y' THEN 1 END) AS LEFTSUPPLY,
-		     COUNT(CASE WHEN SUP_REPAIR = 'N' THEN 1 END) AS REPAIRSUPPLY,
-		     COUNT(CASE WHEN SUP_REPAIR = 'N' AND SUP_STATUS != 'Y' THEN 1 END) AS WORKSUPPLY
+		     COUNT(CASE WHEN SUP_STATUS = 'N' THEN 1 END) AS RENTSUPPLY,
+		     COUNT(CASE WHEN SUP_REPAIR = 'Y' AND SUP_STATUS = 'Y' THEN 1 END) AS REPAIRSUPPLY
 		FROM 
 		     SUPPLIES
 	  <if test="supCategory != '전체'">
@@ -51,7 +53,63 @@
 </select>
 
 <insert id="insertSupply">
-	insert
+INSERT 
+  INTO SUPPLIES
+     ( 
+     SUP_NO
+     , SUP_CATEGORY
+     , SUP_NAME
+     , SUP_MODEL
+     , SUP_REPAIR
+     , SUP_TYPE
+    
+      )
+     VALUES
+     ( 
+     SEQ_SUP.NEXTVAL
+     , #{supCategory}
+     , #{supName}
+     , #{supModel}
+     , #{supRepair}
+     , #{supType}
+   
+     )
+</insert>
+
+<insert id="insertAttach">
+INSERT
+  INTO ATTACHMENT
+     ( FILE_NO
+		 , FILE_PATH
+		 , FILE_SYSTEM_NAME
+		 , FILE_ORIGINAL_NAME
+		 , FILE_REF_TYPE
+		 , FILE_REF_NO
+     )
+		VALUES
+		 ( SEQ_FNO.NEXTVAL
+		 , #{filePath}
+		 , #{filesystemName}
+		 , #{originalName}
+		 , 'S'
+		 , SEQ_SUP.CURRVAL
+		 )
+</insert>
+
+<insert id="insertRental">
+INSERT
+  INTO RENTAL
+     ( REN_NO
+		 , MEM_NO
+		 , SUP_TYPE
+		 , SUP_CATEGORY
+     )
+     VALUES
+     ( SEQ_REN.NEXTVAL
+     , #{memNo}
+     , #{supType}
+     , #{supCategory}
+     )
 </insert>
 
 

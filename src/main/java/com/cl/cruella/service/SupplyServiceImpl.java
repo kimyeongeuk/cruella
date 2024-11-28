@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.cl.cruella.dao.SupplyDao;
+import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.PageInfoDto;
 import com.cl.cruella.dto.SupplyDto;
 
@@ -26,11 +27,35 @@ public class SupplyServiceImpl implements SupplyService {
 		return  supplyDao.countSupply(supCategory);
 	}
 
+
 	@Override
-	public int insertSupply(SupplyDto s) {
-		return supplyDao.insertSupply(s);
+	public int insertSupply(SupplyDto s, List<AttachDto> list) {
+		
+		// list에 담긴 첨부파일들 빼서 담기
+		
+		int result = supplyDao.insertSupply(s); // 비품관련 insert
+		
+		
+		if(result > 0 && !list.isEmpty()) {
+			for(AttachDto attach : list) {
+				result += supplyDao.insertAttach(attach);
+			}
+		}
+		
+		
+		return result;
+		
 	}
 
+	@Override
+	public int insertRental(SupplyDto s) {
+		return supplyDao.insertRental(s);
+	}
+
+	
+	
+	
+	
 
 
 }
