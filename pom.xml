@@ -156,6 +156,13 @@
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter</artifactId>
 		</dependency>		
+    <!-- Java Object를 Json 문자열로 변환할 수 있고, Json 문자열을 Java Object로 변환 -->
+    <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+    </dependency>
+
+		
 	</dependencies>
 
 	<build>
