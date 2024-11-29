@@ -17,4 +17,8 @@ public class ChartDao {
     public List<RevenueDto> findDeptIncomeByMonth(Map<String, String> params) {
         return sqlSession.selectList(NAMESPACE + ".findDeptIncomeByMonth", params);
     }
+
+    public List<RevenueDto> findDeptIncomeByYear(Map<String, String> params) {
+        return sqlSession.selectList(NAMESPACE + ".findDeptIncomeByYear", params);
+    }
 }
