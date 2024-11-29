@@ -71,7 +71,7 @@
 							<div
 								class="user-profile-header d-flex flex-column flex-lg-row text-sm-start text-center mb-5">
 								<div style="align-content: center; margin-top: 20px;">
-									<img src="${ contextPath }/assets/img/avatars/1.png" alt="user image"
+									<img src="${ contextPath }<c:out value='${loginUser.getProfileURL()}'/>" alt="user image"
 										class="d-block h-auto ms-0 ms-sm-6 rounded user-profile-img" />
 								</div>
 								<div class="flex-grow-1 mt-3 mt-lg-5">
