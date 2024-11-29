@@ -276,55 +276,21 @@
               </div>
 
               <div class="row">
-                <div class="col-xl-4 col-lg-5 col-md-5">
-
-                  <!-- About User -->
-                  <div class="card mb-6">
-
-                  </div>
-                  <!--/ About User -->
-                  <!-- Profile Overview -->
-                  <div class="card mb-6">
-                    <div class="card-body">
-                      <small class="card-text text-uppercase text-muted small">Memo</small> 
-                      <i class="ti ti-edit ti-sm" style="margin-left: 310px;"></i>
-                      <ul class="list-unstyled mb-2 mt-3 pt-1">
-                        <li class="d-flex align-items-center pt-5 pb-5 mt-3" style="background-color: #e9e7fd; border-radius: 5px; cursor: pointer;"
-                        onclick="fnOpenMemo();">
-                          <span class="fw-medium mx-2">오늘의 할일</span>
-                          <i class="ti ti-dots-vertical ti-sm" style="margin-left: 250px;"></i>
-                        </li>
-                        <li class="d-flex align-items-end pt-5 pb-5 mt-3" style="background-color: #e9e7fd; border-radius: 5px;">
-                          <span class="fw-medium mx-2">메모메모</span>
-                          <i class="ti ti-dots-vertical ti-sm" style="margin-left: 270px;"></i>
-                        </li>
-                        <li class="d-flex align-items-end pt-5 pb-5 mt-3" style="background-color: #e9e7fd; border-radius: 5px;">
-                          <span class="fw-medium mx-2">화이팅</span>
-                          <i class="ti ti-dots-vertical ti-sm" style="margin-left: 285px;"></i>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <!--/ Profile Overview -->
-                </div>
                 <div class="col-xl-8 col-lg-7 col-md-7">
                   <!-- Activity Timeline -->
-                  <div class="card card-action mb-6">
-                    
-                  </div>
-                  <!-- Projects table -->
+                  <div class="card card-action mb-6" style="width: 1390px;">
                   <div class="card">
                     <div class="table-responsive text-nowrap">
                       <table class="table">
                         <thead>
                           <div style="display: flex; height: 80px;">
                             <div style="display: flex; margin-top: 30px;">
-                              <h5 class="card-action-title" style="margin-left: 20px; margin-right: 30px; margin-bottom: 60px;">휴가관리</h5>
+                              <h5 class="card-action-title" style="margin-left: 20px; margin-right: 30px; margin-left: 40px; margin-bottom: 60px;">휴가관리</h5>
                               <p style="color: #28C76F;">${loginUser.vacCount}</p>
                               &nbsp;&nbsp;/&nbsp;&nbsp;
                               <span>15</span>
                             </div>
-                            <div style="position: relative; top: 20px; left: 400px; display: flex; gap: 60px;">
+                            <div style="position: relative; top: 20px; left: 860px; display: flex; gap: 60px;">
                               <div style="position: relative; top: 10px;">
                                 사용 <span>${15-loginUser.vacCount}</span>
                                 &nbsp;&nbsp;&nbsp;
@@ -338,14 +304,13 @@
                         </thead>
 										    <thead>
 										      <tr>
-									            <th style="width: 20%;">번호</th>
+									            <th style="width: 15%;"><div style="margin-left: 30px;">번호</div></th>
 									            <th style="width: 35%;">제목</th>
 									            <th style="width: 25%;">신청일</th>
-									            <th style="width: 20%;">진행상태</th>
+									            <th style="width: 20%;"><div style="margin-left: 10px;">진행상태</div></th>
 										      </tr>
 										    </thead>
                         <tbody class="table-border-bottom-0" id="vacListTbody">
-                         
                         </tbody>
                       </table>
                     </div>
@@ -362,6 +327,9 @@
 										  </div>
 		                </div>
                   </div>
+                    
+                  </div>
+                  <!-- Projects table -->
                   <!--/ Projects table -->                  
                   <!--/ Activity Timeline -->
 
@@ -454,7 +422,7 @@
 		                    let reverseCount = pi.listCount - (pi.currentPage - 1) * pi.boardLimit - (count - 1);
 		
 		                    trEl += '<tr>';
-		                    trEl += '<td>' + reverseCount + '</td>';
+		                    trEl += '<td><div style="margin-left: 40px;">' + reverseCount + '</div></td>';
 		                    trEl += '<td class="title">' + vac.docTitle + '</td>';
 		                    trEl += '<td>' + vac.docDt + '</td>';
 		                    

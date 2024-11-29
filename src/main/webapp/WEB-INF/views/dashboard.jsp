@@ -100,6 +100,7 @@
 			color: #7367f0;
 			transition: color 0.3s ease;		
 		}
+		
   </style>
 </head>
 <body>
@@ -313,6 +314,7 @@
             <div class="card-header align-items-center" style="display: flex; gap: 15px;">
               <i class="ti ti-users ti-lg"></i>
               <a id="allMem" style="font-size: 18px;" href="${contextPath}/member/employeelistview.do">전직원 목록</a>
+              <div id="deptList" style="display: flex; gap: 10px; flex-direction: column;"></div>
             </div>
             <div class="card-body" id="memberListDiv"> <!-- 전 사원의 리스트가 보여질영역 -->
             </div>
@@ -429,17 +431,7 @@
     </script>
     
 		<script>
-	  		
-				// 페이지 로드시 실행시킬 함수
-	  		window.onload = function(){
-	  			
-	  			checkClockInStatus(); // 출근상태 체크
-	  			fnNoticeList();			  // 공지사항 조회
-		    	fnMemoList();	        // 메모 전체 리스트 조회
-		    	fnMemberList();       // 전체 사원 리스트 조회
-		    	fnAppList();				  // 결재 대기중인 문서 갯수 조회
-		    	
-	  		}
+
 	  	
 	  		// 출근 등록여부 확인
 	  		function checkClockInStatus(){
@@ -845,43 +837,59 @@
 	    	})
 	    }
 	    
-	    // 전체 사원 리스트 조회
-	    function fnMemberList(){
-	    	
-	    	let memNo = '${loginUser.getMemNo()}';
-	    	
-	    	$.ajax({
-	    		url: '${contextPath}/member/selectAll_db.do',
-	    		type: 'POST',
-	    		data: {memNo: memNo},
-	    		success: function(res){
-	    			
-	    			let liEl = '<ul class="list-unstyled mb-0">'
-	    			
-	    			for(let i = 0; i < res.length; i++){
-	    				
-	    				liEl += '<li class="mb-4">'
-	    							+'<div class="d-flex align-items-center">'
-	    								+'<div class="d-flex align-items-center">'
-	    									+'<div class="avatar me-2">'
-	    										+'<img src="${ contextPath }/assets/img/avatars/2.png" alt="Avatar" class="rounded-circle" />'
-	    									+'</div>'
-	    									+'<div class="me-2">'
-	    										+'<h6 class="mb-0">' + res[i].memName + '</h6>'
-	    										+'<small>' + res[i].email + '</small>'
-	    									+'</div>'
-	    								+'</div>'
-	    						  +'</li>'
-	    			}
-	    			
-	    			liEl += '</ul>';
-	    			
-	    			$('#memberListDiv').html(liEl);
-	    			
-	    		}
-	    		
-	    	})
+	    function fnLoadDeptList() {
+	        // 부서 목록 로드
+	        $.ajax({
+	            url: '${contextPath}/member/getDeptList.do', // 부서 목록 조회 API
+	            type: 'POST',
+	            success: function(list) {
+	                let deptHtml = '<select id="deptSelect" class="select form-select form-select-lg select2-hidden-accessible" onchange="fnMemberList(this.value)" style="font-size: 16px;">';
+	                deptHtml += '<option value="">전체</option>'; // "전체" 옵션 추가
+	                for (let i = 0; i < list.length; i++) {
+	                    deptHtml += '<option value="' + list[i].deptName + '">' + list[i].deptName + '</option>';
+	                }
+	                deptHtml += '</select>';
+	                $('#deptList').html(deptHtml); // 부서 목록을 select로 추가
+	            },
+	            error: function() {
+	                console.error('부서 목록을 가져오는 중 오류 발생');
+	            }
+	        });
 	    }
+
+	    function fnMemberList(deptName = '') {
+	        // 기본값으로 전체 조회
+	        let memNo = '${loginUser.getMemNo()}';
+
+	        $.ajax({
+	            url: '${contextPath}/member/selectAll_db.do',
+	            type: 'POST',
+	            data: { memNo: memNo, deptName: deptName },
+	            success: function(res) {
+	                let liEl = '<ul class="list-unstyled mb-0">';
+	                for (let i = 0; i < res.length; i++) {
+	                    liEl += '<li class="mb-4">'
+	                        + '<div class="d-flex align-items-center">'
+	                        + '<div class="avatar me-2">'
+	                        + '<img src="${contextPath}/assets/img/avatars/2.png" alt="Avatar" class="rounded-circle" />'
+	                        + '</div>'
+	                        + '<div class="me-2">'
+	                        + '<h6 class="mb-0">' + res[i].memName + '</h6>'
+	                        + '<small>' + res[i].email + '</small>'
+	                        + '</div>'
+	                        + '</div>'
+	                        + '</li>';
+	                }
+	                liEl += '</ul>';
+	                $('#memberListDiv').html(liEl);
+	            },
+	            error: function() {
+	                console.error('사원 목록을 가져오는 중 오류 발생');
+	            }
+	        });
+	    }
+
+
 	    
 	    // 공지사항 목록조회
 	    function fnNoticeList(page){
@@ -967,6 +975,20 @@
 	  
 	  const formattedDate = year + '/' + month + '/' + day;
 	  document.getElementById('todayDate').innerText = formattedDate;
+	  
+		
+		// 페이지 로드시 실행시킬 함수
+	window.onload = function(){
+		
+		checkClockInStatus(); // 출근상태 체크
+		fnNoticeList();			  // 공지사항 조회
+  	fnMemoList();	        // 메모 전체 리스트 조회
+  	fnMemberList();       // 전체 사원 리스트 조회
+  	fnAppList();				  // 결재 대기중인 문서 갯수 조회.
+ 	  fnLoadDeptList(); // 부서 목록 로드
+  	fnMemberList();   // 전직원 목록 로드
+  	
+	}
    </script>
 	
 	

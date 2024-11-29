@@ -36,10 +36,6 @@ public class WorkLogController {
 	    
 	    int result = wlService.clockIn(workLog);
 	    
-	    	
-	    // 세션에 출근 상태 업데이트
-	    session.setAttribute("loginUser", loginUser);
-        
 		
 		return workLog.getClockInTime();
 	}
