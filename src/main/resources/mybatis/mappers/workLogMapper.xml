@@ -99,6 +99,19 @@
                            )
 	</insert>
 	
+	<select id="checkinrecordview" resultMap="workLogResultMap">
+    select 
+        WL_CLOCK_IN, 
+        WL_CLOCK_OUT, 
+        WL_STATUS, 
+        WL_WORK_DATE 
+    from 
+        WORK_LOG 
+    where 
+        MEM_NO = #{memNo}
+    order by 
+        WL_WORK_DATE DESC
+	</select>
 	
 	
 

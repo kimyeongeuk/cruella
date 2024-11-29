@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -103,7 +105,20 @@ public class WorkLogController {
 		wlService.insertAbsences(); // 결근자 insert(출근기록 X, 퇴근기록 X)
 	}
 
-	
+	// 출퇴근조회(이예빈)
+	@GetMapping("/checkinrecordview.do")
+	public String checkinrecordview(HttpSession session, Model model) {
+		
+		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+		
+		String memNo = loginUser.getMemNo();
+		
+		List<WorkLogDto> wd = wlService.checkinrecordview(memNo);
+		
+		model.addAttribute("workLog", wd);
+		
+		return "member/checkinrecordview";
+	}
 	
 	
 }

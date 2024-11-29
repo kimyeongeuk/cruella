@@ -634,9 +634,7 @@ public class MemberController {
 
 	
 	
-	// 출퇴근조회(이예빈)
-	@GetMapping("/checkinrecordview.do")
-	public void checkinrecodeview() {}
+
 	
 	// 근무시간조회(이예빈)
 	@GetMapping("/workhoursview.do")
@@ -666,6 +664,7 @@ public class MemberController {
 		return "/member/paystub";
 	}
 	
+
 
 	 
 }

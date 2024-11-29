@@ -52,4 +52,9 @@ public class WorkLogServiceImpl implements WorkLogService {
 		wlDao.insertAbsences();
 	}
 
+	@Override
+	public List<WorkLogDto> checkinrecordview(String memNo) {
+		return wlDao.checkinrecordview(memNo);
+	}
+
 }

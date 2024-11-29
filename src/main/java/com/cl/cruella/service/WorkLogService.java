@@ -27,4 +27,10 @@ public interface WorkLogService {
 	
 	// 결근자 insert
 	void insertAbsences();
+
+	// 출퇴근조회 (이예빈)
+	List<WorkLogDto> checkinrecordview(String memNo);
+
+	
+	
 }
