@@ -318,6 +318,18 @@
 <!-- layout wrapper 닫기 -->
 </body>
 <script>
+	//사이드바 처리
+	document.addEventListener("DOMContentLoaded", function () {
+		
+		const element = document.getElementById("boardNotice");
+		
+		document.getElementById("boardSide").classList.add("open");
+		element.style.backgroundColor = "#958CF4";
+		element.style.color = "white";
+		element.classList.add("active");
+				
+	});
+
 	$(document).ready(function(){
 	  $("#searchSelect").val("${empty search.condition ? '' : search.condition}");
 	});
