@@ -82,24 +82,54 @@ canvas#doughnutChart {
   </div>
 </div>
 <br><br>
-<div>
-  <canvas id="lineChart"></canvas>
+
+
+
+<div class="justify-content-between" style="display: flex;">
+  <div id="chartCenterText" style="font-size: 20px;"></div>
+  <div class="d-flex justify-content-end">
+    <div>
+      <select id="yearSelect" class="select1 form-select form-select-lg" data-allow-clear="true">
+        <option value="2023">2023</option>
+        <option value="2024" selected>2024</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="lineChart-container" style="position: relative; width: 100%;">
+  <canvas id="lineChart" style="width: 100%;"></canvas>
 </div>
 
 <script>
-  const lineCtx = document.getElementById('lineChart');
+  const lineCtx = document.getElementById('lineChart').getContext('2d');
+  const 현재연도 = new Date().getFullYear();
+  const 작년 = 현재연도 - 1;
+  const contextPath = ''; // 실제 contextPath를 넣으세요
 
-  new Chart(lineCtx, {
+  const lineChart = new Chart(lineCtx, {
     type: 'line',
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
+      labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+      datasets: [
+        {
+          label: 작년 + '년 매출',
+          data: [], // 여기에 2023년 데이터를 추가할 것입니다
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderWidth: 1
+        },
+        {
+          label: 현재연도 + '년 매출',
+          data: [], // 여기에 2024년 데이터를 추가할 것입니다
+          borderColor: 'rgba(153, 102, 255, 1)',
+          backgroundColor: 'rgba(153, 102, 255, 0.2)',
+          borderWidth: 1
+        }
+      ]
     },
     options: {
+      responsive: true,
       scales: {
         y: {
           beginAtZero: true
@@ -107,7 +137,66 @@ canvas#doughnutChart {
       }
     }
   });
+
+  function 차트업데이트(연도) {
+    console.log('선택된 연도: ' + 연도); // 선택된 연도 로그
+
+    // AJAX 호출로 데이터를 가져와서 차트를 업데이트합니다.
+    $.ajax({
+      url: '${contextPath}/chart/allSales.do', // URL이 contextPath를 포함하도록 수정
+      type: 'POST',
+      data: JSON.stringify({ year: 연도 }),
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      success: function(data) {
+        console.log('가져온 데이터 (' + 연도 + '):', data); // 가져온 데이터 로그
+
+        const 연도별데이터 = data.map(function(item) {
+          if (item) {
+            return item.rvValue; 
+          } else {
+            return 0; // null 값을 0으로 대체
+          }
+        });
+        console.log('매핑된 데이터 (' + 연도 + '):', 연도별데이터); // 매핑된 데이터 로그
+
+        if (연도 === 작년.toString()) {
+          lineChart.data.datasets[0].data = 연도별데이터;
+        } else if (연도 === 현재연도.toString()) {
+          // 2024년 데이터를 가져올 때 2023년 데이터와 합산
+          const 합산데이터 = [];
+          const 작년도데이터 = lineChart.data.datasets[0].data;
+          for (var i = 0; i < 연도별데이터.length; i++) {
+            합산데이터.push((작년도데이터[i] || 0) + 연도별데이터[i]);
+          }
+          lineChart.data.datasets[1].data = 합산데이터;
+          console.log('합산된 데이터:', 합산데이터); // 합산된 데이터 로그
+        }
+        lineChart.update();
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error('AJAX 요청 실패:', {
+          status: textStatus,
+          error: errorThrown,
+          response: jqXHR.responseText,
+        });
+        alert('데이터를 가져오는 데 실패했습니다.');
+      }
+    });
+  }
+
+  // 초기 로딩 시 데이터 로드
+  차트업데이트(작년.toString());
+  차트업데이트(현재연도.toString());
+
+  // 연도 선택 변경 시 데이터 업데이트
+  $('#yearSelect').change(function() {
+    var 선택된연도 = $(this).val();
+    차트업데이트(선택된연도);
+  });
 </script>
+
+
 </div>  
     
 <div style="display: none; margin: 20px;" id="categorySalesChart">
@@ -158,7 +247,7 @@ canvas#doughnutChart {
 	</div>
 </div>
 <div>
-	<div class="chart-container" style="position: relative; width: 100%;">
+	<div class="doughnutChart-container" style="position: relative; width: 100%;">
 	  <canvas id="doughnutChart" style="width: 100%; height: 600px;"></canvas>
 	</div>
 </div>		

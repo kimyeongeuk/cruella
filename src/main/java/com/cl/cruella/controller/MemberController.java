@@ -617,15 +617,10 @@ public class MemberController {
 	
 	// 급여지급페이지
 	@GetMapping("/salarypayment2.do")
-	public String salarypayment2(Model model,
-			@RequestParam String year,
-			@RequestParam String month,
-			@RequestParam String provide) {
+	public String salarypayment2(Model model, @RequestParam String provide) {
 		
 		Map<String,Object> salDate = new HashMap<>();
-		
-		salDate.put("year", year);
-		salDate.put("month", month);
+	
 		salDate.put("provide", provide);
 		
 		

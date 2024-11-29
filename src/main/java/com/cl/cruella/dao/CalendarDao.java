@@ -1,6 +1,7 @@
 package com.cl.cruella.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,8 +16,8 @@ public class CalendarDao {
 
 	private final SqlSessionTemplate sqlSession;
 	
-	public List<CalendarDto> selectCalenderList(){
-		return sqlSession.selectList("calendarMapper.selectCalendarList");
+	public List<CalendarDto> selectCalenderList(Map<String, String> map){
+		return sqlSession.selectList("calendarMapper.selectCalendarList", map); // 쿼리문에서 map 에 담긴 맵 이름값으로 불러오면 됨. ex) deptCode 이렇게 적으면 됨.
 	}
 	
 	public int insertCalendar(CalendarDto c) {

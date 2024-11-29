@@ -73,15 +73,15 @@
 
 
 						<div
-							class="faq-header d-flex flex-column justify-content-center align-items-center " style="margin-bottom: -36px;">
+							class="faq-header d-flex flex-column justify-content-center align-items-center ">
 							<img src="${contextPath }/assets/img/pages/header.png" class=""
 								alt="background image" style="width: 100%; height: 102px;" />
+								
 							<div class="input-wrapper mt-4 input-group input-group-merge"
-								style="position: relative; bottom: 84px; background: white; width: 52%;">
-								<span class="input-group-text" id="basic-addon1"><i
-									class="ti ti-search"></i></span> <input type="text"
-									class="form-control" placeholder="Search articles..."
-									aria-label="Search" aria-describedby="basic-addon1" />
+								style="position: relative; bottom: 84px;  width: 52%;">
+								
+								
+
 							</div>
 						</div>
 
@@ -97,49 +97,29 @@
 								<h5 class="card-header"
 										style="display: flex; align-items: center;">
 										<select id="provide_status" class="form-select"
-											style="width: 100px; margin-right: 10px;">
+											style="width: 220px; margin-right: 10px;">
 											
 												
-												<option value="" selected>선택</option>
-												<option value="Y">지급</option>
-												<option value="N">미지급</option>
-										
+											<option value="" selected>선택</option>
+												
+											<option value="S1">영업총괄팀</option>
+											<option value="S2">인사</option>
+											<option value="S3">지원</option>
+											<option value="T1">남성의류</option>
+											<option value="T2">여성의류</option>
+											<option value="T3">식품</option>
+											<option value="T4">스포츠</option>
+											<option value="T5">뷰티</option>
+											<option value="T6">명품</option>
+											<option value="T7">문화센터</option>
+											<option value="T8">디지털 및 가전</option>
+											
+												
+												
 											
 										</select> 
 									</h5>
 								
-								
-								
-									<h5 class="card-header"
-										style="display: flex; align-items: center;">
-										<select id="yearSelect" class="form-select"
-											style="width: 100px; margin-right: 10px;">
-											
-												<option value="" selected>선택</option>
-											<c:forEach var="y" begin="4" end="4" step="1">
-												<option value="2${y}">202${y}</option>
-											</c:forEach>
-											
-										</select> <span>년</span>
-									</h5>
-									
-									
-									
-									<h5 class="card-header"
-										style="display: flex; align-items: center; padding: 0;">
-										<select id="monthSelect" class="form-select"
-											style="width: 90px; margin-right: 10px;">
-											
-											<option value="" selected>선택</option>
-											<c:forEach var="i" begin="10" end="12" step="1">
-												<option value="${i}">${i}</option>
-											</c:forEach>
-											
-										</select> <span>월</span>
-									</h5>
-									
-									
-									
 									
 									
 								</div>
@@ -161,7 +141,7 @@
 															let month = $('#monthSelect').val();
 															let provide = $('#provide_status').val();
 															
-															location.href = "${contextPath}/member/salarypayment2.do?year=" + year + "&month=" + month + "&provide=" + provide;
+															location.href = "${contextPath}/member/salarypayment2.do?provide=" + provide;
 														
 													})
 													
@@ -240,7 +220,7 @@
 												<!-- 급여명세표 -->
 												<td>
 												
-												<c:if test="${member.salStatus eq 'Y' }">
+												
 												
 													<form action="${contextPath }/member/paystub.do" method="post" id="submit_btn">
 													
@@ -250,7 +230,7 @@
 													
 													
 													</form>
-												</c:if>
+												
 												
 												</td>
 											</tr>
@@ -308,13 +288,14 @@
 						            return;
 						        }
 
-						        const year = $('#yearSelect').val();
-						        const month = $('#monthSelect').val();
+						        /* const year = $('#yearSelect').val();
+						        const month = $('#monthSelect').val(); */
 
-						        if (!year || !month) {
+						        /* if (!year || !month) {
 						            alert('년도와 월을 선택해주세요.');
 						            return;
 						        }
+						         */
 
 						        if (confirm('급여를 지급하시겠습니까?')) {
 						           

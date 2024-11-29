@@ -63,7 +63,7 @@ public class RevenueController {
                                                   .collect(Collectors.toList());
 
             revenueService.registerAllRevenues(memNo, rvStores, rvValuesAsInt);
-            redirectAttributes.addFlashAttribute("successMessage", "모든 매출이 성공적으로 등록되었습니다!");
+            redirectAttributes.addFlashAttribute("successMessage", "매출이 성공적으로 등록되었습니다!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "매출 등록 중 오류가 발생했습니다.");
         }

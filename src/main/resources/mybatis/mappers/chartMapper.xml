@@ -30,4 +30,19 @@
         m.DEPT_CODE
   </select>
 
+  <!-- 연도별 매출 데이터를 조회하는 쿼리 -->
+  <select id="findDeptIncomeByYear" parameterType="map" resultMap="chartResultMap">
+    SELECT
+        TO_CHAR(TO_DATE(rv_regist_date, 'YY/MM/DD'), 'MM') AS month,
+        SUM(rv_value) AS rvValue
+    FROM
+        REVENUE
+    WHERE
+        TO_CHAR(TO_DATE(rv_regist_date, 'YY/MM/DD'), 'YYYY') = #{year}
+    GROUP BY
+        TO_CHAR(TO_DATE(rv_regist_date, 'YY/MM/DD'), 'MM')
+    ORDER BY
+        TO_CHAR(TO_DATE(rv_regist_date, 'YY/MM/DD'), 'MM')
+  </select>
+
 </mapper>
