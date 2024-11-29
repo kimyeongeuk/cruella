@@ -71,11 +71,11 @@
                   <div class="col app-chat-sidebar-left app-sidebar overflow-hidden" id="app-chat-sidebar-left">
                     <div
                       class="chat-sidebar-left-user sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
-                      <div class="avatar avatar-xl avatar-offline">
+                      <div class="avatar avatar-xl">
                         <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
                       </div>
-                      <h5 class="mt-4 mb-0">도 존</h5>
-                      <span>부점장</span>
+                      <h5 class="mt-4 mb-0">${ loginUser.memName }</h5>
+                      <span>${ loginUser.posName }</span>
                       <i
                         class="ti ti-x ti-lg cursor-pointer close-sidebar"
                         data-bs-toggle="sidebar"
@@ -83,57 +83,18 @@
                         data-target="#app-chat-sidebar-left"></i>
                     </div>
                     <div class="sidebar-body px-6 pb-6">
-                      <div class="my-6">
-                        <label for="chat-sidebar-left-user-about" class="text-uppercase text-muted mb-1">상태메시지</label>
-                        <textarea
-                          id="chat-sidebar-left-user-about"
-                          class="form-control chat-sidebar-left-user-about"
-                          rows="3"
-                          maxlength="120" style="resize: none;">퇴근하고싶다.... 아파트 아파트..</textarea>
-                      </div>
-                      <div class="my-6">
-                        <p class="text-uppercase text-muted mb-1">내 상태</p>
-                        <div class="d-grid gap-2 pt-2 text-heading ms-2">
-                          <div class="form-check form-check-success">
-                            <input
-                              name="chat-user-status"
-                              class="form-check-input"
-                              type="radio"
-                              value="active"
-                              id="user-active"
-                              checked />
-                            <label class="form-check-label" for="user-active">온라인</label>
-                          </div>
-                          <div class="form-check form-check-warning">
-                            <input
-                              name="chat-user-status"
-                              class="form-check-input"
-                              type="radio"
-                              value="away"
-                              id="user-away" /
-                              checked>
-                            <label class="form-check-label" for="user-away">자리비움</label>
-                          </div>
-                          <div class="form-check form-check-danger">
-                            <input
-                              name="chat-user-status"
-                              class="form-check-input"
-                              type="radio"
-                              value="busy"
-                              id="user-busy" />
-                            <label class="form-check-label" for="user-busy">외출 중</label>
-                          </div>
-                          <div class="form-check form-check-secondary">
-                            <input
-                              name="chat-user-status"
-                              class="form-check-input"
-                              type="radio"
-                              value="offline"
-                              id="user-offline" />
-                            <label class="form-check-label" for="user-offline">오프라인</label>
-                          </div>
-                        </div>
-                      </div>
+                    <c:forEach items="${chatProfileList }" var="list">
+                    	<c:if test="${ list.memNo eq loginUser.memNo }">
+		                      <div class="my-6">
+		                        <label for="chat-sidebar-left-user-about" class="text-uppercase text-muted mb-1">상태메시지</label>
+		                        <textarea
+		                          id="chat-sidebar-left-user-about"
+		                          class="form-control chat-sidebar-left-user-about statusForm"
+		                          rows="3"
+		                          maxlength="120" style="resize: none;">${ list.cpMessage }</textarea>
+		                      </div>
+	                      </c:if>
+ 											</c:forEach>
                       <div class="my-6">
                         <p class="text-uppercase text-muted mb-1"></p>
                         <ul class="list-unstyled d-grid gap-4 ms-2 pt-2 text-heading">
@@ -152,7 +113,8 @@
                           class="btn btn-primary w-100"
                           data-bs-toggle="sidebar"
                           data-overlay
-                          data-target="#app-chat-sidebar-left">
+                          data-target="#app-chat-sidebar-left"
+                          id="statusButton">
                           저장
                         </button>
                       </div>
@@ -170,7 +132,7 @@
                     <div class="sidebar-header h-px-75 px-5 border-bottom d-flex align-items-center">
                       <div class="d-flex align-items-center me-6 me-lg-0">
                         <div
-                          class="flex-shrink-0 avatar avatar-online me-4"
+                          class="flex-shrink-0 avatar me-4"
                           data-bs-toggle="sidebar"
                           data-overlay="app-overlay-ex"
                           data-target="#app-chat-sidebar-left">
@@ -219,7 +181,7 @@
 			                        	<input type="hidden" value="${ list.chatNo }" class="chatlistno">
 			                        	<input type="hidden" value="${ list.chatTitle }">
 			                          <a class="d-flex align-items-center">
-			                            <div class="flex-shrink-0 avatar avatar-offline">
+			                            <div class="flex-shrink-0 avatar">
 			                              <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
 			                            </div>
 			                            <div class="chat-contact-info flex-grow-1 ms-4 test1">
@@ -289,12 +251,12 @@
 	                        <li class="chat-contact-list-item userInFo" data-target="#app-chat-sidebar-right" data-bs-toggle="sidebar" data-overlay="app-overlay-ex" id="userInFo">
 	                        	<input type="hidden" value="${ memList.memNo }">
 	                          <a class="d-flex align-items-center">
-	                            <div class="flex-shrink-0 avatar avatar-offline">
+	                            <div class="flex-shrink-0 avatar">
 	                              <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
 	                            </div>
 	                            <div class="chat-contact-info flex-grow-1 ms-4">
 	                              <h6 class="chat-contact-name text-truncate m-0 fw-normal">${ memList.memName }</h6>
-	                              <small class="chat-contact-status text-truncate">${ memProfile.cpMessage }</small>
+	                              <small class="chat-contact-status text-truncate" id="mem${ memProfile.memNo }">${ memProfile.cpMessage }</small>
 	                            </div>
 	                          </a>
 	                        </li>
@@ -315,7 +277,7 @@
 		                  <div class="col app-chat-sidebar-right app-sidebar overflow-hidden" id="app-chat-sidebar-right">
 		                    <div
 		                      class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
-		                      <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
+		                      <div class="avatar avatar-xl chat-sidebar-avatar">
 		                        <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
 		                      </div>
 		                      <h5 class="mt-4 mb-0" id="userNameInfo">사람이름자리</h5>
@@ -420,7 +382,7 @@
                                 <p class="text-uppercase text-muted mb-1"></p>
                                 <ul class="list-unstyled d-grid gap-4 ms-2 pt-2 text-heading">
                                   <li class="d-flex justify-content-between align-items-center">
-                                    <div>
+                                    <div >
                                       <i class="ti ti-lock ti-md me-1"></i>
                                       <span class="align-middle">채팅 잠금</span>
                                     </div>
@@ -439,7 +401,7 @@
                                 <p class="text-uppercase text-muted mb-1"></p>
                                 <ul class="list-unstyled d-grid gap-4 ms-2 pt-2 text-heading">
                                   <li class="d-flex justify-content-between align-items-center">
-                                    <div>
+                                    <div style="cursor: pointer;">
                                       <i class="ti ti-user-plus ti-md me-1"></i>
                                       <span class="align-middle">인원 초대</span>
                                     </div>
@@ -454,7 +416,7 @@
                                 <p class="text-uppercase text-muted mb-1"></p>
                                 <ul class="list-unstyled d-grid gap-4 ms-2 pt-2 text-heading">
                                   <li class="d-flex justify-content-between align-items-center">
-                                    <div>
+                                    <div style="cursor: pointer;">
                                       <i class="ti ti-users ti-md me-1"></i>
                                       <span class="align-middle" id="chatuserlist;">채팅 참여자 목록</span>
                                     </div>
@@ -468,7 +430,7 @@
                                 <p class="text-uppercase text-muted mb-1"></p>
                                 <ul class="list-unstyled d-grid gap-4 ms-2 pt-2 text-heading">
                                   <li class="d-flex justify-content-between align-items-center">
-                                    <div>
+                                    <div style="cursor: pointer;">
                                       <i class="ti ti-brush ti-md me-1"></i>
                                       <span class="align-middle">채팅방 이름 수정</span>
                                     </div>
@@ -481,7 +443,7 @@
                                 <p class="text-uppercase text-muted mb-1"></p>
                                 <ul class="list-unstyled d-grid gap-4 ms-2 pt-2 text-heading">
                                   <li class="d-flex justify-content-between align-items-center">
-                                    <div id="chatOut">
+                                    <div id="chatOut" style="cursor: pointer;">
                                       <i class="ti ti-login ti-md me-1"></i>
                                       <span class="align-middle">채팅방 나가기</span>
                                     </div>
@@ -754,7 +716,7 @@
                       
                       <div class="d-flex align-items-center me-6 me-lg-0">
                         <div
-                          class="flex-shrink-0 avatar avatar-online me-4"
+                          class="flex-shrink-0 avatar me-4"
                           data-bs-toggle="sidebar"
                           data-overlay="app-overlay-ex"
                           data-target="#app-chat-sidebar-invitelist">
@@ -797,7 +759,7 @@
 											<c:forEach var="list" items="${ memberList }">
                         <li class="mb-1">
                           <a class="d-flex align-items-center" style="margin: 20px;">
-                            <div class="flex-shrink-0 avatar avatar-online">
+                            <div class="flex-shrink-0 avatar">
                               <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="" class="rounded-circle" />
                             </div>
                             <div class="chat-contact-info flex-grow-1 ms-4">
@@ -858,7 +820,7 @@
 
                         <li class="mb-1">
                           <a class="d-flex align-items-center" style="margin: 20px;">
-                            <div class="flex-shrink-0 avatar avatar-online">
+                            <div class="flex-shrink-0 avatar">
                               <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
                             </div>
                             <div class="chat-contact-info flex-grow-1 ms-4">
@@ -887,7 +849,7 @@
                   <div class="col app-chat-sidebar-right app-sidebar overflow-hidden" id="app-chat-sidebar-right-no2">
                     <div
                       class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
-                      <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
+                      <div class="avatar avatar-xl chat-sidebar-avatar">
                         <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
                       </div>
                       <h5 class="mt-4 mb-0">황재운</h5>
@@ -988,14 +950,44 @@
           })
           // 사이드바 다시 활성화 end
         
-        // 채팅방 나가기 클릭시 start
+        // 공지사항 끄기 클릭시 start
+        $('#noticeClose').on('click',function(){
+          var memNoNum = '${loginUser.memNo}';
+        	$.ajax({
+        		url:'${contextPath}/chat/deleteNotice.do',
+        		data:{chatNo:activeChat,memNo:memNoNum},
+        		success:function(res){
+        			if(res>0){
+        				$('#noticeContent').css('display','none');
+        			}else{
+        				alert('공지사항 삭제 실패');
+        			}
+        		}
+        	})
+        	
+        })
+        // 공지사항 끄기 클릭시 end
         
-				
+        
+        // 상태메시지 변경
+        $('#statusButton').on('click',function(){
+      	var cpMessage = $('.statusForm').val();
+      	console.log('메시메시메시메심앙까라메시');
+      	console.log(cpMessage);
+      	var memNo = '${loginUser.memNo}';
+      	$.ajax({
+      		url:'${contextPath}/chat/statusMsg.do',
+      		data:{cpMessage:cpMessage,memNo:memNo},
+      		success:function(res){
+      			console.log($('#mem'+memNo));
+      			$('#mem'+memNo).html(cpMessage);
+      		}
+      	})
+      	
+      })
         
         
-        
-        // 채팅방 나가기 클릭시 end
-        
+        // 상태메시지 변경 끝
 
         
         
@@ -1076,7 +1068,7 @@
         			for(let i = 0;i<res.length;i++){
         			 l += '<li class="mb-1">'
         			 l += '<a class="d-flex align-items-center" style="margin: 20px;">'
-        			 l += '<div class="flex-shrink-0 avatar avatar-online">'
+        			 l += '<div class="flex-shrink-0 avatar">'
         			 l += '<img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />';
         			 l += '</div>'
         			 l += '<div class="chat-contact-info flex-grow-1 ms-4">'
@@ -1204,7 +1196,7 @@
 			    				c += '<input type="hidden" value="'+chatTitleData+'" class="chatlistno">';
 			    		 }
 			    		 c += '<a class="d-flex align-items-center">';
-			    		 c += '<div class="flex-shrink-0 avatar avatar-offline">';
+			    		 c += '<div class="flex-shrink-0 avatar">';
 			    		 c += '<img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />';
 			    		 c += '</div>';
 			    		 c += '<div class="chat-contact-info flex-grow-1 ms-4 test1">';
@@ -1323,6 +1315,14 @@
 												    		$('#chatContent'+content.msgNo).closest('.d-flex.overflow-hidden.modifyDiv').prepend(th);
 															}
 												
+											}
+											else if(content.type == 'notice'){
+												console.log("콘콘콘콘슈퍼콘슈퍼쏜")
+												console.log(content);
+												$('.noticeMessage').html(content.msgContent);
+												$('#noticeContent').css('display','block');
+												
+											
 											}
 											
 											
@@ -1498,8 +1498,13 @@
 																}
 													
 												}
-												else if(content.type == 'invite'){
-													console.log('초대합니당');
+												else if(content.type == 'notice'){
+													console.log("콘콘콘콘슈퍼콘슈퍼쏜")
+													console.log(content);
+													$('.noticeMessage').html(content.msgContent);
+													$('#noticeContent').css('display','block');
+													
+												
 												}
 						            
 						            
@@ -1542,11 +1547,7 @@
 			            var content = JSON.parse(chat.body);
 			            var msgNum ="";
 			            // 채팅번호 입력 및 메시지 출력 ajax 시작
-			            
-			            
-			            
-			            
-			            
+
 									if(content.type == 'message'){
 			            $.ajax({
 										url:'${contextPath}/chat/msgNum.do',
@@ -1639,8 +1640,13 @@
 													}
 										
 									}
-									else if(content.type == 'invite'){
-										console.log('초대합니당');
+									else if(content.type == 'notice'){
+										console.log("콘콘콘콘슈퍼콘슈퍼쏜")
+										console.log(content);
+										$('.noticeMessage').html(content.msgContent);
+										$('#noticeContent').css('display','block');
+										
+									
 									}
 			            
 			            
@@ -1674,11 +1680,22 @@
           const lockSwitch = $('#lockCheckbox'); // 체크박스
 			    const chatInputSection = $('#chat-input-section'); // 채팅 입력칸
 			    const chatLock = $('#chat-lock'); // 잠금 화면
-			    const loginUserNo = '${loginUser.memNo}'
-        	
-			    
-			    ;
+			    const loginUserNo = '${loginUser.memNo}';
 			    $('#testname').html($('li.chat-contact-list-item.active .chattitle').html());
+			    
+			    // 공지사항 불러오기
+			    $.ajax({
+			    	url:'${contextPath}/chat/notice.do',
+			    	data:{chatNo:activeChat, memNo:loginUserNo},
+			    	success:function(res){
+			            if (res.msgContent == null) {
+			                $('#noticeContent').hide();
+			            } else {
+			                $('#noticeContent').show();
+			                $('#noticeMessage').text(res.msgContent);
+			            }
+			    	}
+			    })
 			    
 
 			    
@@ -1804,9 +1821,17 @@
 			    	  																								}));
 			    	  
 			      })
-			        
-
-
+			      // 공지사항 등록
+			      $(document).on('click','#noticeInsert',function(){
+			    	  var noticeNo = $(this).data('value');
+			    	  var loginMemNo = '${loginUser.memNo}';
+			    	  client.send('/pub/'+activeChat,{},JSON.stringify({ msgNo: noticeNo,
+																																 msgType:'notice',
+																																 chatNo: activeChat,
+																																 memNo:loginMemNo
+																															}));
+			    	  
+			      })     
       })
       
       function msgPrint(writer, userNo, msgContent, msgDate, msgCheck, msgNo, msgStatus){
@@ -1820,7 +1845,7 @@
 	          str += '<i class="ti ti-dots-vertical ti-md"></i>';
 	          str += '</button>';
 	          str += '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">';
-	          str += '<a class="dropdown-item noticeInsert waves-effect" id="noticeInsert">공지사항 등록</a>';
+	          str += '<a class="dropdown-item noticeInsert waves-effect" id="noticeInsert" data-value="'+msgNo+'">공지사항 등록</a>';
 	          str += '<a class="dropdown-item messageModify waves-effect" id="messageModify" data-value="'+msgNo+'">수정</a>';
 	          str += '<input type="hidden" value="'+msgNo+'" class="msgNo">';
 	          if(msgStatus != 'N'){

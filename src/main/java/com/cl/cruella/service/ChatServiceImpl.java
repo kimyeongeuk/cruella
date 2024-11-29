@@ -162,6 +162,21 @@ public class ChatServiceImpl implements ChatService{
 	public String deleteBtn(int chatNo) {
 		return chatDao.deleteBtn(chatNo);
 	}
+	public Object noticeMsg(MessageDto messageDto) {
+		return chatDao.noticeMsg(messageDto);
+	}
+	public int insertNoticeNo(MessageDto messageDto) {
+		return chatDao.insertNoticeNo(messageDto);
+	}
+	public String noticeMsgData(MessageDto m) {
+		return chatDao.noticeMsgData(m);
+	}
+	public int deleteNotice(MessageDto m) {
+		return chatDao.deleteNotice(m);
+	}
+	public int statusMsg(ChatProfileDto m) {
+		return chatDao.statusMsg(m);
+	}
 
 
 

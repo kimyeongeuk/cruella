@@ -189,6 +189,40 @@ public class ChatController {
 		
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/notice.do",produces="application/json")
+	public MessageDto noticeMsg(MessageDto m) {
+		
+		m.setMsgContent(chatServiceImpl.noticeMsgData(m));
+		
+		
+		return m;
+		
+	}
+	
+		
+	@ResponseBody
+	@GetMapping(value="/deleteNotice.do",produces="application/json")
+	public int deleteNotice(MessageDto m) {
+		
+		int result = chatServiceImpl.deleteNotice(m);
+		
+		
+		return result;
+		
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/statusMsg.do",produces="application/json")
+	public int statusMsg(ChatProfileDto m) {
+		
+		int result = chatServiceImpl.statusMsg(m);
+		
+		
+		return result;
+		
+	}
+	
 	
 	
 	

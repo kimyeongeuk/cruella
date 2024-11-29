@@ -165,6 +165,26 @@ public class ChatDao {
 	public int deleteChatList(Map<String, Object> map4) {
 		return sqlSession.delete("chatMapper.deleteChatList",map4);
 	}
+
+	public Object noticeMsg(MessageDto messageDto) {
+		return sqlSession.selectOne("chatMapper.noticeMsg",messageDto);
+	}
+
+	public int insertNoticeNo(MessageDto messageDto) {
+		return sqlSession.update("chatMapper.insertNoticeNo",messageDto);
+	}
+
+	public String noticeMsgData(MessageDto m) {
+		return sqlSession.selectOne("chatMapper.noticeMsgData",m);
+	}
+
+	public int deleteNotice(MessageDto m) {
+		return sqlSession.update("chatMapper.deleteNotice",m);
+	}
+
+	public int statusMsg(ChatProfileDto m) {
+		return sqlSession.update("chatMapper.statusMsg",m);
+	}
 	
 
 }

@@ -517,5 +517,55 @@ delete
 </delete>
 
 
+<select id="noticeMsg" resultType="string">
+select
+				msg_content
+	from
+				message
+ where
+ 				msg_no = #{msgNo}
+</select>
+
+
+<update id="insertNoticeNo">
+update
+				chat_list
+	 set
+	 			chat_notice_no = #{msgContent}
+ where
+ 				chat_no = #{chatNo}
+</update>
+
+
+<select id="noticeMsgData" resultType="string">
+
+select
+				CHAT_NOTICE_NO
+	from
+				chat_list 
+ where
+ 				chat_no = #{chatNo}
+ 	 and	mem_no = #{memNo}
+
+</select>
+
+<update id="deleteNotice">
+update
+				chat_list
+	 set
+	 			CHAT_NOTICE_NO = null
+ where
+ 				chat_no = #{chatNo}
+ 	 and	mem_no = #{memNo}
+</update>
+
+<select id="statusMsg" resultType="string">
+update
+				chat_profile
+	 set	cp_message = #{cpMessage}
+ where	mem_no = #{memNo}
+				
+</select>
+
 
 </mapper>
