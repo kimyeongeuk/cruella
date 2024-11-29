@@ -75,7 +75,6 @@ public class MemberController {
 	
 	
 	
-	
 	// 로그인(김동규)
 	@PostMapping("/signin.do")
 	public String signin(MemberDto m

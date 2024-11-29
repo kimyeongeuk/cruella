@@ -297,13 +297,8 @@ public class AppController {
 	@PostMapping("/ajaxSuccess.do")
 	public int detailClear(@RequestBody AppdocDto ad, HttpSession session) {
 		
-		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		
 		int result = appService.detailClear(ad);
-		
-		MemberDto selectUser = memberService.selectMember(loginUser);
-				
-		session.setAttribute("loginUser", selectUser);
 		
 		
 		return result;
