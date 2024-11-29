@@ -143,7 +143,7 @@
               
               eventDrop: function(info) {
            
-            //console.log("Event ID (calNo): ", info); 
+            console.log("콘솔 나와랏: ", info); 
            
            
            
@@ -247,16 +247,16 @@
         			$("#title2").val(event.title);
         			
         			
-        			 			 console.log("=========================");
-                     console.log(startDate);
-                     console.log(event.startStr);
+        			 			 //console.log("=========================");
+                     //console.log(startDate);
+                     //console.log(event.startStr);
                      
-                     console.log("==============")
+                     //console.log("==============")
                      
-                     console.log(event.endStr);
-                     console.log(endDate);              
-                     console.log(endDateString);              
-                     console.log("=========================");
+                     //console.log(event.endStr);
+                     //console.log(endDate);              
+                     //console.log(endDateString);              
+                     //console.log("=========================");
         			
         			
         			
@@ -483,6 +483,24 @@
       });
 
     </script>
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -835,6 +853,64 @@
    
    <!-- layout wrapper 닫기 -->
    </div>
+   
+   
+   
+   
+   
+   <script>
+   // 상단 필터링 체크박스 스크립트
+  // 전체 체크박스가 변경될 때
+  document.getElementById('selectAll').addEventListener('change', function() {
+    const isChecked = this.checked;
+
+    // 개별 체크박스를 모두 선택하거나 해제
+    const checkboxes = document.querySelectorAll('.input-filter');
+    checkboxes.forEach(function(checkbox) {
+      checkbox.checked = isChecked;
+    });
+  });
+
+		//개별 체크박스가 변경될 때
+		  checkboxes.forEach(function(checkbox) {
+    	checkbox.addEventListener('change', function() {
+      // 하나라도 체크박스가 해제되면 전체 체크박스를 해제
+      const allChecked = Array.from(checkboxes).every(function(checkbox) {
+        return checkbox.checked;
+      });
+      
+      // 전체 체크박스를 업데이트
+      document.getElementById('selectAll').checked = allChecked;
+      // 전체 체크박스가 선택되지 않으면 체크를 해제하도록 변경
+      document.getElementById('selectAll').indeterminate = !allChecked && Array.from(checkboxes).some(checkbox => checkbox.checked);
+    });
+  });
+</script>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
    
    <script>
    
