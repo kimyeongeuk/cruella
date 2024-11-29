@@ -68,6 +68,7 @@ INSERT
      	 , CAL_STARTDATE = #{calStartDt}
        , CAL_ENDDATE = #{calEndDt}
        , CAL_RGB = #{calRgb}
+       , CAL_CATEGORY = #{calCategory}
    WHERE CAL_NO = #{calNo}
 </update>
 

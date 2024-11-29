@@ -163,7 +163,7 @@
             obj.end = info.event.endStr.split('T')[0] + "T23:00";      // 수정된 종료일 (YYYY-MM-DD)
                 
    
-                 //obj.title = info.event._def.title;
+                 obj.title = info.event._def.title;
                  //obj.start = info.event._instance.range.start;
                  //obj.end = info.event._instance.range.end;
                  events.push(obj);
@@ -172,6 +172,9 @@
                  	console.log(info.event.end);
                  	console.log(info.event.endStr);
                   console.log(info.event.endStr.split('T')[0]);
+                  console.log(info.event.title);
+                  console.log(info.event.backgroundColor);
+                  console.log(info.event._def.extendedProps.category);                  
                  	console.log("================================")
 
                  	$.ajax({
@@ -181,8 +184,11 @@
                           
 			                      calStartDt: obj.start,  // 수정된 시작 날짜
 			                      calEndDt: info.event.end == null ? obj.start : info.event.endStr.split('T')[0],      // 수정된 종료 날짜
-			                      calNo: info.event.id    // 수정하려는 이벤트의 ID
-                          
+			                      calNo: info.event.id,    // 수정하려는 이벤트의 ID
+                          	calTitle: info.event.title,
+                          	calRgb: info.event.backgroundColor,
+                          	calCategory: info.event._def.extendedProps.category,
+                          	
                           //calStartDt: info.event.start.toISOString().split('T')[0],
 		                      //calEndDt: info.event.end.toISOString().split('T')[0],
 		                      //calNo: info.event.id

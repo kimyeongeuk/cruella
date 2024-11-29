@@ -63,7 +63,7 @@ public class CalendarController {
 	@ResponseBody
 	@GetMapping(value="/updateCalendar.do", produces="application/json") // produces 쓰는 이유 : 값을 돌려줄 때 어쩌고 타입으로 필요한... 영욱님이 얘기하심..
 	public int updateCalendar(CalendarDto c) {
-		log.debug("###### controller 실행 c: {}", c);
+		//log.debug("###### controller 실행 c: {}", c);
 		int result = calendarServiceImpl.updateCalendar(c);
 		return result;
 	}
