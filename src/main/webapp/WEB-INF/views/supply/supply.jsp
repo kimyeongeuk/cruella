@@ -95,17 +95,19 @@
 
 
 
-              <!-- 비품 신청서 버튼(포워딩) -->
-              <button
+              <c:if test="${ loginUser.deptCode eq 'S3' }">
+              <button onclick="location.href='${contextPath}/supply/supplyRegist.do'" 
                 type="button"
                 class="btn btn-outline-primary"
                 style="float:inline-end; margin-left:10px;">
                 비품 신청목록
-              </button>
+              </button> -->
+              </c:if>
 
               <!-- /비품 신청서 버튼 -->
 
               <!-- 비품 추가 모달 버튼 --> <!-- 지원팀만 보이게 쿼리문 수정-->
+              <c:if test="${ loginUser.deptCode eq 'S3' }">
                 <button
                   type="button"
                   class="btn btn-outline-primary"
@@ -114,6 +116,7 @@
                   style="float:inline-end; margin-left:10px;">
                   비품 추가
                 </button>
+              </c:if>
 
                 <!-- 비품 신청 모달 버튼 ( 아직 구현안함 ) -->
                 <button
@@ -139,12 +142,12 @@
                       <div class="text-center mb-6">
                         <h4 class="address-title mb-2" style="padding-bottom:10px;">비품 추가</h4>
                       </div>
-                      <form id="addNewItemForm" class="row g-6" onsubmit="return false">
+                      <form id="addNewItemForm" action="${ contextPath }/supply/insert.do" method="post" class="row g-6" enctype="multipart/form-data">
                         <div class="col-12">
                           <div class="row">
                             <div class="col-md mb-md-0 mb-4">
                               <div class="form-check custom-option custom-option-icon">
-                                <label class="form-check-label custom-option-content" for="customRadioHome">
+                                <label class="form-check-label custom-option-content" for="upfile">
                                   <span class="custom-option-body">
                                     <svg
                                       width="28"
@@ -162,57 +165,101 @@
                                         stroke-linejoin="round" />
                                     </svg>
                                     <span class="custom-option-title">첨부파일</span>
+                                    <span style="font-size: 10px;" >이미지 파일만 업로드하세요.</span>
                                   </span>
                                   <input
-                                    name="customRadioIcon"
+                                    name="uploadFile"
                                     class="form-check-input"
-                                    type="radio"
+                                    type="file"
                                     value=""
-                                    id="customRadioHome"
-                                    checked />
+                                    id="upfile"
+                                    accept="image/*"
+                                    hidden
+                                    checked
+                                    multiple
+                                     />
                                 </label>
                               </div>
+                              
+                              <div id="fileListContainer" style="margin-top: 20px;">
+		                            <ul id="fileList"></ul> <!-- 파일 목록을 표시할 부분 -->
+                       			 </div>
+                              
+                              
+                              
                             </div>
                             
 
 
-
-
                             <div class="col-12" style="margin-top:20px;">
-                              <label class="form-label" for="supplycategory">카테고리</label>
-                              <select
-                                id="supplycategory"
-                                name="supplycategory"
-                                class="select2 form-select"
-                                data-allow-clear="true">
-                                <option value="전자기기">전자기기</option>
-                                <option value="사무용품">사무용품</option>
-                                <option value="기타">기타</option>
-                              </select>
+                              <label class="form-label" for="supCategory">카테고리</label>
+                          <select
+                            id="supCategory"
+                            name="supCategory"
+                            class="select2 form-select"
+                            data-allow-clear="true">
+                            <option value="" disabled selected hidden>선택</option>
+                            <option value="전자기기">전자기기</option>
+                            <option value="사무용품">사무용품</option>
+                            <option value="기타">기타</option>
+                          </select>
                             </div>
 
 
 
                           </div>
                         </div>
+                        
                         <div class="col-12" style="margin-top:20px;">
-                          <label class="form-label" for="modalAddressFirstName">비품명</label>
+                          <label class="form-label" for="supType">비품 종류</label>
+                          <select
+                            id="supType"
+                            name="supType"
+                            class="select2 form-select"
+                            data-allow-clear="true">
+                            <option value="선택" disabled selected style="display:none;">선택</option>
+                            <option value="컴퓨터 본체">컴퓨터 본체</option>
+                            <option value="노트북">노트북</option>
+                            <option value="마우스">마우스</option>
+                            <option value="결제 단말기">결제 단말기</option>
+                            <option value="키보드">키보드</option>
+                            <option value="복합기">복합기</option>
+                            <option value="빔 프로젝터">빔 프로젝터</option>
+                          </select>
+                        </div>
+                        
+                        
+                        
+                        
+                        <!--  
+                        <div class="col-12" style="margin-top:20px;">
+                          <label class="form-label" for="supplyTyple">비품종류</label>
                           <input
                             type="text"
-                            id="modalAddressFirstName"
+                            id="supplyTyple"
                             name="modalAddressFirstName"
                             class="form-control" />
                         </div>
+                        -->
+                        
                         <div class="col-12" style="margin-top:20px;">
-                          <label class="form-label" for="modalAddressLastName">모델명</label>
+                          <label class="form-label" for="supName">비품명</label>
                           <input
                             type="text"
-                            id="modalAddressLastName"
-                            name="modalAddressLastName"
+                            id="supName"
+                            name="supName"
+                            class="form-control" />
+                        </div>
+                        <div class="col-12" style="margin-top:20px;">
+                          <label class="form-label" for="supModel">모델명</label>
+                          <input
+                            type="text"
+                            id="supModel"
+                            name="supModel"
                             class="form-control"/>
                         </div>
 
-
+											<!--  
                         <div class="col-12" style="margin-top:20px;">
                           <label class="form-label" for="repairHistory">수리내역</label>
                           <select
@@ -225,7 +272,7 @@
                           </select>
                         </div>
 
-                        <!-- 수리내역이 O 일 때만 나타나게? -->
+                        
 
                         <div class="col-12" style="margin-top:20px;">
                           <label class="form-label" for="modalAddressLastName">수리 상세 내용</label>
@@ -235,21 +282,21 @@
                             name="modalAddressLastName"
                             class="form-control" />
                         </div>
+                        -->
 
-                        <!-- 상태 select에만 x표시 뜨는거 수정해보기 -->
+                       
                         <div class="col-12" style="margin-top:20px;">
-                          <label class="form-label" for="modalAddressCountry">상태</label>
+                          <label class="form-label" for="supRepair">상태</label>
                           <select
-                            id="modalAddressCountry"
-                            name="modalAddressCountry"
+                            id="supRepair"
+                            name="supRepair"
                             class="select2 form-select"
                             data-allow-clear="true">
-                            <option value="정상">정상</option>
-                            <option value="고장">고장</option>
-                            <option value="수리중">수리중</option>
+                            <option value="N">정상</option>
+                            <option value="Y">수리중</option>
                           </select>
                         </div>
-
+													
 
                         
                         <div class="col-12 text-center" style="margin-top:50px;">
@@ -273,7 +320,7 @@
 
 
 
-              <!-- 비품 신청 모달창 -->
+              <!-- 비품 신청 모달창  --> 
               <div class="modal fade" id="applySupply" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
                   <div class="modal-content" style="width:600px; margin-left: 100px;">
@@ -282,12 +329,12 @@
                       <div class="text-center mb-6">
                         <h4 class="address-title mb-2" style="padding-bottom:30px;">비품 신청</h4>
                       </div>
-                      <form id="applySupplyForm" action="${ contextPath }/supply/insert.do" method="post" class="row g-6">
+                      <form id="applySupplyForm" action="${ contextPath }/supply/rental.do" method="post" class="row g-6">
                         <div class="col-12 col-md-6" style="margin-top:20px; width:500px;">
                           <label class="form-label" for="supplyCategory">카테고리</label>
                           <select
                             id="supplyCategory"
-                            name="supplyCategory"
+                            name="supCategory"
                             class="select2 form-select"
                             data-allow-clear="true">
                             <option value="" disabled selected hidden>선택</option>
@@ -301,7 +348,7 @@
                           <label class="form-label" for="supplyType">비품 종류</label>
                           <select
                             id="supplyType"
-                            name="supplyType"
+                            name="supType"
                             class="select2 form-select"
                             data-allow-clear="true">
                             <option value="선택" disabled selected style="display:none;">선택</option>
@@ -388,30 +435,60 @@
 	
 	
 	
+
+	
+	$('#supCategory').change(function() {
+        // id="supplyCategory"에 들어있는 value 값 가져오기 ( val 은 jquery문 )
+        const selectedValue = $(this).val();
+
+        console.log(supCategory);
+        
+        
+        
+        $('#supType').html("");
+
+        let a = "";
+        if(selectedValue === '전자기기'){
+          a += '<option value="선택" disabled selected style="display:none;">선택</option>'
+          a += '<option value="컴퓨터 본체">컴퓨터 본체</option>'
+          a += '<option value="노트북">노트북</option>'
+          a += '<option value="마우스">마우스</option>'
+          a += '<option value="결제 단말기">결제 단말기</option>'
+          a += '<option value="키보드">키보드</option>'
+          a += '<option value="복합기">복합기</option>'
+          a += '<option value="빔 프로젝터">빔 프로젝터</option>'
+          
+        }else if(selectedValue === '사무용품'){
+        	a += '<option value="선택" disabled selected style="display:none;">선택</option>'
+          a += '<option value="펜">펜</option>'
+          a += '<option value="포스트잇">포스트잇</option>'
+          a += '<option value="A4용지">A4용지</option>'
+          a += '<option value="가위">가위</option>'
+          a += '<option value="자">자</option>'
+          a += '<option value="형광펜">형광펜</option>'
+          a += '<option value="수첩">수첩</option>'
+          a += '<option value="연필">연필</option>'
+        }else{ // '기타'
+        	a += '<option value="선택" disabled selected style="display:none;">선택</option>'
+          a += '<option value="이동식 탈의실">이동식 탈의실</option>'
+          a += '<option value="옷걸이">옷걸이</option>'
+          a += '<option value="행사 매대">행사 매대</option>'
+          a += '<option value="전신거울">전신거울</option>'
+        }
+
+       
+        
+        $('#supType').html(a); // jQuery문으로 innerHTML에 넣는 구문이 .html이다.
+
+
+
+    });
+	
+	
+
+
 	</script>
-
-
-                            
-
-
-
-
-                            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                 
 
 
 
@@ -427,10 +504,11 @@
                       <tr style="height:30px;">
                         <th style="text-align:center; width:150px;">카테고리</th>
                         <th style="text-align:center;">비품종류</th>
+                        <th style="text-align:center;">총 수량</th>
                         <th style="text-align:center;">잔여 재고</th>
-                        <th style="text-align:center;">정상</th>
+                        <th style="text-align:center;">대여중</th>
                         <th style="text-align:center;">수리중</th>
-                        <th style="text-align:center;">지급 현황<!-- 지원팀만 이 열이 보이게 --></th>
+                      <!-- 지급 현황 지원팀만 이 열이 보이게 <th style="text-align:center;"> </th>-->
                       </tr>
                     </thead>
                     <tbody id="tbodyId">
@@ -525,7 +603,70 @@
 		</script>
 
 
+	<script>
+	
 
+
+	$(document).ready(function() {
+	    // 파일 첨부 시 파일 목록을 업데이트하는 함수
+	    $('#upfile').on('change', function(evt) {
+	        const files = evt.target.files; // FileList[0: File, 1: File, ..]
+	        let totalSize = 0;
+
+	        // 파일 목록을 보여줄 리스트 초기화
+	        $('#fileList').empty();
+
+	        for (let i = 0; i < files.length; i++) {
+	            if (files[i].size > 10 * 1024 * 1024) { // 파일 개별 크기 제한 (10MB)
+	                alert('첨부파일의 최대 크기는 10MB입니다.');
+	                evt.target.value = '';
+	                return;
+	            }
+
+	            totalSize += files[i].size;
+
+	            if (totalSize > 100 * 1024 * 1024) { // 전체 파일 크기 제한 (100MB)
+	                alert('전체 첨부파일의 최대 크기는 100MB입니다.');
+	                evt.target.value = '';
+	                return;
+	            }
+
+	            // 파일 정보를 리스트에 추가
+	            const listItem = $('<li>')
+	                .css({
+	                    'list-style-type': 'none', // 기본 동그라미 모양 없애기
+	                    'margin-bottom': '10px'  // 각 항목 간 여백 추가
+	                });
+
+	            // 파일명 클릭 시 다운로드
+	            const downloadLink = $('<a>')
+	                .attr('href', URL.createObjectURL(files[i]))
+	                .attr('download', files[i].name)
+	                .text(files[i].name)  // "다운로드" 글씨는 없애고 파일명만 표시
+	                .css({
+	                    'text-decoration': 'none',  // 링크 스타일 제거
+	                    'color': '#007bff'          // 기본 링크 색상 (원하는 색상으로 변경 가능)
+	                })
+	                .appendTo(listItem);
+
+	            $('#fileList').append(listItem);
+	        }
+	    });
+
+	    // 모달창을 닫을 때 입력된 파일 목록 초기화
+	    $('#modalCloseButton').on('click', function() { // 모달 닫는 버튼을 클릭했을 때
+	        $('#upfile').val('');  // 파일 입력 초기화
+	        $('#fileList').empty(); // 파일 목록 초기화
+	    });
+	});
+	
+
+
+	
+	</script>
+
+
+							
 
 
 
@@ -575,15 +716,24 @@
 							     +
 							     				"<button style='margin-left: 10px;' type='button' class='btn rounded-pill btn-outline-primary btn btn-sm'>" + '정보' + "</button>"
 							     +		"</td>"
+							     +		"<td style='text-align:center;'>" + res.list[i].totalSupply + "</td>"
 							     +		"<td style='text-align:center;'>" + res.list[i].leftSupply + "</td>"
+							     +		"<td style='text-align:center;'>" + res.list[i].rentSupply + "</td>"
 							     +		"<td style='text-align:center;'>" + res.list[i].repairSupply + "</td>"
-							     +		"<td style='text-align:center;'>" + res.list[i].workSupply + "</td>"
 							     +		"<td style='text-align:center;'>" 
-							     +
-									  			"<button type='button' class='btn rounded-pill btn-outline-info btn btn-sm'>" + '상세보기' + "</button>"			
+							   		
 									 +		"</td>"
 									 +  "</tr>"
 									 
+									 
+									 
+									 
+									 <!--
+									 
+
+								     +
+										  			"<button type='button' class='btn rounded-pill btn-outline-info btn btn-sm'>" + '상세보기' + "</button>"	
+									 -->
 									 
 									 
 									 
@@ -699,8 +849,6 @@
 		</script>	
 
 
-
-	
 
 
 

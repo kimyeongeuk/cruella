@@ -9,9 +9,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.cl.cruella.dto.AppdocDto;
+import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
-import com.cl.cruella.dto.VacationDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -86,8 +86,14 @@ public class MemberDao {
 		return sqlSession.update("memberMapper.updateMember", m);
 	
 	}
-	public List<MemberDto> selectAllMember(String memNo) {
-		return sqlSession.selectList("memberMapper.selectAllMember", memNo);
+	public List<MemberDto> selectAllMemberDept(String memNo, String deptName) {
+		
+		
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("memNo", memNo);
+	    params.put("deptName", deptName);
+		
+		return sqlSession.selectList("memberMapper.selectAllMemberDept", params);
 	}
 
 	public List<AppdocDto> selectVacList(Map<String, Object> params) {
@@ -141,6 +147,14 @@ public class MemberDao {
 
 	public MemberDto paystub(String memNo) {
 		return sqlSession.selectOne("memberMapper.paystub",memNo);
+	}
+	
+	public List<DeptDto> getDeptList(){
+		return sqlSession.selectList("memberMapper.getDeptList");
+	}
+	
+	public List<MemberDto> selectAllMember(String memNo) {
+		return sqlSession.selectList("memberMapper.selectAllMember", memNo);
 	}
 
 

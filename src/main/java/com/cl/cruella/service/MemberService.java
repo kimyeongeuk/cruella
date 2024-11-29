@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cl.cruella.dto.AppdocDto;
+import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
 
@@ -44,7 +45,10 @@ public interface MemberService {
 	// 사원정보수정
 	int updateMember(MemberDto m);
 	
-	// 전체사원조회(사번, 이름, 메일, 사진)
+	// 전체사원조회 (부서로)
+	List<MemberDto> selectAllMemberDept(String memNo, String deptName);
+	
+	// 전체사원조회 
 	List<MemberDto> selectAllMember(String memNo);
 	
 	// 직원등록시 급여테이블에 insert될 정보
@@ -70,6 +74,8 @@ public interface MemberService {
 	// 급여명세표
 	MemberDto paystub(String memNo);
 	
+	// 부서명 전체조회
+	List<DeptDto> getDeptList();
 
 
 

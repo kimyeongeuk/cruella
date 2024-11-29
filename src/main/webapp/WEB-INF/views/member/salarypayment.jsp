@@ -100,6 +100,7 @@
 											style="width: 100px; margin-right: 10px;">
 											
 												
+												<option value="" selected>선택</option>
 												<option value="Y">지급</option>
 												<option value="N">미지급</option>
 										
@@ -114,7 +115,8 @@
 										<select id="yearSelect" class="form-select"
 											style="width: 100px; margin-right: 10px;">
 											
-											<c:forEach var="y" begin="0" end="4" step="1">
+												<option value="" selected>선택</option>
+											<c:forEach var="y" begin="4" end="4" step="1">
 												<option value="2${y}">202${y}</option>
 											</c:forEach>
 											
@@ -126,9 +128,10 @@
 									<h5 class="card-header"
 										style="display: flex; align-items: center; padding: 0;">
 										<select id="monthSelect" class="form-select"
-											style="width: 85px; margin-right: 10px;">
+											style="width: 90px; margin-right: 10px;">
 											
-											<c:forEach var="i" begin="1" end="12" step="1">
+											<option value="" selected>선택</option>
+											<c:forEach var="i" begin="10" end="12" step="1">
 												<option value="${i}">${i}</option>
 											</c:forEach>
 											
@@ -140,18 +143,15 @@
 									
 									
 								</div>
-								
-								<button type="button" class="btn btn-primary" id="select_sal_date" style="
-																																													width: 110px;
-																																						  						height: 42px; 
-																																						 							position: relative; 
-																																						  						top: 20px;
-																																						  						left: 21px;">검색</button>
-																																						  						
-																																						  						
-																																						  						
-																																						  						
-										<script>
+
+								<button type="button" class="btn btn-primary"
+									id="select_sal_date"
+									style="width: 110px; height: 42px; position: relative; top: 20px; left: 21px;">검색</button>
+
+
+
+
+								<script>
 										
 												$(document).ready(function(){
 													
@@ -317,48 +317,7 @@
 						        }
 
 						        if (confirm('급여를 지급하시겠습니까?')) {
-						            // 1. 년도/월에 맞는 데이터 조회
-						            $.ajax({
-						                url: '${contextPath}/member/salaryByDate.do',
-						                type: 'POST',
-						                contentType: 'application/json',
-						                data: JSON.stringify({ year: year, month: month }),
-						                success: function (res) {
-						                    if (res.length === 0) {
-						                        alert('해당 년도와 월에 해당하는 데이터가 없습니다.');
-						                        return;
-						                    }
-
-						                    let tableBody = '';
-						                    res.forEach(member => {
-						                        tableBody += 
-						                            '<tr>'
-						                                '<td><input type="checkbox" class="dd form-check-input" value="' + ${member.memNo} + '" ></td>'
-						                                <!-- 사번 -->
-						                                '<td><span>' + ${member.memNo} + '</span></td>'
-						                                <!-- 사원명 -->
-						                                '<td>' + ${member.memName} + '</td>'
-						                                <!-- 부서명 -->
-						                                '<td>' + ${member.deptName} + '</td>'
-						                                <!-- 직급명 -->
-						                                '<td>' + ${member.posName} + '</td>'
-						                                <!-- 기본급 -->
-						                                '<td>' + ${member.salary} + '</td>'
-						                                <!-- 국민연금 -->
-						                                '<td>' + ${member.pension} + '</td>'
-						                                <!-- 건강보험 -->
-						                                '<td>' + ${member.health} + '</td>'
-						                                <!-- 고용보험 -->
-						                                '<td>' + ${member.employment} + '</td>'
-						                                <!-- 장기요양 -->
-						                                '<td>' + ${member.care} + '</td>'
-						                                <!-- 지급예정금액 -->
-						                                '<td>' + ${member.totalSalary} '</td>'
-						                                <!-- 지급날짜 -->
-						                                '<td>' + ${member.paymentDate} + '</td>'
-						                            '</tr>'
-						                    });
-						                    $('#salaryTableBody').html(tableBody);
+						           
 
 						                    // 2. 급여 지급 로직 실행
 						                    $.ajax({
@@ -374,20 +333,16 @@
 						                                alert('지급할 급여 정보가 없습니다.');
 						                            }
 						                        },
-						                        error: function (xhr, status, error) {
-						                            console.error('급여 지급 처리 중 오류 발생:', error);
-						                        }
-						                    });
-						                },
-						                error: function (xhr, status, error) {
-						                    alert('데이터 조회 중 문제가 발생했습니다.');
-						                    console.error('조회 오류:', error);
-						                }
+						                        
+						                        })
+						                    }
+						                });
+						                
 						            });
-						        }
-						    });
+						      
+						   
 
-						});
+						
 
 						</script>
 

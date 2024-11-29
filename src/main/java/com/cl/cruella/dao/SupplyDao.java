@@ -6,6 +6,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.PageInfoDto;
 import com.cl.cruella.dto.SupplyDto;
 
@@ -34,5 +35,12 @@ public class SupplyDao {
 				
 	}
 	
+	public int insertAttach(AttachDto attach) {
+		return sqlSession.insert("supplyMapper.insertAttach", attach);
+	}
+	
+	public int insertRental(SupplyDto s) {
+		return sqlSession.insert("supplyMapper.insertRental", s);
+	}
 	
 }

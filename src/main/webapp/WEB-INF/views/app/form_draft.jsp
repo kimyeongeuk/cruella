@@ -53,6 +53,7 @@
 
 
 
+
               
               <a type="button" data-bs-toggle="modal" data-bs-target="#exLargeModal_list" class="app_buttons" style="">
                 <span class="ti ti-edit"></span>
@@ -78,6 +79,26 @@
               
               
               <script>
+              
+              $(document).ready(function(){
+            	  
+            	  
+            	 	$('#move_button').hover(function(){        
+            					$(this).css('backgroundColor','skyblue');    
+            				},function() {       
+            					$(this).css('backgroundColor','#d3d3d39c'); 
+            				});
+            		 
+            		
+            		$('#move_button2').hover(function(){        
+            					$(this).css('backgroundColor','skyblue');    
+            				},function() {       
+            					$(this).css('backgroundColor','#d3d3d39c'); 
+            				});
+            		
+            		
+            	  })
+              
               	$(document).ready(function(){
               		$('#close_btn_a').on('click',function(){
               			location.href="${contextPath}/app/app_main.do";
@@ -1098,7 +1119,7 @@
                     <td class="app_title_result" style="width: 788px; border: 1px solid black;">
 
                       <!-- 양식 제목 대입 -->
-                      <span id="app_title_result_div">
+                      <span id="app_title_result_div" style="position: relative; left: 15px;">
                         <!-- 밑에 스크립트로 내용 담음 -->
                       </span>
 

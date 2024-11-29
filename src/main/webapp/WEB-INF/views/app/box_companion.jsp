@@ -408,7 +408,7 @@
     	    		    success: function(res) {
     	    		        if (res > 0) {
     	    		            alert('성공적으로 삭제했습니다');
-    	    		            location.href = "${contextPath}/app/box_complete.do";
+    	    		            location.href = "${contextPath}/app/box_companion.do";
     	    		        }
     	    		    }
     	    		});

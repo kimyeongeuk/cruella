@@ -108,7 +108,23 @@
           <div class="container card" style="padding: 50px;">
             <div style="align-items: center;">
               <div>
-                <span style="font-size: 14px;">팀게시판</span><br><br>
+                <span style="font-size: 14px;">
+                  <c:choose>
+                    <c:when test="${loginUser.deptCode eq 'S1'}">영업총괄팀 </c:when>
+                    <c:when test="${loginUser.deptCode eq 'S2'}">인사팀 </c:when>
+                    <c:when test="${loginUser.deptCode eq 'S3'}">지원팀 </c:when>
+                    <c:when test="${loginUser.deptCode eq 'T1'}">남성의류팀 </c:when>
+                    <c:when test="${loginUser.deptCode eq 'T2'}">여성의류팀 </c:when>
+                    <c:when test="${loginUser.deptCode eq 'T3'}">식품팀 </c:when>
+                    <c:when test="${loginUser.deptCode eq 'T4'}">스포츠팀 </c:when>
+                    <c:when test="${loginUser.deptCode eq 'T5'}">뷰티팀 </c:when>
+                    <c:when test="${loginUser.deptCode eq 'T6'}">명품팀 </c:when>
+                    <c:when test="${loginUser.deptCode eq 'T7'}">문화센터팀 </c:when>
+                    <c:when test="${loginUser.deptCode eq 'T8'}">디지털 및 가전팀 </c:when>
+                    <c:otherwise>기타부서팀</c:otherwise>
+                  </c:choose>
+                  게시판
+                </span><br><br>
                 <span style="font-size: 24px; color: black;">${b.boardTitle}</span>
                 <br><br>
                 <div class="d-flex justify-content-between align-items-center user-info">
@@ -164,8 +180,7 @@
 								    <pre style="font-size: 16px; color: black; font-family: 'Noto Sans KR', sans-serif;">${b.boardContent}</pre>
 								  </div>
 								</div>
-                <br>
-                <hr>
+                <br><br>
                 
                 <div style="display: flex; align-items: center; justify-content: space-between;">
                   <table id="reply_area" class="table" align="center">

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.cl.cruella.dao.MemberDao;
 import com.cl.cruella.dto.AppdocDto;
+import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
 
@@ -81,8 +82,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public List<MemberDto> selectAllMember(String memNo) {
-		return memberDao.selectAllMember(memNo);
+	public List<MemberDto> selectAllMemberDept(String memNo, String deptName) {
+		return memberDao.selectAllMemberDept(memNo, deptName);
 	}
 
 	@Override
@@ -133,6 +134,15 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.paystub(memNo);
 	}
 
+	@Override
+	public List<DeptDto> getDeptList() {
+		return memberDao.getDeptList();
+	}
+
+	@Override
+	public List<MemberDto> selectAllMember(String memNo) {
+		return memberDao.selectAllMember(memNo);
+	}
 
 
 

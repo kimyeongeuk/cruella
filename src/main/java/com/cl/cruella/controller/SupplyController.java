@@ -1,5 +1,6 @@
 package com.cl.cruella.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,11 +11,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
 import com.cl.cruella.dto.SupplyDto;
 import com.cl.cruella.service.SupplyServiceImpl;
+import com.cl.cruella.util.FileUtil;
 import com.cl.cruella.util.PagingUtil;
 
 import jakarta.servlet.http.HttpSession;
@@ -31,6 +36,8 @@ public class SupplyController {
 	private final SupplyServiceImpl supplyServiceImpl;
 	
 	private final PagingUtil pagingUtil;
+	
+	private final FileUtil fileUtil;
 	
 	
 	// 비품 전체 목록 페이지로 이동용 controller (조회 x)
@@ -84,19 +91,63 @@ public class SupplyController {
 	
 	
 	
-	// 비품 신청 
-	@ResponseBody
-	@PostMapping("/insert.do")
-	public int insertSupply(SupplyDto s, HttpSession session) {
+	// 비품 신청
+	@PostMapping("/rental.do")
+	public String insertSupply(SupplyDto s, HttpSession session, RedirectAttributes rd) {
 		s.setMemNo(((MemberDto)(session.getAttribute("loginUser"))).getMemNo());
-		int result = supplyServiceImpl.insertSupply(s);
-		return result;
+		
+		//System.out.println(s);
+		
+		int result = supplyServiceImpl.insertRental(s);
+		
+		if(result > 0) {
+			rd.addFlashAttribute("alertMsg", "비품 신청이 완료되었습니다.");
+		}else {
+			rd.addFlashAttribute("alertMsg", "비품 신청에 실패했습니다.");
+		}
+		 return "redirect:/supply/supply.do";
+		
 	}
 	
 	
+	// 비품 종류 추가
+	@PostMapping("/insert.do")
+	public String insertSupply(SupplyDto s, RedirectAttributes rd, List<MultipartFile> uploadFile) {
+		
+// 파일 업로드 처리
+		
+		
+		List<AttachDto> list = new ArrayList<>();
+		
+		for(MultipartFile file : uploadFile) {
+			if(file != null && !file.isEmpty()) { // 파일이 존재할 경우
+				Map<String, String> map = fileUtil.fileupload(file, "supply");
+				list.add(AttachDto.builder()
+								  .filePath(map.get("filePath"))
+								  .originalName(map.get("originalName"))
+								  .filesystemName(map.get("filesystemName"))
+								  .build() );
+				
+			}
+		}
+		
+		int result = supplyServiceImpl.insertSupply(s, list);
+		
+		if(result > 0) {
+			rd.addFlashAttribute("alertMsg", "성공적으로 추가되었습니다");
+		}else {
+			rd.addFlashAttribute("alertMsg", "비품 추가에 실패하였습니다. 다시 시도해주세요.");
+		}
+		 return "redirect:/supply/supply.do";
+	}
 	
 	
+	// 비품 신청서 목록 조회
 	
+	@GetMapping("/supplyRegist.do")
+	public void supplyRegist() {
+		
+	}
 	
 	
 	

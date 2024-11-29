@@ -93,7 +93,7 @@
 									<div class="modal-body">
 									<!-- 반려메세지 입력창 -->
 										<input type="text" class="form-control"
-											placeholder="제목을 입력하세요."
+											placeholder="반려메세지를 입력해주세요."
 											aria-describedby="defaultFormControlHelp" id="reason_result" name="reason"/>
 									</div>
 
@@ -510,7 +510,7 @@
                      </c:when>
                      <c:otherwise>
                      
-                     <ul class="dropdown-menu">
+                     <ul class="dropdown-menu" id="dropdown-menu">
                         
                        <c:forEach var="a" items="${app.attachList}">
                        	  <li>
@@ -595,7 +595,7 @@ $(document).ready(function(){
  
  
  
- $('#last_sign_success').on('click',function(){
+ $('#last_sign_success').on('click',function(){ // 결재 버튼
 	 
 	
 	 const imgSrc = '${loginUser.signPath}';
@@ -628,7 +628,7 @@ $(document).ready(function(){
 			   success: function(res){
 				   	if(res>0){
 				   		alert('성공적으로 결재하였습니다');
-				   		location.href = '${contextPath}/app/box_standby.do';
+				   		location.href = '${contextPath}/app/box_main.do';
 				   		
 				   	}
 			   }
@@ -645,7 +645,7 @@ $(document).ready(function(){
  
  
  
- $('#success_btn').on('click',function(){
+ $('#success_btn').on('click',function(){ // 반려버튼
 	 
 	 
 		if($('#reason_result').val() == ""){
@@ -668,7 +668,7 @@ $(document).ready(function(){
 						if(res>0){
 							$('#myModal').modal('hide'); 
 							alert('성공적으로 반려하였습니다');
-							location.href = '${contextPath}/app/box_standby.do';
+							location.href = '${contextPath}/app/box_main.do';
 												
 						}
 					}
@@ -693,10 +693,10 @@ $(document).ready(function(){
             		success:function(res){
             			if(res>0){
             				alert('기안서를 회수하였습니다');
-            				location.href = '${contextPath}/app/box_progress.do';
+            				location.href = '${contextPath}/app/box_main.do';
             									
+            				}
             			}
-            		}
             							
             		})
             	}
@@ -709,6 +709,9 @@ $(document).ready(function(){
 
 	// pdf 다운 함수
 function pdf_down() {
+	
+		$('#dropdown-menu').css('display','none');	
+	
 	   const element = document.getElementById('content_div');  // PDF로 변환할 요소
 	    
 	    const options = {
@@ -716,7 +719,7 @@ function pdf_down() {
 	        filename:     '${app.docType}.pdf', // 파일 이름
 	        image:        { type: 'jpeg', quality: 0.98 },
 	        html2canvas:  { scale: 1 },   // 해상도 설정
-	        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+	        jsPDF:        { unit: 'mm', format: 'a3', orientation: 'portrait' }
 	    };
 
 	    // html2pdf 라이브러리를 사용하여 선택한 요소를 PDF로 변환
@@ -751,6 +754,16 @@ function pdf_down() {
 </c:if>
 </c:forEach>
 
+
+	<style>
+		.content-footer {
+			position: relative;
+	    	top: 310px;
+		}
+		
+		
+	
+	</style>
 
 
    <!-- 푸터 시작 -->
