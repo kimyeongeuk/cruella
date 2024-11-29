@@ -9,6 +9,20 @@
     <title>Revenue Entry</title>
     <script src="${contextPath}/resources/assets/js/config.js"></script>
 </head>
+<style>
+	#salesRegist::before {
+	  content: ''; /* 가상 요소 필수 */
+	  display: inline-block; /* 블록 요소 */
+	  width: 10px; /* 동그라미 크기 */
+	  height: 10px; /* 동그라미 크기 */
+	  border-radius: 50%; /* 완전한 원 */
+	  background-color: transparent; /* 배경을 투명으로 설정 */
+	  border: 2px solid gray; /* 초기 테두리 색상 */
+	}
+	#salesRegist.active::before {
+	  border: 2px solid white; /* 테두리만 흰색으로 변경 */
+	}
+</style>
 <body>
 <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
