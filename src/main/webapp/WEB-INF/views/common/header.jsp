@@ -125,7 +125,7 @@
 
 						<!-- 대시보드 -->
             <li class="menu-item">
-	            <a href="${ contextPath }" id="dashboard" class="menu-link">
+	            <a href="${ contextPath }/member/dashbord.do" id="dashboard" class="menu-link">
 	            	<i class="menu-icon tf-icons ti ti-smart-home"></i>
 	              <div data-i18n="대시보드"></div>
 	            </a>

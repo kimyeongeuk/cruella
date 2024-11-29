@@ -58,6 +58,24 @@ public class MemberController {
 	private final WorkLogService wlService;
 
 	
+	// 대쉬보드 포워딩
+	@GetMapping("/dashbord.do")
+	public String dashbordPage(HttpSession session) {
+		
+		MemberDto m = (MemberDto)session.getAttribute("loginUser");
+		
+		MemberDto loginUser = memberService.selectMember(m);
+		
+		session.setAttribute("loginUser", loginUser);
+		
+		return "redirect:/";
+		
+		
+	}
+	
+	
+	
+	
 	// 로그인(김동규)
 	@PostMapping("/signin.do")
 	public String signin(MemberDto m

@@ -22,6 +22,7 @@ import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
 import com.cl.cruella.service.AppService;
+import com.cl.cruella.service.MemberService;
 import com.cl.cruella.util.FileUtil;
 import com.cl.cruella.util.PagingUtil;
 
@@ -38,6 +39,7 @@ public class AppController {
 	private final AppService appService;
 	private final FileUtil fileUtil;
 	private final PagingUtil pagingUtil;
+	private final MemberService memberService;
 	
 	
 	
@@ -293,9 +295,16 @@ public class AppController {
 //	결재시 update
 	@ResponseBody
 	@PostMapping("/ajaxSuccess.do")
-	public int detailClear(@RequestBody AppdocDto ad) {
+	public int detailClear(@RequestBody AppdocDto ad, HttpSession session) {
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		
 		int result = appService.detailClear(ad);
+		
+		MemberDto selectUser = memberService.selectMember(loginUser);
+				
+		session.setAttribute("loginUser", selectUser);
+		
 		
 		return result;
 	}
