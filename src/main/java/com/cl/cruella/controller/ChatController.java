@@ -177,6 +177,21 @@ public class ChatController {
 	}
 	
 	
+	@ResponseBody
+	@GetMapping(value="/deletebtn.do",produces="application/json")
+	public ResponseEntity<Map<String, String>> deleteBtn(int chatNo) {
+		String result = chatServiceImpl.deleteBtn(chatNo);
+		
+		Map<String, String> response = new HashMap<>();
+	    response.put("memNo", result);
+		
+		return ResponseEntity.ok(response);
+		
+	}
+	
+	
+	
+	
 //	@ResponseBody
 //	@GetMapping(value="/deleteChat.do",produces="application/json")
 //	public int deleteChat(ChatListDto cl) {

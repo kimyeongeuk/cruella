@@ -148,10 +148,19 @@ public class ChatServiceImpl implements ChatService{
 		return chatDao.checkChatListMem(map3);
 	}
 	public int deleteChat(Map<String, Object> map4) {
-		return chatDao.deleteChat(map4);
+		int result =  chatDao.deleteChat(map4);
+		if(result > 0) {
+			result = chatDao.deleteMsgAll(map4);
+			result =chatDao.deleteChatList(map4);
+		}
+		
+		return result;
 	}
 	public List<String> chatMember2(Map<String, Object> map4) {
 		return chatDao.ChatMember2(map4);
+	}
+	public String deleteBtn(int chatNo) {
+		return chatDao.deleteBtn(chatNo);
 	}
 
 

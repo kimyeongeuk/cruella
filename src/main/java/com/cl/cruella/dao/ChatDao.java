@@ -153,6 +153,18 @@ public class ChatDao {
 	public List<String> ChatMember2(Map<String, Object> map4) {
 		return sqlSession.selectList("chatMapper.ChatMember2",map4);
 	}
+
+	public String deleteBtn(int chatNo) {
+		return sqlSession.selectOne("chatMapper.deleteBtn",chatNo);
+	}
+
+	public int deleteMsgAll(Map<String, Object> map4) {
+		return sqlSession.delete("chatMapper.deleteMsgAll",map4);
+	}
+
+	public int deleteChatList(Map<String, Object> map4) {
+		return sqlSession.delete("chatMapper.deleteChatList",map4);
+	}
 	
 
 }

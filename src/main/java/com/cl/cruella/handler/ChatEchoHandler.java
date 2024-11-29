@@ -194,6 +194,7 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 	    	map4.put("chatNo", inviteNo);
 	    	map4.put("type", "delete");
 	    	targetMemNo = chatServiceImpl.chatMember(map4);
+	    	map4.put("target", targetMemNo);
 			int result = chatServiceImpl.deleteChat(map4);
 			ObjectMapper objectMapper = new ObjectMapper();
 			String cdJson = objectMapper.writeValueAsString(map4); 

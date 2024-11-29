@@ -479,7 +479,6 @@ select count(*)
 delete
 	from	chat_list
  where	chat_no = #{chatNo}
- 	 and	mem_no = #{memNo}
 </delete>
 
 
@@ -495,6 +494,28 @@ select
 
 
 </select>
+
+<select id="deleteBtn" resultType="string">
+select 
+				CHAT_CREATER
+	from
+				chat
+ where
+ 				chat_no = #{chatNo}
+</select>
+			
+<delete id="deleteMsgAll">
+delete
+	from	message
+ where	chat_no = #{chatNo}
+</delete>
+
+<delete id="deleteChatList">
+delete
+	from	chat
+ where	chat_no = #{chatNo}
+</delete>
+
 
 
 </mapper>
