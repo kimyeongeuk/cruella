@@ -554,6 +554,7 @@
                           type="checkbox"
                           id="selectAll"
                           data-value="all"
+                          value="all"
                           checked />
                         <label class="form-check-label" for="selectAll" style=" width:50px;">전체</label>
 
@@ -564,28 +565,31 @@
                             <input
                               class="form-check-input input-filter"
                               type="checkbox"
-                              id="select-personal"
+                              id="select_company"
                               data-value="personal"
+                              value="company"
                               checked />
-                            <label class="form-check-label" for="select-personal" style=" width:70px;">전사 일정</label>
+                            <label class="form-check-label" for="select_company" style=" width:70px;">전사 일정</label>
                           </div>
                           <div class="form-check form-check-secondary mb-5 ms-2">
                             <input
                               class="form-check-input input-filter"
                               type="checkbox"
-                              id="select-business"
+                              id="select-team"
                               data-value="business"
+                              value="team"
                               checked />
-                            <label class="form-check-label" for="select-business" style=" width:50px;">팀 일정</label>
+                            <label class="form-check-label" for="select-team" style=" width:50px;">팀 일정</label>
                           </div>
                           <div class="form-check form-check-secondary mb-5 ms-2">
                             <input
                               class="form-check-input input-filter"
                               type="checkbox"
-                              id="select-family"
+                              id="select-personal"
                               data-value="family"
+                              value="personal"
                               checked />
-                            <label class="form-check-label" for="select-family" style=" width:80px;">개인 일정</label>
+                            <label class="form-check-label" for="select-personal" style=" width:80px;">개인 일정</label>
                           </div>
                           
                         </div>
@@ -779,9 +783,9 @@
                     class="select2 form-select"
                     data-allow-clear="true">
                     
-                    <option value="rgb(128, 108, 199)" class="companyCal" style="background-color: rgb(128, 108, 199);" selected>전사 일정</option>
+                    <option value="rgb(247, 159, 255)" class="companyCal" style="background-color: rgb(247, 159, 255);" selected>전사 일정</option>
 
-                    <option value="rgb(28, 134, 221)" class="teamCal" style="background-color: rgb(28, 134, 221);" selected>팀 일정</option>
+                    <option value="rgb(163, 255, 178)" class="teamCal" style="background-color: rgb(163, 255, 178);" selected>팀 일정</option>
 
                     <option class="personalCal" value="선택" disabled selected style="display: none;">선택</option>
                     <option value="rgb(253, 191, 191)" class="personalCal" style="background-color: rgb(253, 191, 191); color:transparent;">연빨강</option>
@@ -858,8 +862,8 @@
    
    
    
-   <script>
-   // 상단 필터링 체크박스 스크립트
+<script>
+  // 상단 필터링 체크박스 스크립트
   // 전체 체크박스가 변경될 때
   document.getElementById('selectAll').addEventListener('change', function() {
     const isChecked = this.checked;
@@ -871,21 +875,28 @@
     });
   });
 
-		//개별 체크박스가 변경될 때
-		  checkboxes.forEach(function(checkbox) {
-    	checkbox.addEventListener('change', function() {
+  // 개별 체크박스가 변경될 때
+  const checkboxes = document.querySelectorAll('.input-filter');
+  checkboxes.forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
       // 하나라도 체크박스가 해제되면 전체 체크박스를 해제
       const allChecked = Array.from(checkboxes).every(function(checkbox) {
         return checkbox.checked;
       });
-      
+
       // 전체 체크박스를 업데이트
-      document.getElementById('selectAll').checked = allChecked;
-      // 전체 체크박스가 선택되지 않으면 체크를 해제하도록 변경
-      document.getElementById('selectAll').indeterminate = !allChecked && Array.from(checkboxes).some(checkbox => checkbox.checked);
+      if (allChecked) {
+        // 모든 체크박스가 체크되었으면 전체 체크박스도 체크
+        document.getElementById('selectAll').checked = true;
+      } else {
+        // 하나라도 체크박스가 해제되면 전체 체크박스를 해제
+        document.getElementById('selectAll').checked = false;
+      }
     });
   });
 </script>
+
+
    
    
    
@@ -1048,9 +1059,9 @@
 
                     let a = "";
                     if(selectedValue === '전사 일정'){
-                      a = '<option value="rgb(128, 108, 199)" class="optionHover" style="background-color: rgb(128, 108, 199);">전사 일정</option>'
+                      a = '<option value="rgb(247, 159, 255)" class="optionHover" style="background-color: rgb(247, 159, 255);">전사 일정</option>'
                     }else if(selectedValue === '팀 일정'){
-                      a = '<option value="rgb(12, 114, 197)" class="optionHover" style="background-color: rgb(12, 114, 197);">팀 일정</option>'
+                      a = '<option value="rgb(163, 255, 178)" class="optionHover" style="background-color: rgb(163, 255, 178);">팀 일정</option>'
                     }else{ // '개인 일정'
                       a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;" selected>연빨강</option>';
                       a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
@@ -1099,13 +1110,14 @@
     		
     		var category = $("#calCategory2").val();
     		
-    		var rgb = $("#rgb2").val();
+    		var rgb = $("#color2").val();
     		
     		var title = $("#title2").val();
     		
     		//console.log(start);
     		//console.log(end);
     		console.log(selectedId);
+    		console.log(rgb);
     		
          	$.ajax({
                url: '${contextPath}/calendar/updateCalendar.do',
@@ -1143,6 +1155,22 @@
     </script>
     
     
+    
+    
+    
+    <script>
+    
+    $("#saveChanges").on("click", function () {
+    
+    	
+    }
+    
+    
+    
+    
+    
+    
+    </script>
     
    
    
