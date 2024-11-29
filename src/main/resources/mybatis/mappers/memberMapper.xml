@@ -369,6 +369,10 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
             AND TO_CHAR(s.SAL_PAYMENT_DATE, 'YY') = #{year}
             AND TO_CHAR(s.SAL_PAYMENT_DATE, 'MM') = #{month}
         </if>
+        <if test="provide == null and year == null and month == null">
+          
+        </if>
+        
     </where>
     
     
