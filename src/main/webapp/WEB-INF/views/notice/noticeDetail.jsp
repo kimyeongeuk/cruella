@@ -167,13 +167,12 @@
                   </c:otherwise>
                 </c:choose>
                 <div class="content-wrapper" style="overflow: visible;">
-                                  <div class="content">
-                                    <pre style="font-size: 16px; color: black; font-family: 'Noto Sans KR', sans-serif;">${n.noticeContent}</pre>
-                                  </div>
-                                </div>
+                  <div class="content">
+                    <pre style="font-size: 16px; color: black; font-family: 'Noto Sans KR', sans-serif;">${n.noticeContent}</pre>
+                  </div>
+                </div>
                 <br>
-                <hr>
-                
+                <hr>              
                 <div style="display: flex; justify-content: center; margin-top: 20px;">
                   <button id="back" class="btn btn-label-secondary" style="text-align: center;" onclick="noticeList();">목록</button>
                 </div>
