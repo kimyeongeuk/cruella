@@ -64,7 +64,7 @@
 	
 	    <div class="container">
         <div class="title">9월 급여명세서</div>
-        <p>지급일: 2024년 11월 11일</p>
+        <p>지급일: ${list.paymentDate }</p>
         <table class="salary-table">
             <tr>
                 <td style="background-color: lightgray;">부서</td>
