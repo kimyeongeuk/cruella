@@ -210,7 +210,7 @@
         <!-- 메모목록 -->
         <div class="card" style="height: 400px; width: 430px; margin-left: 12px; background-color: rgba(135, 206, 235, 0.3);">
           <div class="card-body">
-				    <h3>오늘 날씨  <span id="cityName" style="font-size: 22px; float: right;"></span></h3>
+				    <h3>현재 날씨  <span id="cityName" style="font-size: 22px; float: right;"></span></h3>
 				    <p><span id="temperature" style="font-size: 42px; float: right;"></span></p>
 				    <p><span id="condition"></span></p>
           </div>
@@ -415,6 +415,8 @@
 	  			})
 	  			
 	  		}
+	  		
+
 	  		
 		  	// 출근 버튼 클릭시 (김동규)
 		  	function fnClockIn(){
@@ -944,7 +946,7 @@
 				success: function(res) {
 					console.log(res);
 					document.getElementById("cityName").textContent = res.name;
-          document.getElementById("temperature").textContent = res.main.temp + " °C";
+					document.getElementById("temperature").textContent = res.main.temp.toFixed(1) + " °C";
           document.getElementById("condition").innerHTML = '<img src="${contextPath}' + res.weather[0].description + '" style="width: 200px; height: 200px; margin-top: 30px;" />';
 				},
 				error: function(){
