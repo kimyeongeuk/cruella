@@ -45,6 +45,11 @@ public class WorkLogDao {
 	public void insertAbsences() {
 		sqlSession.insert("wlMapper.insertAbsences");
 	}
-	
+
+	public List<WorkLogDto> checkinrecordview(String memNo) {
+		return sqlSession.selectList("wlMapper.checkinrecordview", memNo);
+	}
+
+
 	
 }

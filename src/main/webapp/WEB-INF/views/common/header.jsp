@@ -236,7 +236,7 @@
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="${ contextPath }/member/checkinrecordview.do" class="menu-link">
+                  <a href="${ contextPath }/wl/checkinrecordview.do" class="menu-link">
                     <div data-i18n="출근기록조회">출근 기록 조회</div> 
                   </a>
                 </li>
