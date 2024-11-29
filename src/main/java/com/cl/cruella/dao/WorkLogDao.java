@@ -1,15 +1,20 @@
 package com.cl.cruella.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.cl.cruella.dto.CalendarDto;
+import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.WorkLogDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class WorkLogDao {
@@ -46,8 +51,14 @@ public class WorkLogDao {
 		sqlSession.insert("wlMapper.insertAbsences");
 	}
 
-	public List<WorkLogDto> checkinrecordview(String memNo) {
-		return sqlSession.selectList("wlMapper.checkinrecordview", memNo);
+	public List<WorkLogDto> checkinrecordview(Map<String,Object> wlDate) {
+		
+		
+		return sqlSession.selectList("wlMapper.checkinrecordview", wlDate);
+	}
+
+	public List<WorkLogDto> checkinrecordview2(Map<String, Object> wlDate) {
+		return sqlSession.selectList("wlMapper.checkinrecordview", wlDate);
 	}
 
 

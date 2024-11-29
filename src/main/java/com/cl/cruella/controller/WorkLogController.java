@@ -1,13 +1,17 @@
 package com.cl.cruella.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cl.cruella.dto.CalendarDto;
@@ -105,15 +109,55 @@ public class WorkLogController {
 	@GetMapping("/checkinrecordview.do")
 	public String checkinrecordview(HttpSession session, Model model) {
 		
-		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
 		
-		String memNo = loginUser.getMemNo();
+		Map<String,Object> wlDate = new HashMap<>();
 		
-		List<WorkLogDto> wd = wlService.checkinrecordview(memNo);
+		String memNo = ((MemberDto) session.getAttribute("loginUser")).getMemNo();
+		
+		
+		wlDate.put("memNo", memNo);
+		
+		
+		List<WorkLogDto> wd = wlService.checkinrecordview(wlDate);
+		
+		
 		
 		model.addAttribute("workLog", wd);
 		
-		return "member/checkinrecordview";
+		return "/member/checkinrecordview";
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	@PostMapping("/checkinrecordview2.do")
+	public String checkinrecordview2(Model model,
+							    String year,
+								String month,
+								String memNo) {
+		
+		log.debug("year:{}", year);
+		log.debug("month:{}", month);
+		log.debug("memNo:{}", memNo);
+		
+		
+		Map<String,Object> wlDate = new HashMap<>();
+		
+		wlDate.put("year", year);
+		wlDate.put("month", month);
+		wlDate.put("memNo", memNo);
+		
+		List<WorkLogDto> list = wlService.checkinrecordview2(wlDate);
+		
+		log.debug("list:{}", list);
+		
+		model.addAttribute("workLog", list);
+		
+		return "/member/checkinrecordview";
 	}
 	
 	

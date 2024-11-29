@@ -109,36 +109,51 @@
 							</div>
 						</div>
 						<!--/상단프로필-->
+						
+						
+					<form action="${contextPath}/wl/checkinrecordview2.do" method="post">
 						<div class="card" style="padding: 30px;">
 
 							<div style="display: flex;">
 								<h5 class="card-header"
 									style="display: flex; align-items: center;">
-									<select class="form-select"
+									<select class="form-select" id="yearSelect" name="year"
 										style="width: 100px; margin-right: 10px;">
-										<option value="">2024</option>
-										<option value="">2023</option>
+										<option value="" selected>선택</option>
+										<c:forEach var="y" begin="4" end="4" step="1">
+											<option value="2${y}">202${y}</option>
+										</c:forEach>
+
 									</select> <span>년</span>
 								</h5>
 
 								<h5 class="card-header"
 									style="display: flex; align-items: center; padding: 0;">
-									<select class="form-select"
-										style="width: 70px; margin-right: 10px;">
-										<option value="">1</option>
-										<option value="">2</option>
-										<option value="">3</option>
-										<option value="">4</option>
+									<select class="form-select" id="monthSelect" name="month"
+										style="width: 88px; margin-right: 10px;">
+
+										<option value="" selected>선택</option>
+										<c:forEach var="i" begin="10" end="12" step="1">
+											<option value="${i}">${i}</option>
+										</c:forEach>
+
 									</select> <span>월</span>
+									
+									<input type="hidden" value="${ loginUser.memNo }" name="memNo">
+									
 								</h5>
-																<button type="button" class="btn btn-primary" id="select_sal_date" style="
-																																													width: 100px;
-																																						  						height: 37px; 
-																																						 							position: relative; 
-																																						  						top: 20px;
-																																						  						left: 21px;
-																																						  						margin-top: 5px	;">검색</button>
-																																						  						
+								<button type="submit" class="btn btn-primary"
+									id="select_wl_date"
+									style="width: 100px; height: 37px; position: relative; top: 20px; left: 21px; margin-top: 5px;">검색
+								</button>
+								
+								</form>
+								
+								
+								
+								
+								
+			
 							</div>
 							<div class="table-responsive text-nowrap">
 								<table class="table" style="text-align: center;">
@@ -153,38 +168,40 @@
 									</thead>
 
 									<tbody class="table-border-bottom-0">
+									
 										<c:forEach var="wl" items="${workLog}">
 											<tr>
 												<c:choose>
 													<c:when test="${ wl.status eq 'C' }">
-												    <td><span class="fw-medium">출근</span></td>
-												  </c:when>
+														<td><span class="fw-medium">출근</span></td>
+													</c:when>
 													<c:when test="${ wl.status eq 'N' }">
-												    <td><span class="fw-medium">정상</span></td>
-												  </c:when>
+														<td><span class="fw-medium">정상</span></td>
+													</c:when>
 													<c:when test="${ wl.status eq 'L' }">
-												    <td><span class="fw-medium">지각</span></td>
-												  </c:when>
+														<td><span class="fw-medium">지각</span></td>
+													</c:when>
 													<c:when test="${ wl.status eq 'A' }">
-												    <td><span class="fw-medium">결근</span></td>
-												  </c:when>
+														<td><span class="fw-medium">결근</span></td>
+													</c:when>
 													<c:when test="${ wl.status eq 'E' }">
-												    <td><span class="fw-medium">조퇴</span></td>
-												  </c:when>
-												  
-												</c:choose>		
+														<td><span class="fw-medium">조퇴</span></td>
+													</c:when>
+
+												</c:choose>
 												<td><span class="fw-medium">${ wl.clockInTime }</span></td>
-	
+
 												<td><span class="fw-medium">${ wl.clockOutTime }</span></td>
 												<td><span class="fw-medium">${ wl.workDate }</span></td>
 											</tr>
 										</c:forEach>
+										
+										
 									</tbody>
 								</table>
 							</div>
 						</div>
 
-											<!-- "근태상태('C' 출근, 'N' 정상, 'L' 지각, 'A' 결근, 'E' 조퇴)" -->
 
 
 					</div>
