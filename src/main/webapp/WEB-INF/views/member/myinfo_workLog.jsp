@@ -85,7 +85,7 @@
                 <div class="col-12">
                   <div class="card mb-6">
                     <div class="user-profile-header-banner">
-                      <img src="${contextPath}/assets/img/pages/profile-banner.png" alt="Banner image" class="rounded-top" />
+                      <img src="${contextPath}/assets/img/pages/profile-banner.png" alt="Banner image" style="width: 1392px;" class="rounded-top" />
                     </div>
                     <div class="user-profile-header d-flex flex-column flex-lg-row text-sm-start text-center mb-5">
                       <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
@@ -407,14 +407,13 @@
 		        type: 'POST',
 		        data: {memNo: memNo},
 		        success: function(res) {
-		        	console.log(res);
 		        	  let pi = res.pi; // 페이징 정보
 		            let trEl = '';
 		
 		            // 데이터가 비어 있는 경우
-		            if (!res || res.length == 0) {
+		            if (!res || res.list.length == 0) {
 		                trEl += '<tr>';
-		                trEl += '<td colspan="6">신청 내역이 없습니다.</td>';
+		                trEl += '<td colspan="6" style="text-align: center;">신청 내역이 없습니다.</td>';
 		                trEl += '</tr>';
 		            } else {
 		                let count = 1;

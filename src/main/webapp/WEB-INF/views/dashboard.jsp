@@ -713,27 +713,32 @@
 		   			url : '${contextPath}/memo/memoList.do',
 		   			type: 'POST',
 		   			data: {memNo: memNo},
-		   	 success: function(res){
-		   		 
-		   		 		let liEl = "<ul class='list-unstyled mb-2'>";
-		   		 
-	 		 				for(let i = 0; i < res.length; i++) {
-	 		 					liEl += "<li class='d-flex align-items-center pt-5 pb-5 mt-3' id='memoList'>"
-		 		 							+ "<span class='fw-medium mx-2' onclick='fnSelectMemo(" + res[i].memoNo + ");'>" + res[i].memoContent + "</span>"
-		 		 							+ "<div class='dropdown'>"
-		 		 								+ "<i class='ti ti-dots-vertical ti-sm' type='button' data-bs-toggle='dropdown' aria-expanded='false'></i>"
-		 		 									+"<ul class='dropdown-menu'>"
-		 		 										+"<li><a class='dropdown-item' onclick='fnSelectMemo(" + res[i].memoNo + ")'><i class='ti ti-zoom-in'></i>메모 열기</a></li>"
-		 		 										+"<li><a class='dropdown-item' onclick='fnDeleteMemo(" + res[i].memoNo + ")'><i class='ti ti-trash'></i>메모 삭제</a></li>"
-		 		 									+"</ul>"
-		 		 								+"</div>"
-	 		 								+"</li>"
-	 		 				}
-	 		 				liEl += "</ul>";
-	             
-		   		 		$('#memoDiv').html(liEl);
-		   	 }
-		   		  
+		   			success: function(res) {
+		   			    let liEl = "<ul class='list-unstyled mb-2'>";
+
+		   			    if (res.length == 0) {
+		   			        // 메모가 없으면 문구 추가
+		   			        liEl += "<li class='text-center'>등록된 메모가 없습니다.</li>";
+		   			    } else {
+		   			        // 메모가 있을 경우 목록 추가
+		   			        for (let i = 0; i < res.length; i++) {
+		   			            liEl += "<li class='d-flex align-items-center pt-5 pb-5 mt-3' id='memoList'>"
+		   			                    + "<span class='fw-medium mx-2' onclick='fnSelectMemo(" + res[i].memoNo + ");'>" + res[i].memoContent + "</span>"
+		   			                    + "<div class='dropdown'>"
+		   			                    + "<i class='ti ti-dots-vertical ti-sm' type='button' data-bs-toggle='dropdown' aria-expanded='false'></i>"
+		   			                    + "<ul class='dropdown-menu'>"
+		   			                    + "<li><a class='dropdown-item' onclick='fnSelectMemo(" + res[i].memoNo + ")'><i class='ti ti-zoom-in'></i>메모 열기</a></li>"
+		   			                    + "<li><a class='dropdown-item' onclick='fnDeleteMemo(" + res[i].memoNo + ")'><i class='ti ti-trash'></i>메모 삭제</a></li>"
+		   			                    + "</ul>"
+		   			                    + "</div>"
+		   			                    + "</li>";
+		   			        }
+		   			    }
+
+		   			    liEl += "</ul>";
+		   			    $('#memoDiv').html(liEl);
+		   			}
+
 		   	})	
 	   	}
 	    
