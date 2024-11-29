@@ -37,6 +37,7 @@ INSERT
      , CAL_REGIST_DATE
      , CAL_CATEGORY
      , CAL_RGB
+     , MEM_NO
      )
      VALUES
      ( SEQ_CAL.NEXTVAL
@@ -46,12 +47,14 @@ INSERT
      , SYSDATE
      , #{calCategory}
      , #{calRgb}
+     , #{memNo}
      )
 </insert>
 
 <update id="updateCalendar">
 	UPDATE CALENDAR
-     SET CAL_STARTDATE = #{calStartDt}
+     SET CAL_TITLE = #{calTitle}
+     	 , CAL_STARTDATE = #{calStartDt}
        , CAL_ENDDATE = #{calEndDt}
    WHERE CAL_NO = #{calNo}
 </update>

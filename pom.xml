@@ -161,6 +161,13 @@
         <groupId>com.google.code.gson</groupId>
         <artifactId>gson</artifactId>
     </dependency>
+    
+    <!-- Spring Boot Web Starter (REST API) -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
 
 		
 	</dependencies>

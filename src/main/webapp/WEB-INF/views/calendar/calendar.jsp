@@ -119,11 +119,13 @@
             id: '${list.calNo}',
             title: '${list.calTitle}',
             start: '${list.calStartDt}',
-            end: '${list.calEndDt}T23:00',
+            end: '${list.calEndDt}T23:59',
+            backgroundColor: '${list.calRgb}', // backgroundColor 추가
+            borderColor: 'white', // borderColor를 빈 문자열로 설정
             extendedProps:{
             	rgb: '${list.calRgb}',
               category: '${list.calCategory}',
-            }
+            },
             
             
             <c:if test="${list.calStartDt eq list.calEndDt}">
@@ -141,7 +143,7 @@
               
               eventDrop: function(info) {
            
-            //console.log("Event ID (calNo): ", info); 
+            console.log("콘솔 나와랏: ", info); 
            
            
            
@@ -187,6 +189,7 @@
                        },
                        success: function(res) {
                           if(res > 0){
+                        	  
                              alert('일정이 수정되었습니다.');
                           }else{
                              alert('일정 수정에 실패했습니다. 다시 시도해주세요.');
@@ -211,12 +214,17 @@
           
           eventClick: function(info){
         	  
-        	 // console.log(info.event.start);
+        	 //console.log(info.event.start);
         	 //console.log(info.event.end);
         	  //console.log(info.event.extendedProps);
-        	  console.log(info.event.extendedProps.rgb);
+        	 //console.log(info.event.extendedProps.rgb);
         	  
         	 //console.log(info.event.id);
+        	 
+        	 
+        	   
+        	 
+        	 
         	 
         	 // 맨아래 script 문에서 만들어둔 전역변수에 값 담기
         	 selectedId = info.event.id;
@@ -239,25 +247,65 @@
         			$("#title2").val(event.title);
         			
         			
-               var startDate = new Date(event.startStr);  // 종료일을 Date 객체로 변환
-               startDate.setDate(startDate.getDate()); 
+        			 			 //console.log("=========================");
+                     //console.log(startDate);
+                     //console.log(event.startStr);
+                     
+                     //console.log("==============")
+                     
+                     //console.log(event.endStr);
+                     //console.log(endDate);              
+                     //console.log(endDateString);              
+                     //console.log("=========================");
+        			
+        			
+        			
+        			
+               //var startDate = new Date(event.startStr);  // 종료일을 Date 객체로 변환
+               //startDate.setDate(startDate.getDate() + 1); // 시작일을 + 1 로 input에 입력되게 해주기
 
+               
+               //(1일 일정) 
+								if (event.endStr) {
+								    // 종료일이 시작일과 같으면 (1일 일정) +1 하지 않음
+								    var startDate = new Date(event.startStr);
+								    startDate.setDate(startDate.getDate() + 1);  // 그냥 시작일 그대로
+								} else {
+								    // 종료일이 시작일과 다르면 (2일 이상 일정) +1 한다
+								    var startDate = new Date(event.startStr);
+								    startDate.setDate(startDate.getDate());  // 시작일에 +1
+								}
+               
+               
                var startDateString = startDate.toISOString().split('T')[0];  // YYYY-MM-DD 형식으로 변환
         			
               // event 로 부터 도출한 날짜 값을 modal 영역 내의 날짜 input 요소에 출력 
               $("#start2").val(startDateString);  // 시작일을 'start' input에 입력 => String 값 반환됨
 
-           
-              var endDate = new Date(event.endStr);  // 종료일을 Date 객체로 변환
-              endDate.setDate(endDate.getDate()); 
+              
+              if( !event.endStr || event.endStr === "" ){
+            	   var endDate = new Date(event.startStr);
+            	       endDate.setDate(endDate.getDate());
+              }else{
+            	   // 종료일이 있다면, 이를 Date 객체로 변환
+            	   var endDate = new Date(event.endStr);
+            	  
+              }
 
+              
+              //var endDate = new Date(event.endStr);  // 종료일을 Date 객체로 변환
+              //endDate.setDate(endDate.getDate()); 
+              
               var endDateString = endDate.toISOString().split('T')[0];  // YYYY-MM-DD 형식으로 변환
-              $("#end2").val(endDateString);  // 종료일 -1일을 'end' input에 입력  
+              $("#end2").val(endDateString);  // 종료일을 'end' input에 입력
+                
 
 							
               // RGB를 수정 모달에 뜨게 해주기
               $("#color2").val(event.extendedProps.rbg);
 
+              
+              
               eventclickmodal.show();
         	  
               
@@ -310,13 +358,14 @@
             // evt로 부터 도출한 날짜 값을 modal 영역 내의 날짜 input 요소에 출력 
             $("#start").val(evt.startStr);  // 시작일을 'start' input에 입력 => String 값 반환됨
 
+            
              // 종료일에서 하루를 빼는 코드 (String -1 int 는 안되기때문에 Date로 형변환 후 처리하고 다시 String으로 만들어서 #end input에 담아야한다)
             var endDate = new Date(evt.endStr);  // 종료일을 Date 객체로 변환
             endDate.setDate(endDate.getDate() -1);  // 하루를 빼기
 
             var endDateString = endDate.toISOString().split('T')[0];  // YYYY-MM-DD 형식으로 변환
             $("#end").val(endDateString);  // 종료일 -1일을 'end' input에 입력  
-
+						
 
             dayclickmodal.show();
           }
@@ -373,14 +422,19 @@
              $.ajax({
                url: '${contextPath}/calendar/insertCalendar.do',  // 서버 URL
                type: 'POST',
-               //contentType: 'application/json',  // JSON 형식으로 보내기
-               data: {
+               contentType: 'application/json',  // JSON 형식으로 보내기
+               data: 
+            	   JSON.stringify({
+            		   
+            	   
                   calTitle: $('#title').val(),  // jQuery를 사용하여 실제 값 가져오기
                   calStartDt: $('#start').val(),
                   calEndDt: $('#end').val(),
                   calCategory: $('#calCategory').val(),  // 선택된 카테고리 값을 가져오기
-                  calRgb: $('#color').val()  // 선택된 색상을 가져오기
-               },
+                  calRgb: $('#color').val(),  // 선택된 색상을 가져오기
+                  memNo: $('#memNo_result').val()
+                  
+            	   }),
                success: function(res) {
                  if (res > 0) {  // 성공적으로 일정이 추가되었을 때
                    alert('일정이 추가되었습니다.');
@@ -429,6 +483,24 @@
       });
 
     </script>
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -565,6 +637,7 @@
                   </select>
                 
                 <label for="title" style="float:left; margin-top: 20px;">일정명</label>
+                  <input type="hidden" value="${loginUser.memNo }" id="memNo_result" />
                   <input
                     id="title"
                     name="title"
@@ -603,9 +676,9 @@
                     class="select2 form-select"
                     data-allow-clear="true">
                     
-                    <option value="rgb(128, 108, 199)" class="companyCal" style="background-color: rgb(128, 108, 199);" selected>전사 일정</option>
+                    <option value="rgb(146, 142, 165)" class="companyCal" style="background-color: rgb(146, 142, 165);" selected>전사 일정</option>
 
-                    <option value="rgb(28, 134, 221)" class="teamCal" style="background-color: rgb(28, 134, 221);" selected>팀 일정</option>
+                    <option value="rgb(113, 159, 197)" class="teamCal" style="background-color: rgb(113, 159, 197);" selected>팀 일정</option>
 
                     <option class="personalCal" value="선택" disabled selected style="display: none;">선택</option>
                     <option value="rgb(253, 191, 191)" class="personalCal" style="background-color: rgb(253, 191, 191); color:transparent;">연빨강</option>
@@ -781,6 +854,64 @@
    <!-- layout wrapper 닫기 -->
    </div>
    
+   
+   
+   
+   
+   <script>
+   // 상단 필터링 체크박스 스크립트
+  // 전체 체크박스가 변경될 때
+  document.getElementById('selectAll').addEventListener('change', function() {
+    const isChecked = this.checked;
+
+    // 개별 체크박스를 모두 선택하거나 해제
+    const checkboxes = document.querySelectorAll('.input-filter');
+    checkboxes.forEach(function(checkbox) {
+      checkbox.checked = isChecked;
+    });
+  });
+
+		//개별 체크박스가 변경될 때
+		  checkboxes.forEach(function(checkbox) {
+    	checkbox.addEventListener('change', function() {
+      // 하나라도 체크박스가 해제되면 전체 체크박스를 해제
+      const allChecked = Array.from(checkboxes).every(function(checkbox) {
+        return checkbox.checked;
+      });
+      
+      // 전체 체크박스를 업데이트
+      document.getElementById('selectAll').checked = allChecked;
+      // 전체 체크박스가 선택되지 않으면 체크를 해제하도록 변경
+      document.getElementById('selectAll').indeterminate = !allChecked && Array.from(checkboxes).some(checkbox => checkbox.checked);
+    });
+  });
+</script>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
    <script>
    
    
@@ -845,9 +976,9 @@
 
                     let a = "";
                     if(selectedValue === '전사 일정'){
-                      a = '<option value="rgb(128, 108, 199)" class="optionHover" style="background-color: rgb(128, 108, 199);">전사 일정</option>'
+                      a = '<option value="rgb(247, 159, 255)" class="optionHover" style="background-color: rgb(247, 159, 255);">전사 일정</option>'
                     }else if(selectedValue === '팀 일정'){
-                      a = '<option value="rgb(12, 114, 197)" class="optionHover" style="background-color: rgb(12, 114, 197);">팀 일정</option>'
+                      a = '<option value="rgb(163, 255, 178)" class="optionHover" style="background-color: rgb(163, 255, 178);">팀 일정</option>'
                     }else{ // '개인 일정'
                       a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;" selected>연빨강</option>';
                       a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
@@ -882,9 +1013,9 @@
 
                     let a = "";
                     if(selectedValue === '전사 일정'){
-                      a = '<option value="rgb(128, 108, 199)" class="optionHover" style="background-color: rgb(128, 108, 199);">전사 일정</option>'
+                      a = '<option value="rgb(247, 159, 255)" class="optionHover" style="background-color: rgb(247, 159, 255); ">전사 일정</option>'
                     }else if(selectedValue === '팀 일정'){
-                      a = '<option value="rgb(12, 114, 197)" class="optionHover" style="background-color: rgb(12, 114, 197);">팀 일정</option>'
+                      a = '<option value="rgb(163, 255, 178)" class="optionHover" style="background-color: rgb(163, 255, 178);">팀 일정</option>'
                     }else{ // '개인 일정'
                       a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;" selected>연빨강</option>';
                       a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
@@ -990,7 +1121,9 @@
                },
                success: function(res) {
                   if(res > 0){
+      							 location.reload();
                      alert('일정이 수정되었습니다.');
+                     
                   }else{
                      alert('일정 수정에 실패했습니다. 다시 시도해주세요.');
                   }

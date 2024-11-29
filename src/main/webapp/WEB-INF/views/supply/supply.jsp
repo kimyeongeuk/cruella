@@ -101,7 +101,7 @@
                 class="btn btn-outline-primary"
                 style="float:inline-end; margin-left:10px;">
                 비품 신청목록
-              </button> -->
+              </button>
               </c:if>
 
               <!-- /비품 신청서 버튼 -->
