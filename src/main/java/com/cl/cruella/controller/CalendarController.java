@@ -1,17 +1,22 @@
 package com.cl.cruella.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cl.cruella.dto.CalendarDto;
+import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.service.CalendarServiceImpl;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,9 +32,13 @@ public class CalendarController {
 	
 	// 캘린더 조회
 	@GetMapping("/calendar.do")
-	public String selectCalenderList(Model model) {
+	public String selectCalenderList(Model model, HttpSession session) {
 		
-		List<CalendarDto> list = calendarServiceImpl.selectCalendarList();
+		Map<String, String> map = new HashMap<>();
+		map.put("deptCode", ((MemberDto)session.getAttribute("loginUser")).getDeptCode());
+		map.put("memNo", ((MemberDto)session.getAttribute("loginUser")).getMemNo());
+		
+		List<CalendarDto> list = calendarServiceImpl.selectCalendarList(map);
 		
 		model.addAttribute("list", list);
 		
@@ -43,7 +52,7 @@ public class CalendarController {
 	// 캘린더 추가
 	@ResponseBody
 	@PostMapping("/insertCalendar.do")
-	public int insertCalendar(CalendarDto c) {
+	public int insertCalendar(@RequestBody CalendarDto c) {
 //		log.debug("log{}",c);
 		int result = calendarServiceImpl.insertCalendar(c);
 		return result;

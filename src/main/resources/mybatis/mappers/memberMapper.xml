@@ -44,6 +44,10 @@
 		<result column="doc_status" property="docStatus"/>
 	</resultMap>
 
+	<resultMap id="deptResultMap" type="DeptDto">
+		<result column="dept_code" property="deptCode"/>
+		<result column="dept_name" property="deptName"/>
+	</resultMap>
 
 	<!-- 로그인(김동규) 수정페이지조회(예빈) -->
 	<select id="selectMember" resultMap="memberResultMap">
@@ -250,14 +254,18 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 	</update>
 	
 	<!-- 전체사원조회(본인제외) -->
-	<select id="selectAllMember" resultMap="memberResultMap">
-		select
-					 mem_no
-			   , mem_name
-			   , email
-			   , profile_url
-		  from member
-		 where mem_no != #{memNo}
+	<select id="selectAllMemberDept" resultMap="memberResultMap">
+		select 
+		       m.mem_no
+		     , m.mem_name
+		     , m.email
+		     , m.profile_url
+		     , d.dept_name
+		  from member m
+		  join department d
+		    on m.dept_code = d.dept_code
+		 where m.mem_no != #{memNo}
+		 	 and d.dept_name = #{deptName}
 	</select>
 	
 	<!-- 휴가내역 조회 -->
@@ -421,9 +429,26 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		  where m.mem_no = #{memNo}
 	</select>
 	
+	<!-- 부서명 전체조회 -->
+	<select id="getDeptList" resultMap="deptResultMap">
+	 select
+	 			  dept_code
+	 			, dept_name
+	   from department
+	</select>
 	
-	
-	
+	<select id="selectAllMember" resultMap="memberResultMap">
+		select 
+		       mem_no
+		     , mem_name
+		     , email
+		     , profile_url
+		  from member
+		 where mem_no != #{memNo}
+	</select>
+
+
+
 
 
 </mapper>

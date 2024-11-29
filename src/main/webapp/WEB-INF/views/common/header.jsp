@@ -236,7 +236,7 @@
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="${ contextPath }/member/checkinrecordview.do" class="menu-link">
+                  <a href="${ contextPath }/wl/checkinrecordview.do" class="menu-link">
                     <div data-i18n="출근기록조회">출근 기록 조회</div> 
                   </a>
                 </li>
@@ -266,19 +266,19 @@
 
 
             <!-- 게시판 -->
-            <li class="menu-item">
+            <li class="menu-item" id="boardSide" >
               <a href="#" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-list-numbers"></i>
                 <div data-i18n="게시판">게시판</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="${ contextPath }/notice/noticeList.do" class="menu-link">
+                  <a href="${ contextPath }/notice/noticeList.do" id="boardNotice" class="menu-link">
                     <div data-i18n="공지사항">공지사항</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="${ contextPath }/board/boardList.do" class="menu-link">
+                  <a href="${ contextPath }/board/boardList.do" id="boardTeam" class="menu-link">
                     <div data-i18n="팀 게시판">팀 게시판</div>
                   </a>
                 </li>
@@ -286,14 +286,14 @@
             </li>
 						
 						<!-- 매출분석 -->
-						<li class="menu-item">
+						<li class="menu-item" id="sales">
 						  <a href="#" class="menu-link menu-toggle">
 						    <i class="menu-icon tf-icons ti ti-chart-dots"></i>
 						    <div data-i18n="매출분석">매출분석</div>
 						  </a>
 						  <ul class="menu-sub">
 						    <li class="menu-item">
-						      <a href="${contextPath}/chart/chart.do" class="menu-link">
+						      <a href="${contextPath}/chart/chart.do" id="salesChart" class="menu-link">
 						        <div data-i18n="차트">차트</div>
 						      </a>
 						    </li>
@@ -301,7 +301,7 @@
 						    <c:set var="validPosCodes" value="C1,C2,C3,C4" />
 						    <c:if test="${fn:contains(validDeptCodes, loginUser.deptCode) && fn:contains(validPosCodes, loginUser.posCode)}">
 						      <li class="menu-item">
-						        <a href="${contextPath}/revenue/revenue.do" class="menu-link">
+						        <a href="${contextPath}/revenue/revenue.do?deptCode=${loginUser.deptCode}" id="salesRegist" class="menu-link">
 						          <div data-i18n="매출등록">매출등록</div>
 						        </a>
 						      </li>

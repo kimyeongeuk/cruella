@@ -1,8 +1,10 @@
 package com.cl.cruella.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cl.cruella.dto.CalendarDto;
+import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.WorkLogDto;
 
 public interface WorkLogService {
@@ -27,4 +29,12 @@ public interface WorkLogService {
 	
 	// 결근자 insert
 	void insertAbsences();
+
+	// 출퇴근조회 (이예빈)
+	List<WorkLogDto> checkinrecordview(Map<String,Object> wlDate);
+
+	List<WorkLogDto> checkinrecordview2(Map<String, Object> wlDate);
+
+	
+	
 }

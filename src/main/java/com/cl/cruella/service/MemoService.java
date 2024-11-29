@@ -2,6 +2,7 @@ package com.cl.cruella.service;
 
 import java.util.List;
 
+import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemoDto;
 
 public interface MemoService {
@@ -20,4 +21,6 @@ public interface MemoService {
 	
 	// 메모 삭제
 	void deleteMemo(int memoNo);
+	
+	
 }

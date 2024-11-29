@@ -1,6 +1,7 @@
 package com.cl.cruella.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,8 @@ public class CalendarServiceImpl implements CalendarService {
 	private final CalendarDao calendarDao;
 	
 	@Override
-	public List<CalendarDto> selectCalendarList() {
-		return calendarDao.selectCalenderList();
+	public List<CalendarDto> selectCalendarList(Map<String, String> map) {
+		return calendarDao.selectCalenderList(map);
 	}
 
 	@Override

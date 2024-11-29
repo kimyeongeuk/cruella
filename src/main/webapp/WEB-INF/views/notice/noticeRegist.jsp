@@ -32,6 +32,18 @@
   	color: gray;
   	font-size: 11px;
   }
+	#boardNotice::before {
+	  content: ''; /* 가상 요소 필수 */
+	  display: inline-block; /* 블록 요소 */
+	  width: 10px; /* 동그라미 크기 */
+	  height: 10px; /* 동그라미 크기 */
+	  border-radius: 50%; /* 완전한 원 */
+	  background-color: transparent; /* 배경을 투명으로 설정 */
+	  border: 2px solid gray; /* 초기 테두리 색상 */
+	}
+	#boardNotice.active::before {
+	  border: 2px solid white; /* 테두리만 흰색으로 변경 */
+	}
 </style>
 </head>
 <body>
@@ -228,6 +240,19 @@ $(document).ready(function() {
         files.forEach(file => b.items.add(file));
         return b.files;
     }
+});
+
+//사이드바 처리
+document.addEventListener("DOMContentLoaded", function () {
+	
+	const element = document.getElementById("boardNotice");
+	
+	document.getElementById("boardSide").classList.add("open");
+	element.style.backgroundColor = "#958CF4";
+	element.style.color = "white";
+	element.classList.add("active");
+	
+	
 });
 
 </script>

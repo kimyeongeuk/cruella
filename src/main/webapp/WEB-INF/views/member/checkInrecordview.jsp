@@ -78,20 +78,21 @@
 									<div
 										class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-4">
 										<div class="user-profile-info">
-											<h4 class="mb-2 mt-lg-6">John Doe</h4>
+											<h4 class="mb-2 mt-lg-6">${ loginUser.getMemName() }</h4>
 											<ul
 												class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-4 my-2">
 												<li class="list-inline-item d-flex gap-2 align-items-center">
-													<i class="ti ti-palette ti-lg"></i><span class="fw-medium">UX
-														Designer</span>
+													<i class="ti ti-book ti-lg"></i>
+													<span class="fw-medium">${ loginUser.getDeptName() }</span>
 												</li>
 												<li class="list-inline-item d-flex gap-2 align-items-center">
-													<i class="ti ti-map-pin ti-lg"></i><span class="fw-medium">Vatican
-														City</span>
+													<i class="ti ti-tag ti-lg"></i>
+													<span class="fw-medium">${ loginUser.getPosName() }</span>
 												</li>
 												<li class="list-inline-item d-flex gap-2 align-items-center">
-													<i class="ti ti-calendar ti-lg"></i><span class="fw-medium">
-														Joined April 2021</span>
+													<i class="ti ti-mail ti-lg"></i>
+													<span class="fw-medium">
+														${ loginUser.getEmail() }</span>
 												</li>
 											</ul>
 										</div>
@@ -108,35 +109,57 @@
 							</div>
 						</div>
 						<!--/상단프로필-->
+						
+						
+					<form action="${contextPath}/wl/checkinrecordview2.do" method="post">
 						<div class="card" style="padding: 30px;">
 
 							<div style="display: flex;">
 								<h5 class="card-header"
 									style="display: flex; align-items: center;">
-									<select class="form-select"
+									<select class="form-select" id="yearSelect" name="year"
 										style="width: 100px; margin-right: 10px;">
-										<option value="">2024</option>
-										<option value="">2023</option>
+										<option value="" selected>선택</option>
+										<c:forEach var="y" begin="4" end="4" step="1">
+											<option value="2${y}">202${y}</option>
+										</c:forEach>
+
 									</select> <span>년</span>
 								</h5>
 
 								<h5 class="card-header"
 									style="display: flex; align-items: center; padding: 0;">
-									<select class="form-select"
-										style="width: 70px; margin-right: 10px;">
-										<option value="">1</option>
-										<option value="">2</option>
-										<option value="">3</option>
-										<option value="">4</option>
+									<select class="form-select" id="monthSelect" name="month"
+										style="width: 88px; margin-right: 10px;">
+
+										<option value="" selected>선택</option>
+										<c:forEach var="i" begin="10" end="12" step="1">
+											<option value="${i}">${i}</option>
+										</c:forEach>
+
 									</select> <span>월</span>
+									
+									<input type="hidden" value="${ loginUser.memNo }" name="memNo">
+									
 								</h5>
+								<button type="submit" class="btn btn-primary"
+									id="select_wl_date"
+									style="width: 100px; height: 37px; position: relative; top: 20px; left: 21px; margin-top: 5px;">검색
+								</button>
+								
+								</form>
+								
+								
+								
+								
+								
+			
 							</div>
 							<div class="table-responsive text-nowrap">
 								<table class="table" style="text-align: center;">
 									<thead>
 										<tr>
-											<th>휴무명</th>
-											<th>상세</th>
+											<th>상태</th>
 											<th>출근</th>
 											<th>퇴근</th>
 											<th>날짜</th>
@@ -145,62 +168,39 @@
 									</thead>
 
 									<tbody class="table-border-bottom-0">
-										<tr>
-											<td><span class="fw-medium">-</span></td>
+									
+										<c:forEach var="wl" items="${workLog}">
+											<tr>
+												<c:choose>
+													<c:when test="${ wl.status eq 'C' }">
+														<td><span class="fw-medium">출근</span></td>
+													</c:when>
+													<c:when test="${ wl.status eq 'N' }">
+														<td><span class="fw-medium">정상</span></td>
+													</c:when>
+													<c:when test="${ wl.status eq 'L' }">
+														<td><span class="fw-medium">지각</span></td>
+													</c:when>
+													<c:when test="${ wl.status eq 'A' }">
+														<td><span class="fw-medium">결근</span></td>
+													</c:when>
+													<c:when test="${ wl.status eq 'E' }">
+														<td><span class="fw-medium">조퇴</span></td>
+													</c:when>
 
-											<td><span class="fw-medium">-</span></td>
+												</c:choose>
+												<td><span class="fw-medium">${ wl.clockInTime }</span></td>
 
-											<td><span class="fw-medium">08:55</span></td>
-
-											<td><span class="fw-medium">18:00</span></td>
-											<td><span class="fw-medium">2024.04.01</span></td>
-										</tr>
-										<tr>
-											<td><span class="fw-medium">연차</span></td>
-
-											<td><span class="fw-medium">개인사정</span></td>
-
-											<td><span class="fw-medium">-</span></td>
-
-											<td><span class="fw-medium">-</span></td>
-											<td><span class="fw-medium">2024.04.02</span></td>
-										</tr>
-										<tr>
-											<td><span class="fw-medium">-</span></td>
-
-											<td><span class="fw-medium">지각</span></td>
-
-											<td><span class="fw-medium">09:55</span></td>
-
-											<td><span class="fw-medium">18:00</span></td>
-											<td><span class="fw-medium">2024.04.03</span></td>
-										</tr>
-										<tr>
-											<td><span class="fw-medium">-</span></td>
-
-											<td><span class="fw-medium">-</span></td>
-
-											<td><span class="fw-medium">08:55</span></td>
-
-											<td><span class="fw-medium">18:00</span></td>
-											<td><span class="fw-medium">2024.04.04</span></td>
-										</tr>
-										<tr>
-											<td><span class="fw-medium">-</span></td>
-
-											<td><span class="fw-medium">-</span></td>
-
-											<td><span class="fw-medium">08:55</span></td>
-
-											<td><span class="fw-medium">18:00</span></td>
-											<td><span class="fw-medium">2024.04.05</span></td>
-										</tr>
-
+												<td><span class="fw-medium">${ wl.clockOutTime }</span></td>
+												<td><span class="fw-medium">${ wl.workDate }</span></td>
+											</tr>
+										</c:forEach>
+										
+										
 									</tbody>
 								</table>
 							</div>
 						</div>
-
 
 
 

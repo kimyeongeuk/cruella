@@ -489,108 +489,69 @@
 
                 <div class="col-xl-8 col-lg-7 col-md-7">
                   <!-- Activity Timeline -->
-                  <div class="card card-action mb-6">
-                    <div class="card-header align-items-center">
-                      <h5 class="card-action-title mb-0">
-                        <i class="ti ti-bell ti-lg text-body me-4"></i>알림 목록
-                      </h5>
-                    </div>
-                    <div class="card-body pt-3">
-                      <ul class="timeline mb-0">
-                        <li class="timeline-item timeline-item-transparent">
-                          <span class="timeline-point timeline-point-primary"></span>
-                          <div class="timeline-event">
-                            <div class="timeline-header mb-3">
-                              <h6 class="mb-0">전체 공지사항 1건 등록</h6>
-                              <small class="text-muted">20분전</small>
-                            </div>
-                            <p class="mb-2">설 연휴 휴무</p>
-                            <div class="d-flex align-items-center mb-2">
-                              <div class="badge bg-lighter rounded d-flex align-items-center">
-                                <img src="${ contextPath }/assets//img/icons/misc/pdf.png" alt="img" width="15" class="me-2" />
-                                <span class="h6 mb-0 text-body">invoices.pdf</span>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="timeline-item timeline-item-transparent">
-                          <span class="timeline-point timeline-point-success"></span>
-                          <div class="timeline-event">
-                            <div class="timeline-header mb-3">
-                              <h6 class="mb-0">Client Meeting</h6>
-                              <small class="text-muted">45 min ago</small>
-                            </div>
-                            <p class="mb-2">Project meeting with john @10:15am</p>
-                            <div class="d-flex justify-content-between flex-wrap gap-2 mb-2">
-                              <div class="d-flex flex-wrap align-items-center mb-50">
-                                <div class="avatar avatar-sm me-3">
-                                  <img src="${ contextPath }/assets/img/avatars/1.png" alt="Avatar" class="rounded-circle" />
-                                </div>
-                                <div>
-                                  <p class="mb-0 small fw-medium">Lester McCarthy (Client)</p>
-                                  <small>CEO of Pixinvent</small>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="timeline-item timeline-item-transparent">
-                          <span class="timeline-point timeline-point-info"></span>
-                          <div class="timeline-event">
-                            <div class="timeline-header mb-3">
-                              <h6 class="mb-0">Create a new project for client</h6>
-                              <small class="text-muted">2 Day Ago</small>
-                            </div>
-                            <p class="mb-2">6 team members in a project</p>
-                            <ul class="list-group list-group-flush">
-                              <li
-                                class="list-group-item d-flex justify-content-between align-items-center flex-wrap border-top-0 p-0">
-                                <div class="d-flex flex-wrap align-items-center">
-                                  <ul class="list-unstyled users-list d-flex align-items-center avatar-group m-0 me-2">
-                                    <li
-                                      data-bs-toggle="tooltip"
-                                      data-popup="tooltip-custom"
-                                      data-bs-placement="top"
-                                      title="Vinnie Mostowy"
-                                      class="avatar pull-up">
-                                      <img class="rounded-circle" src="${ contextPath }/assets/img/avatars/1.png" alt="Avatar" />
-                                    </li>
-                                    <li
-                                      data-bs-toggle="tooltip"
-                                      data-popup="tooltip-custom"
-                                      data-bs-placement="top"
-                                      title="Allen Rieske"
-                                      class="avatar pull-up">
-                                      <img class="rounded-circle" src="${ contextPath }/assets/img/avatars/4.png" alt="Avatar" />
-                                    </li>
-                                    <li
-                                      data-bs-toggle="tooltip"
-                                      data-popup="tooltip-custom"
-                                      data-bs-placement="top"
-                                      title="Julee Rossignol"
-                                      class="avatar pull-up">
-                                      <img class="rounded-circle" src="${ contextPath }/assets/img/avatars/2.png" alt="Avatar" />
-                                    </li>
-                                    <li class="avatar">
-                                      <span
-                                        class="avatar-initial rounded-circle pull-up text-heading"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom"
-                                        title="3 more"
-                                        >+3</span
-                                      >
-                                    </li>
-                                  </ul>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
                   <!-- 팀게시판 영역 (재운님 코드)-->
-                  <div class="card" style="height: 503px;">
+                  <div class="row">
+                    <!-- 나의 소속팀 목록 -->
+                    <div class="col-lg-12 col-xl-6">
+                      <div class="card card-action mb-6">
+                        <div class="card-header align-items-center">
+                          <i class="ti ti-users ti-lg"></i>
+                          <h5 class="card-action-title mb-0" style="margin-left: 15px;">${ loginUser.getDeptName() }</h5> <!-- 나의 소속팀이 보이게 -->
+                        </div>
+                        <div class="card-body"> <!-- 나의 소속팀 전체 리스트 조회 영역 -->
+                        	<div id="teamListDiv">
+                        	</div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--/ 나의 소속팀 목록 -->
+                    <!-- 나의 결재 문서함 -->
+                    <div class="col-lg-12 col-xl-6">
+                      <div class="card card-action mb-6">
+                        <div class="card-header align-items-center">
+                          <i class="ti ti-file-search ti-lg"></i>
+                          <h5 class="card-action-title mb-0" style="margin-left: 15px;">내 결재 문서함</h5>
+                        </div>
+                        <div class="card-body">
+                          <div id="standby_box" style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px; cursor: pointer;"
+                           onclick="location.href='${contextPath}/app/box_standby.do'">
+                            <div>
+                              <img src="${ contextPath }/assets/img/customizer/wlblue.png"
+                                  style="width: 70px; height: 70px; margin-top: 10px;"/>
+                            </div>
+                            <div style="margin-top: 35px;">
+                              <span style="font-size: 20px;">결재 대기함</span>
+                              <span style="font-size: 20px; margin-left: 24px;" id="app_standby"></span>
+                            </div>
+                          </div>
+                          <div id="progress_box" style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px; cursor: pointer;"
+                           onclick="location.href='${contextPath}/app/box_progress.do'">
+                            <div>
+                              <img src="${ contextPath }/assets/img/customizer/wlgray.png"
+                                  style="width: 70px; height: 70px; margin-top: 10px;"/>
+                            </div>
+                            <div style="margin-top: 35px;">
+                              <span style="font-size: 20px;">결재 진행함</span>
+                              <span style="font-size: 20px; margin-left: 20px;" id="app_progress"></span>
+                            </div>
+                          </div>
+                          <div id="complete_box" style="width: 320px; height: 100px; margin-left: 20px; display: flex; gap: 45px; cursor: pointer;"
+                           onclick="location.href='${contextPath}/app/box_complete.do'">
+                            <div>
+                              <img src="${ contextPath }/assets/img/customizer/wlgreen.png"
+                                  style="width: 70px; height: 70px; margin-top: 10px;"/>
+                            </div>
+                            <div style="margin-top: 35px;">
+                              <span style="font-size: 20px;">결재 완료함</span>
+                              <span style="font-size: 20px; margin-left: 24px;" id="app_success"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--/ 나의결재문서함 -->
+                  </div>
+                  <div class="card" style="height: 750px;">
                     <div class="d-flex align-items-center">
 		                  <div style="margin: 20px;">
 		                    <a id="board" class="" style="font-size: 20px;" href="${contextPath}/board/boardList.do">
@@ -648,67 +609,6 @@
                   
                   <!--/ 팀게시판 영역 -->                  
                   <!--/ Activity Timeline -->
-                  <div class="row">
-                    <!-- 나의 소속팀 목록 -->
-                    <div class="col-lg-12 col-xl-6">
-                      <div class="card card-action mb-6 mt-6">
-                        <div class="card-header align-items-center">
-                          <i class="ti ti-users ti-lg"></i>
-                          <h5 class="card-action-title mb-0" style="margin-left: 15px;">${ loginUser.getDeptName() }</h5> <!-- 나의 소속팀이 보이게 -->
-                        </div>
-                        <div class="card-body"> <!-- 나의 소속팀 전체 리스트 조회 영역 -->
-                        	<div id="teamListDiv">
-                        	</div>
-                        </div>
-                      </div>
-                    </div>
-                    <!--/ 나의 소속팀 목록 -->
-                    <!-- 나의 결재 문서함 -->
-                    <div class="col-lg-12 col-xl-6">
-                      <div class="card card-action mb-6 mt-6">
-                        <div class="card-header align-items-center">
-                          <i class="ti ti-file-search ti-lg"></i>
-                          <h5 class="card-action-title mb-0" style="margin-left: 15px;">내 결재 문서함</h5>
-                        </div>
-                        <div class="card-body">
-                          <div id="standby_box" style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px; cursor: pointer;"
-                           onclick="location.href='${contextPath}/app/box_standby.do'">
-                            <div>
-                              <img src="${ contextPath }/assets/img/customizer/wlblue.png"
-                                  style="width: 70px; height: 70px; margin-top: 10px;"/>
-                            </div>
-                            <div style="margin-top: 35px;">
-                              <span style="font-size: 20px;">결재 대기함</span>
-                              <span style="font-size: 20px; margin-left: 24px;" id="app_standby"></span>
-                            </div>
-                          </div>
-                          <div id="progress_box" style="width: 320px; height: 100px; margin-left: 20px; border-bottom: 1px solid #CDCCCE; display: flex; gap: 45px; cursor: pointer;"
-                           onclick="location.href='${contextPath}/app/box_progress.do'">
-                            <div>
-                              <img src="${ contextPath }/assets/img/customizer/wlgray.png"
-                                  style="width: 70px; height: 70px; margin-top: 10px;"/>
-                            </div>
-                            <div style="margin-top: 35px;">
-                              <span style="font-size: 20px;">결재 진행함</span>
-                              <span style="font-size: 20px; margin-left: 20px;" id="app_progress"></span>
-                            </div>
-                          </div>
-                          <div id="complete_box" style="width: 320px; height: 100px; margin-left: 20px; display: flex; gap: 45px; cursor: pointer;"
-                           onclick="location.href='${contextPath}/app/box_complete.do'">
-                            <div>
-                              <img src="${ contextPath }/assets/img/customizer/wlgreen.png"
-                                  style="width: 70px; height: 70px; margin-top: 10px;"/>
-                            </div>
-                            <div style="margin-top: 35px;">
-                              <span style="font-size: 20px;">결재 완료함</span>
-                              <span style="font-size: 20px; margin-left: 24px;" id="app_success"></span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!--/ Teams -->
-                  </div>
                 </div>
               </div>
               <!--/ User Profile Content -->
@@ -766,27 +666,32 @@
 	   			url : '${contextPath}/memo/memoList.do',
 	   			type: 'POST',
 	   			data: {memNo: memNo},
-	   	 success: function(res){
-	   		 
-	   		 		let liEl = "<ul class='list-unstyled mb-2'>";
-	   		 
- 		 				for(let i = 0; i < res.length; i++) {
- 		 					liEl += "<li class='d-flex align-items-center pt-5 pb-5 mt-3' id='memoList'>"
-	 		 							+ "<span class='fw-medium mx-2' onclick='fnSelectMemo(" + res[i].memoNo + ");'>" + res[i].memoContent + "</span>"
-	 		 							+ "<div class='dropdown'>"
-	 		 								+ "<i class='ti ti-dots-vertical ti-sm' type='button' data-bs-toggle='dropdown' aria-expanded='false'></i>"
-	 		 									+"<ul class='dropdown-menu'>"
-	 		 										+"<li><a class='dropdown-item' onclick='fnSelectMemo(" + res[i].memoNo + ")'><i class='ti ti-zoom-in'></i>메모 열기</a></li>"
-	 		 										+"<li><a class='dropdown-item' onclick='fnDeleteMemo(" + res[i].memoNo + ")'><i class='ti ti-trash'></i>메모 삭제</a></li>"
-	 		 									+"</ul>"
-	 		 								+"</div>"
- 		 								+"</li>"
- 		 				}
- 		 				liEl += "</ul>";
-             
-	   		 		$('#memoDiv').html(liEl);
-	   	 }
-	   		  
+	   			success: function(res) {
+	   			    let liEl = "<ul class='list-unstyled mb-2'>";
+
+	   			    if (res.length == 0) {
+	   			        // 메모가 없으면 문구 추가
+	   			        liEl += "<li class='text-center'>등록된 메모가 없습니다.</li>";
+	   			    } else {
+	   			        // 메모가 있을 경우 목록 추가
+	   			        for (let i = 0; i < res.length; i++) {
+	   			            liEl += "<li class='d-flex align-items-center pt-5 pb-5 mt-3' id='memoList'>"
+	   			                    + "<span class='fw-medium mx-2' onclick='fnSelectMemo(" + res[i].memoNo + ");'>" + res[i].memoContent + "</span>"
+	   			                    + "<div class='dropdown'>"
+	   			                    + "<i class='ti ti-dots-vertical ti-sm' type='button' data-bs-toggle='dropdown' aria-expanded='false'></i>"
+	   			                    + "<ul class='dropdown-menu'>"
+	   			                    + "<li><a class='dropdown-item' onclick='fnSelectMemo(" + res[i].memoNo + ")'><i class='ti ti-zoom-in'></i>메모 열기</a></li>"
+	   			                    + "<li><a class='dropdown-item' onclick='fnDeleteMemo(" + res[i].memoNo + ")'><i class='ti ti-trash'></i>메모 삭제</a></li>"
+	   			                    + "</ul>"
+	   			                    + "</div>"
+	   			                    + "</li>";
+	   			        }
+	   			    }
+
+	   			    liEl += "</ul>";
+	   			    $('#memoDiv').html(liEl);
+	   			}
+
 	   	})	
    	}
     
@@ -945,7 +850,7 @@
 		            // 데이터가 비어 있는 경우
 		            if (!res || res.list.length == 0) {
 		                trEl += '<tr>';
-		                trEl += '<td colspan="6">조회된 게시글이 없습니다.</td>';
+		                trEl += '<td colspan="6" style="text-align: center;">조회된 게시글이 없습니다.</td>';
 		                trEl += '</tr>';
 		            } else {
 		                let count = 1;

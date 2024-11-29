@@ -100,6 +100,7 @@
 			color: #7367f0;
 			transition: color 0.3s ease;		
 		}
+		
   </style>
 </head>
 <body>
@@ -207,52 +208,14 @@
         <!-- /팀별 매출 점유율 차트 -->
         
         <!-- 메모목록 -->
-        <div class="card mb-2" style="height: 380px; width: 430px; margin-left: 12px;">
+        <div class="card" style="height: 400px; width: 430px; margin-left: 12px; background-color: rgba(135, 206, 235, 0.3);">
           <div class="card-body">
-            <small class="card-text text-uppercase text-muted small">Memo</small> 
-            <i class="ti ti-edit ti-sm" style="margin-left: 310px; cursor: pointer;" onclick="fnOpenMemoModal();"></i>
-            <div id="memoDiv"></div>
+				    <h3>현재 날씨  <span id="cityName" style="font-size: 22px; float: right;"></span></h3>
+				    <p><span id="temperature" style="font-size: 42px; float: right;"></span></p>
+				    <p><span id="condition"></span></p>
           </div>
         </div>
-        
-        <!-- 메모등록 모달 -->
-         <div class="modal fade" id="insertMemoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-           <div class="modal-dialog">
-               <div class="modal-content" style="width: 450px; height: 450px;">
-                   <div class="modal-header" style="background-color: #CEC9FF;">
-                       <h5 class="modal-title" id="exampleModalLabel" style="color: white; margin-bottom: 12px;">Memo</h5>
-                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                   </div>
-                   <div class="modal-body">
-                      <textarea id="insertMemoInput" name="memoContent"></textarea>
-                   </div>
-                   <div class="modal-footer justify-content-center">
-                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_memo_insert" onclick="fnInsertMemo();">등록</button>
-                       <button type="button" class="btn btn-primary" id="btn_memo_cancel" data-bs-dismiss="modal">취소</button>
-                   </div>
-               </div>
-           </div>
-         </div>
-        
-        <!-- 메모 조회 및 수정 모달 -->
-        <input type="hidden" name="memoNo" id="modifyMemoNo" value="">
-         <div class="modal fade" id="selectMemoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-           <div class="modal-dialog">
-               <div class="modal-content" style="width: 450px; height: 450px;">
-                   <div class="modal-header" style="background-color: #CEC9FF;">
-                       <h5 class="modal-title" id="exampleModalLabel" style="color: white; margin-bottom: 12px;">Memo</h5>
-                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                   </div>
-                   <div class="modal-body">
-                      <textarea id="insertMemoInput_edit" name="memoContent"></textarea>
-                   </div>
-                   <div class="modal-footer justify-content-center">
-                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_memo_insert" onclick="fnModifyMemo();">수정</button>
-                       <button type="button" class="btn btn-primary" id="btn_memo_cancel" data-bs-dismiss="modal">취소</button>
-                   </div>
-               </div>
-           </div>
-         </div>
+
 
 
         <!-- 총매출 차트부분 -->
@@ -313,6 +276,7 @@
             <div class="card-header align-items-center" style="display: flex; gap: 15px;">
               <i class="ti ti-users ti-lg"></i>
               <a id="allMem" style="font-size: 18px;" href="${contextPath}/member/employeelistview.do">전직원 목록</a>
+              <div id="deptList" style="display: flex; gap: 10px; flex-direction: column;"></div>
             </div>
             <div class="card-body" id="memberListDiv"> <!-- 전 사원의 리스트가 보여질영역 -->
             </div>
@@ -429,17 +393,7 @@
     </script>
     
 		<script>
-	  		
-				// 페이지 로드시 실행시킬 함수
-	  		window.onload = function(){
-	  			
-	  			checkClockInStatus(); // 출근상태 체크
-	  			fnNoticeList();			  // 공지사항 조회
-		    	fnMemoList();	        // 메모 전체 리스트 조회
-		    	fnMemberList();       // 전체 사원 리스트 조회
-		    	fnAppList();				  // 결재 대기중인 문서 갯수 조회
-		    	
-	  		}
+
 	  	
 	  		// 출근 등록여부 확인
 	  		function checkClockInStatus(){
@@ -461,6 +415,8 @@
 	  			})
 	  			
 	  		}
+	  		
+
 	  		
 		  	// 출근 버튼 클릭시 (김동규)
 		  	function fnClockIn(){
@@ -721,27 +677,32 @@
 		   			url : '${contextPath}/memo/memoList.do',
 		   			type: 'POST',
 		   			data: {memNo: memNo},
-		   	 success: function(res){
-		   		 
-		   		 		let liEl = "<ul class='list-unstyled mb-2'>";
-		   		 
-	 		 				for(let i = 0; i < res.length; i++) {
-	 		 					liEl += "<li class='d-flex align-items-center pt-5 pb-5 mt-3' id='memoList'>"
-		 		 							+ "<span class='fw-medium mx-2' onclick='fnSelectMemo(" + res[i].memoNo + ");'>" + res[i].memoContent + "</span>"
-		 		 							+ "<div class='dropdown'>"
-		 		 								+ "<i class='ti ti-dots-vertical ti-sm' type='button' data-bs-toggle='dropdown' aria-expanded='false'></i>"
-		 		 									+"<ul class='dropdown-menu'>"
-		 		 										+"<li><a class='dropdown-item' onclick='fnSelectMemo(" + res[i].memoNo + ")'><i class='ti ti-zoom-in'></i>메모 열기</a></li>"
-		 		 										+"<li><a class='dropdown-item' onclick='fnDeleteMemo(" + res[i].memoNo + ")'><i class='ti ti-trash'></i>메모 삭제</a></li>"
-		 		 									+"</ul>"
-		 		 								+"</div>"
-	 		 								+"</li>"
-	 		 				}
-	 		 				liEl += "</ul>";
-	             
-		   		 		$('#memoDiv').html(liEl);
-		   	 }
-		   		  
+		   			success: function(res) {
+		   			    let liEl = "<ul class='list-unstyled mb-2'>";
+
+		   			    if (res.length == 0) {
+		   			        // 메모가 없으면 문구 추가
+		   			        liEl += "<li class='text-center'>등록된 메모가 없습니다.</li>";
+		   			    } else {
+		   			        // 메모가 있을 경우 목록 추가
+		   			        for (let i = 0; i < res.length; i++) {
+		   			            liEl += "<li class='d-flex align-items-center pt-5 pb-5 mt-3' id='memoList'>"
+		   			                    + "<span class='fw-medium mx-2' onclick='fnSelectMemo(" + res[i].memoNo + ");'>" + res[i].memoContent + "</span>"
+		   			                    + "<div class='dropdown'>"
+		   			                    + "<i class='ti ti-dots-vertical ti-sm' type='button' data-bs-toggle='dropdown' aria-expanded='false'></i>"
+		   			                    + "<ul class='dropdown-menu'>"
+		   			                    + "<li><a class='dropdown-item' onclick='fnSelectMemo(" + res[i].memoNo + ")'><i class='ti ti-zoom-in'></i>메모 열기</a></li>"
+		   			                    + "<li><a class='dropdown-item' onclick='fnDeleteMemo(" + res[i].memoNo + ")'><i class='ti ti-trash'></i>메모 삭제</a></li>"
+		   			                    + "</ul>"
+		   			                    + "</div>"
+		   			                    + "</li>";
+		   			        }
+		   			    }
+
+		   			    liEl += "</ul>";
+		   			    $('#memoDiv').html(liEl);
+		   			}
+
 		   	})	
 	   	}
 	    
@@ -845,43 +806,59 @@
 	    	})
 	    }
 	    
-	    // 전체 사원 리스트 조회
-	    function fnMemberList(){
-	    	
-	    	let memNo = '${loginUser.getMemNo()}';
-	    	
-	    	$.ajax({
-	    		url: '${contextPath}/member/selectAll_db.do',
-	    		type: 'POST',
-	    		data: {memNo: memNo},
-	    		success: function(res){
-	    			
-	    			let liEl = '<ul class="list-unstyled mb-0">'
-	    			
-	    			for(let i = 0; i < res.length; i++){
-	    				
-	    				liEl += '<li class="mb-4">'
-	    							+'<div class="d-flex align-items-center">'
-	    								+'<div class="d-flex align-items-center">'
-	    									+'<div class="avatar me-2">'
-	    										+'<img src="${ contextPath }/assets/img/avatars/2.png" alt="Avatar" class="rounded-circle" />'
-	    									+'</div>'
-	    									+'<div class="me-2">'
-	    										+'<h6 class="mb-0">' + res[i].memName + '</h6>'
-	    										+'<small>' + res[i].email + '</small>'
-	    									+'</div>'
-	    								+'</div>'
-	    						  +'</li>'
-	    			}
-	    			
-	    			liEl += '</ul>';
-	    			
-	    			$('#memberListDiv').html(liEl);
-	    			
-	    		}
-	    		
-	    	})
+	    function fnLoadDeptList() {
+	        // 부서 목록 로드
+	        $.ajax({
+	            url: '${contextPath}/member/getDeptList.do', // 부서 목록 조회 API
+	            type: 'POST',
+	            success: function(list) {
+	                let deptHtml = '<select id="deptSelect" class="select form-select form-select-lg select2-hidden-accessible" onchange="fnMemberList(this.value)" style="font-size: 16px;">';
+	                deptHtml += '<option value="">전체</option>'; // "전체" 옵션 추가
+	                for (let i = 0; i < list.length; i++) {
+	                    deptHtml += '<option value="' + list[i].deptName + '">' + list[i].deptName + '</option>';
+	                }
+	                deptHtml += '</select>';
+	                $('#deptList').html(deptHtml); // 부서 목록을 select로 추가
+	            },
+	            error: function() {
+	                console.error('부서 목록을 가져오는 중 오류 발생');
+	            }
+	        });
 	    }
+
+	    function fnMemberList(deptName = '') {
+	        // 기본값으로 전체 조회
+	        let memNo = '${loginUser.getMemNo()}';
+
+	        $.ajax({
+	            url: '${contextPath}/member/selectAll_db.do',
+	            type: 'POST',
+	            data: { memNo: memNo, deptName: deptName },
+	            success: function(res) {
+	                let liEl = '<ul class="list-unstyled mb-0">';
+	                for (let i = 0; i < res.length; i++) {
+	                    liEl += '<li class="mb-4">'
+	                        + '<div class="d-flex align-items-center">'
+	                        + '<div class="avatar me-2">'
+	                        + '<img src="${contextPath}/assets/img/avatars/2.png" alt="Avatar" class="rounded-circle" />'
+	                        + '</div>'
+	                        + '<div class="me-2">'
+	                        + '<h6 class="mb-0">' + res[i].memName + '</h6>'
+	                        + '<small>' + res[i].email + '</small>'
+	                        + '</div>'
+	                        + '</div>'
+	                        + '</li>';
+	                }
+	                liEl += '</ul>';
+	                $('#memberListDiv').html(liEl);
+	            },
+	            error: function() {
+	                console.error('사원 목록을 가져오는 중 오류 발생');
+	            }
+	        });
+	    }
+
+
 	    
 	    // 공지사항 목록조회
 	    function fnNoticeList(page){
@@ -958,6 +935,26 @@
 			
 		}
 		
+		// 날씨 가져오기 (API)
+		function loadWeather() {
+			const city = 'Seoul';
+			
+			$.ajax({
+				url: '${contextPath}/api/weather',
+				type: 'GET',
+				data: {city, city},
+				success: function(res) {
+					console.log(res);
+					document.getElementById("cityName").textContent = res.name;
+					document.getElementById("temperature").textContent = res.main.temp.toFixed(1) + " °C";
+          document.getElementById("condition").innerHTML = '<img src="${contextPath}' + res.weather[0].description + '" style="width: 200px; height: 200px; margin-top: 30px;" />';
+				},
+				error: function(){
+					console.log('날씨실패');
+				}
+			})
+		}
+		
 	  // 현재 날짜 가져오기
 	  const today = new Date();
 
@@ -967,6 +964,21 @@
 	  
 	  const formattedDate = year + '/' + month + '/' + day;
 	  document.getElementById('todayDate').innerText = formattedDate;
+	  
+		
+		// 페이지 로드시 실행시킬 함수
+	window.onload = function(){
+		
+		checkClockInStatus(); // 출근상태 체크
+		fnNoticeList();			  // 공지사항 조회
+  	//fnMemoList();	        // 메모 전체 리스트 조회
+  	fnMemberList();       // 전체 사원 리스트 조회
+  	fnAppList();				  // 결재 대기중인 문서 갯수 조회.
+ 	  fnLoadDeptList(); 		// 부서 목록 로드
+  	fnMemberList();   		// 전직원 목록 로드
+  	loadWeather();   			// 날씨 조회
+  	
+	}
    </script>
 	
 	

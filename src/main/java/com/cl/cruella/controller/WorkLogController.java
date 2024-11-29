@@ -1,11 +1,17 @@
 package com.cl.cruella.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cl.cruella.dto.CalendarDto;
@@ -36,10 +42,6 @@ public class WorkLogController {
 	    
 	    int result = wlService.clockIn(workLog);
 	    
-	    	
-	    // 세션에 출근 상태 업데이트
-	    session.setAttribute("loginUser", loginUser);
-        
 		
 		return workLog.getClockInTime();
 	}
@@ -103,7 +105,60 @@ public class WorkLogController {
 		wlService.insertAbsences(); // 결근자 insert(출근기록 X, 퇴근기록 X)
 	}
 
+	// 출퇴근조회(이예빈)
+	@GetMapping("/checkinrecordview.do")
+	public String checkinrecordview(HttpSession session, Model model) {
+		
+		
+		Map<String,Object> wlDate = new HashMap<>();
+		
+		String memNo = ((MemberDto) session.getAttribute("loginUser")).getMemNo();
+		
+		
+		wlDate.put("memNo", memNo);
+		
+		
+		List<WorkLogDto> wd = wlService.checkinrecordview(wlDate);
+		
+		
+		
+		model.addAttribute("workLog", wd);
+		
+		return "/member/checkinrecordview";
+		
+	}
 	
+	
+	
+	
+	
+	
+	
+	@PostMapping("/checkinrecordview2.do")
+	public String checkinrecordview2(Model model,
+							    String year,
+								String month,
+								String memNo) {
+		
+		log.debug("year:{}", year);
+		log.debug("month:{}", month);
+		log.debug("memNo:{}", memNo);
+		
+		
+		Map<String,Object> wlDate = new HashMap<>();
+		
+		wlDate.put("year", year);
+		wlDate.put("month", month);
+		wlDate.put("memNo", memNo);
+		
+		List<WorkLogDto> list = wlService.checkinrecordview2(wlDate);
+		
+		log.debug("list:{}", list);
+		
+		model.addAttribute("workLog", list);
+		
+		return "/member/checkinrecordview";
+	}
 	
 	
 }

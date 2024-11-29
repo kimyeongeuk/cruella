@@ -1,15 +1,20 @@
 package com.cl.cruella.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.cl.cruella.dao.WorkLogDao;
 import com.cl.cruella.dto.CalendarDto;
+import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.WorkLogDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class WorkLogServiceImpl implements WorkLogService {
@@ -50,6 +55,19 @@ public class WorkLogServiceImpl implements WorkLogService {
 	@Override
 	public void insertAbsences() {
 		wlDao.insertAbsences();
+	}
+
+	@Override
+	public List<WorkLogDto> checkinrecordview(Map<String, Object> wlDate) {
+		
+		
+		return wlDao.checkinrecordview(wlDate);
+		
+	}
+
+	@Override
+	public List<WorkLogDto> checkinrecordview2(Map<String, Object> wlDate) {
+		return wlDao.checkinrecordview2(wlDate);
 	}
 
 }
