@@ -6,6 +6,7 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.cl.cruella.dto.AlertDto;
 import com.cl.cruella.dto.ChatDto;
 import com.cl.cruella.dto.ChatListDto;
 import com.cl.cruella.dto.ChatProfileDto;
@@ -184,6 +185,10 @@ public class ChatDao {
 
 	public int statusMsg(ChatProfileDto m) {
 		return sqlSession.update("chatMapper.statusMsg",m);
+	}
+
+	public List<AlertDto> alertList(MemberDto m) {
+		return sqlSession.selectList("chatMapper.alertList",m);
 	}
 	
 

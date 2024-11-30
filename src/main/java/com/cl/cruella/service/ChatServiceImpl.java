@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.cl.cruella.dao.ChatDao;
+import com.cl.cruella.dto.AlertDto;
 import com.cl.cruella.dto.ChatDto;
 import com.cl.cruella.dto.ChatListDto;
 import com.cl.cruella.dto.ChatProfileDto;
@@ -176,6 +177,9 @@ public class ChatServiceImpl implements ChatService{
 	}
 	public int statusMsg(ChatProfileDto m) {
 		return chatDao.statusMsg(m);
+	}
+	public List<AlertDto> alertList(MemberDto m) {
+		return chatDao.alertList(m);
 	}
 
 

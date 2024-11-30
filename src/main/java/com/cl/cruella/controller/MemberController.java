@@ -2,7 +2,6 @@ package com.cl.cruella.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cl.cruella.dto.AlertDto;
 import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.BoardDto;
 import com.cl.cruella.dto.DeptDto;
@@ -30,6 +30,7 @@ import com.cl.cruella.dto.PageInfoDto;
 import com.cl.cruella.dto.WorkLogDto;
 import com.cl.cruella.service.AppService;
 import com.cl.cruella.service.BoardService;
+import com.cl.cruella.service.ChatServiceImpl;
 import com.cl.cruella.service.MemberService;
 import com.cl.cruella.service.NoticeService;
 import com.cl.cruella.service.WorkLogService;
@@ -57,6 +58,7 @@ public class MemberController {
 	private final AppService appService;
 	private final NoticeService noticeService;
 	private final WorkLogService wlService;
+	private final ChatServiceImpl chatServiceImpl;
 
 	
 	// 대쉬보드 포워딩
@@ -67,8 +69,8 @@ public class MemberController {
 		
 		MemberDto loginUser = memberService.selectMember(m);
 		
-		session.setAttribute("loginUser", loginUser);
 		
+		session.setAttribute("loginUser", loginUser);
 		return "redirect:/";
 		
 		
@@ -84,7 +86,8 @@ public class MemberController {
 								 , HttpServletRequest request) throws IOException {	// memNo = '입력한 아이디', memPwd = '입력한 비밀번호'
 		
 		MemberDto loginUser = memberService.selectMember(m);
-		
+		List<AlertDto> alert = chatServiceImpl.alertList(loginUser);
+		session.setAttribute("alert", alert);
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		

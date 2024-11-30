@@ -3,6 +3,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
+<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script> 
+<script>
+const sock = new SockJS("${contextPath}/cruella"); 
+sock.onmessage = onMessage;
+
+function onMessage(evt){
+	console.log(evt.data);
+}
+
+</script>
+
+
 
 			    <nav
             class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
@@ -83,40 +95,37 @@
                         <h6 class="mb-0 me-auto">알림</h6>
                       </div>
                     </li>
-                    <li class="dropdown-notifications-list scrollable-container">
-                      <ul class="list-group list-group-flush">
-                        <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                          <div class="d-flex">
-                            <div class="flex-shrink-0 me-3">
-                              <div class="avatar">
-                                <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" />
-                              </div>
-                            </div>
-                            <div class="flex-grow-1">
-                              <h6 class="small mb-1">Congratulation Lettie 🎉</h6>
-                              <small class="mb-1 d-block text-body">Won the monthly best seller gold badge</small>
-                              <small class="text-muted">1h ago</small>
-                            </div>
-                            <div class="flex-shrink-0 dropdown-notifications-actions">
-                              <a href="javascript:void(0)" class="dropdown-notifications-read"
-                                ><span class="badge badge-dot"></span
-                              ></a>
-                              <a href="javascript:void(0)" class="dropdown-notifications-archive"
-                                ><span class="ti ti-x"></span
-                              ></a>
-                            </div>
-                          </div>
-                        </li>
-                       
-                      </ul>
-                    </li>
-                    <li class="border-top">
-                      <div class="d-grid p-4">
-                        <a class="btn btn-primary btn-sm d-flex" href="javascript:void(0);">
-                          <small class="align-middle">View all notifications</small>
-                        </a>
-                      </div>
-                    </li>
+                    
+                 <c:forEach var="al" items="${ alert }"> 
+                 	<c:if test="${ loginUser.memNo eq al.memNo }">
+	                    <li class="dropdown-notifications-list scrollable-container">
+	                      <ul class="list-group list-group-flush">
+	                        <li class="list-group-item list-group-item-action dropdown-notifications-item">
+	                          <div class="d-flex">
+	                            <div class="flex-shrink-0 me-3">
+	                              <div class="avatar">
+	                                <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
+	                              </div>
+	                            </div>
+	                            <div class="flex-grow-1">
+	                              <small class="mb-1 d-block text-body">${ al.alertContent }</small>
+	                              <small class="text-muted">${ al.alertRegistDate }</small>
+	                            </div>
+	                            <div class="flex-shrink-0 dropdown-notifications-actions">
+	                              <a href="javascript:void(0)" class="dropdown-notifications-archive">
+	                              <span class="ti ti-x"></span>
+	                              </a>
+	                            </div>
+	                          </div>
+	                        </li>
+	                      </ul>
+	                    </li>
+                    </c:if>
+                  </c:forEach>
+                    
+                    
+                    
+                    
                   </ul>
                 </li>
                 <!--/ 알림 -->

@@ -73,6 +73,7 @@
 </resultMap>
 
 
+
 <!-- 채팅방 목록 불러오기 -->
 <select id="chatList" resultMap="chatResultMap">
 select 
@@ -566,6 +567,22 @@ update
  where	mem_no = #{memNo}
 				
 </select>
+
+<select id="alertList" resultMap="alertResultMap">
+select ALERT_NO
+		 , ALERT_TYPE
+		 , ALERT_CONTENT
+		 , ALERT_STATUS
+		 , MEM_NO
+		 , ALERT_REGIST_DATE
+		 , ALERT_LINK
+  from
+  			alert
+ where
+ 				mem_no = #{memNo}
+</select>
+
+
 
 
 </mapper>
