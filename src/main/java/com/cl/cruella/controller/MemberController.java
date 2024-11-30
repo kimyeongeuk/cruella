@@ -697,6 +697,10 @@ public class MemberController {
 		return "/member/paystub";
 	}
 	
+	@PostMapping("/checkPhone.do")
+	public int checkPhone(@RequestParam("phone") int phone) {
+		return memberService.checkPhone(phone);
+	}
 
 
 	 

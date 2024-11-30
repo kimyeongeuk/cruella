@@ -144,6 +144,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectAllMember(memNo);
 	}
 
+	@Override
+	public int checkPhone(int phone) {
+		return memberDao.checkPhone(phone);
+	}
+
 
 
 

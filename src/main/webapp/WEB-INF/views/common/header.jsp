@@ -245,11 +245,13 @@
                     <div data-i18n="근무시간조회">근무시간 조회</div>
                   </a>
                 </li>
+                <c:if test="${ loginUser.deptCode eq 'S2'}">
                 <li class="menu-item">
                   <a href="${ contextPath }/member/salarypayment.do" class="menu-link">
                     <div data-i18n="급여지급">급여지급</div>
                   </a>
                 </li>
+                </c:if>
                 <li class="menu-item">
                   <a href="" class="menu-link">
                     <div data-i18n="급여내역확인">급여 내역 확인</div>

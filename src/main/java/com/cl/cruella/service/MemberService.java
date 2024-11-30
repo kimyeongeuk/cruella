@@ -77,6 +77,9 @@ public interface MemberService {
 	// 부서명 전체조회
 	List<DeptDto> getDeptList();
 
+	// 폰번호 중복검사
+	int checkPhone(int phone);
+
 
 
 

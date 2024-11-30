@@ -72,7 +72,8 @@
 								class="user-profile-header d-flex flex-column flex-lg-row text-sm-start text-center mb-5">
 								<div style="align-content: center; margin-top: 20px;">
 									<img src="${ contextPath }<c:out value='${loginUser.getProfileURL()}'/>" alt="user image"
-										class="d-block h-auto ms-0 ms-sm-6 rounded user-profile-img" />
+										class="d-block h-auto ms-0 ms-sm-6 rounded user-profile-img" 
+										style="margin-bottom: 20px; align-items: center; max-width: 120px; max-height: 120px; object-fit: cover;"/>
 								</div>
 								<div class="flex-grow-1 mt-3 mt-lg-5">
 									<div
@@ -96,7 +97,9 @@
 												</li>
 											</ul>
 										</div>
+										 <c:if test="${ loginUser.deptCode eq 'S2'}">
 										<button id="toggleButton" class="btn btn-primary">관리자조회</button>
+										</c:if>
 										<div id="searchBox" style="display: none; margin-top: 10px;">
 											<input type="text" placeholder="검색어를 입력하세요" />
 										</div>

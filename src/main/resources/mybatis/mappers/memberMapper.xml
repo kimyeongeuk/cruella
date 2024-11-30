@@ -446,8 +446,13 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		  from member
 		 where mem_no != #{memNo}
 	</select>
-
-
+	
+	<!-- 폰번호중복검사 -->
+	<select id="checkPhone" resultType="_int">
+		select count(*)
+		from member
+		where phone= #{phone}
+	</select>
 
 
 
