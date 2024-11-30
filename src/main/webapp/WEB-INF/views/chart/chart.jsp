@@ -89,7 +89,7 @@ canvas#doughnutChart {
   <div id="chartCenterText" style="font-size: 20px;"></div>
   <div class="d-flex justify-content-end">
     <div>
-      <select id="yearSelect" class="select1 form-select form-select-lg" data-allow-clear="true">
+      <select id="lineChart_yearSelect" class="select1 form-select form-select-lg" data-allow-clear="true">
         <option value="2023">2023</option>
         <option value="2024" selected>2024</option>
       </select>
@@ -190,7 +190,7 @@ canvas#doughnutChart {
   차트업데이트(현재연도.toString());
 
   // 연도 선택 변경 시 데이터 업데이트
-  $('#yearSelect').change(function() {
+  $('#lineChart_yearSelect').change(function() {
     var 선택된연도 = $(this).val();
     차트업데이트(선택된연도);
   });
@@ -223,13 +223,13 @@ canvas#doughnutChart {
   <div id="chartCenterText" style="font-size: 20px;"></div>
 	<div class="d-flex justify-content-end">
 		<div>
-		  <select id="yearSelect" class="select1 form-select form-select-lg" data-allow-clear="true">
+		  <select id="doughnutChart_yearSelect" class="select1 form-select form-select-lg" data-allow-clear="true">
 		    <option value="2023">2023</option>
 		    <option value="2024" selected>2024</option>
 		  </select>
 		</div>
 		<div>
-		  <select id="monthSelect" class="select1 form-select form-select-lg" data-allow-clear="true" style="margin-left: 10px;">
+		  <select id="doughnutChart_monthSelect" class="select1 form-select form-select-lg" data-allow-clear="true" style="margin-left: 10px;">
 		    <option value="01">1월</option>
 		    <option value="02">2월</option>
 		    <option value="03">3월</option>
@@ -339,8 +339,8 @@ $(function() {
 	    const year = today.getFullYear();
 	    const month = ("0" + (today.getMonth() + 1)).slice(-2);
 	    
-	    $('#yearSelect').val(year);
-	    $('#monthSelect').val(month);
+	    $('#doughnutChart_yearSelect').val(year);
+	    $('#doughnutChart_monthSelect').val(month);
 	    
 	    updateChart(year, month);
 	  }
@@ -401,9 +401,9 @@ $(function() {
 	    });
 	  }
 
-	  $('#yearSelect, #monthSelect').change(function() {
-	    const year = $('#yearSelect').val();
-	    const month = $('#monthSelect').val();
+	  $('#doughnutChart_yearSelect, #doughnutChart_monthSelect').change(function() {
+	    const year = $('#doughnutChart_yearSelect').val();
+	    const month = $('#doughnutChart_monthSelect').val();
 	    updateChart(year, month);
 	  });
 	  

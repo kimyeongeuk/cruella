@@ -22,8 +22,8 @@
     ON
         m.MEM_NO = r.MEM_NO
     WHERE
-        TO_CHAR(TO_DATE(r.RV_REGIST_DATE, 'YY/MM/DD'), 'YYYY') = #{year}
-        AND TO_CHAR(TO_DATE(r.RV_REGIST_DATE, 'YY/MM/DD'), 'MM') = #{month}
+        TO_CHAR(TO_DATE(r.RV_REGIST_DATE, 'YYYY/MM/DD'), 'YYYY') = #{year}
+        AND TO_CHAR(TO_DATE(r.RV_REGIST_DATE, 'YYYY/MM/DD'), 'MM') = #{month}
     GROUP BY
         m.DEPT_CODE
     ORDER BY
@@ -33,16 +33,16 @@
   <!-- 연도별 매출 데이터를 조회하는 쿼리 -->
   <select id="findDeptIncomeByYear" parameterType="map" resultMap="chartResultMap">
     SELECT
-        TO_CHAR(TO_DATE(rv_regist_date, 'YY/MM/DD'), 'MM') AS month,
+        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM') AS month,
         SUM(rv_value) AS rvValue
     FROM
         REVENUE
     WHERE
-        TO_CHAR(TO_DATE(rv_regist_date, 'YY/MM/DD'), 'YYYY') = #{year}
+        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'YYYY') = #{year}
     GROUP BY
-        TO_CHAR(TO_DATE(rv_regist_date, 'YY/MM/DD'), 'MM')
+        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM')
     ORDER BY
-        TO_CHAR(TO_DATE(rv_regist_date, 'YY/MM/DD'), 'MM')
+        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM')
   </select>
 
 </mapper>
