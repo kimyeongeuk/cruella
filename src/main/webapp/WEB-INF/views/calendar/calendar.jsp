@@ -86,14 +86,14 @@
 
           // 블로그
           eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트
-          console.log(obj);
+          //console.log(obj);
         },
         eventChange: function(obj) { // 이벤트가 수정되면 발생하는 이벤트
-          console.log(obj);
+          //console.log(obj);
         },
         
         eventRemove: function(obj){  // 이벤트가 삭제되면 발생하는 이벤트
-          console.log(obj);
+          //console.log(obj);
         },
         /*
         select: function(arg) { // 캘린더에서 드래그로 이벤트를 생성할 수 있다
@@ -143,12 +143,12 @@
               
               eventDrop: function(info) {
            
-            console.log("콘솔 나와랏: ", info); 
+            //console.log("콘솔 나와랏: ", info); 
            
            
            
            
-            console.log(info);
+            //console.log(info);
             
               if(confirm("'"+ info.event.title + "' 일정을 수정하시겠습니까? ") ){
                  
@@ -168,14 +168,14 @@
                  //obj.end = info.event._instance.range.end;
                  events.push(obj);
                  
-                 	console.log("================================")
-                 	console.log(info.event.end);
-                 	console.log(info.event.endStr);
-                  console.log(info.event.endStr.split('T')[0]);
-                  console.log(info.event.title);
-                  console.log(info.event.backgroundColor);
-                  console.log(info.event._def.extendedProps.category);                  
-                 	console.log("================================")
+                 	//console.log("================================")
+                 	//console.log(info.event.end);
+                 	//console.log(info.event.endStr);
+                  //console.log(info.event.endStr.split('T')[0]);
+                  //console.log(info.event.title);
+                  //console.log(info.event.backgroundColor);
+                  //console.log(info.event._def.extendedProps.category);     
+                  //console.log("================================")
 
                  	$.ajax({
                        url: '${contextPath}/calendar/updateCalendar.do',
@@ -188,6 +188,7 @@
                           	calTitle: info.event.title,
                           	calRgb: info.event.backgroundColor,
                           	calCategory: info.event._def.extendedProps.category,
+                          	
                           	
                           //calStartDt: info.event.start.toISOString().split('T')[0],
 		                      //calEndDt: info.event.end.toISOString().split('T')[0],
@@ -346,15 +347,15 @@
           select: function(evt){ // 날짜 셀 클릭시 실행되는 펑션
              
              
-             console.log("==================등록====================");
-                 console.log(evt.start, "||", new Date(evt.start), "||", new Date(evt.start).toISOString().split('T')[0]);
-                 console.log(evt.startStr, "||", new Date(evt.startStr), "||", new Date(evt.startStr).toISOString().split('T')[0]);
-                 console.log()
-                 console.log("======================================");
+            // console.log("==================등록====================");
+                 //console.log(evt.start, "||", new Date(evt.start), "||", new Date(evt.start).toISOString().split('T')[0]);
+                 //console.log(evt.startStr, "||", new Date(evt.startStr), "||", new Date(evt.startStr).toISOString().split('T')[0]);
+                // console.log()
+                // console.log("======================================");
              
              
              
-            console.log(evt); // {startStr:'시작날짜', endStr:'끝날짜'} 가 들어있다. 즉, 셀 드래그로 선택시 첫 날짜는 startStr에, 마지막 날짜는 endStr에 담긴다.
+            //console.log(evt); // {startStr:'시작날짜', endStr:'끝날짜'} 가 들어있다. 즉, 셀 드래그로 선택시 첫 날짜는 startStr에, 마지막 날짜는 endStr에 담긴다.
 
             //alert('sss');
             //$('#modify').modal();
@@ -1057,7 +1058,7 @@
                 
                 // 일정 수정시 카테고리 선택에 따른 배경색 바꾸기
                 
-                 $('#deleteBtn').on('click', function(){
+                 $('#calCategory2').on('click', function(){
                     // id="calCategory2"에 들어있는 value 값 가져오기 ( val 은 jquery문 )
                     const selectedValue = $(this).val();
 
@@ -1126,8 +1127,8 @@
     		
     		//console.log(start);
     		//console.log(end);
-    		console.log(selectedId);
-    		console.log(rgb);
+    		//console.log(selectedId);
+    		//console.log(rgb);
     		
          	$.ajax({
                url: '${contextPath}/calendar/updateCalendar.do',
@@ -1196,26 +1197,26 @@
 	       				 
 	       					 console.log(res);
 	       					 
-	       					 var title = $()
+	       					// var title = $()
 	       					 
 	       					 
 	       				// 'calendar' 요소를 찾기
-	       			        var calendarEl = document.getElementById('calendar'); 
+	       			     //   var calendarEl = document.getElementById('calendar'); 
 	       					 
 	       			  // 기존 FullCalendar 인스턴스가 존재하면 이를 제거합니다.
-	       			        if (window.currentCalendar) {
-	       			            window.currentCalendar.destroy();  // 기존 캘린더 인스턴스 제거
-	       			        }
+	       			     //   if (window.currentCalendar) {
+	       			    //        window.currentCalendar.destroy();  // 기존 캘린더 인스턴스 제거
+	       			    //    }
 	       					 
 
-	       					var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+	       					//var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
 	       						
 	       						
-	       				        events: res // res는 이벤트 데이터를 포함한 배열 또는 객체여야 합니다.
-	       				    });
+	       				   //     events: res // res는 이벤트 데이터를 포함한 배열 또는 객체여야 합니다.
+	       				 //   });
 
 	       							// 캘린더 렌더링
-	       			        calendar.render();
+	       			      //  calendar.render();
 
 
 	       				    
