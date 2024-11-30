@@ -53,6 +53,7 @@ public class MemberDto {
 	    private int care;   // 장기요양보험
 	    private int totalSalary;               // 실지급액
 	    private Date paymentDate;            // 지급 날짜
-	    private String salStatus;            // 지급 여부
+	    private String salStatus;
+	    private Date hireDate2;// 지급 여부
 		
 }

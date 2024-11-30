@@ -415,13 +415,13 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 				 , p.pos_name 
 				 , m.mem_name 
 				 , m.salary 
-				 , to_char(m.hire_date,'YYYY-MM-DD') as hire_date
+				 , to_char(m.hire_date,'YYYY-mm-DD') as hire_date
 				 , s.sal_pension
 				 , s.sal_health
 				 , s.sal_care
 				 , s.sal_employment
 				 , s.sal_total
-				 , to_char(s.SAL_PAYMENT_DATE,'YY년MM월DD일') as SAL_PAYMENT_DATE
+				 , s.SAL_PAYMENT_DATE as SAL_PAYMENT_DATE
 		  from member m
 		  join department d on (d.dept_code = m.dept_code)
 		  join position p on (p.pos_code = m.pos_code)

@@ -10,9 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cl.cruella.dto.AlertDto;
 import com.cl.cruella.dto.ChatDto;
 import com.cl.cruella.dto.ChatListDto;
 import com.cl.cruella.dto.ChatProfileDto;
@@ -223,6 +225,16 @@ public class ChatController {
 		
 	}
 	
+	@ResponseBody
+	@PostMapping(value="/alertDelete.do",produces="application/json")
+	public int alertDelete(AlertDto a) {
+		
+		int result = chatServiceImpl.alertDelete(a);
+		
+		
+		return result;
+		
+	}
 	
 	
 	

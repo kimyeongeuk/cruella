@@ -190,6 +190,14 @@ public class ChatDao {
 	public List<AlertDto> alertList(MemberDto m) {
 		return sqlSession.selectList("chatMapper.alertList",m);
 	}
+
+	public int alertDelete(AlertDto a) {
+		return sqlSession.delete("chatMapper.alertDelete",a);
+	}
+
+	public int countAlert(MemberDto loginUser) {
+		return sqlSession.selectOne("chatMapper.countAlert",loginUser);
+	}
 	
 
 }
