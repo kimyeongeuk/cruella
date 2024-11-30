@@ -561,6 +561,7 @@
                           id="selectAll"
                           data-value="all"
                           value="all"
+                          name="filter"
                           checked />
                         <label class="form-check-label" for="selectAll" style=" width:50px;">전체</label>
 
@@ -574,6 +575,7 @@
                               id="select_company"
                               data-value="personal"
                               value="company"
+                              name="filter"
                               checked />
                             <label class="form-check-label" for="select_company" style=" width:70px;">전사 일정</label>
                           </div>
@@ -581,9 +583,10 @@
                             <input
                               class="form-check-input input-filter"
                               type="checkbox"
-                              id="select-team"
+                              id="select_team"
                               data-value="business"
                               value="team"
+                              name="filter"
                               checked />
                             <label class="form-check-label" for="select-team" style=" width:50px;">팀 일정</label>
                           </div>
@@ -591,9 +594,10 @@
                             <input
                               class="form-check-input input-filter"
                               type="checkbox"
-                              id="select-personal"
+                              id="select_personal"
                               data-value="family"
                               value="personal"
+                              name="filter"
                               checked />
                             <label class="form-check-label" for="select-personal" style=" width:80px;">개인 일정</label>
                           </div>
@@ -1053,7 +1057,7 @@
                 
                 // 일정 수정시 카테고리 선택에 따른 배경색 바꾸기
                 
-                $('#calCategory2').change(function() {
+                 $('#deleteBtn').on('click', function(){
                     // id="calCategory2"에 들어있는 value 값 가져오기 ( val 은 jquery문 )
                     const selectedValue = $(this).val();
 
@@ -1165,14 +1169,75 @@
     
     
     <script>
+
+		 
     
-    $("#saveChanges").on("click", function () {
-    
+    $('input[name="filter"]').change(function() {
     	
-    }
-    
-    
-    
+    		//alert("잘 되나?");
+    	
+   			//console.log($('input[name="filter"]:checked'));
+    			//console.log($('input[id="select_company"]').is(":checked"));
+   			//console.log($("#select_company").val());
+   			
+   			$.ajax({
+				  url: '${contextPath}/calendar/calendar2.do',
+				  type: 'GET',
+				  data: {
+						 company: $('input[id="select_company"]').is(":checked") ? "T" : "F",
+						 team: $('input[id="select_team"]').is(":checked") ? "T" : "F",
+						 personal: $('input[id="select_personal"]').is(":checked") ? "T" : "F"
+								 
+								 //배열에 map 함수를 어떻게 쓰는지..
+								 
+								 
+				  },
+				  success: function(res) {
+	       				 
+	       					 console.log(res);
+	       					 
+	       					 var title = $()
+	       					 
+	       					 
+	       				// 'calendar' 요소를 찾기
+	       			        var calendarEl = document.getElementById('calendar'); 
+	       					 
+	       			  // 기존 FullCalendar 인스턴스가 존재하면 이를 제거합니다.
+	       			        if (window.currentCalendar) {
+	       			            window.currentCalendar.destroy();  // 기존 캘린더 인스턴스 제거
+	       			        }
+	       					 
+
+	       					var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+	       						
+	       						
+	       				        events: res // res는 이벤트 데이터를 포함한 배열 또는 객체여야 합니다.
+	       				    });
+
+	       							// 캘린더 렌더링
+	       			        calendar.render();
+
+
+	       				    
+	       				    
+	       				    
+      			 },
+			  })
+   			
+   			
+   			
+   			//$.ajax({
+   				
+   				//console.log($('#select_company').val());
+   				
+   				
+   				//url: '${contextPath}/calendar/calendar.do?company=true&team=false&personal=true',
+          //type: 'GET'
+   				
+   				
+   			//})
+   			
+    });
     
     
     

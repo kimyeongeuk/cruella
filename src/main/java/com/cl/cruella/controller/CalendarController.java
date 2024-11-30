@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cl.cruella.dto.CalendarDto;
+import com.cl.cruella.dto.CalendarRequestDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.service.CalendarServiceImpl;
 
@@ -32,7 +34,7 @@ public class CalendarController {
 	
 	// 캘린더 조회
 	@GetMapping("/calendar.do")
-	public String selectCalenderList(Model model, HttpSession session) {
+	public String selectCalenderList(String company, Model model, HttpSession session) {
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("deptCode", ((MemberDto)session.getAttribute("loginUser")).getDeptCode());
@@ -47,6 +49,38 @@ public class CalendarController {
 		
 		return "/calendar/calendar"; // 이 jsp를 실행 할 때 위에있는 list를 가지고 간다. 그래서 jsp 에서 list를 쓸 수 있음
 	}
+	
+	
+	
+	// 캘린더 조회
+		@ResponseBody
+		@GetMapping("/calendar2.do")
+		public List<CalendarDto> selectCalenderList2(
+				@RequestParam String company, 
+				@RequestParam String team,
+				@RequestParam String personal,
+				Model model, 
+				HttpSession session) {
+			
+			Map<String, String> map = new HashMap<>();
+			
+			map.put("deptCode", ((MemberDto)session.getAttribute("loginUser")).getDeptCode());
+			map.put("memNo", ((MemberDto)session.getAttribute("loginUser")).getMemNo());
+			map.put("company", company);
+			map.put("team", team);
+			map.put("personal", personal);
+			
+			System.out.println(company);
+			
+			List<CalendarDto> list = calendarServiceImpl.selectCalendarList(map);
+
+			
+			return list; // 이 jsp를 실행 할 때 위에있는 list를 가지고 간다. 그래서 jsp 에서 list를 쓸 수 있음
+		}
+	
+	
+	
+	
 	
 	
 	// 캘린더 추가
