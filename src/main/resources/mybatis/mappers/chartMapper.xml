@@ -8,6 +8,8 @@
     <result column="rv_regist_date" property="rvRegistDate" />
     <result column="rv_store" property="rvStore" />
     <result column="dept_code" property="deptCode" />
+    <result column="month" property="month" />
+    <result column="sumValue" property="sumValue" />
   </resultMap>
 
   <!-- DEPT_CODE별 연도와 월의 매출 데이터를 조회하는 쿼리 -->
@@ -31,18 +33,18 @@
   </select>
 
   <!-- 연도별 매출 데이터를 조회하는 쿼리 -->
-  <select id="findDeptIncomeByYear" parameterType="map" resultMap="chartResultMap">
-    SELECT
-        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM') AS month,
-        SUM(rv_value) AS rvValue
-    FROM
-        REVENUE
-    WHERE
-        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'YYYY') = #{year}
-    GROUP BY
-        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM')
-    ORDER BY
-        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM')
-  </select>
+	<select id="findMonthlySalesByYear" parameterType="map" resultMap="chartResultMap">
+	    SELECT
+	        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM') AS month,
+	        SUM(rv_value) AS sumValue
+	    FROM
+	        REVENUE
+	    WHERE
+	        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'YYYY') = #{year}
+	    GROUP BY
+	        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM')
+	    ORDER BY
+	        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM')
+	</select>
 
 </mapper>

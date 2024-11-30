@@ -19,9 +19,7 @@ public class ChartServiceImpl implements ChartService {
     }
 
     @Override
-    public List<RevenueDto> getDeptIncomeByYear(Map<String, String> params) {
-        List<RevenueDto> results = chartDao.findDeptIncomeByYear(params);
-        results.forEach(System.out::println); // 로그 출력으로 데이터 확인
-        return results;
+    public List<RevenueDto> getMonthlySalesByYear(String year) {
+        return chartDao.findMonthlySalesByYear(year);
     }
 }
