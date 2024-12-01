@@ -94,7 +94,7 @@
               </div>
 
 
-
+							<!--  
               <c:if test="${ loginUser.deptCode eq 'S3' }">
               <button onclick="location.href='${contextPath}/supply/supplyRegist.do'" 
                 type="button"
@@ -103,7 +103,9 @@
                 비품 신청목록
               </button>
               </c:if>
-
+							-->
+							
+							
               <!-- /비품 신청서 버튼 -->
 
               <!-- 비품 추가 모달 버튼 --> <!-- 지원팀만 보이게 쿼리문 수정-->
@@ -119,6 +121,7 @@
               </c:if>
 
                 <!-- 비품 신청 모달 버튼 ( 아직 구현안함 ) -->
+               <!--
                 <button
                 type="button"
                 class="btn btn-primary"
@@ -127,7 +130,7 @@
                 style="float:inline-end;">
                 비품 신청
               </button>
-
+							  -->
 
 
 
@@ -845,6 +848,54 @@
 				  }
 			  }) 
 	  } 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	   // 사이드바 처리
+		document.addEventListener("DOMContentLoaded", function () {
+	  	
+			const element = document.getElementById("itemsAll");
+			
+	  	document.getElementById("items").classList.add("open");
+	  	element.style.backgroundColor = "#958CF4";
+	  	element.style.color = "white";
+	  	element.classList.add("active");
+	  	
+	  	
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	  
 		</script>	
 

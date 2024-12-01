@@ -1,6 +1,7 @@
 package com.cl.cruella.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,9 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cl.cruella.dto.AlertDto;
 import com.cl.cruella.dto.ChatDto;
 import com.cl.cruella.dto.ChatListDto;
 import com.cl.cruella.dto.ChatProfileDto;
@@ -42,11 +45,24 @@ public class ChatController {
 
 		// 채팅방 목록
 		List<ChatDto> chatList = chatServiceImpl.chatList(memNo);
+		log.debug("asdasdf:{}",chatList);
 		// 사원 프로필상태
 		List<ChatProfileDto> chatProfileList = chatServiceImpl.chatProFileList();
+		log.debug("asdasdf:{}",chatProfileList);
 		// 사원 목록
 		List<MemberDto> memberList = chatServiceImpl.memberList();
-		// 채팅방 인원 체크
+		log.debug("asdasdf:{}",memberList);
+		// 채팅방 인원 프사 링크 가져오기
+		List<ChatDto> list2 = new ArrayList<>();
+		list2.addAll(chatList);
+		if(!chatList.isEmpty()) {
+			for(int i=0;i<chatList.size();i++) {
+				list2.get(i).setMemNo(memNo);
+			}
+			
+		}
+		List<MemberDto> memberLink = chatServiceImpl.memberLink(list2);
+		log.debug("sadf:{}",memberLink);
 		
 	    Date today = new Date();
 	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -73,7 +89,7 @@ public class ChatController {
 		model.addAttribute("chatList",chatList);
 		model.addAttribute("chatProfileList",chatProfileList);
 		model.addAttribute("memberList",memberList);
-
+		model.addAttribute("memberLink",memberLink);
 	}
 	
 	
@@ -189,6 +205,50 @@ public class ChatController {
 		
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/notice.do",produces="application/json")
+	public MessageDto noticeMsg(MessageDto m) {
+		
+		m.setMsgContent(chatServiceImpl.noticeMsgData(m));
+		
+		
+		return m;
+		
+	}
+	
+		
+	@ResponseBody
+	@GetMapping(value="/deleteNotice.do",produces="application/json")
+	public int deleteNotice(MessageDto m) {
+		
+		int result = chatServiceImpl.deleteNotice(m);
+		
+		
+		return result;
+		
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/statusMsg.do",produces="application/json")
+	public int statusMsg(ChatProfileDto m) {
+		
+		int result = chatServiceImpl.statusMsg(m);
+		
+		
+		return result;
+		
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/alertDelete.do",produces="application/json")
+	public int alertDelete(AlertDto a) {
+		
+		int result = chatServiceImpl.alertDelete(a);
+		
+		
+		return result;
+		
+	}
 	
 	
 	

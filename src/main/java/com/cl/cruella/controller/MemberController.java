@@ -2,7 +2,6 @@ package com.cl.cruella.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cl.cruella.dto.AlertDto;
 import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.BoardDto;
 import com.cl.cruella.dto.MemberDto;
@@ -29,6 +29,7 @@ import com.cl.cruella.dto.PageInfoDto;
 import com.cl.cruella.dto.WorkLogDto;
 import com.cl.cruella.service.AppService;
 import com.cl.cruella.service.BoardService;
+import com.cl.cruella.service.ChatServiceImpl;
 import com.cl.cruella.service.MemberService;
 import com.cl.cruella.service.NoticeService;
 import com.cl.cruella.service.WorkLogService;
@@ -56,6 +57,7 @@ public class MemberController {
 	private final AppService appService;
 	private final NoticeService noticeService;
 	private final WorkLogService wlService;
+	private final ChatServiceImpl chatServiceImpl;
 
 	
 	// 대쉬보드 포워딩
@@ -66,8 +68,8 @@ public class MemberController {
 		
 		MemberDto loginUser = memberService.selectMember(m);
 		
-		session.setAttribute("loginUser", loginUser);
 		
+		session.setAttribute("loginUser", loginUser);
 		return "redirect:/";
 		
 		
@@ -83,7 +85,8 @@ public class MemberController {
 								 , HttpServletRequest request) throws IOException {	// memNo = '입력한 아이디', memPwd = '입력한 비밀번호'
 		
 		MemberDto loginUser = memberService.selectMember(m);
-		
+		List<AlertDto> alert = chatServiceImpl.alertList(loginUser);
+		session.setAttribute("alert", alert);
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
@@ -459,7 +462,7 @@ public class MemberController {
 	// 사원등록(이예빈)
 	@PostMapping("/insert.do")
 	public String insertMember(MemberDto m, RedirectAttributes rd, @RequestParam("uploadFile") MultipartFile uploadFile) {
-		
+		log.debug("m{}", m);
 		if( m.getMemPwd()== null) {
 			m.setMemPwd("111111");
 		} 
@@ -571,6 +574,25 @@ public class MemberController {
 	}
 	
 	
+	// 퇴사 처리 
+	@PostMapping("/retire.do")
+	public String retireMember(@RequestParam("memNo") String memNo, RedirectAttributes redirectAttributes) {
+	    try {
+	        // 1. memNo로 상태를 'N'으로 변경
+	    	memberService.updateMemberRetire(memNo);
+
+	        // 2. 성공 메시지 설정
+	        redirectAttributes.addFlashAttribute("message", "퇴사 처리가 완료되었습니다.");
+	    } catch (Exception e) {
+	        // 3. 실패 메시지 설정
+	        redirectAttributes.addFlashAttribute("errorMessage", "퇴사 처리 중 오류가 발생했습니다.");
+	        e.printStackTrace();
+	    }
+
+	    // 4. 목록 페이지로 리다이렉트
+	    return "redirect:/member/employeelistview.do";
+	}
+	
 	
 	
 	
@@ -652,11 +674,16 @@ public class MemberController {
 	
 	// 근무시간조회(이예빈)
 	@GetMapping("/workhoursview.do")
-	public void workhoursview() {}
-	
-	// 조직도조회(이예빈)
-	@GetMapping("/organization.do")
-	public void organization() {}
+	public void workhoursview(HttpSession session, Model model) {
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		
+		List<WorkLogDto> wl = memberService.workhoursview(memNo);
+		model.addAttribute("memNo", wl);
+		
+		
+		
+		
+	}	
 
 	
 	
@@ -664,20 +691,31 @@ public class MemberController {
 	
 	@PostMapping("/paystub.do")
 	public String paystub(Model model,@RequestParam String memNo) {
-		log.debug("memNo :{}",memNo);
-		
-		MemberDto list = memberService.paystub(memNo);
-		
-		log.debug("date : {}",list.getHireDate());
-		
-		
+
+		MemberDto list = memberService.paystub(memNo);			
 		
 		model.addAttribute("list", list);
-		log.debug("list :{}",list);
 		
 		return "/member/paystub";
 	}
 	
+	// 폰번호유효성
+	@ResponseBody
+	@PostMapping("/checkPhone.do")
+	public int checkPhone(@RequestParam("phone") int phone) {
+		return memberService.checkPhone(phone);
+	}
+
+	// 급여내역확인
+	@GetMapping("/checksalary.do")
+	public void checksalary(HttpSession session, Model model) {
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		
+		log.debug("memNo: {}", memNo);
+		
+		List<MemberDto> cs = memberService.checksalary(memNo);
+		model.addAttribute("memNo", cs);
+	}
 
 	 
 }

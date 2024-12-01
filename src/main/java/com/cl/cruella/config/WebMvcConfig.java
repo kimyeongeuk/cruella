@@ -5,6 +5,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.cl.cruella.interceptor.AlertIntercepter;
 import com.cl.cruella.interceptor.LoginCheckInterceptor;
 
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
 
 	
 	private final LoginCheckInterceptor loginCheckInterceptor;
-	
+	private final AlertIntercepter alertInterceptor;
 	
 	/*
 	 * WebMvcConfigurer
@@ -45,7 +46,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
   	 */
 		
 		registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/member/myinfo.do").addPathPatterns("/board/regist.do");
-		
+		registry.addInterceptor(alertInterceptor).addPathPatterns("/**");
 		
 		
 	}

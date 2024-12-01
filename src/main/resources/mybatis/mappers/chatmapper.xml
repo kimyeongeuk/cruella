@@ -70,7 +70,9 @@
 	<result column="PROFILE_URL" property="profileURL" />
 	<result column="DEPT_NAME" property="deptCode" />
 	<result column="POS_NAME" property="posCode" />
+	<result column="chat_no" property="chatNo" />
 </resultMap>
+
 
 
 <!-- 채팅방 목록 불러오기 -->
@@ -516,6 +518,100 @@ delete
  where	chat_no = #{chatNo}
 </delete>
 
+
+<select id="noticeMsg" resultType="string">
+select
+				msg_content
+	from
+				message
+ where
+ 				msg_no = #{msgNo}
+</select>
+
+
+<update id="insertNoticeNo">
+update
+				chat_list
+	 set
+	 			chat_notice_no = #{msgContent}
+ where
+ 				chat_no = #{chatNo}
+</update>
+
+
+<select id="noticeMsgData" resultType="string">
+
+select
+				CHAT_NOTICE_NO
+	from
+				chat_list 
+ where
+ 				chat_no = #{chatNo}
+ 	 and	mem_no = #{memNo}
+
+</select>
+
+<update id="deleteNotice">
+update
+				chat_list
+	 set
+	 			CHAT_NOTICE_NO = null
+ where
+ 				chat_no = #{chatNo}
+ 	 and	mem_no = #{memNo}
+</update>
+
+<select id="statusMsg" resultType="string">
+update
+				chat_profile
+	 set	cp_message = #{cpMessage}
+ where	mem_no = #{memNo}
+				
+</select>
+
+<select id="alertList" resultMap="alertResultMap">
+select ALERT_NO
+		 , ALERT_TYPE
+		 , ALERT_CONTENT
+		 , ALERT_STATUS
+		 , MEM_NO
+		 , ALERT_REGIST_DATE
+		 , ALERT_LINK
+  from
+  			alert
+ where
+ 				mem_no = #{memNo}
+</select>
+
+<delete id="alertDelete">
+delete
+	from	alert
+ where	alert_no = #{alertNo}
+</delete>
+
+<select id="countAlert" resultType="_int">
+SELECT
+    	count(ALERT_STATUS)
+  from 
+        alert
+WHERE
+        mem_no = #{memNo}
+  and   ALERT_STATUS= 'N'
+</select>
+
+<select id="memberLink" resultMap="memberResultMap">
+
+select
+        m.mem_no,
+        profile_URL,
+        chat_no
+  from
+        member m
+  join  chat_list cl on (m.mem_no = cl.mem_no)
+ where  chat_no = #{chatNo}
+   and	m.mem_no != #{memNo}
+ 
+</select>
 
 
 </mapper>

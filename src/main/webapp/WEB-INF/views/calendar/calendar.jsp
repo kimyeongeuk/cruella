@@ -36,6 +36,10 @@
          .select2-selection__rendered{
             display:none;
          }
+         
+      .fc-event-time{
+      	display:none;
+      }
 
     </style>
 
@@ -86,14 +90,14 @@
 
           // 블로그
           eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트
-          console.log(obj);
+          //console.log(obj);
         },
         eventChange: function(obj) { // 이벤트가 수정되면 발생하는 이벤트
-          console.log(obj);
+          //console.log(obj);
         },
         
         eventRemove: function(obj){  // 이벤트가 삭제되면 발생하는 이벤트
-          console.log(obj);
+          //console.log(obj);
         },
         /*
         select: function(arg) { // 캘린더에서 드래그로 이벤트를 생성할 수 있다
@@ -122,6 +126,7 @@
             end: '${list.calEndDt}T23:59',
             backgroundColor: '${list.calRgb}', // backgroundColor 추가
             borderColor: 'white', // borderColor를 빈 문자열로 설정
+            color: 'black',
             extendedProps:{
             	rgb: '${list.calRgb}',
               category: '${list.calCategory}',
@@ -139,16 +144,25 @@
         
         
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
               // 이벤트 수정 (드래그로로 일정 이동시 수정하기)
               
               eventDrop: function(info) {
            
-            console.log("콘솔 나와랏: ", info); 
+            //console.log("콘솔 나와랏: ", info); 
            
            
            
            
-            console.log(info);
+            //console.log(info);
             
               if(confirm("'"+ info.event.title + "' 일정을 수정하시겠습니까? ") ){
                  
@@ -163,16 +177,19 @@
             obj.end = info.event.endStr.split('T')[0] + "T23:00";      // 수정된 종료일 (YYYY-MM-DD)
                 
    
-                 //obj.title = info.event._def.title;
+                 obj.title = info.event._def.title;
                  //obj.start = info.event._instance.range.start;
                  //obj.end = info.event._instance.range.end;
                  events.push(obj);
                  
-                 	console.log("================================")
-                 	console.log(info.event.end);
-                 	console.log(info.event.endStr);
-                  console.log(info.event.endStr.split('T')[0]);
-                 	console.log("================================")
+                 	//console.log("================================")
+                 	//console.log(info.event.end);
+                 	//console.log(info.event.endStr);
+                  //console.log(info.event.endStr.split('T')[0]);
+                  //console.log(info.event.title);
+                  //console.log(info.event.backgroundColor);
+                  //console.log(info.event._def.extendedProps.category);     
+                  //console.log("================================")
 
                  	$.ajax({
                        url: '${contextPath}/calendar/updateCalendar.do',
@@ -181,8 +198,12 @@
                           
 			                      calStartDt: obj.start,  // 수정된 시작 날짜
 			                      calEndDt: info.event.end == null ? obj.start : info.event.endStr.split('T')[0],      // 수정된 종료 날짜
-			                      calNo: info.event.id    // 수정하려는 이벤트의 ID
-                          
+			                      calNo: info.event.id,    // 수정하려는 이벤트의 ID
+                          	calTitle: info.event.title,
+                          	calRgb: info.event.backgroundColor,
+                          	calCategory: info.event._def.extendedProps.category,
+                          	
+                          	
                           //calStartDt: info.event.start.toISOString().split('T')[0],
 		                      //calEndDt: info.event.end.toISOString().split('T')[0],
 		                      //calNo: info.event.id
@@ -300,14 +321,95 @@
               $("#end2").val(endDateString);  // 종료일을 'end' input에 입력
                 
 
+              
+              
+              
+              
 							
               // RGB를 수정 모달에 뜨게 해주기
-              $("#color2").val(event.extendedProps.rbg);
+              //$("#color2").val(event.extendedProps.rbg);
 
+              
+              //
+              
+                	//var selectedValue = $(this).val();
+                    const selectedValue = $("#calCategory2").val(event.extendedProps.category); // 해당 일정의 카테고리를 data 속성으로 가져오는 방식 사용
+              			console.log(selectedValue);
+										
+                   	console.log(info.event.extendedProps.rgb);
+
+                	
+                	
+                	$('#color2').html("");
+
+                    let a = "";
+                    if(selectedValue.val() === '전사 일정'){
+                      a = '<option value="rgb(250, 201, 255)" class="optionHover" style="background-color: rgb(250, 201, 255); ">전사 일정</option>'
+                          $('#color2').html(a);
+
+                    }else if(selectedValue.val() === '팀 일정'){
+                      a = '<option value="rgb(190, 255, 200)" class="optionHover" style="background-color: rgb(190, 255, 200);">팀 일정</option>'
+                          $('#color2').html(a);
+
+                    }else{ // '개인 일정'
+
+                    	a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;">연빨강</option>';
+                        a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
+                        a += '<option value="rgb(255, 245, 191)" class="optionHover" style="background-color: rgb(255, 245, 191); color:transparent;">연노랑</option>'; 
+                        a += '<option value="rgb(207, 253, 226)" class="optionHover" style="background-color: rgb(207, 253, 226); color:transparent;">연초록</option>';      
+                        a += '<option value="rgb(200, 247, 255)" class="optionHover" style="background-color: rgb(202, 240, 247); color:transparent;">연파랑</option>';     
+                        a += '<option value="rgb(201, 206, 255)" class="optionHover" style="background-color: rgb(201, 206, 255); color:transparent;">연남색</option>';     
+                        a += '<option value="rgb(238, 212, 255)" class="optionHover" style="background-color: rgb(238, 212, 255); color:transparent;">연보라</option>';    
+                	
+                        
+
+
+                        $('#color2').html(a);
+                    	
+                     // info.event.extendedProps.rgb 값과 일치하는 option을 selected로 설정
+                        $('#color2 option').each(function() {
+                            // 각 option의 value 값을 가져와서 비교
+                            if ($(this).val() === info.event.extendedProps.rgb) {
+                                // 일치하는 값이 있으면 해당 option을 selected로 설정
+                                $(this).prop('selected', true);
+                            }
+                            
+                            
+                        });
+
+
+
+                    	//$(info.event.extendedProps.rgb);
+                    	
+                    	
+                    	
+                      //a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;" selected>연빨강</option>';
+                      //a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
+                     // a += '<option value="rgb(255, 245, 191)" class="optionHover" style="background-color: rgb(255, 245, 191); color:transparent;">연노랑</option>'; 
+                     // a += '<option value="rgb(207, 253, 226)" class="optionHover" style="background-color: rgb(207, 253, 226); color:transparent;">연초록</option>';      
+                     // a += '<option value="rgb(200, 247, 255)" class="optionHover" style="background-color: rgb(202, 240, 247); color:transparent;">연파랑</option>';     
+                      //a += '<option value="rgb(201, 206, 255)" class="optionHover" style="background-color: rgb(201, 206, 255); color:transparent;">연남색</option>';     
+                     // a += '<option value="rgb(238, 212, 255)" class="optionHover" style="background-color: rgb(238, 212, 255); color:transparent;">연보라</option>';    
+                    }
+
+                	
+
+              
+              
+              
+              //
+              
+              
+              
+              
+              
+              
               
               
               eventclickmodal.show();
         	  
+
+              
               
               
         	  
@@ -339,16 +441,29 @@
 
           select: function(evt){ // 날짜 셀 클릭시 실행되는 펑션
              
+        	  
+        	  // 모달 닫기 및 폼 초기화
+              
+              $("#exampleModal").modal("hide");
+        			 $("#calCategory").val("선택");
+              $("#title").val("");
+              $("#start").val("");
+              $("#end").val("");
+              $("#color").html("");
+        	  
+        	  
+        	  
+        	  
              
-             console.log("==================등록====================");
-                 console.log(evt.start, "||", new Date(evt.start), "||", new Date(evt.start).toISOString().split('T')[0]);
-                 console.log(evt.startStr, "||", new Date(evt.startStr), "||", new Date(evt.startStr).toISOString().split('T')[0]);
-                 console.log()
-                 console.log("======================================");
+            // console.log("==================등록====================");
+                 //console.log(evt.start, "||", new Date(evt.start), "||", new Date(evt.start).toISOString().split('T')[0]);
+                 //console.log(evt.startStr, "||", new Date(evt.startStr), "||", new Date(evt.startStr).toISOString().split('T')[0]);
+                // console.log()
+                // console.log("======================================");
              
              
              
-            console.log(evt); // {startStr:'시작날짜', endStr:'끝날짜'} 가 들어있다. 즉, 셀 드래그로 선택시 첫 날짜는 startStr에, 마지막 날짜는 endStr에 담긴다.
+            //console.log(evt); // {startStr:'시작날짜', endStr:'끝날짜'} 가 들어있다. 즉, 셀 드래그로 선택시 첫 날짜는 startStr에, 마지막 날짜는 endStr에 담긴다.
 
             //alert('sss');
             //$('#modify').modal();
@@ -389,27 +504,39 @@
             start: $("#start").val(),
             end: $("#end").val() + 'T23:00',
             color: $("#color").val(),
+            category: $("#calCategory").val()
           };
           
+          console.log(eventData);
           
           //빈값입력시 오류
           if (
             eventData.title == "" ||
             eventData.start == "" ||
-            eventData.end == ""
+            eventData.end == ""		||
+            eventData.category == null ||
+            eventData.color == null
           ) {
             alert("입력하지 않은 부분이 있습니다.");
-
+            e.preventDefault(); // 모달을 닫지 않도록 방지
+            
+            
             //끝나는 날짜가 시작하는 날짜보다 값이 크면 안됨
           } else if ($("#start").val() > $("#end").val()) {
             alert("날짜를 바르게 입력하세요.");
+            e.preventDefault(); // 모달을 닫지 않도록 방지
+
+            return; // 모달 창을 닫지 않고 함수 종료
+            
+            
           } else if($("#start").val() === $("#end").val()){
       	  	eventData.allDay = true; // allDay true속성 추가
             calendar.addEvent(eventData);
-            $("#exampleModal").modal("hide");              
+            
+            
           }else{
               calendar.addEvent(eventData);
-              $("#exampleModal").modal("hide");   
+              
           }
 
 
@@ -436,6 +563,14 @@
                   
             	   }),
                success: function(res) {
+            	   if (res > 0) {  // 성공적으로 일정이 추가되었을 때
+            	        alert('일정이 추가되었습니다.');
+            	        $('#dayclickmodal').modal('hide');  // 모달 닫기
+            	      } else {
+            	        alert('일정 추가에 실패했습니다. 다시 시도해주세요.');
+            	      }
+            	   
+            	   /*
                  if (res > 0) {  // 성공적으로 일정이 추가되었을 때
                    alert('일정이 추가되었습니다.');
                    $('#dayclickmodal').modal('hide');  // 모달 닫기
@@ -443,17 +578,21 @@
                  } else {
                    alert('일정 추가에 실패했습니다. 다시 시도해주세요.');
                  }
+                 */
+                 
+                 
                },
               
              });
 
              // 모달 닫기 및 폼 초기화
                                 
-                   $("#exampleModal").modal("hide");
-                   $("#title").val("");
-                   $("#start").val("");
-                   $("#end").val("");
-                   $("#color").val("");
+                    $("#exampleModal").modal("hide");  // 모달 닫기 (성공적인 경우에만 호출)
+									  $("#calCategory").val("선택");
+									  $("#title").val("");
+									  $("#start").val("");
+									  $("#end").val("");
+									  $("#color").val("");
            
              
              
@@ -463,17 +602,6 @@
              
              
                    
-              
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
             
             
           });
@@ -555,6 +683,7 @@
                           id="selectAll"
                           data-value="all"
                           value="all"
+                          name="filter"
                           checked />
                         <label class="form-check-label" for="selectAll" style=" width:50px;">전체</label>
 
@@ -568,6 +697,7 @@
                               id="select_company"
                               data-value="personal"
                               value="company"
+                              name="filter"
                               checked />
                             <label class="form-check-label" for="select_company" style=" width:70px;">전사 일정</label>
                           </div>
@@ -575,9 +705,10 @@
                             <input
                               class="form-check-input input-filter"
                               type="checkbox"
-                              id="select-team"
+                              id="select_team"
                               data-value="business"
                               value="team"
+                              name="filter"
                               checked />
                             <label class="form-check-label" for="select-team" style=" width:50px;">팀 일정</label>
                           </div>
@@ -585,9 +716,10 @@
                             <input
                               class="form-check-input input-filter"
                               type="checkbox"
-                              id="select-personal"
+                              id="select_personal"
                               data-value="family"
                               value="personal"
+                              name="filter"
                               checked />
                             <label class="form-check-label" for="select-personal" style=" width:80px;">개인 일정</label>
                           </div>
@@ -680,9 +812,9 @@
                     class="select2 form-select"
                     data-allow-clear="true">
                     
-                    <option value="rgb(146, 142, 165)" class="companyCal" style="background-color: rgb(146, 142, 165);" selected>전사 일정</option>
+                    <option value="rgb(250, 201, 255)" class="companyCal" style="background-color: rgb(250, 201, 255);" selected>전사 일정</option>
 
-                    <option value="rgb(113, 159, 197)" class="teamCal" style="background-color: rgb(113, 159, 197);" selected>팀 일정</option>
+                    <option value="rgb(190, 255, 200)" class="teamCal" style="background-color: rgb(190, 255, 200);" selected>팀 일정</option>
 
                     <option class="personalCal" value="선택" disabled selected style="display: none;">선택</option>
                     <option value="rgb(253, 191, 191)" class="personalCal" style="background-color: rgb(253, 191, 191); color:transparent;">연빨강</option>
@@ -783,9 +915,9 @@
                     class="select2 form-select"
                     data-allow-clear="true">
                     
-                    <option value="rgb(247, 159, 255)" class="companyCal" style="background-color: rgb(247, 159, 255);" selected>전사 일정</option>
+                    <option value="rgb(250, 201, 255)" class="companyCal" style="background-color: rgb(250, 201, 255);" selected>전사 일정</option>
 
-                    <option value="rgb(163, 255, 178)" class="teamCal" style="background-color: rgb(163, 255, 178);" selected>팀 일정</option>
+                    <option value="rgb(190, 255, 200)" class="teamCal" style="background-color: rgb(190, 255, 200);" selected>팀 일정</option>
 
                     <option class="personalCal" value="선택" disabled selected style="display: none;">선택</option>
                     <option value="rgb(253, 191, 191)" class="personalCal" style="background-color: rgb(253, 191, 191); color:transparent;">연빨강</option>
@@ -987,9 +1119,9 @@
 
                     let a = "";
                     if(selectedValue === '전사 일정'){
-                      a = '<option value="rgb(247, 159, 255)" class="optionHover" style="background-color: rgb(247, 159, 255);">전사 일정</option>'
+                      a = '<option value="rgb(250, 201, 255)" class="optionHover" style="background-color: rgb(250, 201, 255);">전사 일정</option>'
                     }else if(selectedValue === '팀 일정'){
-                      a = '<option value="rgb(163, 255, 178)" class="optionHover" style="background-color: rgb(163, 255, 178);">팀 일정</option>'
+                      a = '<option value="rgb(190, 255, 200)" class="optionHover" style="background-color: rgb(190, 255, 200);">팀 일정</option>'
                     }else{ // '개인 일정'
                       a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;" selected>연빨강</option>';
                       a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
@@ -1016,17 +1148,18 @@
                 $('.fc-event-title-container').on('click', function(){
                 	
                 	console.log($('#calCategory2').val());
-                	var selectedValue = $(this).val();
-                	
+                	//var selectedValue = $(this).val();
+                    const selectedValue = $(this).data('category'); // 해당 일정의 카테고리를 data 속성으로 가져오는 방식 사용
+
                 	
                 	
                 	$('#color2').html("");
 
                     let a = "";
                     if(selectedValue === '전사 일정'){
-                      a = '<option value="rgb(247, 159, 255)" class="optionHover" style="background-color: rgb(247, 159, 255); ">전사 일정</option>'
+                      a = '<option value="rgb(228, 157, 235)" class="optionHover" style="background-color: rgb(228, 157, 235); ">전사 일정</option>'
                     }else if(selectedValue === '팀 일정'){
-                      a = '<option value="rgb(163, 255, 178)" class="optionHover" style="background-color: rgb(163, 255, 178);">팀 일정</option>'
+                      a = '<option value="rgb(190, 255, 200)" class="optionHover" style="background-color: rgb(190, 255, 200);">팀 일정</option>'
                     }else{ // '개인 일정'
                       a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;" selected>연빨강</option>';
                       a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
@@ -1047,7 +1180,7 @@
                 
                 // 일정 수정시 카테고리 선택에 따른 배경색 바꾸기
                 
-                $('#calCategory2').change(function() {
+                 $('#calCategory2').on('click', function(){
                     // id="calCategory2"에 들어있는 value 값 가져오기 ( val 은 jquery문 )
                     const selectedValue = $(this).val();
 
@@ -1059,9 +1192,9 @@
 
                     let a = "";
                     if(selectedValue === '전사 일정'){
-                      a = '<option value="rgb(247, 159, 255)" class="optionHover" style="background-color: rgb(247, 159, 255);">전사 일정</option>'
+                      a = '<option value="rgb(250, 201, 255)" class="optionHover" style="background-color: rgb(250, 201, 255);">전사 일정</option>'
                     }else if(selectedValue === '팀 일정'){
-                      a = '<option value="rgb(163, 255, 178)" class="optionHover" style="background-color: rgb(163, 255, 178);">팀 일정</option>'
+                      a = '<option value="rgb(190, 255, 200)" class="optionHover" style="background-color: rgb(190, 255, 200);">팀 일정</option>'
                     }else{ // '개인 일정'
                       a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;" selected>연빨강</option>';
                       a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
@@ -1102,6 +1235,65 @@
     
     $("#saveUpdates").on("click", function(){
     	
+    	
+    	
+    	// 시작 날짜가 종료날짜보다 크면 alert 뜨게하기
+        
+        var eventData = {
+                title: $("#title2").val(),
+                start: $("#start2").val(),
+                end: $("#end2").val() + 'T23:00',
+                color: $("#color2").val(),
+                category: $("#calCategory2").val()
+              };
+              
+              console.log(eventData);
+              
+              //빈값입력시 오류
+              if (
+                eventData.title == "" ||
+                eventData.start == "" ||
+                eventData.end == ""		||
+                eventData.category == null ||
+                eventData.color == null
+              ) {
+                alert("입력하지 않은 부분이 있습니다.");
+                e.preventDefault(); // 모달을 닫지 않도록 방지
+                
+                
+                //끝나는 날짜가 시작하는 날짜보다 값이 크면 안됨
+              } else if ($("#start2").val() > $("#end2").val()) {
+                alert("날짜를 바르게 입력하세요.");
+                e.preventDefault(); // 모달을 닫지 않도록 방지
+
+                return; // 모달 창을 닫지 않고 함수 종료
+                
+                
+              } else if($("#start2").val() === $("#end2").val()){
+          	  	eventData.allDay = true; // allDay true속성 추가
+                
+              }
+        
+        //
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
     	if(confirm("일정을 수정하시겠습니까? ") ){
     		
     		var start = $("#start2").val();
@@ -1116,8 +1308,8 @@
     		
     		//console.log(start);
     		//console.log(end);
-    		console.log(selectedId);
-    		console.log(rgb);
+    		//console.log(selectedId);
+    		//console.log(rgb);
     		
          	$.ajax({
                url: '${contextPath}/calendar/updateCalendar.do',
@@ -1159,11 +1351,107 @@
     
     
     <script>
+
     
-    $("#saveChanges").on("click", function () {
+    //console.log('${list}');
     
+    
+		 
+    
+    $('input[name="filter"]').change(function() {
     	
-    }
+    		//alert("잘 되나?");
+    	
+   			//console.log($('input[name="filter"]:checked'));
+    			//console.log($('input[id="select_company"]').is(":checked"));
+   			//console.log($("#select_company").val());
+   			
+   			$.ajax({
+				  url: '${contextPath}/calendar/calendar2.do',
+				  type: 'GET',
+				  data: {
+						 company: $('input[id="select_company"]').is(":checked") ? "T" : "F",
+						 team: $('input[id="select_team"]').is(":checked") ? "T" : "F",
+						 personal: $('input[id="select_personal"]').is(":checked") ? "T" : "F"
+								 
+								 
+				  },
+				  success: function(res) {
+	       				 
+	       					 console.log(res);
+	       					 
+	       				
+	       					 let ttt = [];
+	       					 for(let i = 0; i < res.length; i++){
+	       						 let obj={
+	       									  	id: res[i].calNo,
+	       					            title: res[i].calTitle,
+	       					            start: res[i].calStartDt,
+	       					            end: res[i].calEndDt + "T23:59",
+	       					            backgroundColor: res[i].calRgb, // backgroundColor 추가
+	       					            borderColor: 'white', // borderColor를 빈 문자열로 설정
+	       					            extendedProps:{
+	       					            	rgb: res[i].calRgb,
+	       					              category: res[i].calCategory,
+	       					            },
+	       					            
+	       					         		allDay: res[i].calStartDt === res[i].calEndDt ? true : false
+
+	       						};
+	       					    ttt.push(obj);
+	       					  }
+
+	       					 var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+	       					    events: ttt
+	       					  });
+	       					 
+	       					 
+	       					 
+	       			        calendar.render();
+
+
+	       				    
+	       				    
+	       				    
+      			 },
+			  })
+   			
+   			
+   		
+   			
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+ // 사이드바 처리
+	document.addEventListener("DOMContentLoaded", function () {
+  	
+		const element = document.getElementById("calendarAll");
+		
+  	document.getElementById("schedule").classList.add("open");
+  	element.style.backgroundColor = "#958CF4";
+  	element.style.color = "white";
+  	element.classList.add("active");
+  	
+  	
+	});
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     

@@ -3,6 +3,135 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
+<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script> 
+<script>
+
+
+
+var count = 0;
+const sock = new SockJS("${contextPath}/cruella"); 
+sock.onmessage = onMessage;
+
+function onMessage(evt){
+		console.log(evt.data);
+
+		
+				var chatData = JSON.parse(evt.data);
+				console.log(chatData);
+
+				
+				
+				var str = '';
+		
+				 str += '<li class="dropdown-notifications-list scrollable-container" id="alert'+chatData.alertNo+'" data-alert-id="'+chatData.alertNo+'">'
+				 str += '<input type="hidden" value="'+chatData.alertNo+'">'
+				 str += '<ul class="list-group list-group-flush">'
+				 str += '<li class="list-group-item list-group-item-action dropdown-notifications-item">'
+				 str += '<div class="d-flex">'
+				 str += '<div class="flex-shrink-0 me-3">'
+				 str += '<div class="avatar">'
+				 str += '<img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />'
+				 str += '</div>'
+				 str += '</div>'
+				 str += '<a href="${contextPath }'+chatData.alertLink+'" class="delete-alert-btn" data-url="${ contextPath }'+chatData.alertLink+'">'
+				 str += '<div class="flex-grow-1">'
+				 str += '<small class="mb-1 d-block text-body">'+chatData.alertContent+'</small>'
+				 str += '<small class="text-muted">'+chatData.alertRegistDate+'</small>'
+				 str += '</div>'
+				 str += '</a>'
+				 str += '<div class="flex-shrink-0 dropdown-notifications-actions" style="margin-left: 20px;">'
+				 str += '<span class="ti ti-x delete-alert-btn" data-alert-id="'+chatData.alertNo+'"></span>'
+				 str += '</div>'
+				 str += '</div>'
+				 str += '</li>'
+				 str += '</ul>'
+				 str += '</li>'
+				
+					 $('#alertForm').append(str);
+
+				 
+				    $('#alertForm').on('click', '.delete-alert-btn', function(event) {
+				        deleteAlert(event);
+				    });	
+		
+	}
+
+			document.querySelectorAll('.delete-alert-btn').forEach(function (btn) {
+			    btn.addEventListener('click', function(event) {
+			        deleteAlert(event);  // AJAX를 통한 알림 삭제
+			    });
+			});
+
+			function deleteAlert(event) {
+			    event.preventDefault();
+			    event.stopPropagation();
+
+			    const alertElement = $(event.currentTarget).closest(".dropdown-notifications-list");
+			    const alertId = alertElement.data("alert-id");
+			    const redirectUrl = $(event.currentTarget).data("url");
+
+			    if (!alertId) {
+			        alert("알림 ID를 찾을 수 없습니다!");
+			        return;
+			    }
+
+			    // 삭제 요청을 서버로 보내는 AJAX 호출
+			    $.ajax({
+			        url: '${contextPath}/chat/alertDelete.do',  
+			        type: 'POST', 
+			        data: { alertNo: alertId },
+			        success: function(res) {
+			            if (res > 0) {
+			                alertElement.remove();
+
+                    	window.location.href = redirectUrl;  
+
+			            } else {
+			                alert("알림 삭제 실패");
+			            }
+			        },
+			        error: function(xhr, status, error) {
+			            console.log("알림 삭제 실패", error);
+			        }
+			    });
+			}
+			
+
+			function deleteAlert2(event) {
+			    event.preventDefault();
+			    event.stopPropagation(); 
+			    const alertElement = $(event.currentTarget).closest(".dropdown-notifications-list");
+
+			    const alertId = alertElement.data("alert-id");
+
+			    if (!alertId) {
+			        alert("알림 ID를 찾을 수 없습니다!");
+			        return;
+			    }
+
+			    $.ajax({
+			        url: '${contextPath}/chat/alertDelete.do',
+			        type:'POST',
+			        data: { alertNo: alertId },
+			        success: function (res) {
+			            if (res > 0) {
+			                alertElement.remove();
+			            } else {
+			                alert("알림 삭제 실패");
+			            }
+			        },
+			        error: function (xhr, status, error) {
+			            console.log("알림 삭제 실패", error);
+			        }
+			    });
+			}
+			
+			
+
+
+</script>
+
+
 
 			    <nav
             class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
@@ -75,48 +204,45 @@
                     <span class="position-relative">
                       <i class="ti ti-bell ti-md"></i>
                       <span class="badge rounded-pill bg-danger badge-dot badge-notifications border"></span>
+                      
                     </span>
                   </a>
-                  <ul class="dropdown-menu dropdown-menu-end p-0">
+                  <ul class="dropdown-menu dropdown-menu-end p-0" id="alertForm">
                     <li class="dropdown-menu-header border-bottom">
                       <div class="dropdown-header d-flex align-items-center py-3">
                         <h6 class="mb-0 me-auto">알림</h6>
                       </div>
                     </li>
-                    <li class="dropdown-notifications-list scrollable-container">
-                      <ul class="list-group list-group-flush">
-                        <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                          <div class="d-flex">
-                            <div class="flex-shrink-0 me-3">
-                              <div class="avatar">
-                                <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" />
-                              </div>
-                            </div>
-                            <div class="flex-grow-1">
-                              <h6 class="small mb-1">Congratulation Lettie 🎉</h6>
-                              <small class="mb-1 d-block text-body">Won the monthly best seller gold badge</small>
-                              <small class="text-muted">1h ago</small>
-                            </div>
-                            <div class="flex-shrink-0 dropdown-notifications-actions">
-                              <a href="javascript:void(0)" class="dropdown-notifications-read"
-                                ><span class="badge badge-dot"></span
-                              ></a>
-                              <a href="javascript:void(0)" class="dropdown-notifications-archive"
-                                ><span class="ti ti-x"></span
-                              ></a>
-                            </div>
-                          </div>
-                        </li>
-                       
-                      </ul>
-                    </li>
-                    <li class="border-top">
-                      <div class="d-grid p-4">
-                        <a class="btn btn-primary btn-sm d-flex" href="javascript:void(0);">
-                          <small class="align-middle">View all notifications</small>
-                        </a>
-                      </div>
-                    </li>
+
+		                 <c:forEach var="al" items="${ alert }"> 
+		                 	<c:if test="${ loginUser.memNo eq al.memNo }">
+			                    <li class="dropdown-notifications-list scrollable-container" id="alert${ al.alertNo }" data-alert-id="${ al.alertNo }">
+			                    <input type="hidden" value="${ al.alertNo }">
+			                      <ul class="list-group list-group-flush">
+			                        <li class="list-group-item list-group-item-action dropdown-notifications-item">
+			                          <div class="d-flex">
+			                            <div class="flex-shrink-0 me-3">
+			                              <div class="avatar">
+			                                <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
+			                              </div>
+			                            </div>
+		               								<a href="${contextPath }${al.alertLink}" class="delete-alert-btn"  data-url="${ contextPath }${ al.alertLink }">
+			                            <div class="flex-grow-1">
+			                              <small class="mb-1 d-block text-body">${ al.alertContent }</small>
+			                              <small class="text-muted">${ al.alertRegistDate }</small>
+			                            </div>
+		             								  </a>
+		             								  
+			                            <div class="flex-shrink-0 dropdown-notifications-actions" style="margin-left: 20px;">
+			                              <span class="ti ti-x delete-alert-btn" data-alert-id="${ al.alertNo }" onclick="deleteAlert2(event)"></span>
+			                            </div>
+			                            
+			                          </div>
+			                        </li>
+			                      </ul>
+			                    </li>
+		                   </c:if>
+		                 </c:forEach>
                   </ul>
                 </li>
                 <!--/ 알림 -->
@@ -127,8 +253,8 @@
                     class="nav-link dropdown-toggle hide-arrow p-0"
                     href="javascript:void(0);"
                     data-bs-toggle="dropdown">
-                    <div class="avatar avatar-online">
-                      <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" />
+                    <div class="avatar">
+                      <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
                     </div>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -136,8 +262,8 @@
                       <a class="dropdown-item mt-0" href="${contextPath}/member/myinfo.do">
                         <div class="d-flex align-items-center">
                           <div class="flex-shrink-0 me-2">
-                            <div class="avatar avatar-online">
-                              <img src="${ contextPath }/resources/assets/img/avatars/1.png" alt class="rounded-circle" />
+                            <div class="avatar">
+                              <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
                             </div>
                           </div>
                           <div class="flex-grow-1">

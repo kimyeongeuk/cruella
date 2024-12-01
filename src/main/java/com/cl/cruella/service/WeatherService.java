@@ -33,7 +33,7 @@ public class WeatherService {
 		case "light snow": return "/assets/img/weather/snow.png";
 		case "light rain and snow": return "/assets/img/weather/snow.png";
 		// 다른 경우도 추가 가능
-		default: return "날씨 정보 없음";
+		default: return "/assets/img/weather/cloud_little.png";
 		}
     }
 	

@@ -36,37 +36,42 @@
    <!-- 세션 시작 -->
     <div class="container-xxl flex-grow-1 container-p-y">
      <!-- 이쪽에 세션정보 넣어야합니다 -->
-    
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="nav-align-top">
-                    <ul class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
 
-										<li class="nav-item"><a class="nav-link" href="#"> <i
-												class="ti-sm ti ti-user-check me-1_5"></i> 직원등록</a></li>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="nav-align-top">
+									<ul
+										class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
+										<c:if test="${ loginUser.deptCode eq 'S2'}">
+											<li class="nav-item"><a class="nav-link"
+												href="${ contextPath }/member/signup.do"> <i
+													class="ti-sm ti ti-user-check me-1_5"></i> 직원등록
+											</a></li>
+										</c:if>
 
-										<li class="nav-item"><a class="nav-link active" href="#"><i
+										<li class="nav-item"><a class="nav-link active"
+											href="${ contextPath }/member/employeelistview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 직원조회 </a></li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/wl/checkinrecordview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 출근기록조회 </a></li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/member/workhoursview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 근무시간조회 </a></li>
+										<c:if test="${ loginUser.deptCode eq 'S2'}">
+											<li class="nav-item"><a class="nav-link"
+												href="${ contextPath }/member/salarypayment.do""><i
+													class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
+										</c:if>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/member/checksalary.do""><i
 												class="ti-sm ti ti-money me-1_5"></i> 급여내역확인 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 조직도 </a></li>
-
-                    </ul>
-                  </div>
-                </div>
-              </div>
+								</div>
+							</div>
+						</div>
 
 
 						<div class="container-xxl flex-grow-1 container-p-y">
@@ -108,11 +113,11 @@
 															type="file" id="upload" class="account-file-input" hidden
 															accept="image/png, image/jpg" name="uploadFile" />
 														</label>
-														<button type="button"
+<!-- 														<button type="button"
 															class="btn btn-label-secondary account-image-reset mb-4">
 															<i class="ti ti-refresh-dot d-block d-sm-none"></i> <span
 																class="d-none d-sm-block">Reset</span>
-														</button>
+														</button> -->
 
 													</div>
 												</div>
@@ -213,8 +218,8 @@
 													</div>
 													<div class="mb-4 col-md-6">
 														<label class="hireDate" for="country">입사날짜</label> <input
-															class="form-control" type="date" id="hireDate"
-															name="hireDate" value="${ member.hireDate }" readonly />
+															class="form-control" type="text" id="hireDate"
+															name="endDate" value="${ member.hireDate2 }" readonly />
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="language" class="form-label">주소</label> <input
@@ -249,34 +254,47 @@
 						<!-- 세션 끝 -->
                   <div class="modal" id="myModal">
                     <div class="modal-dialog">
-                      <div class="modal-content">
-                  
-                        <!-- Modal Header -->
-                        <div class="modal-header" >
-                          <h4 class="modal-title" style="text-align: center; padding: 10px;">이 사원의 퇴사 처리를 진행하시겠습니까?</h4>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                  
-                        <!-- Modal body -->
-												<div style="text-align: center; padding: 10px;">
-												    <i class="ti ti-alert-circle" style="font-size: 48px; color: red; margin-bottom: 10px;"></i>
-												    <p><strong>퇴사 처리 대상:</strong></p>
-												    <p>사원명: ${ member.memName }</p>
-												    <p>부서: ${ member.deptName }</p>
-												    <p>직급: ${ member.posName }</p>
-												    <p style="color: red; font-weight: bold;">퇴사 처리 후 모든 데이터가 삭제되며, 이 작업은 되돌릴 수 없습니다.</p>
-												    <p>정말로 진행하시겠습니까?</p>
-												</div>
+							<div class="modal-content">
 
-                  
-                        <!-- Modal footer -->
-                        <div class="modal-footer" style="justify-self: center;">
-                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">예</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
-                          </div>
-                  
-                      </div>
-                    </div>
+								<!-- Modal Header -->
+								<div class="modal-header">
+									<h4 class="modal-title"
+										style="text-align: center; padding: 10px;">이 사원의 퇴사 처리를
+										진행하시겠습니까?</h4>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+								</div>
+
+								<!-- Modal body -->
+								<div style="text-align: center; padding: 10px;">
+									<i class="ti ti-alert-circle"
+										style="font-size: 48px; color: red; margin-bottom: 10px;"></i>
+									<p>
+										<strong>퇴사 처리 대상:</strong>
+									</p>
+									<p>사원명: ${ member.memName }</p>
+									<p>부서: ${ member.deptName }</p>
+									<p>직급: ${ member.posName }</p>
+									<p style="color: red; font-weight: bold;">퇴사 처리 후 모든 데이터가
+										삭제되며, 이 작업은 되돌릴 수 없습니다.</p>
+									<p>정말로 진행하시겠습니까?</p>
+								</div>
+
+
+								<!-- Modal footer -->
+								<form id="formAccountSettings" action="${contextPath}/member/retire.do"
+									method="post">
+									<input type="hidden" name="memNo" value="${member.memNo}">
+									<div class="modal-footer" style="justify-self: center;">
+										<button type="submit" class="btn btn-primary" name="action"
+											value="retire">예</button>
+										<button type="button" class="btn btn-secondary"
+											data-bs-dismiss="modal">아니오</button>
+									</div>
+								</form>
+
+
+							</div>
+						</div>
                   </div>
       
 

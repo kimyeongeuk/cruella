@@ -171,7 +171,7 @@
 		                  </a>
 		                </c:when>
 		                <c:when test="${loginUser.wlStatus == 'C'}">
-								      <a class="btn btn-danger d-flex align-items-center me-4" onclick="fnClockOut();">
+								      <a class="btn btn-danger d-flex align-items-center me-4" onclick="fnClockOut();" style="color: white">
 								        <i class="ti-xs me-1 ti ti-clock me-2"></i>퇴근
 								      </a>
 								    </c:when>

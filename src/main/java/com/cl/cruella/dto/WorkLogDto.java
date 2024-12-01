@@ -28,4 +28,8 @@ public class WorkLogDto {
 	
 	private String color;
 	
+	private String workDate2;
+	private int workDay;
+	private int totalWorkTime;
+	
 }

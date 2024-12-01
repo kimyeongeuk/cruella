@@ -11,6 +11,9 @@
 		<result column="WL_MODIFY_DATE" property="modifyDate" />
 		<result column="WL_TIME" property="workTime" />
 		<result column="WL_WORK_DATE" property="workDate" />
+		<result column="work_month" property="workDate2" />
+		<result column="work_days" property="workDay" />
+		<result column="total_work_time" property="totalWorkTime" />
 	</resultMap>
 	
 
@@ -118,6 +121,35 @@
         WL_WORK_DATE DESC
 	</select>
 	
+	
+<select id="workhoursview" resultMap="workLogResultMap">
+    <![CDATA[
+    WITH months AS (
+        SELECT TO_CHAR(ADD_MONTHS(TO_DATE('2024-01', 'YYYY-MM'), LEVEL - 1), 'YYYY-MM') AS work_month
+        FROM dual
+        CONNECT BY LEVEL <= 12
+    )
+    SELECT 
+        m.work_month,
+        NVL(COUNT(wl.wl_work_date), 0) AS work_days,
+        NVL(SUM(wl.wl_time), 0) AS total_work_time
+    FROM 
+        months m
+    LEFT JOIN (
+        SELECT 
+            wl_work_date,
+            TO_CHAR(wl_work_date, 'YYYY-MM') AS work_month,
+            wl_time
+        FROM work_log
+        WHERE TO_CHAR(wl_work_date, 'YYYY') = '2024'
+          AND mem_no = #{memNo} -- 동적 파라미터
+    ) wl
+    ON m.work_month = wl.work_month
+    GROUP BY m.work_month
+    ORDER BY m.work_month
+    ]]>
+</select>
+
 	
 
 </mapper>

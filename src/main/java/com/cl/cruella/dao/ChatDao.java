@@ -6,6 +6,7 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.cl.cruella.dto.AlertDto;
 import com.cl.cruella.dto.ChatDto;
 import com.cl.cruella.dto.ChatListDto;
 import com.cl.cruella.dto.ChatProfileDto;
@@ -164,6 +165,42 @@ public class ChatDao {
 
 	public int deleteChatList(Map<String, Object> map4) {
 		return sqlSession.delete("chatMapper.deleteChatList",map4);
+	}
+
+	public Object noticeMsg(MessageDto messageDto) {
+		return sqlSession.selectOne("chatMapper.noticeMsg",messageDto);
+	}
+
+	public int insertNoticeNo(MessageDto messageDto) {
+		return sqlSession.update("chatMapper.insertNoticeNo",messageDto);
+	}
+
+	public String noticeMsgData(MessageDto m) {
+		return sqlSession.selectOne("chatMapper.noticeMsgData",m);
+	}
+
+	public int deleteNotice(MessageDto m) {
+		return sqlSession.update("chatMapper.deleteNotice",m);
+	}
+
+	public int statusMsg(ChatProfileDto m) {
+		return sqlSession.update("chatMapper.statusMsg",m);
+	}
+
+	public List<AlertDto> alertList(MemberDto m) {
+		return sqlSession.selectList("chatMapper.alertList",m);
+	}
+
+	public int alertDelete(AlertDto a) {
+		return sqlSession.delete("chatMapper.alertDelete",a);
+	}
+
+	public int countAlert(MemberDto loginUser) {
+		return sqlSession.selectOne("chatMapper.countAlert",loginUser);
+	}
+
+	public List<MemberDto> memberLink(ChatDto chatDto) {
+		return sqlSession.selectList("chatMapper.memberLink",chatDto);
 	}
 	
 

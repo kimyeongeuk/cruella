@@ -1,19 +1,23 @@
 package com.cl.cruella.service;
 
-import java.util.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.cl.cruella.dao.AppDao;
+import com.cl.cruella.dto.AlertDto;
 import com.cl.cruella.dto.AppRefDto;
 import com.cl.cruella.dto.AppRovalDto;
 import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.AttachDto;
 import com.cl.cruella.dto.DeptDto;
+import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
+import com.cl.cruella.handler.ChatEchoHandler2;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AppService {
 	
 	private final AppDao appDao;
-	
+	private final ChatEchoHandler2 chatEchoHandler2;
 	
 	
 	
@@ -51,7 +55,7 @@ public class AppService {
 	}
 
 	// 전자결재작성 insert 문
-	public int insertApp(AppdocDto ad,List<AttachDto> list) {
+	public int insertApp(AppdocDto ad,List<AttachDto> list) throws IOException {
 		
 		
 		
@@ -66,10 +70,32 @@ public class AppService {
 		int coeResult = 0; // 증명서신청서
 		
 //		결재자
-		for(AppRovalDto appRoval : rovalList) {
-			rovalResult += appDao.insertRoval(appRoval);
-		}
+//		for(AppRovalDto appRoval : rovalList) {
+//			rovalResult += appDao.insertRoval(appRoval);
+//		}
 		
+		
+		// 첫 결재자 사번 가져오기
+		String memNo = "";
+		for(int i=0;i<rovalList.size();i++) {
+			rovalResult += appDao.insertRoval(rovalList.get(i));
+				memNo = rovalList.get(0).getRvNo();
+			}
+		// 첫 결재자 정보 알림에 넣기
+		int insertAlert = appDao.insertAlert(memNo);
+		
+		// 웹소켓 작동
+		if(insertAlert > 0) {
+			AlertDto adDto = appDao.selectAlert();
+			ObjectMapper objectMapper = new ObjectMapper();
+			String cdJson = objectMapper.writeValueAsString(adDto); 
+			System.out.println("실행실행실행실행실행");
+			for(WebSocketSession wh : chatEchoHandler2.getSessionList()) {
+				if(((MemberDto)wh.getAttributes().get("loginUser")).getMemNo().equals(memNo)) {
+					wh.sendMessage(new TextMessage(cdJson));
+				}
+			}
+		}
 //		참조자
 			for(AppRefDto ref : refList) {
 				refResult += appDao.insertRef(ref);
@@ -218,41 +244,91 @@ public class AppService {
 	
 	
 //	상세페이지 결재 시
-	public int detailClear(AppdocDto ad) {
+	public int detailClear(AppdocDto ad) throws IOException {
 		
 		 // 문서의 최종결재순서와 현재결재자순서와 같을때 상태를 최종승인 으로
 		 // 아니면 진행중으로 업데이트
 		
 		int result = 0;
 		
+		List<AppRovalDto> list = ad.getRovalList();
 		
-		
-		
+		// 최종승인시 실행
 		if(ad.getMaxOrder() == ad.getAppLevel()) {
-			
 			result = appDao.detailLastClear(ad); // 최종승인 / 기안문서
 			
+			String memNo = appDao.finalMemNo(ad); // 결재 신청자 사번 가져오기
 			
 			if(result>0) {
 				if(ad.getDocType().equals("연차신청서")) {
+					
 					result = appDao.detailAppRoval(ad); // 최종승인 / 결재선
 					result += appDao.vacation(ad); // 최종승인 / 휴가테이블 insert
 					result += appDao.memberVacation(ad); // 최종승인 / 멤버테이블 휴가갯수 update
+					
+					// 해당 사원에게 웹소켓 작동
+					int insertAlert = appDao.insertAlert(memNo);
+					if(insertAlert>0) {
+						// 알림 정보 가져오기
+						AlertDto adDto = appDao.selectAlert();
+						adDto.setAlertContent("기안 문서 최종 결재가 완료되었습니다.");
+						adDto.setAlertLink("/app/box_complete.do");
+						System.out.println(adDto);
+						ObjectMapper objectMapper = new ObjectMapper();
+						String cdJson = objectMapper.writeValueAsString(adDto); 
+						for(WebSocketSession wh : chatEchoHandler2.getSessionList()) {
+							if(((MemberDto)wh.getAttributes().get("loginUser")).getMemNo().equals(memNo)) {
+								wh.sendMessage(new TextMessage(cdJson));
+							}
+						}
+					}
 				}else {
 					result = appDao.detailAppRoval(ad); // 최종승인 / 결재선
+					System.out.println("최종결재시 실행"+ad);
+					
+					// 해당 사원에게 웹소켓 작동
+					int insertAlert = appDao.insertAlert(memNo);
+					if(insertAlert>0) {
+						AlertDto adDto = appDao.selectAlert();
+						adDto.setAlertContent("기안 문서 최종 결재가 완료되었습니다.");
+						adDto.setAlertLink("/app/box_complete.do");
+						System.out.println("실행실행실행실행실행222222222222222222222");
+						ObjectMapper objectMapper = new ObjectMapper();
+						String cdJson = objectMapper.writeValueAsString(adDto); 
+						for(WebSocketSession wh : chatEchoHandler2.getSessionList()) {
+							if(((MemberDto)wh.getAttributes().get("loginUser")).getMemNo().equals(memNo)) {
+								wh.sendMessage(new TextMessage(cdJson));
+							}
+						}
+					}
+
 				}
-				
-				
 			}
-			
+				
 		}else if(ad.getMaxOrder() > ad.getAppLevel()) {
-			
-			result = appDao.detailClear(ad); // 다음순서 업데이트 / 기안문서
-			
+			result = appDao.detailClear(ad); // 다음순서 업데이트 / 기안문서			
 			if(result > 0) {
 				result = appDao.detailAppRoval(ad); // 다음순서 업데이트 / 결재선
-				
 			}
+			
+			
+			String memNo = appDao.appRovalNo(ad); // 다음 결재자 사번 찾아오기
+			int insertAlert = appDao.insertAlert(memNo);
+			// 해당 사원에게 웹소켓 작동
+			if(insertAlert> 0) {
+				AlertDto adDto = appDao.selectAlert();
+				ObjectMapper objectMapper = new ObjectMapper();
+				String cdJson = objectMapper.writeValueAsString(adDto); 
+				System.out.println("실행실행실행실행실행333333333333333333333333333");
+				for(WebSocketSession wh : chatEchoHandler2.getSessionList()) {
+					if(((MemberDto)wh.getAttributes().get("loginUser")).getMemNo().equals(memNo)) {
+						wh.sendMessage(new TextMessage(cdJson));
+					}
+				}
+			}
+			
+			
+			
 		}
 		return result;
 		

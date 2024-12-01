@@ -1,7 +1,5 @@
 package com.cl.cruella.dto;
 
-import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,19 +9,14 @@ import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
+@Setter
 @ToString
 @Builder
+public class CalendarRequestDto {
 
-public class AlertDto {
+	private boolean company;
+	private boolean team;
+	private boolean personal;
 	
-		private int alertNo;
-		private String alertType;
-		private String alertContent;
-		private String alertStatus;
-		private String memNo;
-		private String alertRegistDate;
-		private String alertLink;
-
 }

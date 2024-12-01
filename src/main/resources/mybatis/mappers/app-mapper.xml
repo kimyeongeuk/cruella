@@ -75,8 +75,16 @@
 	<result column="app_status" property="appStatus"/>
 </resultMap>
 
-
-
+<!-- 알람 맵 -->
+<resultMap type="AlertDto" id="alertResultMap">
+	<result column="ALERT_NO" property="alertNo" />
+	<result column="ALERT_TYPE" property="alertType" />
+	<result column="ALERT_CONTENT" property="alertContent" />
+	<result column="ALERT_STATUS" property="alertStatus" />
+	<result column="MEM_NO" property="memNo" />
+	<result column="ALERT_REGIST_DATE" property="alertRegistDate" />
+	<result column="ALERT_LINK" property="alertLink" />
+</resultMap>
 
 
 
@@ -714,14 +722,66 @@ where mem_No = #{docMemNo}
 </update>
 
 
+<!-- 결재자 번호 찾아오기 -->
+<select id="appRovalNo" resultType="string">
+select 
+        mem_no
+  from 
+        approval
+ where
+        doc_no = #{docNo}
+   and  app_level = #{appLevel}+1
+</select>
 
 
+<!-- 결재 신청자 사번 가져오기 -->
+<select id="finalMemNo" resultType="string">
+select
+        mem_no
+  from
+        app_doc
+ where
+        doc_no = #{docNo}
+</select>
 
+<!-- 알림DB에 저장하기 -->
+<insert id="insertAlert">
+insert
+  into
+        alert
+        (
+        alert_no
+     ,  alert_type
+     ,  alert_content
+     ,  mem_no
+     ,  alert_link
+        )
+        values
+        (
+        seq_alert.nextval
+     ,  'A'
+     ,  '결재대기함에 문서가 등록되었습니다.'
+     ,  #{mem_no}
+     ,  '/app/box_standby.do'
+        )
+</insert>
 
-
-
-
-
+<!-- 방금 생성된 알람 정보 가져오기 -->
+<select id="selectAlert" resultMap="alertResultMap">
+SELECT
+	    ALERT_NO,
+	    ALERT_CONTENT,
+	    MEM_NO,
+	    ALERT_REGIST_DATE,
+	    ALERT_LINK
+FROM
+    	alert
+WHERE
+	    ALERT_NO = (
+	        SELECT MAX(ALERT_NO) 
+	        FROM alert
+	    )
+</select>
 
 
 

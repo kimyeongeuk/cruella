@@ -7,6 +7,7 @@ import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
+import com.cl.cruella.dto.WorkLogDto;
 
 
 public interface MemberService {
@@ -76,6 +77,16 @@ public interface MemberService {
 	
 	// 부서명 전체조회
 	List<DeptDto> getDeptList();
+
+	// 폰번호 중복검사
+	int checkPhone(int phone);
+
+	// 퇴사처리
+	void updateMemberRetire(String memNo);
+
+	List<WorkLogDto> workhoursview(String memNo);
+
+	List<MemberDto> checksalary(String memNo);
 
 
 

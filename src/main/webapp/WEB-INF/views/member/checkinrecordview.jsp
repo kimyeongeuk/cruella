@@ -39,29 +39,33 @@
 								<div class="nav-align-top">
 									<ul
 										class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
+										<c:if test="${ loginUser.deptCode eq 'S2'}">
+											<li class="nav-item"><a class="nav-link"
+												href="${ contextPath }/member/signup.do"> <i
+													class="ti-sm ti ti-user-check me-1_5"></i> 직원등록
+											</a></li>
+										</c:if>
 
-										<li class="nav-item"><a class="nav-link" href="#"> <i
-												class="ti-sm ti ti-user-check me-1_5"></i> 직원등록</a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
+										<li class="nav-item"><a class="nav-link "
+											href="${ contextPath }/member/employeelistview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 직원조회 </a></li>
 
-										<li class="nav-item"><a class="nav-link active" href="#"><i
+										<li class="nav-item"><a class="nav-link active"
+											href="${ contextPath }/wl/checkinrecordview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 출근기록조회 </a></li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/member/workhoursview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 근무시간조회 </a></li>
+										<c:if test="${ loginUser.deptCode eq 'S2'}">
+											<li class="nav-item"><a class="nav-link"
+												href="${ contextPath }/member/salarypayment.do""><i
+													class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
+										</c:if>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여내역확인 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 조직도 </a></li>
-
-									</ul>
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/member/checksalary.do""><i
+												class="ti-sm ti ti-money me-1_5"></i> 급여내역확인 </a></li>
 								</div>
 							</div>
 						</div>
@@ -71,8 +75,9 @@
 							<div
 								class="user-profile-header d-flex flex-column flex-lg-row text-sm-start text-center mb-5">
 								<div style="align-content: center; margin-top: 20px;">
-									<img src="${ contextPath }/assets/img/avatars/1.png" alt="user image"
-										class="d-block h-auto ms-0 ms-sm-6 rounded user-profile-img" />
+									<img src="${ contextPath }<c:out value='${loginUser.getProfileURL()}'/>" alt="user image"
+										class="d-block h-auto ms-0 ms-sm-6 rounded user-profile-img" 
+										style="margin-bottom: 20px; align-items: center; max-width: 120px; max-height: 120px; object-fit: cover;"/>
 								</div>
 								<div class="flex-grow-1 mt-3 mt-lg-5">
 									<div
@@ -96,7 +101,9 @@
 												</li>
 											</ul>
 										</div>
+										 <c:if test="${ loginUser.deptCode eq 'S2'}">
 										<button id="toggleButton" class="btn btn-primary">관리자조회</button>
+										</c:if>
 										<div id="searchBox" style="display: none; margin-top: 10px;">
 											<input type="text" placeholder="검색어를 입력하세요" />
 										</div>

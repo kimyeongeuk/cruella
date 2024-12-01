@@ -34,59 +34,72 @@
 					<div class="container-xxl flex-grow-1 container-p-y">
 						<!-- 이쪽에 세션정보 넣어야합니다 -->
 
+
 						<div class="row">
 							<div class="col-md-12">
 								<div class="nav-align-top">
 									<ul
 										class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
+										<c:if test="${ loginUser.deptCode eq 'S2'}">
+											<li class="nav-item"><a class="nav-link"
+												href="${ contextPath }/member/signup.do"> <i
+													class="ti-sm ti ti-user-check me-1_5"></i> 직원등록
+											</a></li>
+										</c:if>
 
-										<li class="nav-item"><a class="nav-link" href="#"> <i
-												class="ti-sm ti ti-user-check me-1_5"></i> 직원등록</a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
+										<li class="nav-item"><a class="nav-link "
+											href="${ contextPath }/member/employeelistview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 직원조회 </a></li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/wl/checkinrecordview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 출근기록조회 </a></li>
 
-										<li class="nav-item"><a class="nav-link active" href="#"><i
+										<li class="nav-item"><a class="nav-link active"
+											href="${ contextPath }/member/workhoursview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 근무시간조회 </a></li>
+										<c:if test="${ loginUser.deptCode eq 'S2'}">
+											<li class="nav-item"><a class="nav-link"
+												href="${ contextPath }/member/salarypayment.do""><i
+													class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
+										</c:if>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여내역확인 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 조직도 </a></li>
-
-									</ul>
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/member/checksalary.do""><i
+												class="ti-sm ti ti-money me-1_5"></i> 급여내역확인 </a></li>
 								</div>
 							</div>
+						</div>
 
 
 
 						<!--상단프로필-->
+						<!--/상단프로필-->
 						<div class="card mb-6">
 							<div
 								class="user-profile-header d-flex flex-column flex-lg-row text-sm-start text-center mb-5">
 								<div style="align-content: center; margin-top: 20px;">
-									<img src="${ contextPath }/assets/img/avatars/1.png" alt="user image"
-										class="d-block h-auto ms-0 ms-sm-6 rounded user-profile-img" />
+									<img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="user image"
+										class="d-block h-auto ms-0 ms-sm-6 rounded user-profile-img" 
+										style="margin-bottom: 20px; align-items: center; max-width: 120px; max-height: 120px; object-fit: cover;"/>
 								</div>
 								<div class="flex-grow-1 mt-3 mt-lg-5">
 									<div
 										class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-4">
 										<div class="user-profile-info">
-											<h4 class="mb-2 mt-lg-6">John Doe</h4>
+											<h4 class="mb-2 mt-lg-6">${ loginUser.getMemName() }</h4>
 											<ul
 												class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-4 my-2">
 												<li class="list-inline-item d-flex gap-2 align-items-center">
-													<i class="ti ti-palette ti-lg"></i><span class="fw-medium">인사팀</span>
+													<i class="ti ti-palette ti-lg"></i><span class="fw-medium">${ loginUser.getDeptName() }</span>
 												</li>
 												<li class="list-inline-item d-flex gap-2 align-items-center">
-													<i class="ti ti-map-pin ti-lg"></i><span class="fw-medium">과장</span>
+													<i class="ti ti-map-pin ti-lg"></i><span class="fw-medium">${ loginUser.getPosName() }</span>
+												</li>
+																								<li class="list-inline-item d-flex gap-2 align-items-center">
+													<i class="ti ti-mail ti-lg"></i>
+													<span class="fw-medium">
+														${ loginUser.getEmail() }</span>
 												</li>
 
 											</ul>
@@ -102,21 +115,12 @@
 								</div>
 							</div>
 						</div>
-						<!--/상단프로필-->
 
 						<div class="card" style="padding: 30px;">
 							<div class="d-flex">
-								<ul class="pagination pagination-outline-primary">
-									<li class="page-item prev"><a class="page-link"
-										href="javascript:void(0);"><i
-											class="ti ti-chevron-left ti-sm"></i></a></li>
 
-									<li class="page-item next"><a class="page-link"
-										href="javascript:void(0);"><i
-											class="ti ti-chevron-right ti-sm"></i></a></li>
-								</ul>
 								<div style="margin-left: 20px;">
-									<h3>2024</h3>
+									<h3>2024년</h3>
 								</div>
 
 								<div
@@ -132,59 +136,24 @@
 									<tr>
 										<th>월</th>
 										<th>근무일수</th>
-										<th>휴가일수</th>
 										<th>필수근무시간</th>
 										<th>실 근무시간</th>
 
 									</tr>
 									</thead>
 									<tbody class="table-border-bottom-0">
+									<c:forEach var="wl" items="${ memNo }">
 										<tr>
-
 											<!-- 월 -->
-											<td>1</td>
+											<td>${ wl.workDate2 }</td>
 											<!-- 근무일수 -->
-											<td>18일</td>
-											<!-- 휴가일수 -->
-											<td>3일</td>
+											<td>${ wl.workDay }일</td>
 											<!-- 필수근무시간 -->
 											<td>144시간</td>
 											<!-- 실 근무시간 -->
-											<td>120시간</td>
-
+											<td>${ wl.totalWorkTime }시간</td>
 										</tr>
-
-										<tr>
-
-											<!-- 월 -->
-											<td>2</td>
-											<!-- 근무일수 -->
-											<td>18일</td>
-											<!-- 휴가일수 -->
-											<td>3일</td>
-											<!-- 필수근무시간 -->
-											<td>144시간</td>
-											<!-- 실 근무시간 -->
-											<td>120시간</td>
-
-										</tr>
-
-										<tr>
-
-											<!-- 월 -->
-											<td>3</td>
-											<!-- 근무일수 -->
-											<td>18일</td>
-											<!-- 휴가일수 -->
-											<td>3일</td>
-											<!-- 필수근무시간 -->
-											<td>144시간</td>
-											<!-- 실 근무시간 -->
-											<td>120시간</td>
-
-										</tr>
-
-
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>

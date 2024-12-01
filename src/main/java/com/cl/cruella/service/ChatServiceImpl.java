@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.cl.cruella.dao.ChatDao;
+import com.cl.cruella.dto.AlertDto;
 import com.cl.cruella.dto.ChatDto;
 import com.cl.cruella.dto.ChatListDto;
 import com.cl.cruella.dto.ChatProfileDto;
@@ -161,6 +162,38 @@ public class ChatServiceImpl implements ChatService{
 	}
 	public String deleteBtn(int chatNo) {
 		return chatDao.deleteBtn(chatNo);
+	}
+	public Object noticeMsg(MessageDto messageDto) {
+		return chatDao.noticeMsg(messageDto);
+	}
+	public int insertNoticeNo(MessageDto messageDto) {
+		return chatDao.insertNoticeNo(messageDto);
+	}
+	public String noticeMsgData(MessageDto m) {
+		return chatDao.noticeMsgData(m);
+	}
+	public int deleteNotice(MessageDto m) {
+		return chatDao.deleteNotice(m);
+	}
+	public int statusMsg(ChatProfileDto m) {
+		return chatDao.statusMsg(m);
+	}
+	public List<AlertDto> alertList(MemberDto m) {
+		return chatDao.alertList(m);
+	}
+	public int alertDelete(AlertDto a) {
+		return chatDao.alertDelete(a);
+	}
+	public int countAlert(MemberDto loginUser) {
+		return chatDao.countAlert(loginUser);
+	}
+	public List<MemberDto> memberLink(List<ChatDto> chatList) {
+		List<MemberDto> md = new ArrayList<>();
+		for(int i=0;i<chatList.size();i++) {
+			md = chatDao.memberLink(chatList.get(i));
+		}
+		
+		return md;
 	}
 
 

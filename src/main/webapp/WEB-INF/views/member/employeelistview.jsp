@@ -77,35 +77,39 @@
 						<!-- 이쪽에 세션정보 넣어야합니다 -->
 
 
+
 						<div class="row">
 							<div class="col-md-12">
 								<div class="nav-align-top">
 									<ul
 										class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
+										<c:if test="${ loginUser.deptCode eq 'S2'}">
+											<li class="nav-item"><a class="nav-link"
+												href="${ contextPath }/member/signup.do"> <i
+													class="ti-sm ti ti-user-check me-1_5"></i> 직원등록
+											</a></li>
+										</c:if>
 
-										<li class="nav-item"><a class="nav-link" href="#"> <i
-												class="ti-sm ti ti-user-check me-1_5"></i> 직원 등록
-										</a></li>
+										<li class="nav-item"><a class="nav-link active "
+											href="${ contextPath }/member/employeelistview.do""><i
+												class="ti-sm ti ti-users me-1_5"></i> 직원조회 </a></li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 직원 조회 </a></li>
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/wl/checkinrecordview.do""><i
+												class="ti-sm ti ti-users me-1_5"></i> 출근기록조회 </a></li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 출퇴근 기록관리 </a></li>
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/member/workhoursview.do""><i
+												class="ti-sm ti ti-users me-1_5"></i> 근무시간조회 </a></li>
+										<c:if test="${ loginUser.deptCode eq 'S2'}">
+											<li class="nav-item"><a class="nav-link"
+												href="${ contextPath }/member/salarypayment.do""><i
+													class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
+										</c:if>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 근무시간 조회 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 조직도 관리 </a></li>
-
-										<li class="nav-item"><a class="nav-link active" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여 지급 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-money me-1_5"></i> 급여명세서 조회/발급 </a></li>
-
-									</ul>
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/member/checksalary.do""><i
+												class="ti-sm ti ti-money me-1_5"></i> 급여내역확인 </a></li>
 								</div>
 							</div>
 						</div>
@@ -139,7 +143,9 @@
 											<th>부서</th>
 											<th>직급</th>
 											<th>이메일</th>
+											 <c:if test="${ loginUser.deptCode eq 'S2'}">
 											<th>&nbsp;</th>
+											</c:if>
 
 										</tr>
 									</thead>
@@ -156,11 +162,12 @@
 
 
 												<td><span>${member.email}</span></td>
-
+													 <c:if test="${ loginUser.deptCode eq 'S2'}">
 												<td><a class="badge bg-label-primary me-1"
 													style="border: none;"
 													href="${contextPath}/member/modifydelete.do?memNo=${member.memNo}">수정/삭제</a>
 												</td>
+												</c:if>
 										</c:forEach>
 										</tr>
 									</tbody>

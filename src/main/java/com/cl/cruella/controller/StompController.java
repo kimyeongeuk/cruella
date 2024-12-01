@@ -109,6 +109,12 @@ public class StompController {
 			
 			messageDto.setType("modify");
 			
+		}else if(messageDto.getMsgType().equals("notice")) {
+			// 공지사항 등록할 메시지 가져오기
+			messageDto.setMsgContent(String.valueOf(chatserviceImpl.noticeMsg(messageDto)));
+			// 공지사항 chat_list에 등록
+			int result = chatserviceImpl.insertNoticeNo(messageDto);
+			messageDto.setType("notice");
 		}
 		
 		return messageDto;
