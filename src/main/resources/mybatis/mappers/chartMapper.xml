@@ -10,6 +10,7 @@
     <result column="dept_code" property="deptCode" />
     <result column="month" property="month" />
     <result column="sumValue" property="sumValue" />
+    <result column="sumStore" property="sumStore" />
   </resultMap>
 
   <!-- DEPT_CODE별 연도와 월의 매출 데이터를 조회하는 쿼리 -->
@@ -33,18 +34,31 @@
   </select>
 
   <!-- 연도별 매출 데이터를 조회하는 쿼리 -->
-	<select id="findMonthlySalesByYear" parameterType="map" resultMap="chartResultMap">
-	    SELECT
-	        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM') AS month,
-	        SUM(rv_value) AS sumValue
-	    FROM
-	        REVENUE
-	    WHERE
-	        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'YYYY') = #{year}
-	    GROUP BY
-	        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM')
-	    ORDER BY
-	        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM')
+  <select id="findMonthlySalesByYear" parameterType="map" resultMap="chartResultMap">
+    SELECT
+        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM') AS month,
+        SUM(rv_value) AS sumValue
+    FROM
+        REVENUE
+    WHERE
+        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'YYYY') = #{year}
+    GROUP BY
+        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM')
+    ORDER BY
+        TO_CHAR(TO_DATE(rv_regist_date, 'YYYY/MM/DD'), 'MM')
+  </select>
+
+  <!-- DEPT_CODE와 기간별 매출 데이터를 조회하는 쿼리 -->
+	<select id="findStoreSales" parameterType="map" resultMap="chartResultMap">
+    SELECT r.RV_STORE, SUM(r.RV_VALUE) AS sumStore
+    FROM REVENUE r
+    JOIN MEMBER m ON r.MEM_NO = m.MEM_NO
+    JOIN DEPARTMENT d ON m.DEPT_CODE = d.DEPT_CODE
+    WHERE d.DEPT_CODE = #{deptCode}
+      AND r.RV_REGIST_DATE BETWEEN #{startDate} AND #{endDate}
+    GROUP BY r.RV_STORE
 	</select>
+
+
 
 </mapper>

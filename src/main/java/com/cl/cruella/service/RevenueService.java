@@ -37,6 +37,21 @@ public class RevenueService {
         revenueDao.saveOrUpdateRevenues(revenueList);
     }
 
+    // 매출 리스트 조회
+    public List<RevenueDto> getRevenueList() {
+        return revenueDao.findAllRevenues();
+    }
+    
+    public List<RevenueDto> getPagedRevenueList(int currentPage, int limit, String searchKeyword, String startDate, String endDate) {
+        int startRow = (currentPage - 1) * limit + 1;
+        int endRow = currentPage * limit;
+        return revenueDao.findRevenuesWithPaging(startRow, endRow, searchKeyword, startDate, endDate);
+    }
+
+    public int getTotalRevenueCount(String searchKeyword, String startDate, String endDate) {
+        return revenueDao.getTotalRevenueCount(searchKeyword, startDate, endDate);
+    }
+
 
 
 }
