@@ -1,5 +1,6 @@
 package com.cl.cruella.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cl.cruella.dto.CalendarDto;
-import com.cl.cruella.dto.CalendarRequestDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.service.CalendarServiceImpl;
 
@@ -39,12 +39,16 @@ public class CalendarController {
 		Map<String, String> map = new HashMap<>();
 		map.put("deptCode", ((MemberDto)session.getAttribute("loginUser")).getDeptCode());
 		map.put("memNo", ((MemberDto)session.getAttribute("loginUser")).getMemNo());
+
+		map.put("company", "T");
+		map.put("team", "T");
+		map.put("personal", "T");
 		
 		List<CalendarDto> list = calendarServiceImpl.selectCalendarList(map);
 		
 		model.addAttribute("list", list);
 		
-//		log.debug("결과값{}", list);
+		log.debug("결과값{}", list);
 		
 		
 		return "/calendar/calendar"; // 이 jsp를 실행 할 때 위에있는 list를 가지고 간다. 그래서 jsp 에서 list를 쓸 수 있음
@@ -70,10 +74,17 @@ public class CalendarController {
 			map.put("team", team);
 			map.put("personal", personal);
 			
-			System.out.println(company);
+			//System.out.println(company);
 			
-			List<CalendarDto> list = calendarServiceImpl.selectCalendarList(map);
+			List<CalendarDto> list = new ArrayList<>();
+			
+			if(company.equals("F") && team.equals("F") && personal.equals("F")) {
+				return list;
+			}else {
+				list = calendarServiceImpl.selectCalendarList(map);
 
+			}
+			
 			
 			return list; // 이 jsp를 실행 할 때 위에있는 list를 가지고 간다. 그래서 jsp 에서 list를 쓸 수 있음
 		}

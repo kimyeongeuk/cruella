@@ -36,6 +36,10 @@
          .select2-selection__rendered{
             display:none;
          }
+         
+      .fc-event-time{
+      	display:none;
+      }
 
     </style>
 
@@ -224,7 +228,7 @@
         	 //console.log(info.event.start);
         	 //console.log(info.event.end);
         	  //console.log(info.event.extendedProps);
-        	 //console.log(info.event.extendedProps.rgb);
+        	 console.log(info.event.extendedProps.rgb);
         	  
         	 //console.log(info.event.id);
         	 
@@ -317,6 +321,8 @@
         	  
               
               
+              
+              
         	  
           },
           
@@ -346,6 +352,19 @@
 
           select: function(evt){ // 날짜 셀 클릭시 실행되는 펑션
              
+        	  
+        	  // 모달 닫기 및 폼 초기화
+              
+              $("#exampleModal").modal("hide");
+        			 $("#calCategory").val("선택");
+              $("#title").val("");
+              $("#start").val("");
+              $("#end").val("");
+              $("#color").html("");
+        	  
+        	  
+        	  
+        	  
              
             // console.log("==================등록====================");
                  //console.log(evt.start, "||", new Date(evt.start), "||", new Date(evt.start).toISOString().split('T')[0]);
@@ -457,6 +476,7 @@
              // 모달 닫기 및 폼 초기화
                                 
                    $("#exampleModal").modal("hide");
+             			 $("#calCategory").val("선택");
                    $("#title").val("");
                    $("#start").val("");
                    $("#end").val("");
@@ -1027,8 +1047,9 @@
                 $('.fc-event-title-container').on('click', function(){
                 	
                 	console.log($('#calCategory2').val());
-                	var selectedValue = $(this).val();
-                	
+                	//var selectedValue = $(this).val();
+                    const selectedValue = $(this).data('category'); // 해당 일정의 카테고리를 data 속성으로 가져오는 방식 사용
+
                 	
                 	
                 	$('#color2').html("");
@@ -1171,6 +1192,10 @@
     
     <script>
 
+    
+    //console.log('${list}');
+    
+    
 		 
     
     $('input[name="filter"]').change(function() {
@@ -1189,34 +1214,40 @@
 						 team: $('input[id="select_team"]').is(":checked") ? "T" : "F",
 						 personal: $('input[id="select_personal"]').is(":checked") ? "T" : "F"
 								 
-								 //배열에 map 함수를 어떻게 쓰는지..
-								 
 								 
 				  },
 				  success: function(res) {
 	       				 
 	       					 console.log(res);
 	       					 
-	       					// var title = $()
-	       					 
-	       					 
-	       				// 'calendar' 요소를 찾기
-	       			     //   var calendarEl = document.getElementById('calendar'); 
-	       					 
-	       			  // 기존 FullCalendar 인스턴스가 존재하면 이를 제거합니다.
-	       			     //   if (window.currentCalendar) {
-	       			    //        window.currentCalendar.destroy();  // 기존 캘린더 인스턴스 제거
-	       			    //    }
-	       					 
+	       				
+	       					 let ttt = [];
+	       					 for(let i = 0; i < res.length; i++){
+	       						 let obj={
+	       									  	id: res[i].calNo,
+	       					            title: res[i].calTitle,
+	       					            start: res[i].calStartDt,
+	       					            end: res[i].calEndDt + "T23:59",
+	       					            backgroundColor: res[i].calRgb, // backgroundColor 추가
+	       					            borderColor: 'white', // borderColor를 빈 문자열로 설정
+	       					            extendedProps:{
+	       					            	rgb: res[i].calRgb,
+	       					              category: res[i].calCategory,
+	       					            },
+	       					            
+	       					         		allDay: res[i].calStartDt === res[i].calEndDt ? true : false
 
-	       					//var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
-	       						
-	       						
-	       				   //     events: res // res는 이벤트 데이터를 포함한 배열 또는 객체여야 합니다.
-	       				 //   });
+	       						};
+	       					    ttt.push(obj);
+	       					  }
 
-	       							// 캘린더 렌더링
-	       			      //  calendar.render();
+	       					 var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+	       					    events: ttt
+	       					  });
+	       					 
+	       					 
+	       					 
+	       			        calendar.render();
 
 
 	       				    
@@ -1226,17 +1257,7 @@
 			  })
    			
    			
-   			
-   			//$.ajax({
-   				
-   				//console.log($('#select_company').val());
-   				
-   				
-   				//url: '${contextPath}/calendar/calendar.do?company=true&team=false&personal=true',
-          //type: 'GET'
-   				
-   				
-   			//})
+   		
    			
     });
     
