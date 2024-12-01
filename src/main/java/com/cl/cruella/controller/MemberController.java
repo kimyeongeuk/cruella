@@ -23,7 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.BoardDto;
-import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.NoticeDto;
 import com.cl.cruella.dto.PageInfoDto;
@@ -287,7 +286,7 @@ public class MemberController {
 
          int listCount = boardService.selectBoardListCount(deptCode);
 
-         PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
+         PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 5);
 
          Map<String, Object> params = new HashMap<>();
          params.put("pi", pi);
@@ -330,19 +329,11 @@ public class MemberController {
 	 // 전 사원 정보 조회(이름, 메일, 사번, 사진)
 	 @PostMapping("/selectAll_db.do")
 	 @ResponseBody
-	 public List<MemberDto> selectAllMember(String memNo, String deptName) {
+	 public List<MemberDto> selectAllMember(String memNo) {
 		 
+		 List<MemberDto> list = memberService.selectAllMember(memNo);
 		 
-		 if(deptName == null || deptName.trim().isEmpty()) {
-			 List<MemberDto> list = memberService.selectAllMember(memNo);
-			 
-			 return list;
-		 }else {
-			 List<MemberDto> list = memberService.selectAllMemberDept(memNo, deptName);
-			 
-			 return list;
-		 }
-		 
+		 return list;
 	 }
 	 
 	 // 내 결재 문서함 조회
@@ -379,15 +370,6 @@ public class MemberController {
          return params;
 	 }
 	 
-	 // 부서명 조회
-	 @PostMapping("/getDeptList.do")
-	 @ResponseBody
-	 public List<DeptDto> getDeptList() {
-		 
-		 List<DeptDto> list = memberService.getDeptList();
-		 
-		 return list;
-	 }
 	 
 	 
 	 
@@ -617,7 +599,7 @@ public class MemberController {
 	
 	// 급여지급페이지
 	@GetMapping("/salarypayment2.do")
-	public String salarypayment2(Model model, @RequestParam String provide) {
+	public String salarypayment2(Model model,@RequestParam String provide) {
 		
 		Map<String,Object> salDate = new HashMap<>();
 	
@@ -664,7 +646,9 @@ public class MemberController {
 
 	
 	
-
+	// 출퇴근조회(이예빈)
+	@GetMapping("/checkinrecordview.do")
+	public void checkinrecodeview() {}
 	
 	// 근무시간조회(이예빈)
 	@GetMapping("/workhoursview.do")
@@ -694,7 +678,6 @@ public class MemberController {
 		return "/member/paystub";
 	}
 	
-
 
 	 
 }
