@@ -176,14 +176,14 @@
             </li>
 
             <!-- 일정관리 -->
-            <li class="menu-item">
+            <li class="menu-item" id="schedule">
               <a href="#" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-calendar"></i>
                 <div data-i18n="일정관리">일정관리</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="${ contextPath }/calendar/calendar.do" class="menu-link">
+                  <a href="${ contextPath }/calendar/calendar.do" id="calendarAll" class="menu-link">
                     <div data-i18n="일정 관리">일정 관리</div>
                   </a>
                 </li>
@@ -192,25 +192,15 @@
 
 
 						<!-- 자산관리 -->
-            <li class="menu-item">
+            <li class="menu-item" id="items">
               <a href="#" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-box"></i>
                 <div data-i18n="자산관리">자산관리</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
-                    <div data-i18n="시설 예약/관리">시설 예약/관리</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="${ contextPath }/supply/supply.do" class="menu-link">
+                  <a href="${ contextPath }/supply/supply.do" id="itemsAll" class="menu-link">
                     <div data-i18n="비품 관리">비품 관리</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="#" class="menu-link">
-                    <div data-i18n="내 예약">내 예약</div>
                   </a>
                 </li>
               </ul>

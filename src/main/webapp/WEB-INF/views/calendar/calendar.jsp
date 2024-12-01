@@ -126,6 +126,7 @@
             end: '${list.calEndDt}T23:59',
             backgroundColor: '${list.calRgb}', // backgroundColor 추가
             borderColor: 'white', // borderColor를 빈 문자열로 설정
+            color: 'black',
             extendedProps:{
             	rgb: '${list.calRgb}',
               category: '${list.calCategory}',
@@ -140,6 +141,15 @@
           </c:forEach>
         ],
                
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -334,11 +344,11 @@
 
                     let a = "";
                     if(selectedValue.val() === '전사 일정'){
-                      a = '<option value="rgb(247, 159, 255)" class="optionHover" style="background-color: rgb(247, 159, 255); ">전사 일정</option>'
+                      a = '<option value="rgb(250, 201, 255)" class="optionHover" style="background-color: rgb(250, 201, 255); ">전사 일정</option>'
                           $('#color2').html(a);
 
                     }else if(selectedValue.val() === '팀 일정'){
-                      a = '<option value="rgb(163, 255, 178)" class="optionHover" style="background-color: rgb(163, 255, 178);">팀 일정</option>'
+                      a = '<option value="rgb(190, 255, 200)" class="optionHover" style="background-color: rgb(190, 255, 200);">팀 일정</option>'
                           $('#color2').html(a);
 
                     }else{ // '개인 일정'
@@ -802,9 +812,9 @@
                     class="select2 form-select"
                     data-allow-clear="true">
                     
-                    <option value="rgb(146, 142, 165)" class="companyCal" style="background-color: rgb(146, 142, 165);" selected>전사 일정</option>
+                    <option value="rgb(250, 201, 255)" class="companyCal" style="background-color: rgb(250, 201, 255);" selected>전사 일정</option>
 
-                    <option value="rgb(113, 159, 197)" class="teamCal" style="background-color: rgb(113, 159, 197);" selected>팀 일정</option>
+                    <option value="rgb(190, 255, 200)" class="teamCal" style="background-color: rgb(190, 255, 200);" selected>팀 일정</option>
 
                     <option class="personalCal" value="선택" disabled selected style="display: none;">선택</option>
                     <option value="rgb(253, 191, 191)" class="personalCal" style="background-color: rgb(253, 191, 191); color:transparent;">연빨강</option>
@@ -905,9 +915,9 @@
                     class="select2 form-select"
                     data-allow-clear="true">
                     
-                    <option value="rgb(247, 159, 255)" class="companyCal" style="background-color: rgb(247, 159, 255);" selected>전사 일정</option>
+                    <option value="rgb(250, 201, 255)" class="companyCal" style="background-color: rgb(250, 201, 255);" selected>전사 일정</option>
 
-                    <option value="rgb(163, 255, 178)" class="teamCal" style="background-color: rgb(163, 255, 178);" selected>팀 일정</option>
+                    <option value="rgb(190, 255, 200)" class="teamCal" style="background-color: rgb(190, 255, 200);" selected>팀 일정</option>
 
                     <option class="personalCal" value="선택" disabled selected style="display: none;">선택</option>
                     <option value="rgb(253, 191, 191)" class="personalCal" style="background-color: rgb(253, 191, 191); color:transparent;">연빨강</option>
@@ -1109,9 +1119,9 @@
 
                     let a = "";
                     if(selectedValue === '전사 일정'){
-                      a = '<option value="rgb(247, 159, 255)" class="optionHover" style="background-color: rgb(247, 159, 255);">전사 일정</option>'
+                      a = '<option value="rgb(250, 201, 255)" class="optionHover" style="background-color: rgb(250, 201, 255);">전사 일정</option>'
                     }else if(selectedValue === '팀 일정'){
-                      a = '<option value="rgb(163, 255, 178)" class="optionHover" style="background-color: rgb(163, 255, 178);">팀 일정</option>'
+                      a = '<option value="rgb(190, 255, 200)" class="optionHover" style="background-color: rgb(190, 255, 200);">팀 일정</option>'
                     }else{ // '개인 일정'
                       a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;" selected>연빨강</option>';
                       a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
@@ -1147,9 +1157,9 @@
 
                     let a = "";
                     if(selectedValue === '전사 일정'){
-                      a = '<option value="rgb(247, 159, 255)" class="optionHover" style="background-color: rgb(247, 159, 255); ">전사 일정</option>'
+                      a = '<option value="rgb(228, 157, 235)" class="optionHover" style="background-color: rgb(228, 157, 235); ">전사 일정</option>'
                     }else if(selectedValue === '팀 일정'){
-                      a = '<option value="rgb(163, 255, 178)" class="optionHover" style="background-color: rgb(163, 255, 178);">팀 일정</option>'
+                      a = '<option value="rgb(190, 255, 200)" class="optionHover" style="background-color: rgb(190, 255, 200);">팀 일정</option>'
                     }else{ // '개인 일정'
                       a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;" selected>연빨강</option>';
                       a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
@@ -1182,9 +1192,9 @@
 
                     let a = "";
                     if(selectedValue === '전사 일정'){
-                      a = '<option value="rgb(247, 159, 255)" class="optionHover" style="background-color: rgb(247, 159, 255);">전사 일정</option>'
+                      a = '<option value="rgb(250, 201, 255)" class="optionHover" style="background-color: rgb(250, 201, 255);">전사 일정</option>'
                     }else if(selectedValue === '팀 일정'){
-                      a = '<option value="rgb(163, 255, 178)" class="optionHover" style="background-color: rgb(163, 255, 178);">팀 일정</option>'
+                      a = '<option value="rgb(190, 255, 200)" class="optionHover" style="background-color: rgb(190, 255, 200);">팀 일정</option>'
                     }else{ // '개인 일정'
                       a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;" selected>연빨강</option>';
                       a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
@@ -1261,12 +1271,7 @@
                 
               } else if($("#start2").val() === $("#end2").val()){
           	  	eventData.allDay = true; // allDay true속성 추가
-                calendar.addEvent(eventData);
                 
-                
-              }else{
-                  calendar.addEvent(eventData);
-                  
               }
         
         //
@@ -1415,6 +1420,41 @@
    		
    			
     });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+ // 사이드바 처리
+	document.addEventListener("DOMContentLoaded", function () {
+  	
+		const element = document.getElementById("calendarAll");
+		
+  	document.getElementById("schedule").classList.add("open");
+  	element.style.backgroundColor = "#958CF4";
+  	element.style.color = "white";
+  	element.classList.add("active");
+  	
+  	
+	});
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
