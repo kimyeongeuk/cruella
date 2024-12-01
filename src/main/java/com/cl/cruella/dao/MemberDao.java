@@ -170,6 +170,10 @@ public class MemberDao {
 		return sqlSession.selectList("wlMapper.workhoursview", memNo);
 	}
 
+	public List<MemberDto> checksalary(String memNo) {
+		return sqlSession.selectList("memberMapper.checksalary", memNo);
+	}
+
 
 
 

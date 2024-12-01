@@ -501,5 +501,27 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		where mem_no = #{memNo}
 		
 	</update>
+	
+	<select id="checksalary" resultMap="memberResultMap">
+				select 
+		        m.mem_no
+		      , mem_name
+		      , d.dept_name
+		      , d.dept_code
+		      , pos_name
+		      , salary
+		      , sal_pension
+		      , sal_health
+		      , sal_employment
+		      , sal_care
+		      , sal_total
+		      , sal_payment_date
+		      , sal_status
+		 from member m
+			    join department d on (d.dept_code = m.dept_code)
+			    join position p on (p.pos_code = m.pos_code)
+			    join salary s on(s.mem_no = m.mem_no)
+		where m.mem_no = #{memNo}
+	</select>
 
 </mapper>

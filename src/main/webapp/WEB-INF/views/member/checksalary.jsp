@@ -38,36 +38,42 @@
      <!-- 이쪽에 세션정보 넣어야합니다 -->
     
     
-                  <div class="row">
-                <div class="col-md-12">
-                  <div class="nav-align-top">
-                    <ul class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
 
-										<li class="nav-item"><a class="nav-link" href="#"> <i
-												class="ti-sm ti ti-user-check me-1_5"></i> 직원등록</a></li>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="nav-align-top">
+									<ul
+										class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
+										<c:if test="${ loginUser.deptCode eq 'S2'}">
+											<li class="nav-item"><a class="nav-link"
+												href="${ contextPath }/member/signup.do"> <i
+													class="ti-sm ti ti-user-check me-1_5"></i> 직원등록
+											</a></li>
+										</c:if>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
+										<li class="nav-item"><a class="nav-link "
+											href="${ contextPath }/member/employeelistview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 직원조회 </a></li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/wl/checkinrecordview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 출근기록조회 </a></li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/member/workhoursview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 근무시간조회 </a></li>
+										<c:if test="${ loginUser.deptCode eq 'S2'}">
+											<li class="nav-item"><a class="nav-link"
+												href="${ contextPath }/member/salarypayment.do""><i
+													class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
+										</c:if>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
-
-										<li class="nav-item"><a class="nav-link active" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여내역확인 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 조직도 </a></li>
-
-                    </ul>
-                  </div>
-                </div>
-              </div>
+										<li class="nav-item"><a class="nav-link active"
+											href="${ contextPath }/member/checksalary.do""><i
+												class="ti-sm ti ti-money me-1_5"></i> 급여내역확인 </a></li>
+								</div>
+							</div>
+						</div>
 
 
 
@@ -129,66 +135,59 @@
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
+                    <c:forEach var="cs" items="${ cs }"> 
                       <tr>
- 
                         <!-- 사번자리 -->
                         <td>
-                          <span>${ loginUser.getMemNo() }</span>
+                          <span>${ cs.memNo }</span>
                         </td>
                         <!-- 사원명 -->
                         <td>
-                          ${ loginUser.getMemName() }
+                          ${ cs.memName }
                         </td>
                         <!-- 부서명 -->
                         <td>
-                          ${ loginUser.getDeptName() }
+                          ${ cs.deptName }
                         </td>
                         <!-- 직급명 -->
                         <td>
-                          ${ loginUser.getPosName() }
+                          ${ cs.posName }
                         </td>
                         <!-- 기본급 -->
                         <td>
-                          ${ loginUser.getSalary() }
+                          ${ cs.salary }
                         </td>
                         <!-- 국민연금 -->
                         <td>
-                          ${ loginUser.getPension() }
+                          ${ cs.pension }
                         </td>
                         <!-- 건강보험 -->
                         <td>
-                          ${ loginUser.getHealth() }
+                          ${ cs.health }
                         </td>
                         <!-- 고용보험 -->
                         <td>
-                          ${ loginUser.getEmploymnt() }
+                          ${ cs.employmnt }
                         </td>
                         <!-- 장기요양 -->
                         <td>
-                          ${ loginUser.getCare() }
+                          ${ cs.care }
                         </td>
                         <!-- 지급예정금액 -->
                         <td>
-                          ${ loginUser.getTotalsalary() }
+                          ${ cs.totalsalary}
                         </td>
                         <!-- 지급날짜 -->
                         <td>
-                          ${ loginUser.getPaymentDate() }                          
+                          ${ cs.paymentDate }                          
                         </td>
                         <td>
                           <!-- 파일 아이콘 -->
-                          <img src="file-icon.png" alt="파일 아이콘" style="width: 24px; height: 24px; cursor: pointer;" onclick="openFormModal()">
-
-                          <!-- 모달 구조 -->
-                          <div id="formModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5);">
-                            <div style="position: relative; width: 80%; max-width: 600px; margin: auto; top: 10%; background: white; padding: 20px; border-radius: 8px;">
-                              <button onclick="closeFormModal()" style="position: absolute; top: 10px; right: 10px;">닫기</button>
-                              <div id="formContent"></div>
-                            </div>
-                          </div>
+                          <img src="file-icon.png" alt="파일 아이콘" style="width: 24px; height: 24px; cursor: pointer;" >
 
                         </td>
                       </tr>
+                      </c:forEach>
                     </tbody>
                   </table>
                 </div>

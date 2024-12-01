@@ -707,29 +707,31 @@ public class MemberController {
 	
 	@PostMapping("/paystub.do")
 	public String paystub(Model model,@RequestParam String memNo) {
-		log.debug("memNo :{}",memNo);
-		
-		MemberDto list = memberService.paystub(memNo);
-		
-		log.debug("date : {}",list.getHireDate());
-		
-		
+
+		MemberDto list = memberService.paystub(memNo);			
 		
 		model.addAttribute("list", list);
-		log.debug("list :{}",list);
 		
 		return "/member/paystub";
 	}
 	
+	// 폰번호유효성
 	@ResponseBody
 	@PostMapping("/checkPhone.do")
 	public int checkPhone(@RequestParam("phone") int phone) {
 		return memberService.checkPhone(phone);
 	}
 
-	
+	// 급여내역확인
 	@GetMapping("/checksalary.do")
-	public void checksalary() {}
+	public void checksalary(HttpSession session, Model model) {
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		
+		log.debug("memNo: {}", memNo);
+		
+		List<MemberDto> cs = memberService.checksalary(memNo);
+		model.addAttribute("memNo", cs);
+	}
 
 	 
 }

@@ -160,6 +160,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.workhoursview(memNo);
 	}
 
+	@Override
+	public List<MemberDto> checksalary(String memNo) {
+		return memberDao.checksalary(memNo);
+	}
+
 
 
 
