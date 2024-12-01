@@ -391,9 +391,9 @@
 															name="salary" value="" required />
 													</div>
 													<div class="mb-4 col-md-6">
-														<label class="hireDate" for="country">입사날짜</label> <input
+														<label class="hireDate2" for="country">입사날짜</label> <input
 															class="form-control" type="date" id="hireDate"
-															name="hireDate" placeholder="YYYY/MM/DD" required />
+															name="endDate" placeholder="YYYY/MM/DD" required />
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="address" class="form-label">주소</label> <input
@@ -424,7 +424,7 @@
 													                url: '${contextPath}/checkPhone.do',
 													                data: { phone: phone },
 													                success: function (res) {
-													                    if (isDuplicate) {
+													                    if (res) {
 													                        $('#phoneError').text('이미 등록된 휴대폰 번호입니다.').show();
 													                    } else {
 													                        $('#phoneError').hide();

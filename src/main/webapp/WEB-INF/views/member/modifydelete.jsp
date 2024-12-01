@@ -213,8 +213,8 @@
 													</div>
 													<div class="mb-4 col-md-6">
 														<label class="hireDate" for="country">입사날짜</label> <input
-															class="form-control" type="date" id="hireDate"
-															name="hireDate" value="${ member.hireDate }" readonly />
+															class="form-control" type="text" id="hireDate"
+															name="endDate" value="${ member.hireDate2 }" readonly />
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="language" class="form-label">주소</label> <input
@@ -249,34 +249,47 @@
 						<!-- 세션 끝 -->
                   <div class="modal" id="myModal">
                     <div class="modal-dialog">
-                      <div class="modal-content">
-                  
-                        <!-- Modal Header -->
-                        <div class="modal-header" >
-                          <h4 class="modal-title" style="text-align: center; padding: 10px;">이 사원의 퇴사 처리를 진행하시겠습니까?</h4>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                  
-                        <!-- Modal body -->
-												<div style="text-align: center; padding: 10px;">
-												    <i class="ti ti-alert-circle" style="font-size: 48px; color: red; margin-bottom: 10px;"></i>
-												    <p><strong>퇴사 처리 대상:</strong></p>
-												    <p>사원명: ${ member.memName }</p>
-												    <p>부서: ${ member.deptName }</p>
-												    <p>직급: ${ member.posName }</p>
-												    <p style="color: red; font-weight: bold;">퇴사 처리 후 모든 데이터가 삭제되며, 이 작업은 되돌릴 수 없습니다.</p>
-												    <p>정말로 진행하시겠습니까?</p>
-												</div>
+							<div class="modal-content">
 
-                  
-                        <!-- Modal footer -->
-                        <div class="modal-footer" style="justify-self: center;">
-                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">예</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
-                          </div>
-                  
-                      </div>
-                    </div>
+								<!-- Modal Header -->
+								<div class="modal-header">
+									<h4 class="modal-title"
+										style="text-align: center; padding: 10px;">이 사원의 퇴사 처리를
+										진행하시겠습니까?</h4>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+								</div>
+
+								<!-- Modal body -->
+								<div style="text-align: center; padding: 10px;">
+									<i class="ti ti-alert-circle"
+										style="font-size: 48px; color: red; margin-bottom: 10px;"></i>
+									<p>
+										<strong>퇴사 처리 대상:</strong>
+									</p>
+									<p>사원명: ${ member.memName }</p>
+									<p>부서: ${ member.deptName }</p>
+									<p>직급: ${ member.posName }</p>
+									<p style="color: red; font-weight: bold;">퇴사 처리 후 모든 데이터가
+										삭제되며, 이 작업은 되돌릴 수 없습니다.</p>
+									<p>정말로 진행하시겠습니까?</p>
+								</div>
+
+
+								<!-- Modal footer -->
+								<form id="formAccountSettings" action="${contextPath}/member/retire.do"
+									method="post">
+									<input type="hidden" name="memNo" value="${member.memNo}">
+									<div class="modal-footer" style="justify-self: center;">
+										<button type="submit" class="btn btn-primary" name="action"
+											value="retire">예</button>
+										<button type="button" class="btn btn-secondary"
+											data-bs-dismiss="modal">아니오</button>
+									</div>
+								</form>
+
+
+							</div>
+						</div>
                   </div>
       
 

@@ -480,7 +480,7 @@ public class MemberController {
 	// 사원등록(이예빈)
 	@PostMapping("/insert.do")
 	public String insertMember(MemberDto m, RedirectAttributes rd, @RequestParam("uploadFile") MultipartFile uploadFile) {
-		
+		log.debug("m{}", m);
 		if( m.getMemPwd()== null) {
 			m.setMemPwd("111111");
 		} 
@@ -592,6 +592,25 @@ public class MemberController {
 	}
 	
 	
+	// 퇴사 처리 
+	@PostMapping("/retire.do")
+	public String retireMember(@RequestParam("memNo") String memNo, RedirectAttributes redirectAttributes) {
+	    try {
+	        // 1. memNo로 상태를 'N'으로 변경
+	    	memberService.updateMemberRetire(memNo);
+
+	        // 2. 성공 메시지 설정
+	        redirectAttributes.addFlashAttribute("message", "퇴사 처리가 완료되었습니다.");
+	    } catch (Exception e) {
+	        // 3. 실패 메시지 설정
+	        redirectAttributes.addFlashAttribute("errorMessage", "퇴사 처리 중 오류가 발생했습니다.");
+	        e.printStackTrace();
+	    }
+
+	    // 4. 목록 페이지로 리다이렉트
+	    return "redirect:/member/employeelistview.do";
+	}
+	
 	
 	
 	
@@ -671,11 +690,16 @@ public class MemberController {
 	
 	// 근무시간조회(이예빈)
 	@GetMapping("/workhoursview.do")
-	public void workhoursview() {}
-	
-	// 조직도조회(이예빈)
-	@GetMapping("/organization.do")
-	public void organization() {}
+	public void workhoursview(HttpSession session, Model model) {
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		
+		List<WorkLogDto> wl = memberService.workhoursview(memNo);
+		model.addAttribute("memNo", wl);
+		
+		
+		
+		
+	}	
 
 	
 	
@@ -697,11 +721,15 @@ public class MemberController {
 		return "/member/paystub";
 	}
 	
+	@ResponseBody
 	@PostMapping("/checkPhone.do")
 	public int checkPhone(@RequestParam("phone") int phone) {
 		return memberService.checkPhone(phone);
 	}
 
+	
+	@GetMapping("/checksalary.do")
+	public void checksalary() {}
 
 	 
 }

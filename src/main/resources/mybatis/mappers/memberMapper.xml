@@ -32,6 +32,8 @@
 		<result column="sal_total" property="totalSalary" />
 		<result column="sal_payment_date" property="paymentDate" />
 		<result column="sal_status" property="salStatus" />
+		<result column="hire_Date2" property="hireDate2" />
+		
 	</resultMap>
 	
 
@@ -82,6 +84,7 @@
 		join department d ON m.dept_code = d.dept_code
 		join position p ON m.pos_code = p.pos_code
 		where m.mem_no = #{memNo}
+		and m.status != 'N'
 	</select>
 
 	<!-- 비밀번호 변경(김동규) -->
@@ -173,7 +176,7 @@
 		, #{phone}
 		, #{email}
 		, #{address}
-		, TO_DATE(#{hireDate}, 'YYYY-MM-DD')
+		, #{endDate}
 		, SUBSTR(#{memSSN}, 1, 8) || '******'
 		, #{account}
 		, #{bankName}
@@ -212,6 +215,7 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		select
 					count(*)
 		 from member
+		 where status != 'N'
 	</select>
 	
 	<!-- 직원조회리스트 (이예빈) 	-->
@@ -226,6 +230,7 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
           join  position p on (p.pos_code = m.pos_code)
           join department d on (d.dept_code = m.dept_code)
           
+          where m.status != 'N'
 		  order by mem_no
 	
 	</select>
@@ -455,5 +460,46 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 	</select>
 
 
+		<select id="selectMember2" resultMap="memberResultMap">
+		select 
+		       m.mem_no
+		     , m.mem_name
+		     , m.mem_pwd
+		     , m.phone
+		     , m.email
+		     , m.address
+		     , m.hire_date as hire_date2
+		     , m.end_date
+		     , m.status
+		     , m.gender
+		     , m.mem_ssn
+		     , m.account
+		     , m.profile_url
+		     , m.bank_name
+		     , m.vac_count
+		     , m.dept_code
+		     , m.pos_code
+		     , m.sign_path
+		     , d.dept_name
+		     , p.pos_name
+		     , m.salary
+		     , (select wl.wl_status 
+		          from work_log wl 
+		         where wl.mem_no = m.mem_no 
+		           and trunc(wl_work_date) = trunc(sysdate)
+		           and rownum = 1) as wl_status
+		         
+		from member m
+		join department d ON m.dept_code = d.dept_code
+		join position p ON m.pos_code = p.pos_code
+		where m.mem_no = #{memNo}
+	</select>
+	
+	<update id="updateMemberRetire">
+		update member
+		set status = 'N'
+		where mem_no = #{memNo}
+		
+	</update>
 
 </mapper>

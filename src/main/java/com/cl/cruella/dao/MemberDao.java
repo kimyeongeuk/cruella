@@ -12,6 +12,7 @@ import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
+import com.cl.cruella.dto.WorkLogDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -79,7 +80,7 @@ public class MemberDao {
 	}
 
 	public MemberDto selectMemberByNo(String memNo) {
-		return sqlSession.selectOne("memberMapper.selectMember", memNo);
+		return sqlSession.selectOne("memberMapper.selectMember2", memNo);
 	}
 
 	public int updateMember(MemberDto m) {
@@ -159,6 +160,14 @@ public class MemberDao {
 
 	public int checkPhone(int phone) {
 		return sqlSession.selectOne("memberMapper.checkPhone", phone);
+	}
+
+	public int updateMemberRetire(String memNo, String string) {
+		return sqlSession.update("memberMapper.updateMemberRetire", memNo);
+	}
+
+	public List<WorkLogDto> workhoursview(String memNo) {
+		return sqlSession.selectList("wlMapper.workhoursview", memNo);
 	}
 
 

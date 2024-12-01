@@ -10,6 +10,7 @@ import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.PageInfoDto;
+import com.cl.cruella.dto.WorkLogDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -147,6 +148,16 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int checkPhone(int phone) {
 		return memberDao.checkPhone(phone);
+	}
+
+	@Override
+	public void updateMemberRetire(String memNo) {
+		memberDao.updateMemberRetire(memNo, "N");
+	}
+
+	@Override
+	public List<WorkLogDto> workhoursview(String memNo) {
+		return memberDao.workhoursview(memNo);
 	}
 
 

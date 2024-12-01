@@ -80,7 +80,7 @@
                   <h5 class="card-header" style="width: 15%;">급여 확인</h5>
 
 
-                  <div style="display: flex;">
+<!--                   <div style="display: flex;">
                     <h5 class="card-header" style="display: flex; align-items: center;">
                       <select class="form-select" style="width: 100px; margin-right: 10px;" >
                           <option value="">2024</option>
@@ -97,7 +97,7 @@
                       </select> 
                       <span>월</span>
                   </h5>
-                  </div>
+                  </div> -->
 
 
                   <div style="width: 75%; align-items: center; justify-content: right;" class="d-flex">
@@ -109,21 +109,18 @@
                   <table class="table" style="text-align: center;">
                     
                       <tr>
-                        <th rowspan="2">사번</th>
-                        <th rowspan="2">사원명</th>
-                        <th rowspan="2">부서</th>
-                        <th rowspan="2">직급</th>
-                        <th colspan="3" style="text-align: center;">급여상세</th>
-                        <th colspan="4" style="text-align: center;">공제항목</th>
-                        <th rowspan="2">지급예정금액</th>
-                        <th rowspan="2">지급날짜</th>
-                        <th rowspan="2">&nbsp;</th> <!-- 급여명세서 다운 넣을 자리-->
+												<th rowspan="2">사번</th>
+												<th rowspan="2">사원명</th>
+												<th rowspan="2">부서</th>
+												<th rowspan="2">직급</th>
+												<th rowspan="2" style="text-align: center;">기본급</th>
+												<th colspan="4" style="text-align: center;">공제항목</th>
+												<th rowspan="2">지급예정금액</th>
+												<th rowspan="2">지급날짜</th>
+												<th rowspan="2">급여명세표</th>
 
                       </tr>
                       <tr>
-                        <th>기본급</th>
-                        <th>상여금</th>
-                        <th>야근수당</th>
                         <th>국민연금</th>
                         <th>건강보험</th>
                         <th>고용보험</th>
@@ -136,55 +133,47 @@
  
                         <!-- 사번자리 -->
                         <td>
-                          <span>2024001</span>
+                          <span>${ loginUser.getMemNo() }</span>
                         </td>
                         <!-- 사원명 -->
                         <td>
-                          도존
+                          ${ loginUser.getMemName() }
                         </td>
                         <!-- 부서명 -->
                         <td>
-                          인사팀
+                          ${ loginUser.getDeptName() }
                         </td>
                         <!-- 직급명 -->
                         <td>
-                          대리
+                          ${ loginUser.getPosName() }
                         </td>
                         <!-- 기본급 -->
                         <td>
-                          2000000
-                        </td>
-                        <!-- 상여금 -->
-                        <td>
-                          1231230
-                        </td>
-                        <!-- 야근수당 -->
-                        <td>
-                          0
+                          ${ loginUser.getSalary() }
                         </td>
                         <!-- 국민연금 -->
                         <td>
-                          30495
+                          ${ loginUser.getPension() }
                         </td>
                         <!-- 건강보험 -->
                         <td>
-                          42200
+                          ${ loginUser.getHealth() }
                         </td>
                         <!-- 고용보험 -->
                         <td>
-                          5000
+                          ${ loginUser.getEmploymnt() }
                         </td>
                         <!-- 장기요양 -->
                         <td>
-                          12000
+                          ${ loginUser.getCare() }
                         </td>
                         <!-- 지급예정금액 -->
                         <td>
-                          200000000
+                          ${ loginUser.getTotalsalary() }
                         </td>
                         <!-- 지급날짜 -->
                         <td>
-                          2024-11-12                          
+                          ${ loginUser.getPaymentDate() }                          
                         </td>
                         <td>
                           <!-- 파일 아이콘 -->
@@ -200,183 +189,6 @@
 
                         </td>
                       </tr>
-
-
-                      <tr>
-
-                        <!-- 사번자리 -->
-                        <td>
-                          <span>2024001</span>
-                        </td>
-                        <!-- 사원명 -->
-                        <td>
-                          도존
-                        </td>
-                        <!-- 부서명 -->
-                        <td>
-                          인사팀
-                        </td>
-                        <!-- 직급명 -->
-                        <td>
-                          대리
-                        </td>
-                        <!-- 기본급 -->
-                        <td>
-                          2000000
-                        </td>
-                        <!-- 상여금 -->
-                        <td>
-                          1231230
-                        </td>
-                        <!-- 야근수당 -->
-                        <td>
-                          hello world
-                        </td>
-                        <!-- 국민연금 -->
-                        <td>
-                          30495
-                        </td>
-                        <!-- 건강보험 -->
-                        <td>
-                          42200
-                        </td>
-                        <!-- 고용보험 -->
-                        <td>
-                          5000
-                        </td>
-                        <!-- 장기요양 -->
-                        <td>
-                          12000
-                        </td>
-                        <!-- 지급예정금액 -->
-                        <td>
-                          200000000
-                        </td>
-                        <!-- 지급날짜 -->
-                        <td>
-                          2024-11-12                          
-                        </td>
-                        
-                      </tr>
-
-
-                      <tr>
-
-                        <!-- 사번자리 -->
-                        <td>
-                          <span>2024001</span>
-                        </td>
-                        <!-- 사원명 -->
-                        <td>
-                          도존
-                        </td>
-                        <!-- 부서명 -->
-                        <td>
-                          인사팀
-                        </td>
-                        <!-- 직급명 -->
-                        <td>
-                          대리
-                        </td>
-                        <!-- 기본급 -->
-                        <td>
-                          2000000
-                        </td>
-                        <!-- 상여금 -->
-                        <td>
-                          1231230
-                        </td>
-                        <!-- 야근수당 -->
-                        <td>
-
-                        </td>
-                        <!-- 국민연금 -->
-                        <td>
-                          30495
-                        </td>
-                        <!-- 건강보험 -->
-                        <td>
-                          42200
-                        </td>
-                        <!-- 고용보험 -->
-                        <td>
-                          5000
-                        </td>
-                        <!-- 장기요양 -->
-                        <td>
-                          12000
-                        </td>
-                        <!-- 지급예정금액 -->
-                        <td>
-                          200000000
-                        </td>
-                        <!-- 지급날짜 -->
-                        <td>
-                          2024-11-12                          
-                        </td>
-
-                      </tr>
-
-
-                      <tr>
-
-                        <!-- 사번자리 -->
-                        <td>
-                          <span>2024001</span>
-                        </td>
-                        <!-- 사원명 -->
-                        <td>
-                          도존
-                        </td>
-                        <!-- 부서명 -->
-                        <td>
-                          인사팀
-                        </td>
-                        <!-- 직급명 -->
-                        <td>
-                          대리
-                        </td>
-                        <!-- 기본급 -->
-                        <td>
-                          2000000
-                        </td>
-                        <!-- 상여금 -->
-                        <td>
-                          1231230
-                        </td>
-                        <!-- 야근수당 -->
-                        <td>
-
-                        </td>
-                        <!-- 국민연금 -->
-                        <td>
-                          30495
-                        </td>
-                        <!-- 건강보험 -->
-                        <td>
-                          42200
-                        </td>
-                        <!-- 고용보험 -->
-                        <td>
-                          5000
-                        </td>
-                        <!-- 장기요양 -->
-                        <td>
-                          12000
-                        </td>
-                        <!-- 지급예정금액 -->
-                        <td>
-                          200000000
-                        </td>
-                        <!-- 지급날짜 -->
-                        <td>
-
-                        </td>
-
-                      </tr>
-
-            
-
                     </tbody>
                   </table>
                 </div>

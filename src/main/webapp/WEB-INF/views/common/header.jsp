@@ -30,7 +30,6 @@
     
     
     
-    
 
     <!-- Vendors CSS -->
 
@@ -253,13 +252,8 @@
                 </li>
                 </c:if>
                 <li class="menu-item">
-                  <a href="" class="menu-link">
+                  <a href="${ contextPath }/member/checksalary.do" class="menu-link">
                     <div data-i18n="급여내역확인">급여 내역 확인</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="${ contextPath }/member/organization.do" class="menu-link">
-                    <div data-i18n="조직도">조직도</div>
                   </a>
                 </li>
               </ul>
