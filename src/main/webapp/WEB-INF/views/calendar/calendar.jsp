@@ -313,8 +313,47 @@
 
 							
               // RGB를 수정 모달에 뜨게 해주기
-              $("#color2").val(event.extendedProps.rbg);
+              //$("#color2").val(event.extendedProps.rbg);
 
+              
+              //
+              
+                	//var selectedValue = $(this).val();
+                    const selectedValue = $("#calCategory2").val(event.extendedProps.category); // 해당 일정의 카테고리를 data 속성으로 가져오는 방식 사용
+              			console.log(selectedValue);
+
+                	
+                	
+                	$('#color2').html("");
+
+                    let a = "";
+                    if(selectedValue.val() === '전사 일정'){
+                      a = '<option value="rgb(247, 159, 255)" class="optionHover" style="background-color: rgb(247, 159, 255); ">전사 일정</option>'
+                    }else if(selectedValue.val() === '팀 일정'){
+                      a = '<option value="rgb(163, 255, 178)" class="optionHover" style="background-color: rgb(163, 255, 178);">팀 일정</option>'
+                    }else{ // '개인 일정'
+                      a += '<option value="rgb(253, 191, 191)" class="optionHover" style="background-color: rgb(253, 191, 191); color:transparent;" selected>연빨강</option>';
+                      a += '<option value="rgb(255, 201, 165)" class="optionHover" style="background-color: rgb(255, 201, 165); color:transparent;">연주황</option>';
+                      a += '<option value="rgb(255, 245, 191)" class="optionHover" style="background-color: rgb(255, 245, 191); color:transparent;">연노랑</option>'; 
+                      a += '<option value="rgb(207, 253, 226)" class="optionHover" style="background-color: rgb(207, 253, 226); color:transparent;">연초록</option>';      
+                      a += '<option value="rgb(200, 247, 255)" class="optionHover" style="background-color: rgb(202, 240, 247); color:transparent;">연파랑</option>';     
+                      a += '<option value="rgb(201, 206, 255)" class="optionHover" style="background-color: rgb(201, 206, 255); color:transparent;">연남색</option>';     
+                      a += '<option value="rgb(238, 212, 255)" class="optionHover" style="background-color: rgb(238, 212, 255); color:transparent;">연보라</option>';    
+                    }
+
+                    $('#color2').html(a);
+                	
+                	
+              
+              
+              
+              //
+              
+              
+              
+              
+              
+              
               
               
               eventclickmodal.show();
