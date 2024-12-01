@@ -56,4 +56,17 @@ public class MemberDto {
 	    private String salStatus;
 	    private Date hireDate2;// 지급 여부
 		
+	    
+	    
+	    
+	    
+	    
+	    // 영욱
+	    private int chatNo;
+	    
+	    
+	    
+	    
+	    
+	    
 }

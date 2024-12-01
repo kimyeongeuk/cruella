@@ -187,6 +187,14 @@ public class ChatServiceImpl implements ChatService{
 	public int countAlert(MemberDto loginUser) {
 		return chatDao.countAlert(loginUser);
 	}
+	public List<MemberDto> memberLink(List<ChatDto> chatList) {
+		List<MemberDto> md = new ArrayList<>();
+		for(int i=0;i<chatList.size();i++) {
+			md = chatDao.memberLink(chatList.get(i));
+		}
+		
+		return md;
+	}
 
 
 

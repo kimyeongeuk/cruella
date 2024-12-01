@@ -198,6 +198,10 @@ public class ChatDao {
 	public int countAlert(MemberDto loginUser) {
 		return sqlSession.selectOne("chatMapper.countAlert",loginUser);
 	}
+
+	public List<MemberDto> memberLink(ChatDto chatDto) {
+		return sqlSession.selectList("chatMapper.memberLink",chatDto);
+	}
 	
 
 }

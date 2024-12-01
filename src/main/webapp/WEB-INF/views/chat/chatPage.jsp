@@ -182,7 +182,12 @@
 			                        	<input type="hidden" value="${ list.chatTitle }">
 			                          <a class="d-flex align-items-center">
 			                            <div class="flex-shrink-0 avatar">
-			                              <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
+						                        <c:forEach var="link" items="${ memberLink }">
+						                            <c:if test="${ link.chatNo == list.chatNo && link.memNo != loginUser.memNo }">
+						                                <!-- 일치할 경우 해당 프로필 URL 출력 -->
+						                                <img src="${ contextPath }<c:out value='${ link.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
+						                            </c:if>
+						                        </c:forEach>
 			                            </div>
 			                            <div class="chat-contact-info flex-grow-1 ms-4 test1">
 			                              <div class="d-flex justify-content-between align-items-center">
@@ -202,14 +207,34 @@
 			                       	<input type="hidden" value="${ list.chatNo }" class="chatlistno">
 			                       	<input type="hidden" value="${ list.chatTitle }">
 		                          <a class="d-flex align-items-center">
-		                            <div class="flex-shrink-0 avatar">
-		                              <div style="flex-direction: row; display: flex;"><img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
-		                                <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
-		                              </div>
-		                              <div style="flex-direction: row; display: flex;"><img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
-		                                <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
-		                              </div>
-		                            </div>
+		                          
+		                          
+						<div style="flex-direction: column; display: flex;">
+                
+                <!-- 첫 번째 행 (두 개의 이미지) -->
+                <div style="flex-direction: row; display: flex;">
+                    <!-- 첫 번째 이미지: 로그인 사용자 프로필 URL (하나만 적용) -->
+                    <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+                    
+                    <!-- 두 번째 이미지: memberLink에서 첫 번째 이미지 -->
+                    <c:if test="${ !empty memberLink and memberLink.size() > 0 }">
+                        <img src="${ contextPath }<c:out value='${ memberLink[0].profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+                    </c:if>
+                </div>
+
+                <!-- 두 번째 행 (두 개의 이미지) -->
+                <div style="flex-direction: row; display: flex;">
+                    <!-- 세 번째 이미지: memberLink에서 두 번째 이미지 -->
+                    <c:if test="${ !empty memberLink and memberLink.size() > 1 }">
+                        <img src="${ contextPath }<c:out value='${ memberLink[1].profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+                    </c:if>
+                    
+                    <!-- 네 번째 이미지: memberLink에서 세 번째 이미지 -->
+                    <c:if test="${ !empty memberLink and memberLink.size() > 2 }">
+                        <img src="${ contextPath }<c:out value='${ memberLink[2].profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+                    </c:if>
+                </div>
+            </div>
 		                            
 		                            <div class="chat-contact-info flex-grow-1 ms-4">
 		                              <div class="d-flex justify-content-between align-items-center">
@@ -227,8 +252,7 @@
 		                        </li>
 	                       	 	
 	                       	 	</c:otherwise>
-	                        
-	                        </c:choose>
+	                        	</c:choose>
 											</c:forEach>
 
                         
@@ -252,7 +276,7 @@
 	                        	<input type="hidden" value="${ memList.memNo }">
 	                          <a class="d-flex align-items-center">
 	                            <div class="flex-shrink-0 avatar">
-	                              <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
+	                              <img src="${ contextPath }<c:out value='${ memList.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
 	                            </div>
 	                            <div class="chat-contact-info flex-grow-1 ms-4">
 	                              <h6 class="chat-contact-name text-truncate m-0 fw-normal">${ memList.memName }</h6>
@@ -277,7 +301,7 @@
 		                  <div class="col app-chat-sidebar-right app-sidebar overflow-hidden" id="app-chat-sidebar-right">
 		                    <div
 		                      class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
-		                      <div class="avatar avatar-xl chat-sidebar-avatar">
+		                      <div class="avatar avatar-xl chat-sidebar-avatar" id="urlInfo">
 		                        <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
 		                      </div>
 		                      <h5 class="mt-4 mb-0" id="userNameInfo">사람이름자리</h5>
@@ -755,12 +779,12 @@
                         </li>
 
 
-<!-- <c:out value='${ list.profileURL }'/> -->
+
 											<c:forEach var="list" items="${ memberList }">
                         <li class="mb-1">
                           <a class="d-flex align-items-center" style="margin: 20px;">
                             <div class="flex-shrink-0 avatar">
-                              <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="" class="rounded-circle" />
+                              <img src="${ contextPath }<c:out value='${ list.profileURL }' default='/assets/img/default_profile.png' />" alt="" class="rounded-circle" />
                             </div>
                             <div class="chat-contact-info flex-grow-1 ms-4">
                               <div class="d-flex justify-content-between align-items-center">
@@ -924,6 +948,7 @@
         // 사원 클릭시 start
         $('.userInFo').on('click',function(){
         	inviteMem = $(this).children().eq(0).val();
+        	var url = '${contextPath}';
           $.ajax({
             url:'${contextPath}/chat/userInfo.do',
             data:{
@@ -933,11 +958,13 @@
             success:function(res){
               console.log(res);
               inviteName = res.m.memName;
+              let str = '<img src="' + url + (res.m.profileURL || '/assets/img/default_profile.png') + '" alt="Avatar" class="rounded-circle" />'; 
               $('#userNameInfo').html(res.m.memName);
               $('#deptName').html(res.m.deptCode);
               $('#statusmessage').html(res.cp.cpMessage);
               $('#emailinfo').html(res.m.email);
               $('#phoneinfo').html(res.m.phone);
+              $('#urlInfo').html(str);
              
             },
           })

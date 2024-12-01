@@ -6,19 +6,6 @@
 <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script> 
 <script>
 
-window.addEventListener('load', function () {
-    if (Notification.permission === "default") {  // 권한이 아직 설정되지 않았다면
-        Notification.requestPermission().then(function(permission) {
-            if (permission === "granted") {
-                console.log("알림 권한이 허용되었습니다.");
-            } else {
-                console.log("알림 권한이 거부되었습니다.");
-            }
-        });
-    } else {
-        console.log("이미 알림 권한이 설정되어 있습니다: " + Notification.permission);
-    }
-});
 
 
 var count = 0;
@@ -27,14 +14,7 @@ sock.onmessage = onMessage;
 
 function onMessage(evt){
 		console.log(evt.data);
-		
-				if (Notification.permission === "granted") {
-			        new Notification("새 메시지 도착!", {
-			            body: '제발!!!!!!!!!!!!!' // 서버에서 받은 메시지
-			        });
-			    } else {
-			        console.log("알림 권한이 필요합니다. 권한을 허용해주세요.");
-			    }
+
 		
 				var chatData = JSON.parse(evt.data);
 				console.log(chatData);
