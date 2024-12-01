@@ -17,7 +17,11 @@
 <script src="${ contextPath }/resources/assets/js/config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>   
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>  
+<!-- flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<!-- flatpickr 한글 설정 CSS -->
+<link rel="stylesheet" href="https://npmcdn.com/flatpickr/dist/l10n/ko.css">
 <style>
 canvas#doughnutChart {
   display: block;
@@ -37,7 +41,27 @@ canvas#doughnutChart {
 #salesChart.active::before {
   border: 2px solid white; /* 테두리만 흰색으로 변경 */
 }
-</style>    
+
+/* 중앙 정렬을 위한 CSS */
+.flatpickr-current-month {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-current-month .numInputWrapper {
+    justify-content: center;
+}
+.select1 {
+    height: 48px;
+}
+.form-control {
+    height: 48px;
+}
+
+</style>
+  
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
@@ -63,7 +87,7 @@ canvas#doughnutChart {
 <div class="container card py-5">
 <!-- 여기부터 -->
 
-<!-- 총매출 차트 -->     
+<!-- 총매출 차트 -->
 <div style="display: none; margin: 20px;" id="totalSalesChart">
   <div style="display: flex; justify-content: space-between; align-items: center;">
     <!-- 차트 제목 -->
@@ -116,7 +140,6 @@ canvas#doughnutChart {
   </div>
 </div>
 
-
 <script>
 $(function () {
     const lineCtx = document.getElementById('lineChart').getContext('2d');
@@ -128,9 +151,12 @@ $(function () {
                 label: '매출',
                 data: [], // y축: 매출 데이터
                 borderColor: 'orange',
-                backgroundColor: 'rgba(255, 165, 0, 0.2)',
+                backgroundColor: 'rgba(0, 0, 0, 0)', // 배경색을 투명하게 설정
                 fill: true,
-                tension: 0.4,
+                tension: 0, // 둥글게 하지 않음
+                pointRadius: 5, // 기본 동그라미 크기
+                pointHoverRadius: 10, // 마우스를 올렸을 때 동그라미 크기
+                borderWidth: 5 // 선의 두께 설정
             }]
         },
         options: {
@@ -140,13 +166,39 @@ $(function () {
                 legend: { display: true, position: 'top' },
                 tooltip: {
                     callbacks: {
-                        label: (context) => context.raw.toLocaleString() + "원"
+                        label: (context) => {
+                            const value = context.raw;
+                            if (value >= 1000000000000) {
+                                return (value / 1000000000000).toFixed(2) + "조 원";
+                            } else if (value >= 100000000) {
+                                return (value / 100000000).toFixed(2) + "억 원";
+                            } else if (value >= 10000) {
+                                return (value / 10000).toFixed(2) + "만 원";
+                            } else {
+                                return value.toLocaleString() + "원";
+                            }
+                        }
                     }
                 }
             },
             scales: {
-                x: { title: { display: true, text: '월' } },
-                y: { title: { display: true, text: '매출 (단위: 원)' } },
+                x: { title: { display: false } }, // 월 표기 부분 제거
+                y: {
+                    title: { display: false }, // 매출 단위 표기 부분 제거
+                    ticks: {
+                        callback: function(value) {
+                            if (value >= 1000000000000) {
+                                return (value / 1000000000000).toFixed(2) + "조";
+                            } else if (value >= 100000000) {
+                                return (value / 100000000).toFixed(2) + "억";
+                            } else if (value >= 10000) {
+                                return (value / 10000).toFixed(2) + "만";
+                            } else {
+                                return value.toLocaleString();
+                            }
+                        }
+                    }
+                }
             }
         }
     });
@@ -159,10 +211,8 @@ $(function () {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-                console.log("data:", data); // 디버깅용으로 전체 데이터를 출력
                 const months = [];
                 const sales = [];
-
                 data.forEach(item => {
                     if (item.month) { // month 값이 존재하는 경우에만 처리
                         months.push(item.month + "월");
@@ -205,6 +255,7 @@ $(function () {
     $('#currentDate').text(currentDate);
 });
 </script>
+
 
 
 
@@ -424,50 +475,178 @@ $(function() {
 
 <!-- 매장 매출 차트 -->
 <div style="display: none; margin: 20px;" id="storeSalesChart">
-	<div style="display: flex; justify-content: space-between; align-items: center;">
-	  <div>
-	    <span>
-	      <span style="font-size: 20px;">매출차트</span>
-	    </span>
-	  </div>
-	  <div style="flex: 1; margin-left: 60px;">
-	    <select class="select1 form-select form-select-lg chartSelect" data-allow-clear="true" style="width: 300px;">
-	      <option value="총매출차트">총매출차트</option>
-	      <option value="팀별 매출 점유율 차트">팀별 매출 점유율 차트</option>
-	      <option value="매장 매출차트" selected>매장 매출차트</option>
-	    </select>
-	  </div>
-	  <div>
-	    <span>${currentDate}</span>
-	  </div>
-	</div>
-	<br><br>
-	<div>
-	  <canvas id="barChart"></canvas>
-	</div>
-</div>
-<script>
-  const barCtx = document.getElementById('barChart');
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <span style="font-size: 20px;">매출차트</span>
+        </div>
+        <div style="flex: 1; margin-left: 60px;">
+            <select class="select1 form-select form-select-lg chartSelect" data-allow-clear="true" style="width: 300px;">
+                <option value="총매출차트">총매출차트</option>
+                <option value="팀별 매출 점유율 차트">팀별 매출 점유율 차트</option>
+                <option value="매장 매출차트" selected>매장 매출차트</option>
+            </select>
+        </div>
+        <div>
+            <span>${currentDate}</span>
+        </div>
+    </div>
+    <br><br>
 
-  new Chart(barCtx, {
-    type: 'bar',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
+    <!-- Dept_code 및 날짜 선택 박스 추가 -->
+    <div style="display: flex; justify-content: right; align-items: center; gap: 20px; width: 100%">
+        <div>
+            <label for="deptCodeSelect" class="form-label">부서 코드</label>
+            <select id="deptCodeSelect" class="form-select custom-select" data-allow-clear="true" style="width: 200px; height: 48px;">
+                <option value="T1">남성의류</option>
+                <option value="T2">여성의류</option>
+                <option value="T3">식품</option>
+                <option value="T4">스포츠</option>
+                <option value="T5">뷰티</option>
+                <option value="T6">명품</option>
+                <option value="T7">문화센터</option>
+                <option value="T8">디지털 및 가전</option>
+            </select>
+        </div>
+        <div>
+            <label for="flatpickr-range" class="form-label">기간 선택</label>
+            <input
+                type="text"
+                class="form-control custom-select"
+                placeholder="날짜를 선택해주세요"               
+                id="flatpickr-range" />
+        </div>
+    </div>
+    <br>
+
+    <div class="barChart-container" style="display: flex; justify-content: center; position: relative; width: 100%;">
+        <canvas id="barChart" style="width: 80%;"></canvas>
+    </div>
+</div>
+
+<script>
+const storeOptions = {
+    "T1": ["레노마셔츠", "라코스테"],
+    "T2": ["샤넬", "구찌"],
+    "T3": ["롯데마트", "홈플러스"],
+    "T4": ["나이키", "아디다스"],
+    "T5": ["아모레퍼시픽", "LG생활건강"],
+    "T6": ["루이비통", "에르메스"],
+    "T7": ["CGV", "롯데시네마"],
+    "T8": ["삼성전자", "LG전자"]
+};
+
+$(function () {
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    const barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: [], // 매장 이름
+            datasets: [{
+                label: '매출',
+                data: [], // 매출 데이터
+                borderColor: '#4BC0C0', 
+                backgroundColor: '#DBF2F2', 
+                borderWidth: 1,
+                barThickness: 100
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            if (value >= 1000000000000) {
+                                return (value / 1000000000000).toFixed(2) + "조";
+                            } else if (value >= 100000000) {
+                                return (value / 100000000).toFixed(2) + "억";
+                            } else if (value >= 10000) {
+                                return (value / 10000).toFixed(2) + "만";
+                            } else {
+                                return value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.raw;
+                            if (value >= 1000000000000) {
+                                return (value / 1000000000000).toFixed(2) + "조 원";
+                            } else if (value >= 100000000) {
+                                return (value / 100000000).toFixed(2) + "억 원";
+                            } else if (value >= 10000) {
+                                return (value / 10000).toFixed(2) + "만 원";
+                            } else {
+                                return value.toLocaleString() + "원";
+                            }
+                        }
+                    }
+                }
+            }
         }
-      }
+    });
+
+    function updateBarChart(deptCode, startDate, endDate) {
+        $.ajax({
+            url: `${contextPath}/chart/storeSales.do`,
+            type: "POST",
+            data: JSON.stringify({ deptCode: deptCode, startDate: startDate, endDate: endDate }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                console.log("data:", data); // 디버깅용으로 전체 데이터를 출력
+                const stores = storeOptions[deptCode];
+                const sales = stores.map(store => data.find(item => item.rvStore === store)?.sumStore || 0); // 매출 데이터 추출
+
+                barChart.data.labels = stores;
+                barChart.data.datasets[0].data = sales;
+                barChart.update();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("AJAX 요청 실패:", { textStatus, errorThrown, response: jqXHR.responseText });
+                alert("데이터를 가져오는 데 실패했습니다.");
+            }
+        });
     }
-  });
+
+    // flatpickr 설정
+    const today = new Date();
+    const selectedStartDate = today.toISOString().slice(0, 10); // 오늘 날짜
+    const selectedEndDate = today.toISOString().slice(0, 10); // 오늘 날짜
+
+    flatpickr("#flatpickr-range", {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        locale: "ko",
+        defaultDate: [today, today], // 기본값을 오늘로 설정
+        onClose: function(selectedDates) {
+            if (selectedDates.length === 2) {
+                const startDate = selectedDates[0].toISOString().slice(0, 10);
+                const endDate = selectedDates[1].toISOString().slice(0, 10);
+                const deptCode = $('#deptCodeSelect').val();
+                updateBarChart(deptCode, startDate, endDate);
+            }
+        }
+    });
+
+    // Dept_code 선택이 변경될 때마다 차트 업데이트
+    $('#deptCodeSelect').change(() => {
+        const deptCode = $('#deptCodeSelect').val();
+        updateBarChart(deptCode, selectedStartDate, selectedEndDate);
+    });
+
+    // 초기 설정
+    const initialDeptCode = $('#deptCodeSelect').val();
+    updateBarChart(initialDeptCode, selectedStartDate, selectedEndDate);
+});
 </script>
+
+
 
 <!-- 차트셀렉트 -->
 <script>
@@ -554,4 +733,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- layout wrapper 닫기 -->
 </div> 
 </body>
+<!-- flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<!-- flatpickr 한글 설정 JS -->
+<script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 </html>

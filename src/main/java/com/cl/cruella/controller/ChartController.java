@@ -56,9 +56,20 @@ public class ChartController {
     public List<RevenueDto> getMonthlySalesData(@RequestBody Map<String, String> params) {
         String year = params.getOrDefault("year", String.valueOf(LocalDate.now().getYear())); 
         List<RevenueDto> salesData = chartService.getMonthlySalesByYear(year);
-        salesData.forEach(item -> System.out.println("DB 조회 결과: " + item)); // 디버깅용으로 출력
         return salesData;
     }
+    
+    
+    @ResponseBody
+    @PostMapping("/storeSales.do")
+    public List<RevenueDto> getStoreSales(@RequestBody Map<String, String> params) {
+        String deptCode = params.get("deptCode");
+        String startDate = params.get("startDate");
+        String endDate = params.get("endDate");
+
+        return chartService.getStoreSales(deptCode, startDate, endDate);
+    }
+
 
 
 

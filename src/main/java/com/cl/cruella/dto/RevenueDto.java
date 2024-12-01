@@ -17,4 +17,5 @@ public class RevenueDto {
     private String deptCode;    // 부서 코드
     private String month;       // 월
     private int sumValue;
+    private int sumStore;
 }
