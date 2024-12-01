@@ -544,8 +544,8 @@ $(function () {
             datasets: [{
                 label: '매출',
                 data: [], // 매출 데이터
-                borderColor: '#4BC0C0', 
-                backgroundColor: '#DBF2F2', 
+                borderColor: '#4BC0C0',
+                backgroundColor: '#DBF2F2',
                 borderWidth: 1,
                 barThickness: 100
             }]
@@ -591,6 +591,10 @@ $(function () {
         }
     });
 
+    // 날짜 상태를 전역 변수로 관리
+    let selectedStartDate = null;
+    let selectedEndDate = null;
+
     function updateBarChart(deptCode, startDate, endDate) {
         $.ajax({
             url: `${contextPath}/chart/storeSales.do`,
@@ -616,8 +620,8 @@ $(function () {
 
     // flatpickr 설정
     const today = new Date();
-    const selectedStartDate = today.toISOString().slice(0, 10); // 오늘 날짜
-    const selectedEndDate = today.toISOString().slice(0, 10); // 오늘 날짜
+    selectedStartDate = today.toISOString().slice(0, 10); // 초기값: 오늘 날짜
+    selectedEndDate = today.toISOString().slice(0, 10);
 
     flatpickr("#flatpickr-range", {
         mode: "range",
@@ -626,10 +630,10 @@ $(function () {
         defaultDate: [today, today], // 기본값을 오늘로 설정
         onClose: function(selectedDates) {
             if (selectedDates.length === 2) {
-                const startDate = selectedDates[0].toISOString().slice(0, 10);
-                const endDate = selectedDates[1].toISOString().slice(0, 10);
+                selectedStartDate = selectedDates[0].toISOString().slice(0, 10);
+                selectedEndDate = selectedDates[1].toISOString().slice(0, 10);
                 const deptCode = $('#deptCodeSelect').val();
-                updateBarChart(deptCode, startDate, endDate);
+                updateBarChart(deptCode, selectedStartDate, selectedEndDate);
             }
         }
     });
@@ -637,14 +641,16 @@ $(function () {
     // Dept_code 선택이 변경될 때마다 차트 업데이트
     $('#deptCodeSelect').change(() => {
         const deptCode = $('#deptCodeSelect').val();
+        // 변경된 부서 코드와 유지된 날짜로 차트를 업데이트
         updateBarChart(deptCode, selectedStartDate, selectedEndDate);
     });
 
-    // 초기 설정
+    // 초기 설정: 오늘 날짜로 차트 초기화
     const initialDeptCode = $('#deptCodeSelect').val();
     updateBarChart(initialDeptCode, selectedStartDate, selectedEndDate);
 });
 </script>
+
 
 
 
