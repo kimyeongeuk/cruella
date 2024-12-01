@@ -52,22 +52,25 @@ public class ChartController {
     }
 
     @ResponseBody
-    @PostMapping("/allSales.do")
-    public List<RevenueDto> getAllSalesData(@RequestBody Map<String, String> params) {
-        String year = params.get("year");
-        List<RevenueDto> salesData;
-
-        if ("2024".equals(year)) {
-            List<RevenueDto> sales2023 = chartService.getDeptIncomeByYear(Map.of("year", "2023"));
-            List<RevenueDto> sales2024 = chartService.getDeptIncomeByYear(params);
-            sales2023.addAll(sales2024);
-            salesData = sales2023;
-        } else {
-            salesData = chartService.getDeptIncomeByYear(params);
-        }
-
-        salesData.forEach(sales -> System.out.println(sales)); // 로그 출력으로 데이터 확인
-
+    @PostMapping("/monthlySales.do")
+    public List<RevenueDto> getMonthlySalesData(@RequestBody Map<String, String> params) {
+        String year = params.getOrDefault("year", String.valueOf(LocalDate.now().getYear())); 
+        List<RevenueDto> salesData = chartService.getMonthlySalesByYear(year);
         return salesData;
     }
+    
+    
+    @ResponseBody
+    @PostMapping("/storeSales.do")
+    public List<RevenueDto> getStoreSales(@RequestBody Map<String, String> params) {
+        String deptCode = params.get("deptCode");
+        String startDate = params.get("startDate");
+        String endDate = params.get("endDate");
+
+        return chartService.getStoreSales(deptCode, startDate, endDate);
+    }
+
+
+
+
 }

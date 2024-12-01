@@ -1,6 +1,7 @@
 package com.cl.cruella.controller;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -121,7 +122,7 @@ public class AppController {
 	
 //	전자결재작성 insert
 	@PostMapping("/appInsert.do")
-	public String appInsert(AppdocDto ad, List<MultipartFile> uploadFile,RedirectAttributes rdAttributes) {
+	public String appInsert(AppdocDto ad, List<MultipartFile> uploadFile,RedirectAttributes rdAttributes) throws IOException {
 		
 		List<AttachDto> list = new ArrayList<>();
 		
@@ -295,7 +296,7 @@ public class AppController {
 //	결재시 update
 	@ResponseBody
 	@PostMapping("/ajaxSuccess.do")
-	public int detailClear(@RequestBody AppdocDto ad, HttpSession session) {
+	public int detailClear(@RequestBody AppdocDto ad, HttpSession session) throws IOException {
 		
 		
 		int result = appService.detailClear(ad);

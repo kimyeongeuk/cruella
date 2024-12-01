@@ -181,6 +181,12 @@ public class ChatServiceImpl implements ChatService{
 	public List<AlertDto> alertList(MemberDto m) {
 		return chatDao.alertList(m);
 	}
+	public int alertDelete(AlertDto a) {
+		return chatDao.alertDelete(a);
+	}
+	public int countAlert(MemberDto loginUser) {
+		return chatDao.countAlert(loginUser);
+	}
 
 
 

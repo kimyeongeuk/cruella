@@ -582,6 +582,21 @@ select ALERT_NO
  				mem_no = #{memNo}
 </select>
 
+<delete id="alertDelete">
+delete
+	from	alert
+ where	alert_no = #{alertNo}
+</delete>
+
+<select id="countAlert" resultType="_int">
+SELECT
+    	count(ALERT_STATUS)
+  from 
+        alert
+WHERE
+        mem_no = #{memNo}
+  and   ALERT_STATUS= 'N';
+</select>
 
 
 

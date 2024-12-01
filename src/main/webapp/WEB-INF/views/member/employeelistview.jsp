@@ -139,7 +139,9 @@
 											<th>부서</th>
 											<th>직급</th>
 											<th>이메일</th>
+											 <c:if test="${ loginUser.deptCode eq 'S2'}">
 											<th>&nbsp;</th>
+											</c:if>
 
 										</tr>
 									</thead>
@@ -156,11 +158,12 @@
 
 
 												<td><span>${member.email}</span></td>
-
+													 <c:if test="${ loginUser.deptCode eq 'S2'}">
 												<td><a class="badge bg-label-primary me-1"
 													style="border: none;"
 													href="${contextPath}/member/modifydelete.do?memNo=${member.memNo}">수정/삭제</a>
 												</td>
+												</c:if>
 										</c:forEach>
 										</tr>
 									</tbody>

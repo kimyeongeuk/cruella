@@ -23,7 +23,7 @@ public class AlertDto {
 		private String alertContent;
 		private String alertStatus;
 		private String memNo;
-		private Date alertRegistDate;
+		private String alertRegistDate;
 		private String alertLink;
 
 }

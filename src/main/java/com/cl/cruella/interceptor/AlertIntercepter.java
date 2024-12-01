@@ -29,7 +29,10 @@ public class AlertIntercepter implements HandlerInterceptor{
 	            MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 	            if (loginUser != null) {
 	                List<AlertDto> alert = chatServiceImpl.alertList(loginUser);
+	                System.out.println("로그인"+loginUser);
+	                //int count = chatServiceImpl.countAlert(loginUser);
 	                session.setAttribute("alert", alert);
+	                //session.setAttribute("count", count);
 	            }
 	        }
 	        return true; // 요청을 계속 진행하도록 설정

@@ -6,6 +6,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.cl.cruella.dto.AlertDto;
 import com.cl.cruella.dto.AppRefDto;
 import com.cl.cruella.dto.AppRovalDto;
 import com.cl.cruella.dto.AppdocDto;
@@ -237,6 +238,29 @@ public class AppDao {
 	 public int memberVacation(AppdocDto ad) {
 		 return sqlSession.update("appMapper.memberVacation",ad);
 	 }
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 // 결재자 사번 가져오기
+	public String appRovalNo(AppdocDto ad) {
+		return sqlSession.selectOne("appMapper.appRovalNo",ad);
+	}
+	// 결재 신청자 사번 가져오기
+	public String finalMemNo(AppdocDto ad) {
+		return sqlSession.selectOne("appMapper.finalMemNo",ad);
+	}
+	// 알림 db에 등록하기
+	public int insertAlert(String memNo) {
+		return sqlSession.insert("appMapper.insertAlert",memNo);
+	}
+	// 방금전 등록된 알림 정보 가져오기
+	public AlertDto selectAlert() {
+		return sqlSession.selectOne("appMapper.selectAlert");
+	}
 	 
 	 
 	 

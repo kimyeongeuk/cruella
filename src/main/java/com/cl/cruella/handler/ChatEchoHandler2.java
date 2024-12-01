@@ -38,7 +38,6 @@ public class ChatEchoHandler2 extends TextWebSocketHandler{
 
 		list.add(session);
 		
-	
 	}
 
 	
