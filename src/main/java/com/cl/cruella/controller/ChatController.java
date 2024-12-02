@@ -45,7 +45,6 @@ public class ChatController {
 
 		// 채팅방 목록
 		List<ChatDto> chatList = chatServiceImpl.chatList(memNo);
-		log.debug("asdasdf:{}",chatList);
 		// 사원 프로필상태
 		List<ChatProfileDto> chatProfileList = chatServiceImpl.chatProFileList();
 		// 사원 목록
@@ -57,9 +56,7 @@ public class ChatController {
 		list2.addAll(chatList);
 		System.out.println("길이"+list2.size());
 
-		log.debug("리스트222222 {}",list2);
 		List<MemberDto> memberLink = chatServiceImpl.memberLink(chatList);
-		log.debug("멤버링크 {}",memberLink);
 
 		
 	    Date today = new Date();
@@ -218,7 +215,6 @@ public class ChatController {
 
 	    // 채팅방에 참여한 모든 사용자 mem_no 리스트 가져오기
 	    List<String> chatMembers = chatServiceImpl.writerNo(cd);
-	    log.debug("테스트1111111{}",senderProfile);
 	    // 채팅방에 참여한 인원 이름
 	    List<MemberDto> memList = chatServiceImpl.chatMemName(cd);
 
@@ -237,7 +233,6 @@ public class ChatController {
 	            memberProfiles.add(profileMap);
 	        }
 	    }
-	    log.debug("테스트2222222222{}",memberProfiles);
 
 	    // 결과 데이터 구성
 	    Map<String, Object> map = new HashMap<>();

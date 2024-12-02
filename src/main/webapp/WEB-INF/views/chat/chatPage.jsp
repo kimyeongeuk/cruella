@@ -935,7 +935,6 @@
                 $(this).children().eq(0).val()
             },
             success:function(res){
-              console.log(res);
               inviteName = res.m.memName;
               let str = '<img src="' + url + (res.m.profileURL || '/assets/img/default_profile.png') + '" alt="Avatar" class="rounded-circle" />'; 
               $('#userNameInfo').html(res.m.memName);
@@ -978,14 +977,11 @@
         // 상태메시지 변경
         $('#statusButton').on('click',function(){
       	var cpMessage = $('.statusForm').val();
-      	console.log('메시메시메시메심앙까라메시');
-      	console.log(cpMessage);
       	var memNo = '${loginUser.memNo}';
       	$.ajax({
       		url:'${contextPath}/chat/statusMsg.do',
       		data:{cpMessage:cpMessage,memNo:memNo},
       		success:function(res){
-      			console.log($('#mem'+memNo));
       			$('#mem'+memNo).html(cpMessage);
       		}
       	})
@@ -1047,7 +1043,7 @@
  								 alert('변경되었습니다.');
  								 $('#testname').html(chatTitleChange);
  								 $(".chat-contact-list-item.active").find(".chattitle").text(chatTitleChange);
- 								 
+ 								 $('#chatTitleChangeForm').val('');
  							 }
  							 else{
  								 alert('변경이 실패했습니다.');
@@ -1098,7 +1094,6 @@
 			 $('#chat-list').on('click', '.chat-contact-list-item', function () {
 			    // 클릭된 요소를 찾기 위한 컨텍스트
 			    const clickedChatNo = $(this).find('.chatlistno').val(); 
-			    console.log('클릭된 채팅방 번호:', clickedChatNo);
 			
 			    
 
@@ -1184,8 +1179,6 @@
 	   	   		}else if(evt.data =='3'){
 	   	   			alert('채팅방 나가기 실패');
 	   	   		}
-	    	console.log("데이터확인")
-					console.log(chatData);
     	   if(chatData.type == "create"){ // 채팅방생성시 시작
 	    	   var loginName = '${loginUser.memName}'
 	    	   var chatNoData = chatData.chatNo;
@@ -1248,14 +1241,10 @@
 										        $('.mewmsg').each(function () { // 미리보기 ajax 시작
 										    		
 												    if ($(this).val() == content.chatNo) { 
-												    	console.log('요소쳌');
-												    	console.log($(this).val())
-												    	console.log(content.chatNo)
 												    		$.ajax({ 
 												    			url:'${contextPath}/chat/updateNewMsg.do',
 												    			data:{chatNo:content.chatNo,msgContent:content.msgContent},
 												    			success:function(res){
-												    				console.log('성공');
 												    			}
 												    		})
 												    		// 채팅 날짜 넣어주기
@@ -1286,10 +1275,6 @@
 
 												 $('.mewmsg').each(function () { // 미리보기 ajax 시작
 													 		var listNumVal = $(this).closest('.chat-contact-info').find('.msgNum').val();   		
-												 			console.log($(this).prev().html());
-												 			console.log(listNumVal);
-											    		console.log(content);
-											    		console.log($(this).val());
 											    		if($(this).val() == content.chatNo) { 
 													    			$('#chatContent'+content.msgNo).html('삭제된 메시지입니다.');
 													    		if(content.msgNo == listNumVal){
@@ -1307,7 +1292,6 @@
 												
 												$('.mewmsg').each(function () { // 미리보기 ajax 시작
 												 		var listNumVal = $(this).closest('.chat-contact-info').find('.msgNum').val();   		
-											 			console.log($(this).prev().html());
 										    		
 										    		if($(this).val() == content.chatNo) { 
 												    			$('#chatContent'+content.msgNo).html(content.msgContent);
@@ -1329,8 +1313,6 @@
 												
 											}
 											else if(content.type == 'notice'){
-												console.log("콘콘콘콘슈퍼콘슈퍼쏜")
-												console.log(content);
 												$('.noticeMessage').html(content.msgContent);
 												$('#noticeContent').css('display','block');
 												
@@ -1349,8 +1331,6 @@
 	    	   	
 	    	   	
     	   else if(chatData.type == "invite"){
-    		   	 console.log("초대시 나옴");
-	    		   console.log(chatData);
 		    	   var chatNoData = chatData.chatNo;		// 채팅방 번호
 		    	   var chatTitleData = chatData.chatTitle;	// 채팅방 이름
 		    	   var chatTitleData2 = chatData.chatTitle2;	// 초대받은사람 입장시 나오는 알림
@@ -1405,8 +1385,6 @@
 						   
 						   
 						   
-							 console.log('asdasdsdgsderhsedrhgsedrhgaesrg')
-							 console.log(chatNoData);
 
 								 
 					
@@ -1442,7 +1420,6 @@
      
 	    // stomp 실행
 			client.connect({}, function (frame) {
-			    console.log("STOMP 연결됨");
 			
 			    // 모든 채팅방 구독                                                                                                                                                                                                                                                                                                                                                                 
 			    chatNoList.forEach(function (chatNo) {
@@ -1456,8 +1433,6 @@
 										url:'${contextPath}/chat/msgNum.do',
 										data:{memNo:loginU,chatNo:activeChat},
 										success:function(res){
-												console.log(res);
-												console.log("xzzxcvzsdfgaszerfgzsdfzsdxcv");
 												  let memberProfiles = res.memberProfiles; 
 											        let memUrl = ""; 
 											        let memName = ""; 
@@ -1476,18 +1451,12 @@
 						            $(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
 						            
 								        $('.mewmsg').each(function () { // 미리보기 ajax 시작
-								    		console.log('채팅방 번호 :'+chatNo);
-								    		console.log('테스트 : '+$(this).val());
 								    		
 										    if ($(this).val() == content.chatNo) { 
-										    	console.log('요소쳌');
-										    	console.log($(this).val())
-										    	console.log(content.chatNo)
 										    		$.ajax({ 
 										    			url:'${contextPath}/chat/updateNewMsg.do',
 										    			data:{chatNo:content.chatNo,msgContent:content.msgContent},
 										    			success:function(res){
-										    				console.log('성공');
 										    			}
 										    		})
 										    		// 채팅 날짜 넣어주기
@@ -1518,7 +1487,6 @@
 
 										 $('.mewmsg').each(function () { // 미리보기 ajax 시작
 											 		var listNumVal = $(this).closest('.chat-contact-info').find('.msgNum').val();   		
-										 			console.log($(this).prev().html());
 									    		
 									    		if($(this).val() == content.chatNo) { 
 											    			$('#chatContent'+content.msgNo).html('삭제된 메시지입니다.');
@@ -1537,7 +1505,6 @@
 										
 										$('.mewmsg').each(function () { // 미리보기 ajax 시작
 										 		var listNumVal = $(this).closest('.chat-contact-info').find('.msgNum').val();   		
-									 			console.log($(this).prev().html());
 								    		
 								    		if($(this).val() == content.chatNo) { 
 										    			$('#chatContent'+content.msgNo).html(content.msgContent);
@@ -1559,8 +1526,6 @@
 										
 									}
 									else if(content.type == 'notice'){
-										console.log("콘콘콘콘슈퍼콘슈퍼쏜")
-										console.log(content);
 										$('.noticeMessage').html(content.msgContent);
 										$('#noticeContent').css('display','block');
 										
@@ -1584,7 +1549,6 @@
 			        
 			        
 			        //subscrips.push(subscrip);
-			        console.log(subscrips);
 			        subscrips[chatNo] = subscrip
 			    }); // 모든 구독 끝
 			}); // stomp 종료
@@ -1644,8 +1608,6 @@
               url: '${contextPath}/chat/list.do',
               data: { chatNo: $(this).children().eq(0).val(), memNo:'${loginUser.memNo}' },
               success: function(res) {
-            	   console.log("콘콘콘콘ㅋ콘슈ㅜ퍼톸노수포코ㅓㄴ슈")
-                 console.log(res);   
                 for(let i=0;i<res.msg.length;i++){
                   a += msgPrint(res.msg[i].memNo, res.m, res.msg[i].msgContent, res.msg[i].msgRegistDate, res.msg[i].msgCheck, res.msg[i].msgNo, res.msg[i].msgStatus,res.msg[i].profileURL,res.msg[i].memName	)
                 }
@@ -1672,8 +1634,6 @@
 					   		url:'${contextPath}/chat/deletebtn.do',
 					   		data:{chatNo: activeChat},
 					   		success:function(res){
-					   			console.log(res);
-					   			console.log(loginUserNumInfo);
 					   			if(loginUserNumInfo == res.memNo){
 					   				$('#chatOut').css('display', 'block');
 					   			}else{
@@ -1715,8 +1675,6 @@
 			    // 메시지 삭제 시작
 	          $(document).on('click', '.messageDelete', function () {
 			  	    	var msgNo = $(this).data('value');
-			  	    		console.log(msgNo);
-			  	    	console.log(activeChat);
 			  	    	client.send('/pub/'+activeChat, {}, JSON.stringify({msgNo: msgNo,
 																								                    msgType:'delete',
 																								                    chatNo: activeChat
@@ -1754,9 +1712,6 @@
       
       function msgPrint(writer, userNo, msgContent, msgDate, msgCheck, msgNo, msgStatus, memUrl,memName) {
     let str = "";
-    console.log("함수");
-    console.log(writer);
-    console.log(memName);
 
     if (writer == userNo) {
         // 내 메시지 (오른쪽에 표시)
