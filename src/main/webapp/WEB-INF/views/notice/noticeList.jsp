@@ -178,20 +178,7 @@
 									    <script>
 									      $(document).ready(function(){
 									        $("#search_form select").val('${search.condition}');
-									        
-									        // 검색 후의 페이징바 클릭 시 검색 form을 강제로 submit
-									        // (단, 페이지번호는 현재 클릭한 페이지번호로 바꿔서)
-									        $("#paging_area a").on("click", function(){
-									          let page = $(this).text(); // Previous | Next | 페이지번호
-									          if(page == 'Previous'){
-									            page = ${pi.currentPage - 1};
-									          } else if(page == 'Next'){
-									            page = ${pi.currentPage + 1};
-									          }
-									          $("#search_form input[name=page]").val(page);
-									          $("#search_form").submit();
-									          return false; // 기본이벤트(href='/notice/list.do' url요청)가 동작 안 되도록
-									        });
+
 									      });
 									    </script>
 									  </c:if>
@@ -347,28 +334,10 @@
 	});
 
 
-  function goToPage(page) {
-    $("#search_form input[name=page]").val(page);
-    $("#search_form").submit();
-  }
-
   $(document).ready(function(){
     $("#search_form select").val('${search.condition}');
-    
-    // 검색 후의 페이징바 클릭 시 검색 form을 강제로 submit
-    // (단, 페이지번호는 현재 클릭한 페이지번호로 바꿔서)
-    $("#paging_area a").on("click", function(){
-      let page = $(this).text(); // Previous | Next | 페이지번호
-      if(page == 'Previous'){
-        page = ${pi.currentPage - 1};
-      } else if(page == 'Next'){
-        page = ${pi.currentPage + 1};
-      }
-      $("#search_form input[name=page]").val(page);
-      $("#search_form").submit();
-      return false; // 기본이벤트(href='/notice/list.do' url요청)가 동작 안 되도록
-    });
   });
+	
   document.getElementById('selectAll').addEventListener('click', function(event) {
     const checkboxes = document.querySelectorAll('.item-checkbox');
     checkboxes.forEach(checkbox => {
@@ -377,7 +346,12 @@
   });
 
   function goToPage(pageNumber) {
-    window.location.href = "${contextPath}/notice/noticeList.do?page=" + pageNumber;
+	  if('${search.keyword}' == ''){
+	    window.location.href = "${contextPath}/notice/noticeList.do?page=" + pageNumber;		  
+	  }else{
+		  $("#search_form input[name=page]").val(pageNumber);
+		  $("#search_form").submit();
+	  }
   }
 
   function regist() {
