@@ -618,16 +618,19 @@ $(function () {
         });
     }
 
-    // flatpickr 설정
+ 		// 초기 설정: 어제 날짜로 차트 초기화
     const today = new Date();
-    selectedStartDate = today.toISOString().slice(0, 10); // 초기값: 오늘 날짜
-    selectedEndDate = today.toISOString().slice(0, 10);
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    selectedStartDate = yesterday.toISOString().slice(0, 10); // 초기값: 어제 날짜
+    selectedEndDate = today.toISOString().slice(0, 10); // 오늘 날짜
 
     flatpickr("#flatpickr-range", {
         mode: "range",
         dateFormat: "Y-m-d",
         locale: "ko",
-        defaultDate: [today, today], // 기본값을 오늘로 설정
+        defaultDate: [yesterday, yesterday], // 기본값을 어제로 설정
+        maxDate: yesterday, // 오늘 이후 날짜 선택 불가
         onClose: function(selectedDates) {
             if (selectedDates.length === 2) {
                 selectedStartDate = selectedDates[0].toISOString().slice(0, 10);

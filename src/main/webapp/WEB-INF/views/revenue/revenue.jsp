@@ -62,16 +62,6 @@
         window.location.href = "${contextPath}/revenue/revenue.do?deptCode=${loginUser.deptCode}";
       </script>
     </c:if>
-
-    <%-- 직책 코드 확인 --%>
-    <c:choose>
-      <c:when test="${not empty loginUser.posCode and loginUser.posCode != 'C1' and loginUser.posCode != 'C2' and loginUser.posCode != 'C3' and loginUser.posCode != 'C4'}">
-        <script>
-          alert("관리자가 아닙니다.");
-          window.location.href = "${contextPath}/member/dashboard.do";
-        </script>
-      </c:when>
-    </c:choose>
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         <!-- 헤더 시작 -->

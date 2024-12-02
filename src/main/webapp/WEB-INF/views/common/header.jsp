@@ -284,8 +284,7 @@
 						      </a>
 						    </li>
 						    <c:set var="validDeptCodes" value="T1,T2,T3,T4,T5,T6,T7,T8" />
-						    <c:set var="validPosCodes" value="C1,C2,C3,C4" />
-						    <c:if test="${fn:contains(validDeptCodes, loginUser.deptCode) && fn:contains(validPosCodes, loginUser.posCode)}">
+						    <c:if test="${fn:contains(validDeptCodes, loginUser.deptCode)}">
 						      <li class="menu-item">
 						        <a href="${contextPath}/revenue/revenue.do?deptCode=${loginUser.deptCode}" id="salesRegist" class="menu-link">
 						          <div data-i18n="매출등록">매출등록</div>
