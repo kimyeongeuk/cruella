@@ -280,6 +280,8 @@ public class MemberController {
 		 List<WorkLogDto> list = wlService.allWorkTime(memNo);
 		 model.addAttribute("wlList", list);
 		 
+		 MemberDto m = memberService.selectMember(loginUser);
+		 session.setAttribute("loginUser", m);
 	 }
 	 
 	 // 내정보 - 팀게시판리스트 조회
