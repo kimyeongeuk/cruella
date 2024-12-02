@@ -62,6 +62,7 @@
         window.location.href = "${contextPath}/revenue/revenue.do?deptCode=${loginUser.deptCode}";
       </script>
     </c:if>
+
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         <!-- 헤더 시작 -->
@@ -102,76 +103,89 @@
 	                        <input type="hidden" name="endDate" value="${endDate}" />
 	                        <input type="hidden" name="tab" value="view" />
 	                        <div class="input-group mb-3">
-	                          <input type="text" class="form-control" name="searchKeyword" placeholder="검색어를 입력하세요" value="${searchKeyword}" />
-	                          <input type="text" class="form-control custom-select" placeholder="날짜를 선택해주세요" id="flatpickr-range" name="dateRange" value="${startDate} to ${endDate}" />
+	                          <input type="text" class="form-control" name="searchKeyword" style="width: 310px;" placeholder="관리자또는 매장이름 키워드를 입력하세요" value="${searchKeyword}" />
+	                          <input type="text" class="form-control custom-select" style="width: 210px;" placeholder="날짜를 선택해주세요" id="flatpickr-range" name="dateRange" value="${startDate} to ${endDate}" />
 	                          <button class="btn btn-primary" type="submit">검색</button>
 	                        </div>
 	                      </form>
 	                    </div>
                     </div>
                     <script>
-                      document.addEventListener("DOMContentLoaded", function () {
-                        flatpickr("#flatpickr-range", {
-                          mode: "range", // 날짜 범위 선택
-                          dateFormat: "Y-m-d", // 날짜 형식
-                          locale: "ko", // 한글 설정
-                          defaultDate: ["${startDate}", "${endDate}"], // 기본 날짜 범위 설정
-                          onClose: function (selectedDates) {
-                            if (selectedDates.length === 2) {
-                              var startDate = new Date(selectedDates[0]);
-                              var endDate = new Date(selectedDates[1]);
-                              startDate.setDate(startDate.getDate() + 1); // 'endDate'에 하루를 더함
-                              endDate.setDate(endDate.getDate() + 1);
-                              document.querySelector('input[name="startDate"]').value = startDate
-                                .toISOString()
-                                .split("T")[0];
-                              document.querySelector('input[name="endDate"]').value = endDate
-                                .toISOString()
-                                .split("T")[0];
-                            } else {
-                              document.querySelector('input[name="startDate"]').value = "";
-                              document.querySelector('input[name="endDate"]').value = "";
-                            }
-                          },
-                        });
+	                    document.addEventListener("DOMContentLoaded", function () {
+	                   	  flatpickr("#flatpickr-range", {
+	                   	    mode: "range", // 날짜 범위 선택
+	                   	    dateFormat: "Y-m-d", // 날짜 형식
+	                   	    locale: "ko", // 한글 설정
+	                   	    maxDate: "today", // 오늘까지만 선택 가능
+	                   	    defaultDate: ["${startDate}", "${endDate}"], // 기본 날짜 범위 설정
+	                   	    onClose: function (selectedDates) {
+	                   	      if (selectedDates.length === 2) {
+	                   	        var startDate = new Date(selectedDates[0]);
+	                   	        var endDate = new Date(selectedDates[1]);
+	                   	        startDate.setDate(startDate.getDate() + 1); // 'endDate'에 하루를 더함
+	                   	        endDate.setDate(endDate.getDate() + 1);
+	                   	        document.querySelector('input[name="startDate"]').value = startDate
+	                   	          .toISOString()
+	                   	          .split("T")[0];
+	                   	        document.querySelector('input[name="endDate"]').value = endDate
+	                   	          .toISOString()
+	                   	          .split("T")[0];
+	                   	      } else {
+	                   	        document.querySelector('input[name="startDate"]').value = "";
+	                   	        document.querySelector('input[name="endDate"]').value = "";
+	                   	      }
+	                   	    },
+	                   	  });
+	
+	                   	  var urlParams = new URLSearchParams(window.location.search);
+	                   	  var tab = urlParams.get("tab");
+	                   	  if (tab && tab === "register") {
+	                   	    var registerTab = document.getElementById("register-tab");
+	                   	    var viewTab = document.getElementById("view-tab");
+	                   	    var registerPane = document.getElementById("register");
+	                   	    var viewPane = document.getElementById("view");
+	
+	                   	    viewTab.classList.remove("active");
+	                   	    registerTab.classList.add("active");
+	                   	    viewPane.classList.remove("show", "active");
+	                   	    registerPane.classList.add("show", "active");
+	                   	  }
+	                   	});
 
-                        var urlParams = new URLSearchParams(window.location.search);
-                        var tab = urlParams.get("tab");
-                        if (tab && tab === "register") {
-                          var registerTab = document.getElementById("register-tab");
-                          var viewTab = document.getElementById("view-tab");
-                          var registerPane = document.getElementById("register");
-                          var viewPane = document.getElementById("view");
 
-                          viewTab.classList.remove("active");
-                          registerTab.classList.add("active");
-                          viewPane.classList.remove("show", "active");
-                          registerPane.classList.add("show", "active");
-                        }
-                      });
                     </script>
 
-                    <!-- 매출 테이블 -->
-                    <table class="datatables-basic table text-center" cellpadding="10" cellspacing="0" style="width: 100%; text-align: center;">
-                      <thead>
-                        <tr>
-                          <th>관리자</th>
-                          <th>매장 이름</th>
-                          <th>매출 값</th>
-                          <th>등록 날짜</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <c:forEach items="${revenueList}" var="revenue">
-                          <tr>
-                            <td>${revenue.memName}</td>
-                            <td>${revenue.rvStore}</td>
-                            <td><fmt:formatNumber value="${revenue.rvValue}" type="number" pattern="#,##0" /></td>
-                            <td>${revenue.rvRegistDate}</td>
-                          </tr>
-                        </c:forEach>
-                      </tbody>
-                    </table>
+										<!-- 매출 테이블 -->
+										<table class="datatables-basic table text-center" cellpadding="10" cellspacing="0" style="width: 100%; text-align: center;">
+										  <thead>
+										    <tr>
+										      <th>관리자</th>
+										      <th>매장 이름</th>
+										      <th>매출 값</th>
+										      <th>등록 날짜</th>
+										    </tr>
+										  </thead>
+										  <tbody>
+										    <c:choose>
+										      <c:when test="${not empty revenueList}">
+										        <c:forEach items="${revenueList}" var="revenue">
+										          <tr>
+										            <td>${revenue.memName}</td>
+										            <td>${revenue.rvStore}</td>
+										            <td><fmt:formatNumber value="${revenue.rvValue}" type="number" pattern="#,##0" /></td>
+										            <td>${revenue.rvRegistDate}</td>
+										          </tr>
+										        </c:forEach>
+										      </c:when>									      
+										      <c:otherwise>
+										        <tr>
+										          <td colspan="4">조회된 데이터가 없습니다.</td>
+										        </tr>
+										      </c:otherwise>
+										    </c:choose>
+										  </tbody>
+										</table>
+
 
                     <br />
                     <!-- 페이징 -->
@@ -236,33 +250,33 @@
                     </c:if>
 
                     <!-- 매출 등록 폼 -->
-                    <form id="revenueForm" action="${contextPath}/revenue/registerAll.do" method="post">
-                      <input type="hidden" name="memNo" value="${loginUser.memNo}" />
-                      <input type="hidden" name="deptCode" value="${deptCode}" />
-                      <div id="storeInputs">
-                        <c:forEach items="${storeOptions}" var="store" varStatus="status">
-                          <div class="store-input-group mb-3 row g-2 align-items-center">
-                            <div class="col-auto">
-                              <label for="rvStore${status.index}" class="form-label">매장 ${status.index + 1}</label>
-                              <input type="text" class="form-control" name="rvStores[]" value="${store}" readonly style="width: 150px;" />
-                            </div>
-                            <div class="col-auto">
-                              <label for="rvValue${status.index}" class="form-label">당일 매출</label>
-                              <input
-                                type="number"
-                                class="form-control rvValue"
-                                name="rvValues[]"
-                                style="width: 300px;"
-                                placeholder="당일매출을 입력하세요"
-                              />
-                            </div>
-                          </div>
-                        </c:forEach>
-                        <div class="d-flex justify-content-start mt-3">
-                          <button type="submit" class="btn btn-primary" style="height: 38px;">매출등록</button>
-                        </div>
-                      </div>
-                    </form>
+										<form id="revenueForm" action="${contextPath}/revenue/registerAll.do" method="post">
+										    <input type="hidden" name="memNo" value="${loginUser.memNo}" />
+										    <input type="hidden" name="deptCode" value="${deptCode}" />
+										    <div id="storeInputs">
+										        <c:forEach items="${storeOptions}" var="store" varStatus="status">
+										            <div class="store-input-group mb-3 row g-2 align-items-center">
+										                <div class="col-auto">
+										                    <label for="rvStore${status.index}" class="form-label">매장 ${status.index + 1}</label>
+										                    <input type="text" class="form-control" name="rvStores[]" value="${store}" readonly style="width: 150px;" />
+										                </div>
+										                <div class="col-auto">
+										                    <label for="rvValue${status.index}" class="form-label">당일 매출</label>
+										                    <input
+										                        type="text"
+										                        class="form-control rvValue"
+										                        name="rvValues[]"
+										                        style="width: 300px;"
+										                        placeholder="당일매출을 입력하세요"
+										                    />
+										                </div>
+										            </div>
+										        </c:forEach>
+										        <div class="d-flex justify-content-start mt-3">
+										            <button type="submit" class="btn btn-primary" style="height: 38px;">매출등록</button>
+										        </div>
+										    </div>
+										</form>
                   </div>
                 </div>
               </div>
@@ -276,38 +290,89 @@
       </div>
     </div>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("revenueForm").addEventListener("submit", function (event) {
-          const storeInputs = document.querySelectorAll(".rvValue");
-          let isFormValid = false;
+		<script>
+		  document.addEventListener("DOMContentLoaded", function () {
+		    const rvValueInputs = document.querySelectorAll(".rvValue");
+		
+		    // 숫자를 쉼표 형식으로 변환하는 함수
+		    function formatNumberWithCommas(value) {
+		      return value.replace(/\D/g, "") // 숫자가 아닌 문자 제거
+		                  .replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 3자리마다 쉼표 추가
+		    }
+		
+		    // 입력 필드에 이벤트 리스너 추가
+		    rvValueInputs.forEach((input) => {
+		      input.addEventListener("input", function () {
+		        const originalValue = input.value.replace(/,/g, ""); // 기존 숫자에서 쉼표 제거
+		        const formattedValue = formatNumberWithCommas(originalValue); // 쉼표 추가한 새 값
+		
+		        // 커서 위치 조정
+		        const cursorPosition = input.selectionStart; // 현재 커서 위치
+		        const beforeCursor = input.value.slice(0, cursorPosition).replace(/,/g, ""); // 커서 이전의 숫자
+		        const newCursorPosition = formatNumberWithCommas(beforeCursor).length; // 쉼표가 추가된 뒤 커서 위치 계산
+		
+		        input.value = formattedValue; // 포맷팅된 값 적용
+		        input.setSelectionRange(newCursorPosition, newCursorPosition); // 커서 위치 설정
+		      });
+		    });
+		
+		    // 폼 제출 시 쉼표 제거 후 값 전송
+		    document.getElementById("revenueForm").addEventListener("submit", function () {
+		      rvValueInputs.forEach((input) => {
+		        input.value = input.value.replace(/,/g, ""); // 쉼표 제거
+		      });
+		    });
+		  });
+		  
+		  const revenueForm = document.getElementById("revenueForm");
 
-          storeInputs.forEach((input) => {
-            if (input.value.trim() !== "") {
-              isFormValid = true;
-            }
-          });
+		  revenueForm.addEventListener("submit", function (event) {
+		    const storeInputs = document.querySelectorAll(".rvValue");
+		    let hasValidInput = false;
 
-          if (!isFormValid) {
-            event.preventDefault();
-            alert("최소 하나의 매출 입력값을 입력해 주세요.");
-          } else {
-            storeInputs.forEach((input) => {
-              if (input.value.trim() === "") {
-                input.closest(".store-input-group").remove();
-              }
-            });
-          }
-        });
+		    // 입력값 검증: 최소 하나의 매장 입력값 확인
+		    storeInputs.forEach((input) => {
+		      if (input.value.trim() !== "") {
+		        hasValidInput = true; // 유효한 입력값 발견
+		      }
+		    });
 
-        // 사이드바 활성화 처리
-        const element = document.getElementById("salesRegist");
-        document.getElementById("sales").classList.add("open");
-        element.style.backgroundColor = "#958CF4";
-        element.style.color = "white";
-        element.classList.add("active");
-      });
-    </script>
+		    if (!hasValidInput) {
+		      // 유효한 입력값이 없을 경우 경고 및 제출 중단
+		      event.preventDefault();
+		      alert("최소 하나의 매장을 입력해 주세요.");
+		      return;
+		    }
+
+		    // 입력되지 않은 매장은 제거
+		    storeInputs.forEach((input) => {
+		      if (input.value.trim() === "") {
+		        input.closest(".store-input-group").remove();
+		      }
+		    });
+		  });
+		  
+	    document.addEventListener('DOMContentLoaded', function () {
+	        const inputFields = document.querySelectorAll('.rvValue');
+
+	        inputFields.forEach(input => {
+	            input.addEventListener('input', function () {
+	                // 입력 필드의 값에서 모든 쉼표를 제거
+	                let value = this.value.replace(/,/g, '');
+	                // 숫자 길이를 9자리로 제한
+	                if (value.length > 9) {
+	                    value = value.slice(0, 9);
+	                }
+	                // 숫자로 변환 후 다시 쉼표를 추가
+	                value = Number(value).toLocaleString('en');
+	                // 변환된 값으로 입력 필드 업데이트
+	                this.value = value;
+	            });
+	        });
+	    });
+		  
+		</script>
+		
     <!-- flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>

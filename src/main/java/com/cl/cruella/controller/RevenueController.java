@@ -94,22 +94,26 @@ public class RevenueController {
         RedirectAttributes redirectAttributes) {
 
         try {
-            // rvValues를 Integer로 변환
-            List<Integer> rvValuesAsInt = rvValues.stream()
-                                                  .map(Integer::parseInt)
-                                                  .collect(Collectors.toList());
+            // 입력된 매장 데이터 필터링: 매출값이 비어 있지 않은 항목만 처리
+            List<String> filteredStores = rvStores.stream()
+                .filter(store -> !store.isEmpty())
+                .collect(Collectors.toList());
+            List<Integer> filteredValues = rvValues.stream()
+                .filter(value -> !value.isEmpty())
+                .map(Integer::parseInt) // String을 Integer로 변환
+                .collect(Collectors.toList());
 
-            // 서비스 호출
-            revenueService.registerAllRevenues(memNo, rvStores, rvValuesAsInt);
+            if (filteredStores.isEmpty() || filteredValues.isEmpty()) {
+                throw new IllegalArgumentException("최소 하나의 매장과 매출 데이터를 입력해야 합니다.");
+            }
 
-            // 성공 메시지와 tab=register 파라미터 추가
+            // 유효한 데이터만 Service에 전달
+            revenueService.registerAllRevenues(memNo, filteredStores, filteredValues);
             redirectAttributes.addFlashAttribute("successMessage", "매출이 성공적으로 등록되었습니다!");
-            return "redirect:/revenue/revenue.do?deptCode=" + deptCode + "&tab=register&success=true";
         } catch (Exception e) {
-            // 오류 메시지와 tab=register 파라미터 추가
-            redirectAttributes.addFlashAttribute("errorMessage", "매출 등록 중 오류가 발생했습니다.");
-            return "redirect:/revenue/revenue.do?deptCode=" + deptCode + "&tab=register&success=false";
+            redirectAttributes.addFlashAttribute("errorMessage", "매출 등록 중 오류가 발생했습니다: " + e.getMessage());
         }
+        return "redirect:/revenue/revenue.do?deptCode=" + deptCode + "&tab=register&success=false";
     }
 
 }

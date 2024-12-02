@@ -22,7 +22,7 @@ public class RevenueService {
         if (rvStores.size() != rvValues.size()) {
             throw new IllegalArgumentException("매장과 매출 데이터가 일치하지 않습니다.");
         }
-        
+
         List<RevenueDto> revenueList = new ArrayList<>();
         for (int i = 0; i < rvStores.size(); i++) {
             RevenueDto revenueDto = RevenueDto.builder()
@@ -33,9 +33,11 @@ public class RevenueService {
                 .build();
             revenueList.add(revenueDto);
         }
-        
+
+        // 필터링된 데이터를 DAO에 전달
         revenueDao.saveOrUpdateRevenues(revenueList);
     }
+
 
     // 매출 리스트 조회
     public List<RevenueDto> getRevenueList() {

@@ -630,7 +630,7 @@ $(function () {
         dateFormat: "Y-m-d",
         locale: "ko",
         defaultDate: [yesterday, yesterday], // 기본값을 어제로 설정
-        maxDate: yesterday, // 오늘 이후 날짜 선택 불가
+        maxDate: yesterday, // 어제 이후 날짜 선택 불가
         onClose: function(selectedDates) {
             if (selectedDates.length === 2) {
                 selectedStartDate = selectedDates[0].toISOString().slice(0, 10);
