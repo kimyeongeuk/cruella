@@ -45,19 +45,24 @@ public class ChatController {
 
 		// 채팅방 목록
 		List<ChatDto> chatList = chatServiceImpl.chatList(memNo);
+		log.debug("asdasdf:{}",chatList);
 		// 사원 프로필상태
 		List<ChatProfileDto> chatProfileList = chatServiceImpl.chatProFileList();
+		log.debug("asdasdf:{}",chatProfileList);
 		// 사원 목록
 		List<MemberDto> memberList = chatServiceImpl.memberList();
+		log.debug("asdasdf:{}",memberList);
 		// 채팅방 인원 프사 링크 가져오기
 		List<ChatDto> list2 = new ArrayList<>();
-		
-		
 		list2.addAll(chatList);
-		System.out.println("길이"+list2.size());
-
-		List<MemberDto> memberLink = chatServiceImpl.memberLink(chatList);
-
+		if(!chatList.isEmpty()) {
+			for(int i=0;i<chatList.size();i++) {
+				list2.get(i).setMemNo(memNo);
+			}
+			
+		}
+		List<MemberDto> memberLink = chatServiceImpl.memberLink(list2);
+		log.debug("sadf:{}",memberLink);
 		
 	    Date today = new Date();
 	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -80,9 +85,11 @@ public class ChatController {
 	    
 	    
 	    
+		System.out.println(chatList);
 		model.addAttribute("chatList",chatList);
 		model.addAttribute("chatProfileList",chatProfileList);
 		model.addAttribute("memberList",memberList);
+		log.debug("memberlink:{}",memberLink);
 		model.addAttribute("memberLink",memberLink);
 	}
 	
@@ -146,75 +153,24 @@ public class ChatController {
 		
 	}
 	
-//	@ResponseBody
-//	@GetMapping(value="/msgNum.do",produces="application/json")
-//	public Map<String, Object> msgNum(HttpSession session,ChatDto cd) {
-//		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
-//		ChatDto md = new ChatDto();
-//		md.setMemNo(cd.getMemNo());
-//		log.debug("멤넘:{}",cd);
-//		int result = chatServiceImpl.msgNum();
-//		MemberDto result2 = chatServiceImpl.writerUrl(cd);
-//		MemberDto md2 = new MemberDto();
-//		if(!memNo.equals(md.getMemNo())) {
-//			
-//			md2 = chatServiceImpl.writerUrl(md);
-//		}
-//		
-//		Map<String,Object> map = new HashMap<>();
-//		map.put("msgNum",result);
-//		map.put("memUrl",result2);
-//		map.put("URL", md2);
-//		
-//		return map;
-//		
-//	}
-	
-//	@ResponseBody
-//	@GetMapping(value = "/msgNum.do", produces = "application/json")
-//	public Map<String, Object> msgNum(HttpSession session, ChatDto cd) {
-//	    String memNo = ((MemberDto) session.getAttribute("loginUser")).getMemNo();
-//	    ChatDto md = new ChatDto();
-//	    
-//	    
-//	    
-//	    md.setMemNo(chatServiceImpl.writerNo(cd));
-//	    log.debug("cd 멤넘: {}", cd);
-//	    log.debug("로그인 사용자 memNo: {}", memNo);
-//
-//	    int result = chatServiceImpl.msgNum();
-//	    MemberDto result2 = chatServiceImpl.writerUrl(cd);  // 작성자 URL
-//	    log.debug("result2 URL: {}", result2.getProfileURL());  // 작성자 URL 확인
-//
-//	    MemberDto md2 = new MemberDto();
-//	 
-//	        md2 = chatServiceImpl.writerUrl(md);  // 상대방 URL (동적으로 생성된 profileURL2)
-//	   
-//	    log.debug("상대방 URL: {}", md2.getProfileURL());  // 상대방 URL 확인
-//
-//	    Map<String, Object> map = new HashMap<>();
-//	    map.put("msgNum", result);
-//	    map.put("memUrl", result2);  // 작성자 URL
-//	    map.put("URL", md2);  // 상대방 URL (동적으로 생성된 profileURL2)
-//
-//	    return map;
-//	}
-
-	
 	@ResponseBody
-	@GetMapping(value = "/msgNum.do", produces = "application/json")
-	public Map<String, Object> msgNum(HttpSession session, ChatDto cd) {
+	@GetMapping(value="/msgNum.do",produces="application/json")
+	public Map<String, Object> msgNum(HttpSession session,ChatDto cd) {
 	    // 로그인 사용자 정보
 	    String senderMemNo = ((MemberDto) session.getAttribute("loginUser")).getMemNo(); // 메시지를 보낸 사용자
+		
+		
 	    cd.setMemNo(senderMemNo);
 
 	    int result = chatServiceImpl.msgNum();
+
 	    
 	    // 보낸 사람의 프로필 URL 가져오기
 	    MemberDto senderProfile = chatServiceImpl.writerUrl(cd);
 
 	    // 채팅방에 참여한 모든 사용자 mem_no 리스트 가져오기
 	    List<String> chatMembers = chatServiceImpl.writerNo(cd);
+	    log.debug("테스트1111111{}",senderProfile);
 	    // 채팅방에 참여한 인원 이름
 	    List<MemberDto> memList = chatServiceImpl.chatMemName(cd);
 
@@ -243,13 +199,10 @@ public class ChatController {
 
 	    return map;
 	}
-	
-	
-	
-	
-	
-	
-	
+		
+		
+		
+		
 	
 	
 	@ResponseBody
