@@ -711,7 +711,7 @@ public class MemberController {
 		MemberDto list = memberService.paystub(memNo);			
 		
 		model.addAttribute("list", list);
-		
+		log.debug("list:{}", list );
 		return "/member/paystub";
 	}
 	

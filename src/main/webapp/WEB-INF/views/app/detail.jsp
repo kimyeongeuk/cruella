@@ -775,7 +775,7 @@ function pdf_down() {
      // 사이드바 처리
 		document.addEventListener("DOMContentLoaded", function () {
 	  	
-			const element = document.getElementById("app_box_active");
+		const element = document.getElementById("app_box_active");
 			
 	  	document.getElementById("app_main_active").classList.add("open");
 	  	element.style.backgroundColor = "#958CF4";

@@ -101,12 +101,6 @@
 												</li>
 											</ul>
 										</div>
-										 <c:if test="${ loginUser.deptCode eq 'S2'}">
-										<button id="toggleButton" class="btn btn-primary">관리자조회</button>
-										</c:if>
-										<div id="searchBox" style="display: none; margin-top: 10px;">
-											<input type="text" placeholder="검색어를 입력하세요" />
-										</div>
 
 
 
