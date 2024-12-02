@@ -15,7 +15,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <script src="${ contextPath }/resources/assets/js/config.js"></script>
-    
+
  <style>
  	 textarea{
 		width: 400px;
@@ -166,7 +166,7 @@
                 <div class="d-flex align-items-center justify-content-center">
 	                <c:choose>
 	                	<c:when test="${loginUser.wlStatus == null}">
-		                  <a class="btn btn-success d-flex align-items-center me-4" onclick="fnClockIn();">
+		                  <a class="btn btn-success d-flex align-items-center me-4" onclick="fnClockIn();" style="color: white">
 		                  	<i class="ti-xs me-1 ti ti-clock me-2"></i>출근
 		                  </a>
 		                </c:when>
@@ -188,24 +188,196 @@
         </div>
         <!--/ Website Analytics -->
 
-        <!-- 팀별 매출 점유율 -->
-        <div class="card" style="width: 480px;">
-          <div class="chart-wrapper"> 
-            <h5 class="card-title mt-5" style="margin-left: 20px;">Chart</h5>
-            <p class="card-subtitle mt-2" style="margin-left: 20px;">팀별 매출 점유율</p>
-            <div class="justify-content-between" style="display: flex;">
-              <div id="chartCenterText"></div>
-            </div>
-            <div class="chart-container"> 
-              <div id="chartWrapper"> 
-                <canvas id="doughnutChart"></canvas> 
-                <div class="chartjs-center-text">
-                </div> 
-              </div> 
-            </div>
-          </div>
-        </div>
-        <!-- /팀별 매출 점유율 차트 -->
+				<!-- 팀별 매출 점유율 차트 -->
+				<div class="card" style="width: 480px; height: 400px;">
+					<div class="card-body">
+						<div style="margin: 20px;" id="categorySalesChart">
+							<div style="display: flex; justify-content: space-between; align-items: center;">
+							 <div>
+							   <span>
+							      <span style="font-size: 20px;">매출차트</span>
+							   </span>
+							 </div>
+							</div>
+							<div class="justify-content-between" style="display: flex;">
+								<div class="d-flex justify-content-end">
+									<div style="display: none;">
+									  <select id="doughnutChart_yearSelect" class="select1 form-select form-select-lg" data-allow-clear="true">
+									    <option value="2023">2023</option>
+									    <option value="2024" selected>2024</option>
+									  </select>
+									</div>
+									<div style="display: none;">
+									  <select id="doughnutChart_monthSelect" class="select1 form-select form-select-lg" data-allow-clear="true" style="margin-left: 10px;">
+									    <option value="01">1월</option>
+									    <option value="02">2월</option>
+									    <option value="03">3월</option>
+									    <option value="04">4월</option>
+									    <option value="05">5월</option>
+									    <option value="06">6월</option>
+									    <option value="07">7월</option>
+									    <option value="08">8월</option>
+									    <option value="09">9월</option>
+									    <option value="10">10월</option>
+									    <option value="11">11월</option>
+									    <option value="12">12월</option>
+									  </select>
+									</div>
+								</div>
+							</div>
+							<div>
+								<div class="doughnutChart-container" style="position: relative; width: 100%;">
+								  <canvas id="doughnutChart" style="width: 100%; height: 300px;"></canvas>
+								</div>
+							</div>		
+						</div>
+						<script>
+						$(function() {
+						  const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+						  const doughnutChart = new Chart(doughnutCtx, {
+						    type: 'doughnut',
+						    data: {
+						      labels: [],
+						      datasets: [{
+						        label: '매출',
+						        data: [],
+						        backgroundColor: [
+						          'rgb(102, 110, 232)', 'rgb(40, 208, 148)', 'rgb(253, 172, 52)', 'rgb(253, 233, 52)',
+						          'rgb(223, 253, 52)', 'rgb(52, 223, 253)', 'rgb(196, 52, 253)', 'rgb(253, 52, 193)'
+						        ],
+						        borderWidth: 1
+						      }]
+						    },
+						    options: {
+						      responsive: true,
+						      maintainAspectRatio: false,
+						      plugins: {
+						    	  legend: {
+						    	      display: false // 범례를 비활성화
+						    	    },
+						        tooltip: {
+						          callbacks: {
+						            label: (context) => {
+						              let label = context.label || '';
+						              if (label) label += ': ';           
+						
+						              // 전체 매출 계산하기 전에 총 매출을 계산
+						              const totalSales = context.chart.data.datasets[0].data.reduce((a, b) => a + (b || 0), 0);
+						
+						              if (context.raw !== null && context.raw !== undefined) {
+						                // 퍼센트 계산
+						                const percentage = totalSales > 0 ? ((context.raw / totalSales) * 100).toFixed(2) : 0;
+						                
+						                // 매출과 퍼센트 표시
+						                label += percentage + "% (" + context.raw.toLocaleString() + "원)";
+						              }
+						              
+						              return label;
+						            }
+						          }
+						        },
+						        datalabels: {
+						           color: '#444050',
+						           anchor: 'center', // 캔버스 내에서 중심을 기준으로 배치
+						           align: 'center',  // 라벨 정렬을 중심으로 설정
+						           formatter: (value, context) => {
+						             const totalSales = context.chart.data.datasets[0].data.reduce((a, b) => a + (b || 0), 0);
+						             const percentage = totalSales > 0 ? ((value / totalSales) * 100).toFixed(2) : 0;
+						             const label = context.chart.data.labels[context.dataIndex];
+						             // 반환된 라벨과 퍼센트를 한 줄씩 표시
+						             return label + "\n(" + percentage + "%)";
+						           },
+						           font: {
+						             size: 16, // 글씨 크기 설정
+						             family: 'Arial',
+						           },
+						           padding: 0, // 텍스트와 주변 간격 설정
+						           textAlign: 'center',
+						         },
+						      }
+						    },
+						    plugins: [ChartDataLabels] // datalabels 플러그인 활성화
+						  });
+						
+						  function setInitialDate() {
+						    const today = new Date();
+						    const year = today.getFullYear();
+						    const month = ("0" + (today.getMonth() + 1)).slice(-2);
+						    
+						    $('#doughnutChart_yearSelect').val(year);
+						    $('#doughnutChart_monthSelect').val(month);
+						    
+						    updateChart(year, month);
+						  }
+						
+						  function updateChart(year, month) {
+						    $.ajax({
+						      url: `${contextPath}/chart/teamSales.do`,
+						      type: "POST",
+						      data: JSON.stringify({ year: year, month: month }),
+						      contentType: "application/json; charset=utf-8",
+						      dataType: "json",
+						      success: function(data) {
+						
+						        // 데이터 배열 초기화
+						        var departments = [];
+						        var sales = [];
+						
+						        // deptCode를 매핑하여 레이블 추가
+						        const deptCodeToLabel = {
+						          T1: '남성의류',
+						          T2: '여성의류',
+						          T3: '식품',
+						          T4: '스포츠',
+						          T5: '뷰티',
+						          T6: '명품',
+						          T7: '문화센터',
+						          T8: '디지털 및 가전'
+						        };
+						
+						        let totalSales = 0; // 총 매출 변수
+						
+						        // 데이터 처리
+						        $.each(data, function(index, item) {
+						          const deptLabel = deptCodeToLabel[item["deptCode"]] || item["deptCode"];
+						          departments.push(deptLabel);
+						          sales.push(item["sale"]);
+						          totalSales += item["sale"]; // 총 매출 계산
+						        });
+						
+						        // 차트 데이터 업데이트
+						        doughnutChart.data.labels = departments;
+						        doughnutChart.data.datasets[0].data = sales;
+						
+						        // 차트 갱신
+						        doughnutChart.update();
+						        
+						        // 차트 중앙 텍스트 업데이트
+						        $('#chartCenterText').text(year + "년 " + month + "월 매출: " + totalSales.toLocaleString() + "원");
+						      },
+						      error: function(jqXHR, textStatus, errorThrown) {
+						        console.error("AJAX 요청 실패:", {
+						          status: textStatus,
+						          error: errorThrown,
+						          response: jqXHR.responseText,
+						        });
+						        alert("데이터를 가져오는 데 실패했습니다.");
+						      },
+						    });
+						  }
+						
+						  $('#doughnutChart_yearSelect, #doughnutChart_monthSelect').change(function() {
+						    const year = $('#doughnutChart_yearSelect').val();
+						    const month = $('#doughnutChart_monthSelect').val();
+						    updateChart(year, month);
+						  });
+						  
+						  setInitialDate();
+						});
+						</script>
+					</div>
+				</div>
+
         
         <!-- 메모목록 -->
         <div class="card" style="height: 400px; width: 430px; margin-left: 12px; background-color: rgba(135, 206, 235, 0.3);">
@@ -218,60 +390,315 @@
 
 
 
-        <!-- 총매출 차트부분 -->
-        <div class="col-12" style="width: 950px;">
-          <div class="card">
-            <div class="card-header d-flex justify-content-between">
-              <div>
-                <h5 class="card-title mb-0">Chart</h5>
-                <p class="card-subtitle mt-2" style="margin-left: 10px;">2024년도 백화점 총 매출</p>
-              </div>
-              <div class="d-sm-flex d-none align-items-center">
-                <h5 class="mb-0 me-4">$ 100,000</h5>
-                <span class="badge bg-label-secondary">
-                  <i class="ti ti-arrow-big-down ti-xs text-danger"></i>
-                  <span class="align-middle">20%</span>
-                </span>
-              </div>
-            </div>
-            <div class="card-body">
-              <div id="lineChart"></div>
-            </div>
-          </div>
-        </div>
+			  <!-- 총매출 차트부분 -->
+			  <!-- 연도 입력 및 버튼 -->
+			  <div class="card" style="width: 926px; height: 528px;">
+				  <div class="card-body">
+					  <div class="justify-content-between" style="display: flex; align-items: center;">
+					    <!-- 차트 중앙 텍스트 -->
+					    <div id="lineChartCenterText" style="font-size: 20px;"></div>
+					
+					    <!-- 연도 선택 -->
+					    <div class="d-flex justify-content-end">
+					      <div>
+					        <select id="lineChart_yearSelect" class="select1 form-select form-select-lg" data-allow-clear="true" style="width: 150px;">
+					          <option value="2023">2023</option>
+					          <option value="2024" selected>2024</option>
+					        </select>
+					      </div>
+					    </div>
+					  </div>
+					
+					  <br>
+					
+					  <!-- 라인 차트 캔버스 -->
+					  <div>
+					    <div class="lineChart-container" style="position: relative; width: 100%;">
+					      <canvas id="lineChart" style="width: 100%;"></canvas>
+					    </div>
+					  </div>
+					</div>
+				</div>
+			<div class="card" style="width: 430px; height: 530px; margin-left: 16px;">
+				<div class="card-body pt-0" style="height: 400px;">
+					<!-- 매장 매출 차트 -->
+					<div id="storeSalesChart">
+					    <!-- Dept_code 및 날짜 선택 박스 추가 -->
+					    <div style="display: flex; justify-content: right; align-items: center; gap: 5px; width: 100%">
+					        <div style="display: none;">
+					            <label for="deptCodeSelect" class="form-label">부서 코드</label>
+					            <select id="deptCodeSelect" class="form-select custom-select" data-allow-clear="true" style="width: 200px; height: 48px;">
+					                <option value="T1">남성의류</option>
+					                <option value="T2">여성의류</option>
+					                <option value="T3">식품</option>
+					                <option value="T4">스포츠</option>
+					                <option value="T5">뷰티</option>
+					                <option value="T6">명품</option>
+					                <option value="T7">문화센터</option>
+					                <option value="T8">디지털 및 가전</option>
+					            </select>
+					        </div>
+					    </div>
+					    <br>
+					
+					    <div class="barChart-container" style="display: flex; justify-content: center; position: relative; width: 100%;">
+					        <canvas id="barChart" style="width: 300px; height: 300px;"></canvas>
+					    </div>
+					</div>
+					
+					<script>
+					const storeOptions = {
+					    "T1": ["레노마셔츠", "라코스테"],
+					    "T2": ["샤넬", "구찌"],
+					    "T3": ["롯데마트", "홈플러스"],
+					    "T4": ["나이키", "아디다스"],
+					    "T5": ["아모레퍼시픽", "LG생활건강"],
+					    "T6": ["루이비통", "에르메스"],
+					    "T7": ["CGV", "롯데시네마"],
+					    "T8": ["삼성전자", "LG전자"]
+					};
+					
+					$(function () {
+					    const barCtx = document.getElementById('barChart').getContext('2d');
+					    const barChart = new Chart(barCtx, {
+					        type: 'bar',
+					        data: {
+					            labels: [], // 매장 이름
+					            datasets: [{
+					                label: '매출',
+					                data: [], // 매출 데이터
+					                borderColor: '#4BC0C0',
+					                backgroundColor: '#DBF2F2',
+					                borderWidth: 1,
+					                barThickness: 100
+					            }]
+					        },
+					        options: {
+					            responsive: true,
+					            scales: {
+					                y: {
+					                    beginAtZero: true,
+					                    ticks: {
+					                        callback: function(value) {
+					                            if (value >= 1000000000000) {
+					                                return (value / 1000000000000).toFixed(2) + "조";
+					                            } else if (value >= 100000000) {
+					                                return (value / 100000000).toFixed(2) + "억";
+					                            } else if (value >= 10000) {
+					                                return (value / 10000).toFixed(2) + "만";
+					                            } else {
+					                                return value.toLocaleString();
+					                            }
+					                        }
+					                    }
+					                }
+					            },
+					            plugins: {
+					                tooltip: {
+					                    callbacks: {
+					                        label: function(context) {
+					                            const value = context.raw;
+					                            if (value >= 1000000000000) {
+					                                return (value / 1000000000000).toFixed(2) + "조 원";
+					                            } else if (value >= 100000000) {
+					                                return (value / 100000000).toFixed(2) + "억 원";
+					                            } else if (value >= 10000) {
+					                                return (value / 10000).toFixed(2) + "만 원";
+					                            } else {
+					                                return value.toLocaleString() + "원";
+					                            }
+					                        }
+					                    }
+					                }
+					            }
+					        }
+					    });
+					
+					    // 날짜 상태를 전역 변수로 관리
+					    let selectedStartDate = null;
+					    let selectedEndDate = null;
+					
+					    function updateBarChart(deptCode, startDate, endDate) {
+					        $.ajax({
+					            url: `${contextPath}/chart/storeSales.do`,
+					            type: "POST",
+					            data: JSON.stringify({ deptCode: deptCode, startDate: startDate, endDate: endDate }),
+					            contentType: "application/json; charset=utf-8",
+					            dataType: "json",
+					            success: function (data) {
+					                console.log("data:", data); // 디버깅용으로 전체 데이터를 출력
+					                const stores = storeOptions[deptCode];
+					                const sales = stores.map(store => data.find(item => item.rvStore === store)?.sumStore || 0); // 매출 데이터 추출
+					
+					                barChart.data.labels = stores;
+					                barChart.data.datasets[0].data = sales;
+					                barChart.update();
+					            },
+					            error: function (jqXHR, textStatus, errorThrown) {
+					                console.error("AJAX 요청 실패:", { textStatus, errorThrown, response: jqXHR.responseText });
+					                alert("데이터를 가져오는 데 실패했습니다.");
+					            }
+					        });
+					    }
+					
+					    // flatpickr 설정
+					    const today = new Date();
+					    selectedStartDate = today.toISOString().slice(0, 10); // 초기값: 오늘 날짜
+					    selectedEndDate = today.toISOString().slice(0, 10);
+					
+					    flatpickr("#flatpickr-range", {
+					        mode: "range",
+					        dateFormat: "Y-m-d",
+					        locale: "ko",
+					        defaultDate: [today, today], // 기본값을 오늘로 설정
+					        onClose: function(selectedDates) {
+					            if (selectedDates.length === 2) {
+					                selectedStartDate = selectedDates[0].toISOString().slice(0, 10);
+					                selectedEndDate = selectedDates[1].toISOString().slice(0, 10);
+					                const deptCode = $('#deptCodeSelect').val();
+					                updateBarChart(deptCode, selectedStartDate, selectedEndDate);
+					            }
+					        }
+					    });
+					
+					    // Dept_code 선택이 변경될 때마다 차트 업데이트
+					    $('#deptCodeSelect').change(() => {
+					        const deptCode = $('#deptCodeSelect').val();
+					        // 변경된 부서 코드와 유지된 날짜로 차트를 업데이트
+					        updateBarChart(deptCode, selectedStartDate, selectedEndDate);
+					    });
+					
+					    // 초기 설정: 오늘 날짜로 차트 초기화
+					    const initialDeptCode = $('#deptCodeSelect').val();
+					    updateBarChart(initialDeptCode, selectedStartDate, selectedEndDate);
+					});
+					</script>
+										
+				</div>
+			</div>
+				
+			</div>
+			
+			<script>
+			$(function () {
+			    const lineCtx = document.getElementById('lineChart').getContext('2d');
+			    const lineChart = new Chart(lineCtx, {
+			        type: 'line',
+			        data: {
+			            labels: [], // x축: 월
+			            datasets: [{
+			                label: '매출',
+			                data: [], // y축: 매출 데이터
+			                borderColor: 'orange',
+			                backgroundColor: 'rgba(0, 0, 0, 0)', // 배경색을 투명하게 설정
+			                fill: true,
+			                tension: 0, // 둥글게 하지 않음
+			                pointRadius: 5, // 기본 동그라미 크기
+			                pointHoverRadius: 10, // 마우스를 올렸을 때 동그라미 크기
+			                borderWidth: 5 // 선의 두께 설정
+			            }]
+			        },
+			        options: {
+			            responsive: true,
+			            maintainAspectRatio: false,
+			            plugins: {
+			                legend: { display: true, position: 'top' },
+			                tooltip: {
+			                    callbacks: {
+			                        label: (context) => {
+			                            const value = context.raw;
+			                            if (value >= 1000000000000) {
+			                                return (value / 1000000000000).toFixed(2) + "조 원";
+			                            } else if (value >= 100000000) {
+			                                return (value / 100000000).toFixed(2) + "억 원";
+			                            } else if (value >= 10000) {
+			                                return (value / 10000).toFixed(2) + "만 원";
+			                            } else {
+			                                return value.toLocaleString() + "원";
+			                            }
+			                        }
+			                    }
+			                }
+			            },
+			            scales: {
+			                x: { title: { display: false } }, // 월 표기 부분 제거
+			                y: {
+			                    title: { display: false }, // 매출 단위 표기 부분 제거
+			                    ticks: {
+			                        callback: function(value) {
+			                            if (value >= 1000000000000) {
+			                                return (value / 1000000000000).toFixed(2) + "조";
+			                            } else if (value >= 100000000) {
+			                                return (value / 100000000).toFixed(2) + "억";
+			                            } else if (value >= 10000) {
+			                                return (value / 10000).toFixed(2) + "만";
+			                            } else {
+			                                return value.toLocaleString();
+			                            }
+			                        }
+			                    }
+			                }
+			            }
+			        }
+			    });
+			
+			    function updateLineChart(year) {
+			        $.ajax({
+			            url: `${contextPath}/chart/monthlySales.do`,
+			            type: "POST",
+			            data: JSON.stringify({ year: year }),
+			            contentType: "application/json; charset=utf-8",
+			            dataType: "json",
+			            success: function (data) {
+			                const months = [];
+			                const sales = [];
+			                data.forEach(item => {
+			                    if (item.month) { // month 값이 존재하는 경우에만 처리
+			                        months.push(item.month + "월");
+			                        sales.push(item.sumValue);
+			                    } else {
+			                        console.error("month 값이 null입니다:", item); // 디버깅용으로 출력
+			                    }
+			                });
+			
+			                if (months.length === 0) {
+			                    $('#lineChartCenterText').text("데이터가 없습니다.");
+			                    return;
+			                }
+			
+			                lineChart.data.labels = months;
+			                lineChart.data.datasets[0].data = sales;
+			                lineChart.update();
+			
+			                const totalSales = sales.reduce((sum, val) => sum + val, 0);
+			                $('#lineChartCenterText').text("총 매출: " + totalSales.toLocaleString() + "원");
+			            },
+			            error: function (jqXHR, textStatus, errorThrown) {
+			                console.error("AJAX 요청 실패:", { textStatus, errorThrown, response: jqXHR.responseText });
+			                alert("데이터를 가져오는 데 실패했습니다.");
+			            }
+			        });
+			    }
+			
+			    const initialYear = new Date().getFullYear();
+			    $('#lineChart_yearSelect').val(initialYear); // 초기 값을 설정
+			    updateLineChart(initialYear);
+			
+			    $('#lineChart_yearSelect').change(() => { // 연도 선택이 변경될 때마다 조회
+			        const year = $('#lineChart_yearSelect').val();
+			        if (year) updateLineChart(year);
+			    });
+			
+			    // 현재 날짜 설정
+			    const currentDate = new Date().toISOString().slice(0, 10);
+			    $('#currentDate').text(currentDate);
+			});
+			</script>
         <!--/ 총매출 차트부분 -->
 
-        <!-- 매장별 차트부분 -->  <!-- 대시보드는 어제(최신)의 데이터만 보여지고 날짜 선택은 불가 -->
-        <div class="card" style="width: 440px; justify-content: center;">
-          <div style="display: block;">
-            <div class="input-wrapper mb-5" style="display: flex;">
-              <div>
-                <select id="categorySelect" class="select1 form-select form-select-lg" data-allow-clear="true">
-                  <option value="남성의류">남성의류</option>
-                  <option value="여성의류">여성의류</option>
-                  <option value="식품">식품</option>
-                  <option value="스포츠">스포츠</option>
-                  <option value="뷰티">뷰티</option>
-                  <option value="명품">명품</option>
-                  <option value="문화센터">문화센터</option>
-                  <option value="디지털 및 가전">디지털 및 가전</option>
-                </select>
-              </div>
-              <div style="display: flex; flex-direction: column; gap: 5px; margin-left: 120px; margin-top: 5px;">
-                <div id="div1" style="width: 40px; height: 15px; border: 3px solid;"></div>
-                <div id="div2" style="width: 40px; height: 15px; border: 3px solid;"></div>
-              </div>
-              <p class="card-subtitle mt-2" style="margin-left: 10px; font-size: 18px;">매출</p>
-            </div>
-            <div class="chart-container">
-              <canvas id="barChart" style="height: 400px;"></canvas>
-            </div>
-          </div>
-        </div>
-        <!--/ 매장별 차트부분 -->
-
-        <!-- Popular Instructors -->
-        <div class="col-md-6 col-xxl-4 mb-1">
+				<div style="display: flex; margin-top: 20px;">
+        <!-- 사원목록 -->
+        <div class="col-md-6 col-xxl-4 mb-1" style="height: 730px;">
           <div class="card h-100">
             <div class="card-header align-items-center" style="display: flex; gap: 15px;">
               <i class="ti ti-users ti-lg"></i>
@@ -282,10 +709,10 @@
             </div>
           </div>
         </div>
-        <!--/ Popular Instructors -->
+        <!--/ 사원목록 -->
 
 				<!-- 공지사항 영역 (재운님 코드)-->
-				<div class="card" style="width: 920px;">
+				<div class="card" style="width: 880px; margin-left: 20px;">
   				<div class="d-flex align-items-center">
    					<div style="margin: 20px;">
          			<a id="notice" href="${contextPath}/notice/noticeList.do">공지사항</a>
@@ -320,8 +747,8 @@
 					  </div>
 	        </div>
 	     		</div>
-	       
-	       <!--/ 팀게시판 영역 -->         
+	       <!--/ 공지사항 영역 -->       
+	       </div>  
      </div>    
     
     
@@ -468,193 +895,6 @@
 		</script>
     	
 
-  
-
-
-
-   <!-- 매장별 매출 점유율 -->
-   <script>
-     document.addEventListener('DOMContentLoaded', () => {
-       const ctx = document.getElementById('doughnutChart').getContext('2d');
-       const chartCenterText = document.getElementById('chartCenterText');
- 
-       const data = {
-         labels: ['남성의류', '여성의류', '식품', '스포츠', '뷰티', '명품', '문화센터', '디지털 및 가전'],
-         datasets: [{
-           data: [5000000, 10000000, 10000000, 8000000, 9000000, 20000000, 9000000, 6000000],
-           backgroundColor: ['rgb(102, 110, 232)', 'rgb(40, 208, 148)', 'rgb(253, 172, 52)', 'rgb(253, 233, 52)', 'rgb(223, 253, 52)', 'rgb(52, 223, 253)', 'rgb(196, 52, 253)', 'rgb(253, 52, 193)']
-         }]
-       };
- 
-       const config = {
-         type: 'doughnut',
-         data: data,
-         options: {
-           responsive: true,
-           maintainAspectRatio: false,
-           plugins: {
-             legend: { display: false },
-             tooltip: {
-               callbacks: {
-                 label: (context) => {
-                   let label = context.label || '';
-                   if (label) label += ': ';
-                   if (context.parsed !== null) {
-                     const total = context.chart.getDatasetMeta(context.datasetIndex).total;
-                     const percentage = (context.parsed / total * 100).toFixed(2);
-                     label += `${percentage}% (${context.parsed.toLocaleString()} 원)`;
-                   }
-                   return label;
-                 }
-               }
-             },
-             datalabels: {
-               formatter: (value, context) => {
-                 const dataset = context.chart.data.datasets[0];
-                 const meta = context.chart.getDatasetMeta(0);
-                 const total = dataset.data.reduce((a, b, i) => a + (!meta.data[i].hidden ? b : 0), 0);
-                 const percentage = (value / total * 100).toFixed(2) + '%';
-                 return meta.data[context.dataIndex].hidden ? '' : percentage;
-               },
-               color: '#fff',
-               labels: { title: { font: { weight: 'bold' } } }
-             }
-           }
-         },
-         plugins: [ChartDataLabels]
-       };
- 
-       const chart = new Chart(ctx, config);
-       updateCenterText();
- 
-       const legendContainer = document.getElementById('legendContainer');
-       data.labels.forEach((label, index) => {
-         const legendItem = document.createElement('div');
-         legendItem.className = 'legend-item';
-         const legendColor = document.createElement('div');
-         legendColor.className = 'legend-color';
-         legendColor.style.backgroundColor = data.datasets[0].backgroundColor[index];
-         const legendText = document.createElement('span');
-         legendText.innerText = label;
-         legendItem.appendChild(legendColor);
-         legendItem.appendChild(legendText);
- 
-         legendItem.addEventListener('click', () => {
-           legendItem.classList.toggle('active');
-           const meta = chart.getDatasetMeta(0);
-           meta.data[index].hidden = !meta.data[index].hidden;
-           chart.options.plugins.datalabels.formatter = (value, context) => {
-             const dataset = context.chart.data.datasets[0];
-             const total = dataset.data.reduce((a, b, i) => a + (!meta.data[i].hidden ? b : 0), 0);
-             const percentage = (value / total * 100).toFixed(2) + '%';
-             return meta.data[context.dataIndex].hidden ? '' : percentage;
-           };
-           chart.update();
-           updateCenterText();
-         });
- 
-         legendContainer.appendChild(legendItem);
-       });
-     });
-
-
-   </script>
-   <script>
-     const div1 = document.getElementById("div1");
-     div1.style.backgroundColor = 'rgba(75, 192, 192, 0.2)';
-     div1.style.borderColor = 'rgba(75, 192, 192, 1)';
-
-     const div2 = document.getElementById("div2");
-     div2.style.backgroundColor = 'rgba(255, 159, 64, 0.2)';
-     div2.style.borderColor = 'rgba(255, 159, 64, 1)';
-   </script>
-   <!-- 매장매출 차트 -->
-   <script>
-     document.addEventListener('DOMContentLoaded', () => {
-       const ctx = document.getElementById('barChart').getContext('2d');
-       const categorySelect = document.getElementById('categorySelect');
-       const startDate = document.getElementById('startDate');
-       const endDate = document.getElementById('endDate');
- 
-       const dataSets = {
-         '남성의류': { '레노마셔츠': 5000000, '라코스테': 7000000 },
-         '여성의류': { '샤넬': 10000000, '구찌': 12000000 },
-         '식품': { '롯데마트': 10000000, '홈플러스': 9500000 },
-         '스포츠': { '나이키': 8000000, '아디다스': 8500000 },
-         '뷰티': { '아모레퍼시픽': 9000000, 'LG생활건강': 11000000 },
-         '명품': { '루이비통': 20000000, '에르메스': 25000000 },
-         '문화센터': { 'CGV': 9000000, '롯데시네마': 8000000 },
-         '디지털 및 가전': { '삼성전자': 6000000, 'LG전자': 7500000 }
-       };
- 
-       let chart;
- 
-       const createChart = (category) => {
-         const data = {
-           labels: Object.keys(dataSets[category]),
-           datasets: [{
-             label: '매출',
-             data: Object.values(dataSets[category]),
-             backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)'],
-             borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)'],
-             borderWidth: 1,
-             barThickness: 40 // 막대의 두께를 설정합니다
-           },
-           {
-             label: '', // 가짜 데이터셋
-             data: [], // 데이터는 비워둡니다.
-             backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)'], // 새로운 색상
-             borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)'],
-             borderWidth: 1,
-             barThickness: 40
-           }]
-         };
- 
-         const config = {
-           type: 'bar',
-           data: data,
-           options: {
-             responsive: true, // 반응형 설정
-             maintainAspectRatio: false,
-             scales: {
-               y: {
-                 beginAtZero: true,
-                 ticks: {
-                   callback: function(value) {
-                     return value.toLocaleString() + ' 원';
-                   }
-                 }
-               }
-             },
-             plugins: {
-               legend: { 
-                 display: false,
-               },
-               
-               tooltip: {
-                 callbacks: {
-                   label: function(context) {
-                     return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + ' 원';
-                   }
-                 }
-               }
-             }
-           }
-         };
- 
-         if (chart) {
-           chart.destroy();
-         }
-         chart = new Chart(ctx, config);
-       };
- 
-       categorySelect.addEventListener('change', (event) => {
-         createChart(event.target.value);
-       });
- 
-       createChart('남성의류');  // 초기화 시 첫 번째 카테고리로 차트를 만듭니다.
-     });
-   </script>
    <script>
 	  // 사이드바 처리
 		document.addEventListener("DOMContentLoaded", function () {

@@ -43,6 +43,7 @@
 	<result column="MSG_CHECK" property="msgCheck" />
 	<result column="MSG_STATUS" property="msgStatus" />
 	<result column="MSG_MODIFY_DATE" property="msgModifyDate" />
+	<result column="PROFILE_URL" property="profileURL" />
 </resultMap>
 
 
@@ -158,13 +159,15 @@ select count(chat_no) chat_count
 <select id="messageList" resultMap="messageResultMap">
 	select MSG_NO
 			 , CHAT_NO
-			 , MEM_NO
+			 , m.MEM_NO
 			 , MSG_CONTENT
 			 , MSG_REGIST_DATE
 			 , MSG_CHECK
 			 , MSG_STATUS
 			 , MSG_MODIFY_DATE
-  from message
+       , profile_url
+  from message msg
+  join member m on(m.mem_no = msg.mem_no)
  where chat_no = #{chatNo}
    and MSG_STATUS in ('Y','N','M')
  order by msg_no
@@ -612,6 +615,16 @@ select
    and	m.mem_no != #{memNo}
  
 </select>
+
+<select id="writerUrl" resultMap="memberResultMap">
+select
+        PROFILE_URL
+  from
+        member
+ where
+        mem_no = #{memNo}
+</select>
+
 
 
 </mapper>

@@ -202,6 +202,10 @@ public class ChatDao {
 	public List<MemberDto> memberLink(ChatDto chatDto) {
 		return sqlSession.selectList("chatMapper.memberLink",chatDto);
 	}
+
+	public MemberDto writerUrl(ChatDto cd) {
+		return sqlSession.selectOne("chatMapper.writerUrl",cd);
+	}
 	
 
 }

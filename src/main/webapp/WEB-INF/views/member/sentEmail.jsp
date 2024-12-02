@@ -69,10 +69,9 @@
               입력하신 이메일로 임시 비밀번호를 발송했습니다. <br>
               ${email}  <!-- 입력받은 사용자의 이메일 표시 -->
             </p>
-            <a class="btn btn-primary w-100 my-6" href="${ contextPath }/member/loginPage.jsp"> 로그인 하기 </a> <!-- 회원 상태값 'A'인지 확인후 비밀번호 변경화면으로 연결하게 설정 -->
+            <a class="btn btn-primary w-100 my-6" href="${ contextPath }"> 로그인 하기 </a> <!-- 회원 상태값 'A'인지 확인후 비밀번호 변경화면으로 연결하게 설정 -->
             <p class="text-center mb-0">
               
-              <a href="javascript:void(0);"> 재전송 </a>
             </p>
           </div>
         </div>

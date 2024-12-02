@@ -195,6 +195,9 @@ public class ChatServiceImpl implements ChatService{
 		
 		return md;
 	}
+	public MemberDto writerUrl(ChatDto cd) {
+		return chatDao.writerUrl(cd);
+	}
 
 
 

@@ -113,8 +113,6 @@
 	            <div class="my-8">
 	              <div class="d-flex justify-content-between">
 	                <div class="form-check mb-0 ms-2">
-	                  <input class="form-check-input" type="checkbox" id="remember-me" />
-	                  <label class="form-check-label" for="remember-me"> 아이디 저장 </label>
 	                </div>
 	                <a href="${ contextPath }/member/findPwd.do">
 	                  <p class="mb-0">비밀번호 찾기</p>
