@@ -28,7 +28,12 @@
 		display: none;
 	}
 	
-      #calendarAll::before {
+	.pagination .page-item .page-link {
+    cursor: pointer;
+    
+   }
+	
+      #itemsAll::before {
         content: ''; /* 가상 요소 필수 */
         display: inline-block; /* 블록 요소 */
         width: 10px; /* 동그라미 크기 */
@@ -37,7 +42,7 @@
         background-color: transparent; /* 배경을 투명으로 설정 */
         border: 2px solid gray; /* 초기 테두리 색상 */
       }
-      #calendarAll.active::before {
+      #itemsAll.active::before {
         border: 2px solid white; /* 테두리만 흰색으로 변경 */
       }
 
