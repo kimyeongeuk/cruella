@@ -105,17 +105,19 @@
                   <div class="tab-pane fade show active" id="view" role="tabpanel" aria-labelledby="view-tab">
                     <div class="ms-auto d-flex">
                       <!-- 검색 폼 -->
-                      <form action="${contextPath}/revenue/revenue.do" method="get" class="d-flex align-items-center">
-                        <input type="hidden" name="deptCode" value="${deptCode}" />
-                        <input type="hidden" name="startDate" value="${startDate}" />
-                        <input type="hidden" name="endDate" value="${endDate}" />
-                        <input type="hidden" name="tab" value="view" />
-                        <div class="input-group mb-3">
-                          <input type="text" class="form-control" name="searchKeyword" placeholder="검색어를 입력하세요" value="${searchKeyword}" />
-                          <input type="text" class="form-control custom-select" placeholder="날짜를 선택해주세요" id="flatpickr-range" name="dateRange" value="${startDate} to ${endDate}" />
-                          <button class="btn btn-primary" type="submit">검색</button>
-                        </div>
-                      </form>
+                      <div class="ms-auto d-flex justify-content-end">
+	                      <form action="${contextPath}/revenue/revenue.do" method="get" class="d-flex align-items-center">
+	                        <input type="hidden" name="deptCode" value="${deptCode}" />
+	                        <input type="hidden" name="startDate" value="${startDate}" />
+	                        <input type="hidden" name="endDate" value="${endDate}" />
+	                        <input type="hidden" name="tab" value="view" />
+	                        <div class="input-group mb-3">
+	                          <input type="text" class="form-control" name="searchKeyword" placeholder="검색어를 입력하세요" value="${searchKeyword}" />
+	                          <input type="text" class="form-control custom-select" placeholder="날짜를 선택해주세요" id="flatpickr-range" name="dateRange" value="${startDate} to ${endDate}" />
+	                          <button class="btn btn-primary" type="submit">검색</button>
+	                        </div>
+	                      </form>
+	                    </div>
                     </div>
                     <script>
                       document.addEventListener("DOMContentLoaded", function () {
