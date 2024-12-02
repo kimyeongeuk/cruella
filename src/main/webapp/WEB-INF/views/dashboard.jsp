@@ -1080,7 +1080,7 @@
 	                    liEl += '<li class="mb-4">'
 	                        + '<div class="d-flex align-items-center">'
 	                        + '<div class="avatar me-2">'
-	                        + '<img src="${contextPath}' + res[i].profileURL + '" alt="Avatar" class="rounded-circle"/>';
+	                        + '<img src="${contextPath}' + res[i].profileURL + '" alt="Avatar" class="rounded-circle"/>'
 	                        + '</div>'
 	                        + '<div class="me-2">'
 	                        + '<h6 class="mb-0">' + res[i].memName + '</h6>'
