@@ -506,12 +506,18 @@ $(function () {
 			var posCodeOrder = $('#drag_line_div').find('tr').toArray().map(function(row) { // 배열형태로 새로 생성
 				return $(row).find('input[name="posCode"]').val(); // 직급을 배열로 가져오기
 			});
+			
+			
 
-			console.log('등록된 직급들:', posCodeOrder);
+			/*console.log('등록된 직급들:', posCodeOrder);*/
 
 			// 현재 추가하려는 직급
 			var newPosCode = node.original.posCode;
-
+			
+			
+			
+			
+			
 
 			// 직급 점장이 등록되어 있으면 아래 직급들은 추가할 수 없음
 			if (posCodeOrder.includes('C1')) {
@@ -550,6 +556,8 @@ $(function () {
 				alert('결재권한이 없습니다');
 				return;
 			}
+			
+			
 		  
 		  
 
