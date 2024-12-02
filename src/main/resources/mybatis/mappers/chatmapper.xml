@@ -606,26 +606,35 @@ WHERE
 <select id="memberLink" resultMap="memberResultMap">
 
 select
-        m.mem_no,
-        profile_URL,
-        chat_no
+        cl.CHAT_NO
+     ,  cl.MEM_NO
+     ,  profile_URL
   from
-        member m
-  join  chat_list cl on (m.mem_no = cl.mem_no)
- where  chat_no = #{chatNo}
-   and	m.mem_no != #{memNo}
+        chat_list cl
+  join  chat c on (cl.chat_no = c.chat_no)
+  join  member m on(m.mem_no = cl.mem_no)
+ where  cl.chat_no = #{chatNo}
  
 </select>
 
 <select id="writerUrl" resultMap="memberResultMap">
 select
-        PROFILE_URL
+        PROFILE_URL,
+        mem_no
   from
         member
  where
         mem_no = #{memNo}
 </select>
 
+<select id="writerNo" resultType="string">
+select
+        mem_no
+  from
+        chat_list
+ where
+ 				chat_no = #{chatNo}
+</select>
 
 
 </mapper>

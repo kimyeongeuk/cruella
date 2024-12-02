@@ -203,7 +203,7 @@ function onMessage(evt){
                     aria-expanded="false">
                     <span class="position-relative">
                       <i class="ti ti-bell ti-md"></i>
-                      <span class="badge rounded-pill bg-danger badge-dot badge-notifications border"></span>
+                      <span class="badge rounded-pill bg-danger badge-dot badge-notifications border" style="display:none"></span>
                       
                     </span>
                   </a>

@@ -15,7 +15,9 @@ import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.MessageDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService{
@@ -190,13 +192,17 @@ public class ChatServiceImpl implements ChatService{
 	public List<MemberDto> memberLink(List<ChatDto> chatList) {
 		List<MemberDto> md = new ArrayList<>();
 		for(int i=0;i<chatList.size();i++) {
-			md = chatDao.memberLink(chatList.get(i));
+			md.addAll(chatDao.memberLink(chatList.get(i)));
 		}
-		
+		log.debug("서비스많이주세요:{}",md);
 		return md;
 	}
 	public MemberDto writerUrl(ChatDto cd) {
 		return chatDao.writerUrl(cd);
+	}
+
+	public List<String> writerNo(ChatDto cd) {
+		return chatDao.writerNo(cd);
 	}
 
 

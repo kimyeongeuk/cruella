@@ -206,6 +206,10 @@ public class ChatDao {
 	public MemberDto writerUrl(ChatDto cd) {
 		return sqlSession.selectOne("chatMapper.writerUrl",cd);
 	}
+
+	public  List<String> writerNo(ChatDto cd) {
+		return sqlSession.selectList("chatMapper.writerNo",cd);
+	}
 	
 
 }

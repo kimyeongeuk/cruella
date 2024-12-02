@@ -3,6 +3,7 @@ package com.cl.cruella.dto;
 
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,4 +32,8 @@ public class ChatDto {
 	private String type;
 	private String memNo;
 	private String profileURL;
+	
+	private List<MemberDto> profileURL2;
+	
+	
 }
