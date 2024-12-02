@@ -31,5 +31,6 @@ public class NoticeDto {
 	private String memName;
 	private List<AttachDto> attachList;
 	private List<DeptDto> deptCodes;
+	private String profileURL;
 }
 

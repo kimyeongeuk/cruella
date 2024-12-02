@@ -15,6 +15,7 @@
         <result column="is_pinned" property="isPinned"/>
         <result column="attach_count" property="attachCount"/>
         <result column="mem_name" property="memName"/>
+        <result column="profile_URL" property="profileURL" />
         <collection property="deptCodes" ofType="com.cl.cruella.dto.DeptDto" resultMap="deptCodeResultMap"/>
         <collection property="attachList" ofType="com.cl.cruella.dto.AttachDto" resultMap="attachResultMap"/>
     </resultMap>
@@ -147,6 +148,7 @@
            n.notice_content,
            n.mem_no,
            m.mem_name,
+           m.profile_url,
            TO_CHAR(n.notice_regist_date, 'YYYY-MM-DD') AS notice_regist_date,
            TO_CHAR(n.notice_modify_date, 'YYYY-MM-DD') AS notice_modify_date,
            n.notice_count,

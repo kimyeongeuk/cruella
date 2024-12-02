@@ -23,4 +23,5 @@ public class ReplyDto {
     private String replyModifyDT;
     private int replyRef;
     private String memName;
+    private String profileURL;
 }
