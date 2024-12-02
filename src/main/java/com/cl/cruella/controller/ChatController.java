@@ -89,6 +89,7 @@ public class ChatController {
 		model.addAttribute("chatList",chatList);
 		model.addAttribute("chatProfileList",chatProfileList);
 		model.addAttribute("memberList",memberList);
+		log.debug("memberlink:{}",memberLink);
 		model.addAttribute("memberLink",memberLink);
 	}
 	
