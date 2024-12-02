@@ -1230,9 +1230,12 @@
 												        for (let member of memberProfiles) {
 												            if (member.memNo === content.memNo) { 
 												                memUrl = member.profileURL;
+												                memName = member.memName;
 												                break;
 												            }
 												        }
+												        
+
 							            if(chatNoData == chatNoData){
 								            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck,res.msgNum,'',memUrl);
 								            $('#chathistory').append(str);
