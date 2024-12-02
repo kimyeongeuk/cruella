@@ -301,6 +301,8 @@ public class AppController {
 		
 		int result = appService.detailClear(ad);
 		
+	
+		
 		
 		return result;
 	}
