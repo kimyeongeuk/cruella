@@ -719,9 +719,15 @@
 					  for(let i=0; i<res.list.length; i++){
 						  a += "<tr style='height:55px;'>"
 							     +		"<td style='text-align:center; width:150px;'>" + res.list[i].supCategory + "</td>"
+<<<<<<< HEAD
 							     +		"<td style='text-align:center;'>" + res.list[i].supType 
 							     
 							      +		"</td>"
+=======
+							     +		"<td style='text-align:center;'>" + res.list[i].supType
+							     
+							     +		"</td>"
+>>>>>>> ca4169f902dca60a6d17d1fd3951deafb7bf69e2
 							     +		"<td style='text-align:center;'>" + res.list[i].totalSupply + "</td>"
 							     +		"<td style='text-align:center;'>" + res.list[i].leftSupply + "</td>"
 							     +		"<td style='text-align:center;'>" + res.list[i].rentSupply + "</td>"
@@ -730,6 +736,15 @@
 							   		
 									 +		"</td>"
 									 +  "</tr>"
+									 
+									 
+									 
+									 <!-- 
+									 
+								     +
+								     				"<button style='margin-left: 10px;' type='button' class='btn rounded-pill btn-outline-primary btn btn-sm'>" + '정보' + "</button>"
+								     
+									 -->
 									 
 									 
 									 
