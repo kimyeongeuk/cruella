@@ -1,6 +1,7 @@
 package com.cl.cruella.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -44,11 +45,24 @@ public class ChatController {
 
 		// 채팅방 목록
 		List<ChatDto> chatList = chatServiceImpl.chatList(memNo);
+		log.debug("asdasdf:{}",chatList);
 		// 사원 프로필상태
 		List<ChatProfileDto> chatProfileList = chatServiceImpl.chatProFileList();
+		log.debug("asdasdf:{}",chatProfileList);
 		// 사원 목록
 		List<MemberDto> memberList = chatServiceImpl.memberList();
-		// 채팅방 인원 체크
+		log.debug("asdasdf:{}",memberList);
+		// 채팅방 인원 프사 링크 가져오기
+		List<ChatDto> list2 = new ArrayList<>();
+		list2.addAll(chatList);
+		if(!chatList.isEmpty()) {
+			for(int i=0;i<chatList.size();i++) {
+				list2.get(i).setMemNo(memNo);
+			}
+			
+		}
+		List<MemberDto> memberLink = chatServiceImpl.memberLink(list2);
+		log.debug("sadf:{}",memberLink);
 		
 	    Date today = new Date();
 	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -75,7 +89,8 @@ public class ChatController {
 		model.addAttribute("chatList",chatList);
 		model.addAttribute("chatProfileList",chatProfileList);
 		model.addAttribute("memberList",memberList);
-
+		log.debug("memberlink:{}",memberLink);
+		model.addAttribute("memberLink",memberLink);
 	}
 	
 	
@@ -112,7 +127,6 @@ public class ChatController {
 		map.put("m", memNo);
 		map.put("msg", msgList);
 		map.put("title",chatTitle);
-		
 		return map;
 	}
 	
@@ -141,12 +155,16 @@ public class ChatController {
 	
 	@ResponseBody
 	@GetMapping(value="/msgNum.do",produces="application/json")
-	public int msgNum() {
-		
+	public Map<String, Object> msgNum(ChatDto cd) {
+		System.out.println(cd);
+		System.out.println("cd@!T^%$Y$#W%&Y#$W%^UYW$#E%U&YW$#%UY&W$%U&YW$%YW$#E%YTW#$YTGQW#A$TY");
 		
 		int result = chatServiceImpl.msgNum();
-		log.debug("번호 : {}",result);
-		return result;
+		MemberDto result2 = chatServiceImpl.writerUrl(cd);
+		Map<String,Object> map = new HashMap<>();
+		map.put("msgNum",result);
+		map.put("memUrl",result2);
+		return map;
 		
 	}
 	
@@ -236,19 +254,17 @@ public class ChatController {
 		
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/writerUrl.do",produces="application/json")
+	public MemberDto writerUrl(ChatDto cd) {
+		MemberDto result = chatServiceImpl.writerUrl(cd);
+		
+		
+		return result;
+		
+	}
 	
 	
-//	@ResponseBody
-//	@GetMapping(value="/deleteChat.do",produces="application/json")
-//	public int deleteChat(ChatListDto cl) {
-//
-//		int result = chatServiceImpl.deleteChat(cl);
-//		
-//		
-//		return result;
-//		
-//	}
-
 	
 	
 	

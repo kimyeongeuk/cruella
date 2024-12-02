@@ -34,32 +34,39 @@
 					<div class="container-xxl flex-grow-1 container-p-y">
 						<!-- 이쪽에 세션정보 넣어야합니다 -->
 
+
 						<div class="row">
 							<div class="col-md-12">
 								<div class="nav-align-top">
 									<ul
 										class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
+										<c:if test="${ loginUser.deptCode eq 'S2'}">
+											<li class="nav-item"><a class="nav-link active"
+												href="${ contextPath }/member/signup.do"> <i
+													class="ti-sm ti ti-user-check me-1_5"></i> 직원등록
+											</a></li>
+										</c:if>
 
-										<li class="nav-item"><a class="nav-link active" href="#">
-												<i class="ti-sm ti ti-user-check me-1_5"></i> 직원등록
-										</a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/member/employeelistview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 직원조회 </a></li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/wl/checkinrecordview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 출근기록조회 </a></li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/member/workhoursview.do""><i
 												class="ti-sm ti ti-users me-1_5"></i> 근무시간조회 </a></li>
+										<c:if test="${ loginUser.deptCode eq 'S2'}">
+											<li class="nav-item"><a class="nav-link"
+												href="${ contextPath }/member/salarypayment.do""><i
+													class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
+										</c:if>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여내역확인 </a></li>
-
-									</ul>
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/member/checksalary.do""><i
+												class="ti-sm ti ti-money me-1_5"></i> 급여내역확인 </a></li>
 								</div>
 							</div>
 						</div>
@@ -102,31 +109,31 @@
 
 											<script>
 												
-		$(document).ready(function() {
-			
-			
-			// 파일 업로드 
-			$('#upload').on("change", function(evt) {
-				const file = evt.target.files[0]; // 사용자가 선택한 파일
-				console.log("실행");
-				const memNo = $('#memNo').val();
-
-				if (file) {
-					// 선택된 파일 업로드전 미리보기
-					const reader = new FileReader();
-					reader.onload = function(r) {
-						$('#uploadedAvatar').attr("src", r.target.result); // 이미지 변경
-					};
-					reader.readAsDataURL(file);
-
-					let formData = new FormData();
-					formData.append("uploadFile", file);
-					formData.append("memNo", memNo);
-				}
-
-			})
-		})
-	</script>
+												$(document).ready(function() {
+													
+													
+													// 파일 업로드 
+													$('#upload').on("change", function(evt) {
+														const file = evt.target.files[0]; // 사용자가 선택한 파일
+														console.log("실행");
+														const memNo = $('#memNo').val();
+										
+														if (file) {
+															// 선택된 파일 업로드전 미리보기
+															const reader = new FileReader();
+															reader.onload = function(r) {
+																$('#uploadedAvatar').attr("src", r.target.result); // 이미지 변경
+															};
+															reader.readAsDataURL(file);
+										
+															let formData = new FormData();
+															formData.append("uploadFile", file);
+															formData.append("memNo", memNo);
+														}
+										
+													})
+												})
+											</script>
 
 											<h5 class="pb-4 border-bottom mb-4"></h5>
 											<div class="card-body pt-4">
@@ -196,9 +203,9 @@
 															<select class="form-select" style="max-width: 120px;"
 																name="bankName">
 																<option value="">선택</option>
-																<option value="국민">국민</option>
+																<option value="신한">국민</option>
 																<option value="신한">신한</option>
-																<option value="우리">우리</option>
+																<option value="신한">우리</option>
 															</select> <input class="form-control" type="text" name="account"
 																id="account" placeholder="계좌번호 입력" required />
 														</div>
@@ -369,21 +376,21 @@
 													</div>
 
 													<script>
-    // 이메일 도메인 자동 적용 함수
-    function setEmailDomain(domain) {
-        const emailInput = document.getElementById('email');
-        const [localPart] = emailInput.value.split('@'); // '@' 기준으로 로컬 파트 분리
-
-        if (domain === 'custom') {
-            // 도메인 직접입력 선택 시 기존 값 유지
-            emailInput.value = localPart;
-            emailInput.focus();
-        } else {
-            // 선택된 도메인을 이메일에 추가
-            emailInput.value = localPart + '@' + domain;
-        }
-    }
-</script>
+													    // 이메일 도메인 자동 적용 함수
+													    function setEmailDomain(domain) {
+													        const emailInput = document.getElementById('email');
+													        const [localPart] = emailInput.value.split('@'); // '@' 기준으로 로컬 파트 분리
+													
+													        if (domain === 'custom') {
+													            // 도메인 직접입력 선택 시 기존 값 유지
+													            emailInput.value = localPart;
+													            emailInput.focus();
+													        } else {
+													            // 선택된 도메인을 이메일에 추가
+													            emailInput.value = localPart + '@' + domain;
+													        }
+													    }
+													</script>
 
 													<div class="mb-4 col-md-6">
 														<label for="salary" class="form-label">급여</label> <input
@@ -391,9 +398,9 @@
 															name="salary" value="" required />
 													</div>
 													<div class="mb-4 col-md-6">
-														<label class="hireDate" for="country">입사날짜</label> <input
+														<label class="hireDate2" for="country">입사날짜</label> <input
 															class="form-control" type="date" id="hireDate"
-															name="hireDate" placeholder="YYYY/MM/DD" required />
+															name="endDate" placeholder="YYYY/MM/DD" required />
 													</div>
 													<div class="mb-4 col-md-6">
 														<label for="address" class="form-label">주소</label> <input
@@ -411,9 +418,10 @@
 															class="form-control" type="text" id="phone" name="phone"
 															placeholder="010-1111-2222" required
 															pattern="^\d{3}-\d{4}-\d{4}$" />
-															<div id="phoneError" class="text-danger mt-2" style="display: none;"></div>
+														<div id="phoneError" class="text-danger mt-2"
+															style="display: none;"></div>
 													</div>
-													
+
 													<script>
 													$(document).ready(function () {
 													    $('#phone').on('blur', function () {
@@ -421,10 +429,10 @@
 													        if (phone) {
 													            $.ajax({
 													                type: 'POST',
-													                url: '${contextPath}/checkPhone.do',
+													                url: '${contextPath}/member/checkPhone.do',
 													                data: { phone: phone },
 													                success: function (res) {
-													                    if (isDuplicate) {
+													                    if (res) {
 													                        $('#phoneError').text('이미 등록된 휴대폰 번호입니다.').show();
 													                    } else {
 													                        $('#phoneError').hide();
@@ -439,7 +447,7 @@
 													});
 
 													</script>
-													
+
 												</div>
 												<div class="mt-2" style="justify-self: center;">
 													<button type="submit" class="btn btn-primary me-3">등록하기</button>
@@ -491,7 +499,43 @@
 
 
 
+	<script>
+    // 사이드바 처리
+	document.addEventListener("DOMContentLoaded", function () {
+  	
+		const element = document.getElementById("signup");
+		
+  	document.getElementById("member").classList.add("open");
+  	element.style.backgroundColor = "#958CF4";
+  	element.style.color = "white";
+  	element.classList.add("active");
+  	
+  	
+	});
+	</script>
+	
+	<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const salaryInput = document.getElementById("salary");
 
+        // 숫자에 콤마를 추가하는 함수
+        function formatNumberWithCommas(number) {
+            if (!number) return "";
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // 입력 값 실시간 포맷팅
+        salaryInput.addEventListener("input", function () {
+            const rawValue = salaryInput.value.replace(/,/g, ""); // 기존 콤마 제거
+            if (!isNaN(rawValue)) {
+                salaryInput.value = formatNumberWithCommas(rawValue); // 포맷팅된 값 삽입
+            } else {
+                salaryInput.value = ""; // 숫자가 아니면 초기화
+            }
+        });
+
+</script>
+	
 
 </body>
 </html>

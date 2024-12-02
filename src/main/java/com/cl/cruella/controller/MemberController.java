@@ -2,9 +2,13 @@ package com.cl.cruella.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -330,24 +334,6 @@ public class MemberController {
 	 }
 	 
 	 
-	 // 전 사원 정보 조회(이름, 메일, 사번, 사진)
-	 @PostMapping("/selectAll_db.do")
-	 @ResponseBody
-	 public List<MemberDto> selectAllMember(String memNo, String deptName) {
-		 
-		 
-		 if(deptName == null || deptName.trim().isEmpty()) {
-			 List<MemberDto> list = memberService.selectAllMember(memNo);
-			 
-			 return list;
-		 }else {
-			 List<MemberDto> list = memberService.selectAllMemberDept(memNo, deptName);
-			 
-			 return list;
-		 }
-		 
-	 }
-	 
 	 // 내 결재 문서함 조회
 	 @PostMapping("/selectAppList.do")
 	 @ResponseBody
@@ -392,6 +378,22 @@ public class MemberController {
 		 return list;
 	 }
 	 
+	 @PostMapping("/selectAll_db.do")
+	 @ResponseBody
+	 public List<MemberDto> selectAllMember(String memNo, String deptName) {
+		 
+		 
+		 if(deptName == null || deptName.trim().isEmpty()) {
+			 List<MemberDto> list = memberService.selectAllMember(memNo);
+			 
+			 return list;
+		 }else {
+			 List<MemberDto> list = memberService.selectAllMemberDept(memNo, deptName);
+			 
+			 return list;
+		 }
+		 
+	 }
 	 
 	 
 	 
@@ -480,7 +482,7 @@ public class MemberController {
 	// 사원등록(이예빈)
 	@PostMapping("/insert.do")
 	public String insertMember(MemberDto m, RedirectAttributes rd, @RequestParam("uploadFile") MultipartFile uploadFile) {
-		
+		log.debug("m{}", m);
 		if( m.getMemPwd()== null) {
 			m.setMemPwd("111111");
 		} 
@@ -592,6 +594,25 @@ public class MemberController {
 	}
 	
 	
+	// 퇴사 처리 
+	@PostMapping("/retire.do")
+	public String retireMember(@RequestParam("memNo") String memNo, RedirectAttributes redirectAttributes) {
+	    try {
+	        // 1. memNo로 상태를 'N'으로 변경
+	    	memberService.updateMemberRetire(memNo);
+
+	        // 2. 성공 메시지 설정
+	        redirectAttributes.addFlashAttribute("message", "퇴사 처리가 완료되었습니다.");
+	    } catch (Exception e) {
+	        // 3. 실패 메시지 설정
+	        redirectAttributes.addFlashAttribute("errorMessage", "퇴사 처리 중 오류가 발생했습니다.");
+	        e.printStackTrace();
+	    }
+
+	    // 4. 목록 페이지로 리다이렉트
+	    return "redirect:/member/employeelistview.do";
+	}
+	
 	
 	
 	
@@ -620,7 +641,7 @@ public class MemberController {
 	
 	// 급여지급페이지
 	@GetMapping("/salarypayment2.do")
-	public String salarypayment2(Model model, @RequestParam String provide) {
+	public String salarypayment2(Model model,@RequestParam String provide) {
 		
 		Map<String,Object> salDate = new HashMap<>();
 	
@@ -667,41 +688,57 @@ public class MemberController {
 
 	
 	
-
+	// 출퇴근조회(이예빈)
+	@GetMapping("/checkinrecordview.do")
+	public void checkinrecodeview() {}
 	
 	// 근무시간조회(이예빈)
 	@GetMapping("/workhoursview.do")
-	public void workhoursview() {}
-	
-	// 조직도조회(이예빈)
-	@GetMapping("/organization.do")
-	public void organization() {}
+	public void workhoursview(HttpSession session, Model model) {
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		
+		List<WorkLogDto> wl = memberService.workhoursview(memNo);
+		model.addAttribute("memNo", wl);
+		
+		
+		
+		
+	}	
 
 	
 	
 	// 급여명세표(이예빈)
 	
 	@PostMapping("/paystub.do")
-	public String paystub(Model model,@RequestParam String memNo) {
-		log.debug("memNo :{}",memNo);
-		
+	public String paystub(Model model,@RequestParam String memNo) throws ParseException {
+
 		MemberDto list = memberService.paystub(memNo);
 		
-		log.debug("date : {}",list.getHireDate());
-		
-		
+
 		
 		model.addAttribute("list", list);
-		log.debug("list :{}",list);
-		
+
 		return "/member/paystub";
 	}
 	
+	// 폰번호유효성
+	@ResponseBody
 	@PostMapping("/checkPhone.do")
-	public int checkPhone(@RequestParam("phone") int phone) {
+	public int checkPhone(@RequestParam("phone") String phone) {
 		return memberService.checkPhone(phone);
 	}
 
+	// 급여내역확인
+	@GetMapping("/checksalary.do")
+	public void checksalary(HttpSession session, Model model) {
+		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		
+		
+		MemberDto cs = memberService.checksalary(memNo);
+		
+		
+		model.addAttribute("cs", cs);
+	}
 
 	 
 }

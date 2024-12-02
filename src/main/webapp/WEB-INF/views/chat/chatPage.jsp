@@ -182,7 +182,12 @@
 			                        	<input type="hidden" value="${ list.chatTitle }">
 			                          <a class="d-flex align-items-center">
 			                            <div class="flex-shrink-0 avatar">
-			                              <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
+						                        <c:forEach var="link" items="${ memberLink }">
+						                            <c:if test="${ link.chatNo == list.chatNo && link.memNo != loginUser.memNo }">
+						                                <!-- 일치할 경우 해당 프로필 URL 출력 -->
+						                                <img src="${ contextPath }<c:out value='${ link.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
+						                            </c:if>
+						                        </c:forEach>
 			                            </div>
 			                            <div class="chat-contact-info flex-grow-1 ms-4 test1">
 			                              <div class="d-flex justify-content-between align-items-center">
@@ -202,14 +207,34 @@
 			                       	<input type="hidden" value="${ list.chatNo }" class="chatlistno">
 			                       	<input type="hidden" value="${ list.chatTitle }">
 		                          <a class="d-flex align-items-center">
-		                            <div class="flex-shrink-0 avatar">
-		                              <div style="flex-direction: row; display: flex;"><img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
-		                                <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
-		                              </div>
-		                              <div style="flex-direction: row; display: flex;"><img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
-		                                <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
-		                              </div>
-		                            </div>
+		                          
+		                          
+															<div style="flex-direction: column; display: flex;">
+                
+										                <!-- 첫 번째 행 (두 개의 이미지) -->
+										                <div style="flex-direction: row; display: flex;">
+										                    <!-- 첫 번째 이미지: 로그인 사용자 프로필 URL (하나만 적용) -->
+										                    <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+										                    
+										                    <!-- 두 번째 이미지: memberLink에서 첫 번째 이미지 -->
+										                    <c:if test="${ !empty memberLink and memberLink.size() > 0 }">
+										                        <img src="${ contextPath }<c:out value='${ memberLink[0].profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+										                    </c:if>
+										                </div>
+										
+										                <!-- 두 번째 행 (두 개의 이미지) -->
+										                <div style="flex-direction: row; display: flex;">
+										                    <!-- 세 번째 이미지: memberLink에서 두 번째 이미지 -->
+										                    <c:if test="${ !empty memberLink and memberLink.size() > 1 }">
+										                        <img src="${ contextPath }<c:out value='${ memberLink[1].profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+										                    </c:if>
+										                    
+										                    <!-- 네 번째 이미지: memberLink에서 세 번째 이미지 -->
+										                    <c:if test="${ !empty memberLink and memberLink.size() > 2 }">
+										                        <img src="${ contextPath }<c:out value='${ memberLink[2].profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+										                    </c:if>
+										                </div>
+										            </div>
 		                            
 		                            <div class="chat-contact-info flex-grow-1 ms-4">
 		                              <div class="d-flex justify-content-between align-items-center">
@@ -227,8 +252,7 @@
 		                        </li>
 	                       	 	
 	                       	 	</c:otherwise>
-	                        
-	                        </c:choose>
+	                        	</c:choose>
 											</c:forEach>
 
                         
@@ -252,7 +276,7 @@
 	                        	<input type="hidden" value="${ memList.memNo }">
 	                          <a class="d-flex align-items-center">
 	                            <div class="flex-shrink-0 avatar">
-	                              <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
+	                              <img src="${ contextPath }<c:out value='${ memList.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
 	                            </div>
 	                            <div class="chat-contact-info flex-grow-1 ms-4">
 	                              <h6 class="chat-contact-name text-truncate m-0 fw-normal">${ memList.memName }</h6>
@@ -277,7 +301,7 @@
 		                  <div class="col app-chat-sidebar-right app-sidebar overflow-hidden" id="app-chat-sidebar-right">
 		                    <div
 		                      class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
-		                      <div class="avatar avatar-xl chat-sidebar-avatar">
+		                      <div class="avatar avatar-xl chat-sidebar-avatar" id="urlInfo">
 		                        <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />
 		                      </div>
 		                      <h5 class="mt-4 mb-0" id="userNameInfo">사람이름자리</h5>
@@ -459,9 +483,7 @@
 
                           
                           <div class="d-flex align-items-center" >
-                            <i
-                            class="ti ti-search ti-md cursor-pointer d-sm-inline-flex d-none me-1 btn btn-sm btn-text-secondary text-secondary btn-icon rounded-pill"></i>
-                            <input type="search" class="form-control" id="chatSearch">
+
                             <div class="dropdown">
                               <button
                                 class="btn btn-sm btn-icon btn-text-secondary text-secondary rounded-pill dropdown-toggle hide-arrow"
@@ -643,11 +665,6 @@
                             class="form-control message-input border-0 me-4 shadow-none modifyForm"
                             id="modifyForm"/>
                           <div class="message-actions d-flex align-items-center">
-                            <label for="attach-doc" class="form-label mb-0">
-                            </label>
-                            <i
-                            class="ti ti-x ti-lg cursor-pointer close-sidebar d-block modifyClose" id="modifyClose">
-                            </i>
                             <button class="btn btn-primary d-flex send-msg-btn" id="modifyButton">
                               <span class="align-middle d-md-inline-block d-none" style="flex: none;">수정</span>
                             </button>
@@ -663,11 +680,6 @@
                             class="form-control message-input border-0 me-4 shadow-none" 
                              id="inputchatform"/>
                           <div class="message-actions d-flex align-items-center">
-                            <label for="attach-doc" class="form-label mb-0">
-                              <i
-                                class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
-                              <input type="file" id="attach-doc" hidden />
-                            </label>
                             <button class="btn btn-primary d-flex send-msg-btn sendmessage" type="button" id="sendmessage">
                               <span class="align-middle d-md-inline-block d-none" style="flex: none;">전송</span>
                             </button>
@@ -755,12 +767,12 @@
                         </li>
 
 
-<!-- <c:out value='${ list.profileURL }'/> -->
+
 											<c:forEach var="list" items="${ memberList }">
                         <li class="mb-1">
                           <a class="d-flex align-items-center" style="margin: 20px;">
                             <div class="flex-shrink-0 avatar">
-                              <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="" class="rounded-circle" />
+                              <img src="${ contextPath }<c:out value='${ list.profileURL }' default='/assets/img/default_profile.png' />" alt="" class="rounded-circle" />
                             </div>
                             <div class="chat-contact-info flex-grow-1 ms-4">
                               <div class="d-flex justify-content-between align-items-center">
@@ -924,6 +936,7 @@
         // 사원 클릭시 start
         $('.userInFo').on('click',function(){
         	inviteMem = $(this).children().eq(0).val();
+        	var url = '${contextPath}';
           $.ajax({
             url:'${contextPath}/chat/userInfo.do',
             data:{
@@ -933,11 +946,13 @@
             success:function(res){
               console.log(res);
               inviteName = res.m.memName;
+              let str = '<img src="' + url + (res.m.profileURL || '/assets/img/default_profile.png') + '" alt="Avatar" class="rounded-circle" />'; 
               $('#userNameInfo').html(res.m.memName);
               $('#deptName').html(res.m.deptCode);
               $('#statusmessage').html(res.cp.cpMessage);
               $('#emailinfo').html(res.m.email);
               $('#phoneinfo').html(res.m.phone);
+              $('#urlInfo').html(str);
              
             },
           })
@@ -1186,8 +1201,6 @@
 	    	   var chatTitleData = chatData.chatTitle;
 	    	   var chatTitleData2 = chatData.chatTitle2;
 	    	   let c = "";
-	    	   console.log('채팅방이 생성되었습니다.');
-	    	   console.log('채팅방이 생성되었습니다.');
 			    	   c += '<li class="chat-contact-list-item mb-1 chat-list-form">';
 			    	   c += '<input type="hidden" value="'+chatNoData+'" class="chatlistno">';
 			    		 if(loginName == chatTitleData){
@@ -1197,7 +1210,7 @@
 			    		 }
 			    		 c += '<a class="d-flex align-items-center">';
 			    		 c += '<div class="flex-shrink-0 avatar">';
-			    		 c += '<img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />';
+			    		 c += '<img src="${contextPath}' +chatData.profileURL + '" alt="Avatar" class="rounded-circle"/>';
 			    		 c += '</div>';
 			    		 c += '<div class="chat-contact-info flex-grow-1 ms-4 test1">';
 			    		 c += '<div class="d-flex justify-content-between align-items-center">';
@@ -1221,15 +1234,17 @@
 				    var subscrip = client.subscribe('/sub/' + chatNoData, function (chat) { // 구독 시작
 				            var content = JSON.parse(chat.body);  
 				    
-				    						console.log('콘텐츠');
-				    						console.log(content);
-				    						console.log(content.type)
+				    						var contentMemNo = content.memNo
 				    						if(content.type == 'message'){
 								        $.ajax({  // 메시지 번호 추가 ajax 
 												url:'${contextPath}/chat/msgNum.do',
+												data:{memNo:contentMemNo},
 												success:function(res){
 							            if(chatNoData == chatNoData){
-								            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck,res);
+							            	console.log(res.msgNum);
+							            	console.log('res.memUrl');
+							            	console.log(res.memUrl.profileURL);
+								            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck,res.msgNum,'',res.memUrl.profileURL);
 								            $('#chathistory').append(str);
 								            $(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
 								            
@@ -1337,7 +1352,7 @@
 	    	   	
 	    	   	
     	   else if(chatData.type == "invite"){
-    		   
+    		   	 console.log("초대시 나옴");
 	    		   console.log(chatData);
 		    	   var chatNoData = chatData.chatNo;		// 채팅방 번호
 		    	   var chatTitleData = chatData.chatTitle;	// 채팅방 이름
@@ -1358,19 +1373,23 @@
 	    		   })
 	    		   
 	    		   $('#chathistory').append(invitemsg(chatTitleData2));
-    		   	
+	    		   
 		    		   str += '<li class="chat-contact-list-item mb-1 chat-list-form">'
 		    		   str += '<input type="hidden" value="'+chatNoData+'" class="chatlistno">'
 		    		   str += '<input type="hidden" value="'+chatTitleData+'">'
 		    		   str += '<a class="d-flex align-items-center">'
-		    		   str += '<div class="flex-shrink-0 avatar">'
-		    		   str += '<div style="flex-direction: row; display: flex;"><img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
-		   			   str += '<img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
-		 				   str += '</div>'
-		 				   str += '<div style="flex-direction: row; display: flex;"><img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
-						   str += '<img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
-						   str += '</div>'
-						   str += '</div>'
+		    			 str += '<div class="flex-shrink-0 avatar">';
+			    	 	 str += '<div style="flex-direction: row; display: flex;">';
+			    		 for (let i = 0; i < chatData.memIMG.length && i < 2; i++) { 
+			    		    str += '<img src="${contextPath}' + chatData.memIMG[i] + '" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />';
+			    		 }
+			    		 str += '</div>';
+			    		 str += '<div style="flex-direction: row; display: flex;">';
+			    		 for (let i = 2; i < chatData.memIMG.length && i < 4; i++) {
+			    		    str += '<img src="${contextPath}' + chatData.memIMG[i] + '" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />';
+			    		 }
+			    		 str += '</div>';
+			    		 str += '</div>'; 
 						   str += '<div class="chat-contact-info flex-grow-1 ms-4">'
 						   str += '<div class="d-flex justify-content-between align-items-center">'
 						   str += '<h6 class="chat-contact-name text-truncate m-0 fw-normal chattitle">'+chatTitleData+'</h6>'
@@ -1399,14 +1418,16 @@
 						        var subscrip = client.subscribe('/sub/' + chatNoData, function (chat) {
 						            var content = JSON.parse(chat.body);
 						            var msgNum ="";
+						            var contentMemNo = content.memNo
 						            // 채팅번호 입력 및 메시지 출력 ajax 시작
 												if(content.type == 'message'){
 													
 						            $.ajax({
 													url:'${contextPath}/chat/msgNum.do',
+													data:{memNo:contentMemNo},
 													success:function(res){
 								            if(chatNo == chatNo){
-									            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck,res);
+									            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck,res.msgNum,'',res.memUrl.profileURL);
 									            $('#chathistory').append(str);
 									            $(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
 									            
@@ -1547,13 +1568,15 @@
 			            var content = JSON.parse(chat.body);
 			            var msgNum ="";
 			            // 채팅번호 입력 및 메시지 출력 ajax 시작
-
+									var loginU = '${loginUser.memNo}';
 									if(content.type == 'message'){
 			            $.ajax({
 										url:'${contextPath}/chat/msgNum.do',
+										data:{memNo:loginU},
 										success:function(res){
+
 					            if(chatNo == chatNo){
-						            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck,res);
+						            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck,res.msgNum,'',res.memUrl.profileURL);
 						            $('#chathistory').append(str);
 						            $(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
 						            
@@ -1726,10 +1749,9 @@
               url: '${contextPath}/chat/list.do',
               data: { chatNo: $(this).children().eq(0).val(), memNo:'${loginUser.memNo}' },
               success: function(res) {
-                console.log(res);
                     
                 for(let i=0;i<res.msg.length;i++){
-                  a += msgPrint(res.msg[i].memNo, res.m, res.msg[i].msgContent, res.msg[i].msgRegistDate, res.msg[i].msgCheck, res.msg[i].msgNo, res.msg[i].msgStatus)
+                  a += msgPrint(res.msg[i].memNo, res.m, res.msg[i].msgContent, res.msg[i].msgRegistDate, res.msg[i].msgCheck, res.msg[i].msgNo, res.msg[i].msgStatus,res.msg[i].profileURL)
                 }
                 
                 $('#chathistory').html(a);
@@ -1834,9 +1856,11 @@
 			      })     
       })
       
-      function msgPrint(writer, userNo, msgContent, msgDate, msgCheck, msgNo, msgStatus){
-    	let str = "";
-    	
+     function msgPrint(writer, userNo, msgContent, msgDate, msgCheck, msgNo, msgStatus,memUrl){
+    	  
+    	  let str = "";
+    	  console.log(memUrl);
+
    	  	if(writer == userNo){
           str += '<li class="chat-message chat-message-right" id="megList"'+msgNo+'>';
           if(msgStatus != 'N'){
@@ -1853,58 +1877,61 @@
 	          }
 	          str += '</div>';
 	          str += '</div>';
-          }
-          str += '<div class="d-flex overflow-hidden modifyDiv">';
-          if(msgStatus == 'M'){
-         	 str += '<div class="modifyDiv" style= "text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center; width: 50px;">(수정됨)</div>'
-          }
-          str += '<div class="me-2" style="display:none; text-align: center; color: black; font-size: 13px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center; margin-left: 8px;">'+ msgCheck +'</div>'
-
-          str += '<div class="chat-message-wrapper flex-grow-1 w-50">';
-          str += '<div class="chat-message-text messageNoCheck">';
-          str += '<p class="mb-0 chatContent chatContent" id="chatContent'+msgNo+'">'+ msgContent +'</p>';
-          str += '</div>';
-          str += '<div class="text-end text-muted mt-1">';
-          str += '<small>'+ msgDate +'</small>';
-          str += '</div>';
-          str += '</div>';
-          str += '<div class="user-avatar flex-shrink-0 ms-4">';
-          str += '<div class="avatar avatar-sm" data-target="#app-chat-sidebar-left" data-bs-toggle="sidebar" data-overlay="app-overlay-ex">';
-          str += '<img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />';
-          str += '</div>';
-          str += '</div>';
-          str += '</li>';
-
-        }else{
-          str += '<li class="chat-message">';
-          str += '<div class="d-flex overflow-hidden othermodifyDiv">';
-          str += '<div class="user-avatar flex-shrink-0 me-4">';
-          str += '<div class="avatar avatar-sm" data-target="#app-chat-sidebar-right" data-bs-toggle="sidebar" data-overlay="app-overlay-ex">';
-          str += '<img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />';
-          str += '</div>';
-          str += '</div>';
-          str += '<div class="chat-message-wrapper flex-grow-1">';
-          str += '<div class="chat-message-text">';
-          str += '<p class="mb-0" id="chatContent'+msgNo+'">'+ msgContent +'</p>';
-          str += '</div>';
-          str += '<div class="text-muted mt-1">';
-          str += '<small>'+ msgDate +'</small>';
-          str += '</div>';
-          str += '</div>';
-          str += '<div class="me-2" style="text-align: center; color: black; font-size: 13px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center;">';
-          str += '</div>';
-          if(msgStatus == 'M'){
-	          str += '<div class="othermodifyDiv" style="text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center;">';
-	          str += '(수정됨)';
+          	}
+	          str += '<div class="d-flex overflow-hidden modifyDiv">';
+	          if(msgStatus == 'M'){
+	         	 str += '<div class="modifyDiv" style= "text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center; width: 50px;">(수정됨)</div>'
+	          }
+	          str += '<div class="me-2" style="display:none; text-align: center; color: black; font-size: 13px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center; margin-left: 8px;">'+ msgCheck +'</div>'
+	
+	          str += '<div class="chat-message-wrapper flex-grow-1 w-50">';
+	          str += '<div class="chat-message-text messageNoCheck">';
+	          str += '<p class="mb-0 chatContent chatContent" id="chatContent'+msgNo+'">'+ msgContent +'</p>';
 	          str += '</div>';
-          }
-          str += '</div>';
-          str += '</li>';
-        }
+	          str += '<div class="text-end text-muted mt-1">';
+	          str += '<small>'+ msgDate +'</small>';
+	          str += '</div>';
+	          str += '</div>';
+	          str += '<div class="user-avatar flex-shrink-0 ms-4">';
+	          str += '<div class="avatar avatar-sm" data-target="#app-chat-sidebar-left" data-bs-toggle="sidebar" data-overlay="app-overlay-ex">';
+	          str += '<img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />';
+	          str += '</div>';
+	          str += '</div>';
+	          str += '</li>';
+
+	        }else{
+	          str += '<li class="chat-message">';
+	          str += '<div class="d-flex overflow-hidden othermodifyDiv">';
+	          str += '<div class="user-avatar flex-shrink-0 me-4">';
+	          str += '<div class="avatar avatar-sm" data-target="#app-chat-sidebar-right" data-bs-toggle="sidebar" data-overlay="app-overlay-ex">';
+	          str += '<img src="${contextPath}' +memUrl + '" alt="Avatar" class="rounded-circle"/>';
+	          str += '</div>';
+	          str += '</div>';
+	          str += '<div class="chat-message-wrapper flex-grow-1">';
+	          str += '<div class="chat-message-text">';
+	          str += '<p class="mb-0" id="chatContent'+msgNo+'">'+ msgContent +'</p>';
+	          str += '</div>';
+	          str += '<div class="text-muted mt-1">';
+	          str += '<small>'+ msgDate +'</small>';
+	          str += '</div>';
+	          str += '</div>';
+	          str += '<div class="me-2" style="text-align: center; color: black; font-size: 13px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center;">';
+	          str += '</div>';
+		          if(msgStatus == 'M'){
+			          str += '<div class="othermodifyDiv" style="text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center;">';
+			          str += '(수정됨)';
+			          str += '</div>';
+		          }
+		          str += '</div>';
+		          str += '</li>';
+		        }
    	  	
 
    	  	return str;
-      }
+      } 
+      
+      
+      
 
       function invitemsg(memName){
     	  let str = '';
@@ -1971,6 +1998,19 @@
               }
             }
           }
+    	
+     // 사이드바 처리
+		document.addEventListener("DOMContentLoaded", function () {
+	  	
+			const element = document.getElementById("message");
+			
+	  	element.style.backgroundColor = "#958CF4";
+	  	element.style.color = "white";
+	  	element.classList.add("active");
+	  	
+	  	
+		});
+    
     </script>
     
     <c:forEach var="list" items="${ chatList }">

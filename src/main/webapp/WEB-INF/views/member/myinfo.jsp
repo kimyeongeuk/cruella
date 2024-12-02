@@ -150,8 +150,9 @@
                     </div>
                     <div class="user-profile-header d-flex flex-column flex-lg-row text-sm-start text-center mb-5">
                       <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-                        <img
-                          src="${ contextPath }/assets/img/avatars/1.png"
+                        <img style="width: 100px; height: 100px;"
+                          src="${ contextPath }<c:out value='${ loginUser.profileURL }'
+                          default='/assets/img/default_profile.png' />"
                           alt="user image"
                           class="d-block h-auto ms-0 ms-sm-6 rounded user-profile-img" />
                       </div>
@@ -353,12 +354,12 @@
                                     </div>
                                     <div class="modal-footer">
                                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                        Close
+                                        닫기
                                       </button>
                                       <button type="button" class="btn btn-danger" id="clear_btn">
                                         초기화
                                       </button>
-                                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="sign_save_btn">Save</button>
+                                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="sign_save_btn">저장</button>
                                     </div>
                                   </div>
                                 </div>
@@ -492,8 +493,8 @@
                   <!-- 팀게시판 영역 (재운님 코드)-->
                   <div class="row">
                     <!-- 나의 소속팀 목록 -->
-                    <div class="col-lg-12 col-xl-6">
-                      <div class="card card-action mb-6">
+                    <div class="col-lg-12 col-xl-6" >
+                      <div class="card card-action mb-6" style="height: 400px;">
                         <div class="card-header align-items-center">
                           <i class="ti ti-users ti-lg"></i>
                           <h5 class="card-action-title mb-0" style="margin-left: 15px;">${ loginUser.getDeptName() }</h5> <!-- 나의 소속팀이 보이게 -->
@@ -818,7 +819,7 @@
     							+'<div class="d-flex align-items-center">'
     								+'<div class="d-flex align-items-center">'
     									+'<div class="avatar me-2">'
-    										+'<img src="${ contextPath }/assets/img/avatars/2.png" alt="Avatar" class="rounded-circle" />'
+    			            + '<img src="${contextPath}' + res[i].profileURL + '" alt="Avatar" class="rounded-circle"/>'
     									+'</div>'
     									+'<div class="me-2">'
     										+'<h6 class="mb-0">' + res[i].memName + '</h6>'

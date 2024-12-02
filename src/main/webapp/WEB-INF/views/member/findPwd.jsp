@@ -81,7 +81,7 @@
                 <button class="btn btn-primary d-grid w-100" onclick="fnSendCode();">임시 비밀번호 발급 받기</button> <!-- 임시비밀번호 발급 클릭 시 회원 상태값 'A'로 변경 -->
               </form>
               <div class="text-center">
-                <a href="${ contextPath }/member/loginPage.jsp" class="d-flex justify-content-center">
+                <a href="${ contextPath }" class="d-flex justify-content-center">
                   <i class="ti ti-chevron-left scaleX-n1-rtl me-1_5"></i>
                   로그인 화면으로
                 </a>

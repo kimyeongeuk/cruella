@@ -29,5 +29,6 @@ public class ChatDto {
 	private String chatTitle2;
 	private int msgNo;
 	private String type;
-	
+	private String memNo;
+	private String profileURL;
 }

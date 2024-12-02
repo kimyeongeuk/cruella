@@ -14,8 +14,8 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.cl.cruella.dto.ChatDto;
-import com.cl.cruella.dto.ChatListDto;
 import com.cl.cruella.dto.MemberDto;
+import com.cl.cruella.dto.MessageDto;
 import com.cl.cruella.service.ChatServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -104,6 +104,10 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 	    			}
 	    			
 	    			cd.setType("create");
+	    			ChatDto chatDt = new ChatDto();
+	    			chatDt.setMemNo(inviteNo);
+	    			MemberDto md = chatServiceImpl.writerUrl(chatDt);
+	    			cd.setProfileURL(md.getProfileURL());
 	    			ObjectMapper objectMapper = new ObjectMapper();
 	    			String cdJson = objectMapper.writeValueAsString(cd); 
 	    			for(String target : targetMemNo) {
@@ -149,6 +153,7 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 		    				result = chatServiceImpl.updateChatStatus(map3);
 		    				// 해당 채팅방에 있는 멤버 정보 다불러오기
 		    				targetMemNo = chatServiceImpl.chatMember(map3);
+		    				log.debug("타겟타켃타켓ㅁ맴:{}",targetMemNo);
 		    				List<String> imgURL = chatServiceImpl.memberIMG(targetMemNo);
 		    				
 		    				ChatDto cd = new ChatDto();
@@ -163,6 +168,7 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 		    				map3.put("memIMG", imgURL);
 		    				// 맵에 채팅방 최신메시지 받아오기
 		    				map3.put("newMsg", chatServiceImpl.chatNewChat(inviteName));
+		    				log.debug("맵맵맵맵맴맴ㅁ맴:{}",map3);
 		    				ObjectMapper objectMapper = new ObjectMapper();
 		    				String cdJson = objectMapper.writeValueAsString(map3); 
 		    				for(String target : targetMemNo) {

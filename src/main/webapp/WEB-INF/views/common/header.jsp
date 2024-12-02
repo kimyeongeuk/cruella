@@ -30,7 +30,6 @@
     
     
     
-    
 
     <!-- Vendors CSS -->
 
@@ -156,19 +155,19 @@
             </li>
 
             <!-- 전자결재 -->
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <li class="menu-item" id="app_main_active">
+              <a href="javascript:void(0);" class="menu-link menu-toggle" >
                 <i class="menu-icon tf-icons ti ti-edit"></i>
                 <div data-i18n="전자결재">전자결재</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="${contextPath }/app/app_main.do" class="menu-link">
+                  <a href="${contextPath }/app/app_main.do" class="menu-link" id="app_active">
                     <div data-i18n="결재 작성">결재 작성</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="${contextPath }/app/box_main.do" class="menu-link">
+                  <a href="${contextPath }/app/box_main.do" class="menu-link" id="app_box_active">
                     <div data-i18n="결재 문서함">결재 문서함</div>
                   </a>
                 </li>
@@ -206,8 +205,8 @@
               </ul>
             </li>
             <!-- 인사관리 -->
-            <li class="menu-item">
-              <a href="#" class="menu-link menu-toggle">
+            <li class="menu-item" id="member">
+              <a href="#" class="menu-link menu-toggle" >
                 <i class="menu-icon tf-icons ti ti-users"></i>
                 <div data-i18n="인사관리">인사관리</div>
               </a>
@@ -215,41 +214,36 @@
                 <c:if test="${ loginUser.deptCode eq 'S2'}">
                 <li class="menu-item">
                 
-                  <a href="${ contextPath }/member/signup.do" class="menu-link">
+                  <a href="${ contextPath }/member/signup.do" class="menu-link" id="signup">
                     <div data-i18n="직원 등록">직원 등록</div> 
                   </a>
                 </li>
                 </c:if>
                 <li class="menu-item">
-                  <a href="${ contextPath }/member/employeelistview.do" class="menu-link">
+                  <a href="${ contextPath }/member/employeelistview.do" class="menu-link" id="employeelistview">
                     <div data-i18n="직원 조회">직원 조회</div> 
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="${ contextPath }/wl/checkinrecordview.do" class="menu-link">
+                  <a href="${ contextPath }/wl/checkinrecordview.do" class="menu-link" id="checkinrecordview">
                     <div data-i18n="출근기록조회">출근 기록 조회</div> 
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="${ contextPath }/member/workhoursview.do" class="menu-link">
+                  <a href="${ contextPath }/member/workhoursview.do" class="menu-link" id="workhoursview">
                     <div data-i18n="근무시간조회">근무시간 조회</div>
                   </a>
                 </li>
                 <c:if test="${ loginUser.deptCode eq 'S2'}">
                 <li class="menu-item">
-                  <a href="${ contextPath }/member/salarypayment.do" class="menu-link">
+                  <a href="${ contextPath }/member/salarypayment.do" class="menu-link" id="salarypayment">
                     <div data-i18n="급여지급">급여지급</div>
                   </a>
                 </li>
                 </c:if>
                 <li class="menu-item">
-                  <a href="" class="menu-link">
+                  <a href="${ contextPath }/member/checksalary.do" class="menu-link" id="checksalary">
                     <div data-i18n="급여내역확인">급여 내역 확인</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="${ contextPath }/member/organization.do" class="menu-link">
-                    <div data-i18n="조직도">조직도</div>
                   </a>
                 </li>
               </ul>
@@ -303,7 +297,7 @@
 
             <!-- 메신저 -->
             <li class="menu-item">
-              <a href="${ contextPath }/chat/chatPage.do" class="menu-link">
+              <a href="${ contextPath }/chat/chatPage.do" id="message" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-messages"></i>
                 <div data-i18n="메신저">메신저</div>
               </a>

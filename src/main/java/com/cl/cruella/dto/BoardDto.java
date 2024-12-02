@@ -31,6 +31,7 @@ public class BoardDto {
 	private String memName;
 	private List<AttachDto> attachList;
 	private int replyCount;
+	private String profileURL;
 
 }
 

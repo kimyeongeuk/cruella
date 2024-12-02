@@ -11,6 +11,7 @@
 	<result column="CHAT_NEWMSG" property="chatNewMsg" />
 	<result column="chat_count" property="chatCount"/>
 	<result column="msg_no" property="msgNo"/>
+	<result column="PROFILE_URL" property="profileURL" />
 </resultMap>
 
 
@@ -43,6 +44,7 @@
 	<result column="MSG_CHECK" property="msgCheck" />
 	<result column="MSG_STATUS" property="msgStatus" />
 	<result column="MSG_MODIFY_DATE" property="msgModifyDate" />
+	<result column="PROFILE_URL" property="profileURL" />
 </resultMap>
 
 
@@ -70,6 +72,7 @@
 	<result column="PROFILE_URL" property="profileURL" />
 	<result column="DEPT_NAME" property="deptCode" />
 	<result column="POS_NAME" property="posCode" />
+	<result column="chat_no" property="chatNo" />
 </resultMap>
 
 
@@ -157,13 +160,15 @@ select count(chat_no) chat_count
 <select id="messageList" resultMap="messageResultMap">
 	select MSG_NO
 			 , CHAT_NO
-			 , MEM_NO
+			 , m.MEM_NO
 			 , MSG_CONTENT
 			 , MSG_REGIST_DATE
 			 , MSG_CHECK
 			 , MSG_STATUS
 			 , MSG_MODIFY_DATE
-  from message
+       , profile_url
+  from message msg
+  join member m on(m.mem_no = msg.mem_no)
  where chat_no = #{chatNo}
    and MSG_STATUS in ('Y','N','M')
  order by msg_no
@@ -595,7 +600,30 @@ SELECT
         alert
 WHERE
         mem_no = #{memNo}
-  and   ALERT_STATUS= 'N';
+  and   ALERT_STATUS= 'N'
+</select>
+
+<select id="memberLink" resultMap="memberResultMap">
+
+select
+        m.mem_no,
+        profile_URL,
+        chat_no
+  from
+        member m
+  join  chat_list cl on (m.mem_no = cl.mem_no)
+ where  chat_no = #{chatNo}
+   and	m.mem_no != #{memNo}
+ 
+</select>
+
+<select id="writerUrl" resultMap="memberResultMap">
+select
+        PROFILE_URL
+  from
+        member
+ where
+        mem_no = #{memNo}
 </select>
 
 

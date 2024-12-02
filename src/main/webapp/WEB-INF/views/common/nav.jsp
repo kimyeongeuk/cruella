@@ -6,19 +6,6 @@
 <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script> 
 <script>
 
-window.addEventListener('load', function () {
-    if (Notification.permission === "default") {  // 권한이 아직 설정되지 않았다면
-        Notification.requestPermission().then(function(permission) {
-            if (permission === "granted") {
-                console.log("알림 권한이 허용되었습니다.");
-            } else {
-                console.log("알림 권한이 거부되었습니다.");
-            }
-        });
-    } else {
-        console.log("이미 알림 권한이 설정되어 있습니다: " + Notification.permission);
-    }
-});
 
 
 var count = 0;
@@ -27,14 +14,7 @@ sock.onmessage = onMessage;
 
 function onMessage(evt){
 		console.log(evt.data);
-		
-				if (Notification.permission === "granted") {
-			        new Notification("새 메시지 도착!", {
-			            body: '제발!!!!!!!!!!!!!' // 서버에서 받은 메시지
-			        });
-			    } else {
-			        console.log("알림 권한이 필요합니다. 권한을 허용해주세요.");
-			    }
+
 		
 				var chatData = JSON.parse(evt.data);
 				console.log(chatData);
@@ -156,7 +136,7 @@ function onMessage(evt){
 			    <nav
             class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
             id="layout-navbar">
-            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+           <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
               <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
                 <i class="ti ti-menu-2 ti-md"></i>
               </a>
@@ -164,15 +144,15 @@ function onMessage(evt){
 
             <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
               <!-- Search -->
-              <div class="navbar-nav align-items-center">
+             <!--  <div class="navbar-nav align-items-center">
                 <div class="nav-item navbar-search-wrapper mb-0">
                   <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
                     <i class="ti ti-search ti-md me-2 me-lg-4 ti-lg"></i>
                     <span class="d-none d-md-inline-block text-muted fw-normal">Search (Ctrl+/)</span>
                   </a>
                 </div>
-              </div>
-              <!-- /Search -->
+              </div> -->
+              <!-- /Search  메인 검색아이콘  --> 
 
               <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- Language -->

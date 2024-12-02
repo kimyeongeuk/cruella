@@ -15,6 +15,7 @@
         <result column="dept_code" property="deptCode" />
         <result column="mem_name" property="memName" />
         <result column="reply_count" property="replyCount" />
+        <result column="profile_URL" property="profileURL" />
         <collection resultMap="attachResultMap" property="attachList" />
     </resultMap>
     
@@ -37,6 +38,7 @@
 		  <result column="reply_regist_date" property="replyRegistDT"/>
 		  <result column="reply_modify_date" property="replyModifyDT"/>
 		  <result column="reply_ref" property="replyRef"/>
+		  <result column="profile_URL" property="profileURL" />
 		  <result column="mem_name" property="memName"/> 
 		</resultMap>
   
@@ -208,6 +210,7 @@
 				     , b.board_content
 				     , m.mem_no
 				     , m.mem_name
+				     , m.profile_url
 				     , to_char(b.board_regist_date, 'YYYY-MM-DD') as board_regist_date
 				     , to_char(b.board_modify_date, 'YYYY-MM-DD') as board_modify_date
 				     , b.board_count
@@ -274,6 +277,7 @@
 		       , r.board_no
 		       , r.mem_no 
 		       , m.mem_name
+		       , m.profile_URL
 		       , r.reply_content
 		       , r.reply_type
 		       , r.reply_ref
@@ -292,6 +296,7 @@
 		         r.board_no,
 		         r.mem_no,
 		         m.mem_name,
+		         m.profile_URL,
 		         r.reply_content,
 		         r.reply_type,
 		         r.reply_ref,

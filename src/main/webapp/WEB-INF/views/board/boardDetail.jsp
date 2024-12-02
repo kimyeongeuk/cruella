@@ -142,7 +142,7 @@
                 <div class="d-flex justify-content-between align-items-center user-info">
                   <div id="writer" class="avatar-wrapper d-flex align-items-center">
                     <div class="avatar me-2">
-                      <img src="${contextPath}/resources/assets/img/avatars/1.png" alt class="rounded-circle"/>
+                      <img src="${contextPath}${b.profileURL}" alt class="rounded-circle"/>
                     </div>
                     <div class="d-flex flex-column">
                       <span class="emp_name text_truncate" style="color: black;">${b.memName}</span>
@@ -225,7 +225,7 @@
 								          <div class="d-flex justify-content-between align-items-center" style="margin: 10px;">
 								            <div class="avatar-wrapper d-flex align-items-center">
 								              <div class="avatar me-2">
-								                <img src="${contextPath}/resources/assets/img/avatars/1.png" alt class="rounded-circle" />
+								                <img src="${contextPath}${b.profileURL}" alt class="rounded-circle"/>
 								              </div>
 								              <div class="d-flex flex-column">
 								                <span class="emp_name text_truncate" id="modal-author" style="color: black;"></span>
@@ -364,24 +364,23 @@ $(document).ready(function(){
 var loginUserMemNo = "${loginUser.memNo}";
 
 function fn_replyList() {
-
-  $.ajax({
-    url: '${contextPath}/board/rlist.do',
-    data: { no: ${b.boardNo} },
-    success: function(resData) {
-      $("#rcount").text(resData.length); // 댓글 수 출력
-      let tr = "";
-      for (let i = 0; i < resData.length; i++) {
-        tr += "<tr data-replyno='" + resData[i].replyNo + "'><td colspan='3'>"
-            + "<div class='d-flex justify-content-between align-items-center user-info'>"
-            + "<div class='avatar-wrapper d-flex align-items-center'>"
-            + "<div class='avatar me-2'>"
-            + "<img src='${contextPath}/resources/assets/img/avatars/1.png' alt='Avatar' class='rounded-circle' />"
-            + "</div>"
-            + "<div class='d-flex align-items-center'>"
-            + "<span class='emp_name text_truncate' style='color: black; margin-right: 20px;'>" + resData[i].memName + "</span>"
-            + "<span>" + resData[i].replyRegistDT + "</span>"
-            + "</div></div>";
+	  $.ajax({
+	    url: '${contextPath}/board/rlist.do',
+	    data: { no: ${b.boardNo} },
+	    success: function(resData) {
+	      $("#rcount").text(resData.length); // 댓글 수 출력
+	      let tr = "";
+	      for (let i = 0; i < resData.length; i++) {
+	        tr += "<tr data-replyno='" + resData[i].replyNo + "'><td colspan='3'>"
+	            + "<div class='d-flex justify-content-between align-items-center user-info'>"
+	            + "<div class='avatar-wrapper d-flex align-items-center'>"
+	            + "<div class='avatar me-2'>"
+	            + "<img src='${contextPath}" + resData[i].profileURL + "' alt='Avatar' class='rounded-circle' />"
+	            + "</div>"
+	            + "<div class='d-flex align-items-center'>"
+	            + "<span class='emp_name text_truncate' style='color: black; margin-right: 20px;'>" + resData[i].memName + "</span>"
+	            + "<span>" + resData[i].replyRegistDT + "</span>"
+	            + "</div></div>";
 
         // 댓글 작성자가 로그인한 사용자와 같은지 확인
         if (loginUserMemNo == resData[i].memNo) {
@@ -486,27 +485,28 @@ function fn_insertRreply(replyId) {
 }
 
 function fn_rreplyList(replyId) {
-  $.ajax({
-    url: '${contextPath}/board/rrlist.do',
-    data: { bno: ${b.boardNo}, nno: replyId },
-    success: function(resData) {
-      $("#rrcount").text(resData.length); // 대댓글 수 출력
+	  $.ajax({
+	    url: '${contextPath}/board/rrlist.do',
+	    data: { bno: ${b.boardNo}, nno: replyId },
+	    success: function(resData) {
+	      $("#rrcount").text(resData.length); // 대댓글 수 출력
 
-      let tr = "";
-      for (let i = 0; i < resData.length; i++) {
-        tr += "<tr data-replyno='" + resData[i].replyNo + "'><td colspan='3'>"
-            + "<div class='d-flex justify-content-between align-items-center user-info'>"
-            + "<div class='avatar-wrapper d-flex align-items-center'>"
-            + "<div class='avatar me-2 d-flex justify-content-between'>"
-            + "<i class='menu-icon tf-icons ti ti-currency-leu' style='margin-right: auto; font-size: 40px; margin-top: -10px;'></i>"
-            + "<img src='${contextPath}/resources/assets/img/avatars/1.png' alt='Avatar' class='rounded-circle' />"
-            + "</div>"
-            + "<div class='d-flex flex-column'>"
-            + "<span class='emp_name text_truncate' style='color: black; margin-left: 40px;'>" + resData[i].memName + "</span>"
-            + "</div>"
-            + "<div class='d-flex flex-column' style='margin-left: 20px;'>"
-            + "<span>" + resData[i].replyRegistDT + "</span>"
-            + "</div></div>";
+	      let tr = "";
+	      for (let i = 0; i < resData.length; i++) {
+	        tr += "<tr data-replyno='" + resData[i].replyNo + "'><td colspan='3'>"
+	            + "<div class='d-flex justify-content-between align-items-center user-info'>"
+	            + "<div class='avatar-wrapper d-flex align-items-center'>"
+	            + "<div class='avatar me-2 d-flex justify-content-between'>"
+	            + "<i class='menu-icon tf-icons ti ti-currency-leu' style='margin-right: auto; font-size: 40px; margin-top: -10px;'></i>"
+	            + "<img src='${contextPath}" + resData[i].profileURL + "' alt='Avatar' class='rounded-circle' />"
+	            + "</div>"
+	            + "<div class='d-flex flex-column'>"
+	            + "<span class='emp_name text_truncate' style='color: black; margin-left: 40px;'>" + resData[i].memName + "</span>"
+	            + "</div>"
+	            + "<div class='d-flex flex-column' style='margin-left: 20px;'>"
+	            + "<span>" + resData[i].replyRegistDT + "</span>"
+	            + "</div></div>";
+
 
         // 댓글 작성자가 로그인한 사용자와 같은지 확인
         if (loginUserMemNo == resData[i].memNo) {

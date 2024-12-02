@@ -15,6 +15,20 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <script src="${ contextPath }/resources/assets/js/config.js"></script>
+   <style>
+	#app_active::before {
+	  content: ''; /* 가상 요소 필수 */
+	  display: inline-block; /* 블록 요소 */
+	  width: 10px; /* 동그라미 크기 */
+	  height: 10px; /* 동그라미 크기 */
+	  border-radius: 50%; /* 완전한 원 */
+	  background-color: transparent; /* 배경을 투명으로 설정 */
+	  border: 2px solid gray; /* 초기 테두리 색상 */
+	}
+	#app_active.active::before {
+	  border: 2px solid white; /* 테두리만 흰색으로 변경 */
+	}
+   </style>
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
@@ -1318,6 +1332,24 @@
             </div>
           </div>
         </div>
+        
+        
+        <script>
+     // 사이드바 처리
+		document.addEventListener("DOMContentLoaded", function () {
+	  	
+			const element = document.getElementById("app_active");
+			
+	  	document.getElementById("app_main_active").classList.add("open");
+	  	element.style.backgroundColor = "#958CF4";
+	  	element.style.color = "white";
+	  	element.classList.add("active");
+	  	
+	  	
+		});
+        
+        
+        </script>
 
 
    <!-- 푸터 시작 -->

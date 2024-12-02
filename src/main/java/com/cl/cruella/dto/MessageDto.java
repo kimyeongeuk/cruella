@@ -28,4 +28,5 @@ public class MessageDto {
 	 private Date msgModifyDate;
 	 private String msgType;
 	 private String type;
+	 private String profileURL;
 }

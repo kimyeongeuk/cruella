@@ -77,59 +77,57 @@
 						<!-- 이쪽에 세션정보 넣어야합니다 -->
 
 
+
 						<div class="row">
 							<div class="col-md-12">
 								<div class="nav-align-top">
 									<ul
 										class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
+										<c:if test="${ loginUser.deptCode eq 'S2'}">
+											<li class="nav-item"><a class="nav-link"
+												href="${ contextPath }/member/signup.do"> <i
+													class="ti-sm ti ti-user-check me-1_5"></i> 직원등록
+											</a></li>
+										</c:if>
 
-										<li class="nav-item"><a class="nav-link" href="#"> <i
-												class="ti-sm ti ti-user-check me-1_5"></i> 직원 등록
-										</a></li>
+										<li class="nav-item"><a class="nav-link active "
+											href="${ contextPath }/member/employeelistview.do""><i
+												class="ti-sm ti ti-users me-1_5"></i> 직원조회 </a></li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 직원 조회 </a></li>
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/wl/checkinrecordview.do""><i
+												class="ti-sm ti ti-users me-1_5"></i> 출근기록조회 </a></li>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 출퇴근 기록관리 </a></li>
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/member/workhoursview.do""><i
+												class="ti-sm ti ti-users me-1_5"></i> 근무시간조회 </a></li>
+										<c:if test="${ loginUser.deptCode eq 'S2'}">
+											<li class="nav-item"><a class="nav-link"
+												href="${ contextPath }/member/salarypayment.do""><i
+													class="ti-sm ti ti-users me-1_5"></i> 급여지급 </a></li>
+										</c:if>
 
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 근무시간 조회 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 조직도 관리 </a></li>
-
-										<li class="nav-item"><a class="nav-link active" href="#"><i
-												class="ti-sm ti ti-users me-1_5"></i> 급여 지급 </a></li>
-
-										<li class="nav-item"><a class="nav-link" href="#"><i
-												class="ti-sm ti ti-money me-1_5"></i> 급여명세서 조회/발급 </a></li>
-
-									</ul>
+										<li class="nav-item"><a class="nav-link"
+											href="${ contextPath }/member/checksalary.do""><i
+												class="ti-sm ti ti-money me-1_5"></i> 급여내역확인 </a></li>
 								</div>
 							</div>
 						</div>
 
 
 
-						<div
+ 						<div
 							class="faq-header d-flex flex-column justify-content-center align-items-center "
-							style="margin-bottom: 10px;">
+							style="margin-bottom: 10px; ">
 							<img src="${contextPath }/assets/img/pages/header.png" class=""
-								alt="background image" style="width: 100%; height: 102px;" />
-							<div class="input-wrapper mt-4 input-group input-group-merge"
-								style="position: relative; bottom: 84px; background: white; width: 52%;">
-								<span class="input-group-text" id="basic-addon1"><i
-									class="ti ti-search"></i></span> <input type="text"
-									class="form-control" placeholder="Search articles..."
-									aria-label="Search" aria-describedby="basic-addon1" />
-							</div>
-						</div>
+								alt="background image" style="width: 100%; height: 102px; border-radius: 7px;" />
+						
+						</div> 
 						<!--/상단 검색바-->
 
 						<!--검색내용-->
 						<div class="card"
-							style="padding: 30px; padding: 30px; position: relative; bottom: 50px;">
+							style="padding: 30px; padding: 30px; position: relative; bottom: 3px;">
 							<h5 class="card-header">사원목록</h5>
 							<div class="table-responsive text-nowrap">
 								<table class="table" style="text-align: center;">
@@ -286,6 +284,20 @@
   }
 </script>
 
+	<script>
+    // 사이드바 처리
+	document.addEventListener("DOMContentLoaded", function () {
+  	
+		const element = document.getElementById("employeelistview");
+		
+  	document.getElementById("member").classList.add("open");
+  	element.style.backgroundColor = "#958CF4";
+  	element.style.color = "white";
+  	element.classList.add("active");
+  	
+  	
+	});
+	</script>
 
 
 

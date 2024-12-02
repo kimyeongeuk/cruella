@@ -1,5 +1,6 @@
 package com.cl.cruella.controller;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cl.cruella.dto.RevenueDto;
 import com.cl.cruella.service.RevenueService;
 
 @Controller
@@ -26,12 +28,26 @@ public class RevenueController {
     }
 
     @GetMapping("/revenue.do")
-    public String revenuePage(@RequestParam(name = "deptCode", required = false) String deptCode, Model model) {
-        if (deptCode == null) {
-            deptCode = "T1"; // 기본값 설정, 필요에 따라 수정
+    public String revenuePage(
+            @RequestParam(name = "deptCode", required = false) String deptCode,
+            @RequestParam(name = "page", defaultValue = "1") int currentPage,
+            @RequestParam(name = "size", defaultValue = "10") int limit,
+            @RequestParam(name = "searchKeyword", required = false) String searchKeyword,
+            @RequestParam(name = "startDate", required = false) String startDate,
+            @RequestParam(name = "endDate", required = false) String endDate,
+            Model model) {
+
+
+        if (searchKeyword == null) {
+            searchKeyword = ""; // 검색 초기값 설정
         }
 
-        // deptCode에 따라 매장 옵션 설정
+        if (startDate == null || endDate == null) {
+            startDate = LocalDate.now().toString(); // 초기값을 오늘 날짜로 설정
+            endDate = LocalDate.now().toString(); // 초기값을 오늘 날짜로 설정
+        }
+
+        // 매장 옵션 설정
         Map<String, List<String>> storeOptions = new HashMap<>();
         storeOptions.put("T1", List.of("레노마셔츠", "라코스테"));
         storeOptions.put("T2", List.of("샤넬", "구찌"));
@@ -41,12 +57,33 @@ public class RevenueController {
         storeOptions.put("T6", List.of("루이비통", "에르메스"));
         storeOptions.put("T7", List.of("CGV", "롯데시네마"));
         storeOptions.put("T8", List.of("삼성전자", "LG전자"));
-        // 더 많은 옵션 추가 가능
 
         model.addAttribute("storeOptions", storeOptions.getOrDefault(deptCode, List.of()));
-        model.addAttribute("deptCode", deptCode); // 선택된 deptCode를 JSP로 전달
+        model.addAttribute("deptCode", deptCode);
+        model.addAttribute("searchKeyword", searchKeyword);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+
+        // 페이징 데이터 가져오기
+        int totalRevenues = revenueService.getTotalRevenueCount(searchKeyword, startDate, endDate);
+        int maxPage = (int) Math.ceil((double) totalRevenues / limit);
+        int startPage = Math.max(1, currentPage - 2);
+        int endPage = Math.min(maxPage, currentPage + 2);
+
+        List<RevenueDto> revenueList = revenueService.getPagedRevenueList(currentPage, limit, searchKeyword, startDate, endDate);
+
+        model.addAttribute("revenueList", revenueList);
+        model.addAttribute("pi", Map.of(
+            "currentPage", currentPage,
+            "maxPage", maxPage,
+            "startPage", startPage,
+            "endPage", endPage,
+            "totalRevenues", totalRevenues
+        ));
+
         return "revenue/revenue";
     }
+
 
     @PostMapping("/registerAll.do")
     public String registerAllRevenues(

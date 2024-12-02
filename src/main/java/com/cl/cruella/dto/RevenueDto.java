@@ -1,6 +1,11 @@
 package com.cl.cruella.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,4 +23,5 @@ public class RevenueDto {
     private String month;       // 월
     private int sumValue;
     private int sumStore;
+    private String memName;
 }
