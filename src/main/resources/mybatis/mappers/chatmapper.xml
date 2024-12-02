@@ -12,6 +12,7 @@
 	<result column="chat_count" property="chatCount"/>
 	<result column="msg_no" property="msgNo"/>
 	<result column="PROFILE_URL" property="profileURL" />
+	<result column="mem_name" property="memName" />
 </resultMap>
 
 
@@ -45,6 +46,7 @@
 	<result column="MSG_STATUS" property="msgStatus" />
 	<result column="MSG_MODIFY_DATE" property="msgModifyDate" />
 	<result column="PROFILE_URL" property="profileURL" />
+	<result column="mem_name" property="memName" />
 </resultMap>
 
 
@@ -167,6 +169,7 @@ select count(chat_no) chat_count
 			 , MSG_STATUS
 			 , MSG_MODIFY_DATE
        , profile_url
+       , mem_name
   from message msg
   join member m on(m.mem_no = msg.mem_no)
  where chat_no = #{chatNo}
@@ -620,7 +623,8 @@ select
 <select id="writerUrl" resultMap="memberResultMap">
 select
         PROFILE_URL,
-        mem_no
+        mem_no,
+        mem_name
   from
         member
  where
@@ -635,6 +639,18 @@ select
  where
  				chat_no = #{chatNo}
 </select>
+
+<select id="chatMemName" resultMap="memberResultMap">
+select
+        m.mem_no
+    ,   mem_name
+  from
+        chat_list cl
+  join  member m on(cl.mem_no=m.mem_no)
+ where
+        chat_no = #{chatNo}
+</select>
+
 
 
 </mapper>

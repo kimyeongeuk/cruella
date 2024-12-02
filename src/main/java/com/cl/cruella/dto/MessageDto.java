@@ -29,4 +29,5 @@ public class MessageDto {
 	 private String msgType;
 	 private String type;
 	 private String profileURL;
+	 private String memName;
 }

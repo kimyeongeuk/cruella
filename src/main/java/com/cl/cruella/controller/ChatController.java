@@ -212,12 +212,15 @@ public class ChatController {
 	    cd.setMemNo(senderMemNo);
 
 	    int result = chatServiceImpl.msgNum();
-
+	    
 	    // 보낸 사람의 프로필 URL 가져오기
 	    MemberDto senderProfile = chatServiceImpl.writerUrl(cd);
 
 	    // 채팅방에 참여한 모든 사용자 mem_no 리스트 가져오기
 	    List<String> chatMembers = chatServiceImpl.writerNo(cd);
+	    log.debug("테스트1111111{}",senderProfile);
+	    // 채팅방에 참여한 인원 이름
+	    List<MemberDto> memList = chatServiceImpl.chatMemName(cd);
 
 	    // 각 멤버의 프로필 URL 가져오기
 	    List<Map<String, String>> memberProfiles = new ArrayList<>();
@@ -226,18 +229,22 @@ public class ChatController {
 	            ChatDto memberDto = new ChatDto();
 	            memberDto.setMemNo(memNo);
 	            MemberDto memberProfile = chatServiceImpl.writerUrl(memberDto); // 프로필 URL 가져오기
+
 	            Map<String, String> profileMap = new HashMap<>();
 	            profileMap.put("memNo", memNo); // 사용자 ID
 	            profileMap.put("profileURL", memberProfile.getProfileURL()); // 사용자 프로필 URL
+	            profileMap.put("memName", memberProfile.getMemName()); // 사용자 이름
 	            memberProfiles.add(profileMap);
 	        }
 	    }
+	    log.debug("테스트2222222222{}",memberProfiles);
 
 	    // 결과 데이터 구성
 	    Map<String, Object> map = new HashMap<>();
 	    map.put("senderProfileURL", senderProfile.getProfileURL()); // 보낸 사람의 프로필 URL
 	    map.put("memberProfiles", memberProfiles); // 채팅방 상대방 프로필 리스트
 	    map.put("msgNum", result);
+	    
 
 	    return map;
 	}

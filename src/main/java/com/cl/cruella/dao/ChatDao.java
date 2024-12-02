@@ -210,6 +210,10 @@ public class ChatDao {
 	public  List<String> writerNo(ChatDto cd) {
 		return sqlSession.selectList("chatMapper.writerNo",cd);
 	}
+
+	public List<MemberDto> chatMemName(ChatDto cd) {
+		return sqlSession.selectList("chatMapper.chatMemName",cd);
+	}
 	
 
 }

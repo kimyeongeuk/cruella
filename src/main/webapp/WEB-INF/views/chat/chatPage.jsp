@@ -737,15 +737,6 @@
                             src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />"
                             alt="Avatar" />
                         </div>
-                        <div class="flex-grow-1 input-group input-group-merge">
-                          <span class="input-group-text" id="basic-addon-search31"><i class="ti ti-search"></i></span>
-                          <input
-                            type="text"
-                            class="form-control chat-search-input"
-                            placeholder="Search..."
-                            aria-label="Search..."
-                            aria-describedby="basic-addon-search31" />
-                        </div>
                       </div>
                       <i
                         class="ti ti-x ti-lg cursor-pointer position-absolute top-50 end-0 translate-middle d-lg-none d-block"
@@ -1469,16 +1460,18 @@
 												console.log("xzzxcvzsdfgaszerfgzsdfzsdxcv");
 												  let memberProfiles = res.memberProfiles; 
 											        let memUrl = ""; 
+											        let memName = ""; 
 
 											        for (let member of memberProfiles) {
 											            if (member.memNo === content.memNo) { 
 											                memUrl = member.profileURL;
+											                memName = member.memName;
 											                break;
 											            }
 											        }
 					            if(chatNo == chatNo){
 					           	             	
-						            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck,res.msgNum,'',memUrl);
+						            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck,res.msgNum,'',memUrl,memName);
 						            $('#chathistory').append(str);
 						            $(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
 						            
@@ -1654,7 +1647,7 @@
             	   console.log("콘콘콘콘ㅋ콘슈ㅜ퍼톸노수포코ㅓㄴ슈")
                  console.log(res);   
                 for(let i=0;i<res.msg.length;i++){
-                  a += msgPrint(res.msg[i].memNo, res.m, res.msg[i].msgContent, res.msg[i].msgRegistDate, res.msg[i].msgCheck, res.msg[i].msgNo, res.msg[i].msgStatus,res.msg[i].profileURL	)
+                  a += msgPrint(res.msg[i].memNo, res.m, res.msg[i].msgContent, res.msg[i].msgRegistDate, res.msg[i].msgCheck, res.msg[i].msgNo, res.msg[i].msgStatus,res.msg[i].profileURL,res.msg[i].memName	)
                 }
                 
                 $('#chathistory').html(a);
@@ -1759,11 +1752,11 @@
 			      })     
       })
       
-      function msgPrint(writer, userNo, msgContent, msgDate, msgCheck, msgNo, msgStatus, memUrl) {
+      function msgPrint(writer, userNo, msgContent, msgDate, msgCheck, msgNo, msgStatus, memUrl,memName) {
     let str = "";
     console.log("함수");
     console.log(writer);
-    console.log(memUrl);
+    console.log(memName);
 
     if (writer == userNo) {
         // 내 메시지 (오른쪽에 표시)
@@ -1814,7 +1807,7 @@
         str += '</div>';
         str += '</div>';
         str += '<div class="chat-message-wrapper flex-grow-1">';
-        str += '<div id="userName" style="font-weight: 600;">김영욱</div>'
+        str += '<div id="userName" style="font-weight: 600;">'+memName+'</div>'
         str += '<div class="chat-message-text">';
         str += '<p class="mb-0" id="chatContent'+msgNo+'">'+ msgContent +'</p>';
         str += '</div>';

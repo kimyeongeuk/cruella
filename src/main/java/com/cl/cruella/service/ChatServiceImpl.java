@@ -204,6 +204,9 @@ public class ChatServiceImpl implements ChatService{
 	public List<String> writerNo(ChatDto cd) {
 		return chatDao.writerNo(cd);
 	}
+	public List<MemberDto> chatMemName(ChatDto cd) {
+		return chatDao.chatMemName(cd);
+	}
 
 
 

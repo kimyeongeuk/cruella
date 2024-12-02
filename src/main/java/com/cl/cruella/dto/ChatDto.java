@@ -32,6 +32,7 @@ public class ChatDto {
 	private String type;
 	private String memNo;
 	private String profileURL;
+	private String memName;
 	
 	private List<MemberDto> profileURL2;
 	
