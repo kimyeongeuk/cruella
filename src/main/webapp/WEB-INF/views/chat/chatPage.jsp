@@ -1237,7 +1237,7 @@
 												        
 
 							            if(chatNoData == chatNoData){
-								            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck,res.msgNum,'',memUrl);
+								            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck,res.msgNum,'',memUrl,memName);
 								            $('#chathistory').append(str);
 								            $(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
 								            
