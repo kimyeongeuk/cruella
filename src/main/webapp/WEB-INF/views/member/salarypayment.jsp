@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html lang="en"
@@ -80,13 +81,9 @@
 							class="faq-header d-flex flex-column justify-content-center align-items-center ">
 							<img src="${contextPath }/assets/img/pages/header.png" class=""
 								alt="background image" style="width: 100%; height: 102px;" />
-								
-							<div class="input-wrapper mt-4 input-group input-group-merge"
-								style="position: relative; bottom: 84px;  width: 52%;">
-								
-								
 
-							</div>
+							<div class="input-wrapper mt-4 input-group input-group-merge"
+								style="position: relative; bottom: 84px; width: 52%;"></div>
 						</div>
 
 
@@ -96,16 +93,16 @@
 								<h5 class="card-header" style="width: 15%;">급여 지급</h5>
 
 								<div style="display: flex;">
-								
-								
-								<h5 class="card-header"
+
+
+									<h5 class="card-header"
 										style="display: flex; align-items: center;">
 										<select id="provide_status" class="form-select"
 											style="width: 220px; margin-right: 10px;">
-											
-												
+
+
 											<option value="" selected>선택</option>
-												
+
 											<option value="S1">영업총괄팀</option>
 											<option value="S2">인사</option>
 											<option value="S3">지원</option>
@@ -117,15 +114,15 @@
 											<option value="T6">명품</option>
 											<option value="T7">문화센터</option>
 											<option value="T8">디지털 및 가전</option>
-											
-												
-												
-											
-										</select> 
+
+
+
+
+										</select>
 									</h5>
-								
-									
-									
+
+
+
 								</div>
 
 								<button type="button" class="btn btn-primary"
@@ -151,7 +148,7 @@
 													
 												})
 											
-										</script>																												  						
+										</script>
 
 
 								<div
@@ -161,7 +158,8 @@
 									style="width: 10%; text-align: right; align-content: center; margin-right: 15px;">
 
 									<button type="button"
-										class="btn btn-primary waves-effect waves-light" id="pay_btn" style="width:102px;">급여지급</button>
+										class="btn btn-primary waves-effect waves-light" id="pay_btn"
+										style="width: 102px;">급여지급</button>
 								</div>
 							</div>
 							<div class="table-responsive text-nowrap">
@@ -193,54 +191,56 @@
 									</tr>
 									</thead>
 									<tbody class="table-border-bottom-0">
-									
-									<c:if test="${ not empty list }">
-										<c:forEach var="member" items="${list}">
-											<tr>
-												<td><input type="checkbox" class="dd form-check-input" value="${ member.memNo }" >
-												</td>
-												<!-- 사번 -->
-												<td><span>${member.memNo}</span></td>
-												<!-- 사원명 -->
-												<td>${member.memName}</td>
-												<!-- 부서명 -->
-												<td>${member.deptName}</td>
-												<!-- 직급명 -->
-												<td>${member.posName}</td>
-												<!-- 기본급 -->
-												<td>${member.salary}</td>
-												<!-- 국민연금 -->
-												<td>${member.pension}</td>
-												<!-- 건강보험 -->
-												<td>${member.health}</td>
-												<!-- 고용보험 -->
-												<td>${member.employment}</td>
-												<!-- 장기요양 -->
-												<td>${member.care}</td>
-												<!-- 지급예정금액 -->
-												<td>${member.totalSalary}</td>
-												<!-- 지급날짜 -->
-												<td>${member.paymentDate}</td>
-												<!-- 급여명세표 -->
-												<td>
-												
-												
-												
-													<form action="${contextPath }/member/paystub.do" method="post" id="submit_btn">
-													
-													
-														<input type="hidden" value="${member.memNo}" name="memNo">
-														<i class="pay_icon far fa-file-alt"></i>
-													
-													
-													</form>
-												
-												
-												</td>
-											</tr>
-										</c:forEach>
+
+										<c:if test="${ not empty list }">
+											<c:forEach var="member" items="${list}">
+												<tr>
+													<td><input type="checkbox" class="dd form-check-input"
+														value="${ member.memNo }"></td>
+													<!-- 사번 -->
+													<td><span>${member.memNo}</span></td>
+													<!-- 사원명 -->
+													<td>${member.memName}</td>
+													<!-- 부서명 -->
+													<td>${member.deptName}</td>
+													<!-- 직급명 -->
+													<td>${member.posName}</td>
+													<!-- 기본급 -->
+													<td><fmt:formatNumber value="${member.salary}"
+															type="number" />원</td>
+													<!-- 국민연금 -->
+													<td><fmt:formatNumber value="${member.pension}"
+															type="number" />원</td>
+													<!-- 건강보험 -->
+													<td><fmt:formatNumber value="${member.health}"
+															type="number" />원</td>
+													<!-- 고용보험 -->
+													<td><fmt:formatNumber value="${member.employment}"
+															type="number" />원</td>
+													<!-- 장기요양 -->
+													<td><fmt:formatNumber value="${member.care}"
+															type="number" />원</td>
+													<!-- 지급예정금액 -->
+													<td><fmt:formatNumber value="${member.totalSalary}"
+															type="number" />원</td>
+													<!-- 지급날짜 -->
+													<td>${member.paymentDate}</td>
+													<!-- 급여명세표 -->
+													<td>
+														<form action="${contextPath}/member/paystub.do"
+															method="post" id="submit_btn">
+															<input type="hidden" value="${member.memNo}" name="memNo">
+															<i class="pay_icon far fa-file-alt"></i>
+														</form>
+													</td>
+
+
+
+													</td>
+												</tr>
+											</c:forEach>
 										</c:if>
-										
+
 										<script>
 										
 										$(document).on('click', '.pay_icon', function () {
@@ -248,12 +248,12 @@
 										});
 										
 										</script>
-										
-								
-										
-										
+
+
+
+
 										<c:if test="${ empty list}">
-										<tr>
+											<tr>
 												<td></td>
 												<td></td>
 												<td></td>
@@ -262,15 +262,15 @@
 												<td></td>
 												<td></td>
 												<td style="height: 92px;">조회된 결과가 없습니다</td>
-												
-												
+
+
 											</tr>
-											
-										
+
+
 										</c:if>
-										
-										
-										
+
+
+
 									</tbody>
 
 								</table>
@@ -365,6 +365,42 @@
 	</div>
 
 
+	<script>
+    // 사이드바 처리
+	document.addEventListener("DOMContentLoaded", function () {
+  	
+		const element = document.getElementById("salarypayment");
+		
+  	document.getElementById("member").classList.add("open");
+  	element.style.backgroundColor = "#958CF4";
+  	element.style.color = "white";
+  	element.classList.add("active");
+  	
+  	
+	});
+	</script>
+
+	<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // 숫자에 콤마를 추가하는 함수
+        function formatNumberWithCommas(number) {
+            if (!number) return "";
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // 테이블 내 숫자 필드에 콤마 추가
+        const tableCells = document.querySelectorAll(
+            "td:nth-child(6), td:nth-child(7), td:nth-child(8), td:nth-child(9), td:nth-child(10), td:nth-child(11)"
+        ); // 급여, 공제항목, 지급예정금액이 위치한 열
+
+        tableCells.forEach(cell => {
+            const rawValue = cell.textContent.replace(/,/g, "").trim(); // 기존 값에서 콤마 제거
+            if (!isNaN(rawValue)) {
+                cell.textContent = formatNumberWithCommas(rawValue); // 콤마 추가 후 업데이트
+            }
+        });
+    });
+</script>
 
 
 

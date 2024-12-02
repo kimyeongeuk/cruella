@@ -346,6 +346,50 @@
 			})
 		})
 	</script>
+	
+	<script>
+    // 사이드바 처리
+	document.addEventListener("DOMContentLoaded", function () {
+  	
+		const element = document.getElementById("employeelistview");
+		
+  	document.getElementById("member").classList.add("open");
+  	element.style.backgroundColor = "#958CF4";
+  	element.style.color = "white";
+  	element.classList.add("active");
+  	
+  	
+	});
+	</script>
+	
+	<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const salaryInput = document.getElementById("salary");
+
+        // 숫자에 콤마를 추가하는 함수
+        function formatNumberWithCommas(number) {
+            if (!number) return "";
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // 입력 값 실시간 포맷팅
+        salaryInput.addEventListener("input", function () {
+            const rawValue = salaryInput.value.replace(/,/g, ""); // 기존 콤마 제거
+            if (!isNaN(rawValue)) {
+                salaryInput.value = formatNumberWithCommas(rawValue); // 포맷팅된 값 삽입
+            } else {
+                salaryInput.value = ""; // 숫자가 아니면 초기화
+            }
+        });
+
+        // 페이지 로드 시 초기 값에 콤마 추가
+        const initialValue = salaryInput.value.replace(/,/g, "");
+        if (!isNaN(initialValue)) {
+            salaryInput.value = formatNumberWithCommas(initialValue);
+        }
+    });
+</script>
+	
    
 </body>
 </html>
