@@ -203,9 +203,9 @@
 															<select class="form-select" style="max-width: 120px;"
 																name="bankName">
 																<option value="">선택</option>
-																<option value="국민">국민</option>
+																<option value="신한">국민</option>
 																<option value="신한">신한</option>
-																<option value="우리">우리</option>
+																<option value="신한">우리</option>
 															</select> <input class="form-control" type="text" name="account"
 																id="account" placeholder="계좌번호 입력" required />
 														</div>
@@ -429,7 +429,7 @@
 													        if (phone) {
 													            $.ajax({
 													                type: 'POST',
-													                url: '${contextPath}/checkPhone.do',
+													                url: '${contextPath}/member/checkPhone.do',
 													                data: { phone: phone },
 													                success: function (res) {
 													                    if (res) {

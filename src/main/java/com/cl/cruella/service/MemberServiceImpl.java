@@ -146,7 +146,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int checkPhone(int phone) {
+	public int checkPhone(String phone) {
 		return memberDao.checkPhone(phone);
 	}
 

@@ -724,7 +724,7 @@ public class MemberController {
 	// 폰번호유효성
 	@ResponseBody
 	@PostMapping("/checkPhone.do")
-	public int checkPhone(@RequestParam("phone") int phone) {
+	public int checkPhone(@RequestParam("phone") String phone) {
 		return memberService.checkPhone(phone);
 	}
 

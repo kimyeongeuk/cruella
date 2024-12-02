@@ -79,7 +79,7 @@ public interface MemberService {
 	List<DeptDto> getDeptList();
 
 	// 폰번호 중복검사
-	int checkPhone(int phone);
+	int checkPhone(String phone);
 
 	// 퇴사처리
 	void updateMemberRetire(String memNo);

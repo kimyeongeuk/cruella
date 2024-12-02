@@ -158,7 +158,7 @@ public class MemberDao {
 		return sqlSession.selectList("memberMapper.selectAllMember", memNo);
 	}
 
-	public int checkPhone(int phone) {
+	public int checkPhone(String phone) {
 		return sqlSession.selectOne("memberMapper.checkPhone", phone);
 	}
 
