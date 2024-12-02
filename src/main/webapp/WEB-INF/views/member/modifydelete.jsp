@@ -362,32 +362,55 @@
 	});
 	</script>
 	
-	<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const salaryInput = document.getElementById("salary");
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const salaryInput = document.getElementById("salary");
 
-        // 숫자에 콤마를 추가하는 함수
-        function formatNumberWithCommas(number) {
-            if (!number) return "";
-            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
+    if (!salaryInput) {
+        console.error("Salary input field not found!");
+        return;
+    }
 
-        // 입력 값 실시간 포맷팅
-        salaryInput.addEventListener("input", function () {
-            const rawValue = salaryInput.value.replace(/,/g, ""); // 기존 콤마 제거
-            if (!isNaN(rawValue)) {
-                salaryInput.value = formatNumberWithCommas(rawValue); // 포맷팅된 값 삽입
-            } else {
-                salaryInput.value = ""; // 숫자가 아니면 초기화
-            }
-        });
+    // 숫자에 콤마를 추가하는 함수
+    function formatNumberWithCommas(number) {
+        if (!number) return "";
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 
-        // 페이지 로드 시 초기 값에 콤마 추가
-        const initialValue = salaryInput.value.replace(/,/g, "");
-        if (!isNaN(initialValue)) {
-            salaryInput.value = formatNumberWithCommas(initialValue);
+    // 콤마 제거 함수
+    function removeCommas(number) {
+        return number.replace(/,/g, "");
+    }
+
+    // 입력 값 실시간 포맷팅
+    salaryInput.addEventListener("input", function () {
+        const rawValue = salaryInput.value.replace(/,/g, "");
+        if (!isNaN(rawValue)) {
+            salaryInput.value = formatNumberWithCommas(rawValue);
+        } else {
+            salaryInput.value = "";
         }
     });
+
+    // 페이지 로드 시 초기 값에 콤마 추가
+    const initialValue = salaryInput.value.replace(/,/g, "");
+    if (!isNaN(initialValue)) {
+        salaryInput.value = formatNumberWithCommas(initialValue);
+    }
+
+    // 폼 제출 시 콤마 제거
+    const form = document.getElementById("formAccountSettings");
+    if (!form) {
+        console.error("Form element not found!");
+        return;
+    }
+
+    form.addEventListener("submit", function () {
+        salaryInput.value = removeCommas(salaryInput.value); // 콤마 제거 후 서버로 전송
+        console.log("제출 값:", salaryInput.value); // 디버깅용
+    });
+});
+
 </script>
 	
    
