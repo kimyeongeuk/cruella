@@ -145,8 +145,8 @@
                 </div>
                 <h5 class="mb-0 card-title">${ loginUser.getMemName() }</h5>
                 <div class="d-flex align-items-center justify-content-center my-6 gap-2">
-                  <a href="javascript:;" class="me-2"><span class="badge bg-label-secondary">${ loginUser.getDeptName() }</span></a>
-                  <a href="javascript:;"><span class="badge bg-label-warning">${ loginUser.getPosName() }</span></a>
+                  <a href="javascript:;" class="me-2" style="cursor: default;"><span class="badge bg-label-secondary">${ loginUser.getDeptName() }</span></a>
+                  <a href="javascript:;" style="cursor: default;"><span class="badge bg-label-warning">${ loginUser.getPosName() }</span></a>
                 </div>
 
                 <div class="d-flex align-items-center justify-content-around mb-6">
@@ -195,7 +195,7 @@
 							<div style="display: flex; justify-content: space-between; align-items: center;">
 							 <div>
 							   <span>
-							      <span style="font-size: 20px;">매출차트</span>
+							      <span style="font-size: 20px;">팀별 매출 점유율</span>
 							   </span>
 							 </div>
 							</div>
@@ -438,10 +438,10 @@
 					                <option value="T8">디지털 및 가전</option>
 					            </select>
 					        </div>
+					        <div style="margin-top: 10px;">매장별 매출 차트 (단위: 일)</div>
 					    </div>
-					    <br>
 					
-					    <div class="barChart-container" style="display: flex; justify-content: center; position: relative; width: 100%;">
+					    <div class="barChart-container" style="display: flex; justify-content: center; position: relative; top: 18px; width: 100%;">
 					        <canvas id="barChart" style="width: 300px; height: 300px;"></canvas>
 					    </div>
 					</div>
@@ -714,7 +714,7 @@
 				<div class="card" style="width: 880px; margin-left: 20px;">
   				<div class="d-flex align-items-center">
    					<div style="margin: 20px;">
-         			<a id="notice" href="${contextPath}/notice/noticeList.do">공지사항</a>
+         			<a id="notice" class="btn btn-primary" style="color: white;" href="${contextPath}/notice/noticeList.do">공지사항</a>
      				</div>
   	 			</div>
 	 				<div class="card-datatable table-responsive pt-3">
@@ -1080,7 +1080,7 @@
 	                    liEl += '<li class="mb-4">'
 	                        + '<div class="d-flex align-items-center">'
 	                        + '<div class="avatar me-2">'
-	                        + '<img src="${contextPath}' + res[i].profileURL + '" alt="Avatar" class="rounded-circle"/>'
+	                        + '<img src="${contextPath}' + res[i].profileURL + '" alt="Avatar" style="cursor: default;" class="rounded-circle"/>'
 	                        + '</div>'
 	                        + '<div class="me-2">'
 	                        + '<h6 class="mb-0">' + res[i].memName + '</h6>'
@@ -1124,7 +1124,7 @@
 			                    trEl += '<tr data-boardno="' + notice.noticeNo + '">';
 			                    trEl += '<td>' + reverseCount + '</td>';
 			                    trEl += '<td>' + notice.memName + '</td>';
-			                    trEl += '<td class="title" style="cursor: pointer;">' + notice.noticeTitle;
+			                    trEl += '<td class="title">' + notice.noticeTitle;
 			                    trEl += '</td>';
 			                    trEl += '<td>' + notice.noticeRegistDT + '</td>';
 			                    trEl += '<td>' + notice.noticeCount + '</td>';

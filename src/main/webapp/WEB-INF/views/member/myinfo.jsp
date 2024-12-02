@@ -555,7 +555,7 @@
                   <div class="card" style="height: 750px;">
                     <div class="d-flex align-items-center">
 		                  <div style="margin: 20px;">
-		                    <a id="board" class="" style="font-size: 20px;" href="${contextPath}/board/boardList.do">
+		                    <a id="board" class="btn btn-primary" style="font-size: 20px; color: white" href="${contextPath}/board/boardList.do">
 		                      <c:choose>
 		                        <c:when test="${loginUser.deptCode eq 'S1'}">영업총괄팀 </c:when>
 		                        <c:when test="${loginUser.deptCode eq 'S2'}">인사팀 </c:when>
