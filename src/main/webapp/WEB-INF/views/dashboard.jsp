@@ -285,10 +285,10 @@
 						             const percentage = totalSales > 0 ? ((value / totalSales) * 100).toFixed(2) : 0;
 						             const label = context.chart.data.labels[context.dataIndex];
 						             // 반환된 라벨과 퍼센트를 한 줄씩 표시
-						             return label + "\n(" + percentage + "%)";
+						             return label;
 						           },
 						           font: {
-						             size: 16, // 글씨 크기 설정
+						             size: 12, // 글씨 크기 설정
 						             family: 'Arial',
 						           },
 						           padding: 0, // 텍스트와 주변 간격 설정
