@@ -2,9 +2,13 @@ package com.cl.cruella.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -706,12 +710,14 @@ public class MemberController {
 	// 급여명세표(이예빈)
 	
 	@PostMapping("/paystub.do")
-	public String paystub(Model model,@RequestParam String memNo) {
+	public String paystub(Model model,@RequestParam String memNo) throws ParseException {
 
-		MemberDto list = memberService.paystub(memNo);			
+		MemberDto list = memberService.paystub(memNo);
+		
+
 		
 		model.addAttribute("list", list);
-		log.debug("list:{}", list );
+
 		return "/member/paystub";
 	}
 	
@@ -729,6 +735,8 @@ public class MemberController {
 		
 		
 		MemberDto cs = memberService.checksalary(memNo);
+		
+		
 		model.addAttribute("cs", cs);
 	}
 
