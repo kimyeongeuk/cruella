@@ -100,6 +100,10 @@
 	#boardTeam.active::before {
 	  border: 2px solid white; /* 테두리만 흰색으로 변경 */
 	}
+	.rounded-circle {
+    transition: transform 0.3s, border 0.3s;
+    cursor: default; /* 호버 시 마우스 커서 모양 유지 */
+  }
 </style>
 
 </head>
@@ -225,22 +229,13 @@
 								          <div class="d-flex justify-content-between align-items-center" style="margin: 10px;">
 								            <div class="avatar-wrapper d-flex align-items-center">
 								              <div class="avatar me-2">
-								                <img src="${contextPath}${b.profileURL}" alt class="rounded-circle"/>
+								                <img src="#" alt class="rounded-circle"/>
 								              </div>
 								              <div class="d-flex flex-column">
 								                <span class="emp_name text_truncate" id="modal-author" style="color: black;"></span>
 								              </div>
 								              <div class="d-flex flex-column" style="margin-left: 20px;">
 								                <span id="modal-date"></span>
-								              </div>
-								            </div>
-								            <div class="d-flex justify-content-end align-items-center">
-								              <div class="icon-wrapper">
-								                <i class="ti ti-dots-vertical ti-md modal-comment-icon" style="cursor: pointer;" onclick="toggleModalActionBox(this)"></i>
-								                <div class="modal-action-box dropdown-replymenu dropdown-menu-end" style="margin-left: -60px;">
-								                  <a class="dropdown-item" id="modal-modify" href="#"><i class="menu-icon tf-icons ti ti-edit"></i><span>수정</span></a>
-								                  <a class="dropdown-item" id="modal-delete" href="#"><i class="menu-icon tf-icons ti ti-trash"></i><span>삭제</span></a>
-								                </div>
 								              </div>
 								            </div>
 								          </div>
@@ -259,12 +254,13 @@
 								
 								      <div class="modal-footer">
 								        <div id="reply_div" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-
+								
 								        </div>
 								      </div>
 								    </div>
 								  </div>
 								</div>
+
 
               </div>
             </div>
@@ -382,42 +378,40 @@ function fn_replyList() {
 	            + "<span>" + resData[i].replyRegistDT + "</span>"
 	            + "</div></div>";
 
-        // 댓글 작성자가 로그인한 사용자와 같은지 확인
-        if (loginUserMemNo == resData[i].memNo) {
-          tr += "<div class='d-flex justify-content-end align-items-center'>"
-              + "<div class='icon-wrapper'>"
-              + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
-              + "<div class='action-replybox dropdown-replymenu dropdown-menu-end' style='margin-left: -60px;'>"
-              + "<form id='rfrm' action='' method='post'>"
-              + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
-              + "<a class='dropdown-item' href='#' onclick='modifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
-              + "<i class='menu-icon tf-icons ti ti-edit'></i><span>수정</span></a>"
-              + "<a class='dropdown-item' href='#' onclick='deleteReply(" + resData[i].replyNo + ")'>"
-              + "<i class='menu-icon tf-icons ti ti-trash'></i><span>삭제</span></a>"
-              + "</form>"
-              + "</div></div></div>";
-        } else {
-          tr += "<br>";
-        }
+	        // 댓글 작성자가 로그인한 사용자와 같은지 확인
+	        if (loginUserMemNo == resData[i].memNo) {
+	          tr += "<div class='d-flex justify-content-end align-items-center'>"
+	              + "<div class='icon-wrapper'>"
+	              + "<i class='ti ti-dots-vertical ti-md comment-icon' style='cursor: pointer;'></i>"
+	              + "<div class='action-replybox dropdown-replymenu dropdown-menu-end' style='margin-left: -60px;'>"
+	              + "<form id='rfrm' action='' method='post'>"
+	              + "<input type='hidden' id='replyNo' name='replyNo' value='' />"
+	              + "<a class='dropdown-item' href='#' onclick='modifyReply(" + resData[i].replyNo + ", `" + resData[i].replyContent + "`)'>"
+	              + "<i class='menu-icon tf-icons ti ti-edit'></i><span>수정</span></a>"
+	              + "<a class='dropdown-item' href='#' onclick='deleteReply(" + resData[i].replyNo + ")'>"
+	              + "<i class='menu-icon tf-icons ti ti-trash'></i><span>삭제</span></a>"
+	              + "</form>"
+	              + "</div></div></div>";
+	        } else {
+	          tr += "<br>";
+	        }
 
-        tr += "</div><br>"
-            + "<div class='reply-content' style='margin-left: 30px; white-space: pre-wrap; color: black; word-break: break-all;'>" + resData[i].replyContent + "</div><br><br>"
-            + "<button type='button' class='btn btn-sm btn-outline-secondary' data-bs-toggle='modal' data-bs-target='#modalScrollable' data-reply-id='" + resData[i].replyNo + "' data-reply-content='" + resData[i].replyContent + "' data-reply-author='" + resData[i].memName + "' data-reply-date='" + resData[i].replyRegistDT + "' data-reply-memno='" + resData[i].memNo + "'>답글 <span id='reply-count-" + resData[i].replyNo + "'>(0)</span></button>"
-            + "</td></tr>";
+	        tr += "</div><br>"
+	            + "<div class='reply-content' style='margin-left: 30px; white-space: pre-wrap; color: black; word-break: break-all;'>" + resData[i].replyContent + "</div><br><br>"
+	            + "<button type='button' class='btn btn-sm btn-outline-secondary' data-bs-toggle='modal' data-bs-target='#modalScrollable' data-reply-id='" + resData[i].replyNo + "' data-reply-content='" + resData[i].replyContent + "' data-reply-author='" + resData[i].memName + "' data-reply-date='" + resData[i].replyRegistDT + "' data-reply-memno='" + resData[i].memNo + "' data-reply-profileurl='" + resData[i].profileURL + "'>답글 <span id='reply-count-" + resData[i].replyNo + "'>(0)</span></button>"
+	            + "</td></tr>";
 
-        // 답글 수를 가져와서 버튼에 표시
-        fn_getRreplyCount(resData[i].replyNo);
-      }
+	        // 답글 수를 가져와서 버튼에 표시
+	        fn_getRreplyCount(resData[i].replyNo);
+	      }
 
-      $("#reply_area tbody").html(tr);
-   		
-      
-    },
-    error: function(xhr, status, error) {
-      console.error("에러 발생:", status, error);
-    }
-  });
-}
+	      $("#reply_area tbody").html(tr);
+	    },
+	    error: function(xhr, status, error) {
+	      console.error("에러 발생:", status, error);
+	    }
+	  });
+	}
 
 
 
@@ -575,7 +569,7 @@ function deleteBoardPost(boardNo) {
 
 
 
-// 모달을 열 때 넘버 값을 설정
+//모달을 열 때 넘버 값을 설정
 $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   var button = $(event.relatedTarget);
   var replyId = button.data('reply-id');
@@ -583,11 +577,13 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   var replyAuthor = button.data('reply-author');
   var replyDate = button.data('reply-date');
   var replyMemNo = button.data('reply-memno');
+  var profileURL = button.data('reply-profileurl');
   var modal = $(this);
 
   modal.find('#modal-author').text(replyAuthor);
   modal.find('#modal-date').text(replyDate);
-  modal.find('#modal-content').text(replyContent);
+  modal.find('#modal-content').html(replyContent);  // <br> 태그를 HTML로 인식하도록 변경
+  modal.find('.avatar img').attr('src', '${contextPath}' + profileURL); // 프로필 이미지 설정
 
   // 작성자인 경우에만 ... 아이콘 보이게 설정
   if (replyMemNo == loginUserMemNo) {
@@ -610,6 +606,7 @@ $(document).on('show.bs.modal', '#modalScrollable', function(event) {
   // 대댓글 목록을 불러옵니다.
   fn_rreplyList(replyId);
 });
+
 
 function modifyReply(replyNo, replyContent) {
   // 현재 수정 중인 댓글의 최신 내용을 가져옴

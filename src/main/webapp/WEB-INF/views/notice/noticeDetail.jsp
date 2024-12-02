@@ -101,6 +101,10 @@
 	#boardNotice.active::before {
 	  border: 2px solid white; /* 테두리만 흰색으로 변경 */
 	}
+  .rounded-circle {
+    transition: transform 0.3s, border 0.3s;
+    cursor: default; /* 호버 시 마우스 커서 모양 유지 */
+  }
 </style>
 
 </head>
