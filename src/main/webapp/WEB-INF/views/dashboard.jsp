@@ -820,29 +820,6 @@
     
 		<script>
 
-	  	
-	  		// 출근 등록여부 확인
-	  		function checkClockInStatus(){
-	  			
-	  			
-	  			$.ajax({
-	  				url: '${contextPath}/wl/checkStatus.do',
-	  				type: 'POST',
-	  				data: {
-	  					memNo: '${loginUser.getMemNo()}',
-	  				},
-	  				success: function(res){
-	  					
-	  					if(res == 'YYY'){
-	  						
-	  					}
-	  					
-	  				}
-	  			})
-	  			
-	  		}
-	  		
-
 	  		
 		  	// 출근 버튼 클릭시 (김동규)
 		  	function fnClockIn(){
@@ -1207,7 +1184,6 @@
 		// 페이지 로드시 실행시킬 함수
 	window.onload = function(){
 		
-		checkClockInStatus(); // 출근상태 체크
 		fnNoticeList();			  // 공지사항 조회
   	fnMemberList();       // 전체 사원 리스트 조회
   	fnAppList();				  // 결재 대기중인 문서 갯수 조회.

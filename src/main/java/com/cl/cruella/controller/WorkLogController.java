@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cl.cruella.dto.CalendarDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.WorkLogDto;
+import com.cl.cruella.service.MemberService;
 import com.cl.cruella.service.WorkLogService;
 
 import jakarta.servlet.http.HttpSession;
@@ -29,7 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/wl")
 public class WorkLogController {
 	
-	private final WorkLogService wlService ;
+	private final WorkLogService wlService;
+	private final MemberService memberService;
 
 
 	// 출근
@@ -38,10 +40,12 @@ public class WorkLogController {
 	public String clockIn(WorkLogDto workLog, HttpSession session) {
 		
 		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
-		
 	    
 	    int result = wlService.clockIn(workLog);
 	    
+	    MemberDto m = memberService.selectMember(loginUser);
+	    
+	    session.setAttribute("loginUser", m);
 		
 		return workLog.getClockInTime();
 	}
@@ -159,6 +163,9 @@ public class WorkLogController {
 		
 		return "/member/checkinrecordview";
 	}
+	
+	
+	
 	
 	
 }
