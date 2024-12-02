@@ -150,8 +150,9 @@
                     </div>
                     <div class="user-profile-header d-flex flex-column flex-lg-row text-sm-start text-center mb-5">
                       <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-                        <img
-                          src="${ contextPath }/assets/img/avatars/1.png"
+                        <img style="width: 100px; height: 100px;"
+                          src="${ contextPath }<c:out value='${ loginUser.profileURL }'
+                          default='/assets/img/default_profile.png' />"
                           alt="user image"
                           class="d-block h-auto ms-0 ms-sm-6 rounded user-profile-img" />
                       </div>
@@ -818,7 +819,7 @@
     							+'<div class="d-flex align-items-center">'
     								+'<div class="d-flex align-items-center">'
     									+'<div class="avatar me-2">'
-    										+'<img src="${ contextPath }/assets/img/avatars/2.png" alt="Avatar" class="rounded-circle" />'
+    			            + '<img src="${contextPath}' + res[i].profileURL + '" alt="Avatar" class="rounded-circle"/>';
     									+'</div>'
     									+'<div class="me-2">'
     										+'<h6 class="mb-0">' + res[i].memName + '</h6>'

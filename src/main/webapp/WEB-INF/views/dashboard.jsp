@@ -141,7 +141,7 @@
                   </ul>
                 </div>
                 <div class="mx-auto my-6">
-                  <img src="${ contextPath }/assets/img/default_profile.png" style="border: 1px solid gray;" alt="Avatar Image" class="rounded-circle w-px-100" />
+                  <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" style="height: 120px; width: 120px;" alt="Avatar Image" class="rounded-circle" />
                 </div>
                 <h5 class="mb-0 card-title">${ loginUser.getMemName() }</h5>
                 <div class="d-flex align-items-center justify-content-center my-6 gap-2">
@@ -526,7 +526,6 @@
 					            contentType: "application/json; charset=utf-8",
 					            dataType: "json",
 					            success: function (data) {
-					                console.log("data:", data); // 디버깅용으로 전체 데이터를 출력
 					                const stores = storeOptions[deptCode];
 					                const sales = stores.map(store => data.find(item => item.rvStore === store)?.sumStore || 0); // 매출 데이터 추출
 					
@@ -1070,8 +1069,6 @@
 	        // 기본값으로 전체 조회
 	        let memNo = '${loginUser.getMemNo()}';
 
-	        console.log(memNo);
-	        console.log(deptName);
 	        $.ajax({
 	            url: '${contextPath}/member/selectAll_db.do',
 	            type: 'POST',
@@ -1083,7 +1080,7 @@
 	                    liEl += '<li class="mb-4">'
 	                        + '<div class="d-flex align-items-center">'
 	                        + '<div class="avatar me-2">'
-	                        + '<img src="${contextPath}/assets/img/avatars/2.png" alt="Avatar" class="rounded-circle" />'
+	                        + '<img src="${contextPath}' + res[i].profileURL + '" alt="Avatar" class="rounded-circle"/>';
 	                        + '</div>'
 	                        + '<div class="me-2">'
 	                        + '<h6 class="mb-0">' + res[i].memName + '</h6>'
@@ -1110,7 +1107,6 @@
 	    		type: 'POST',
 	    		data: {page: page},
 	    		success: function(res) {
-	    			console.log(res);
 		              let pi = res.pi; // 페이지 정보
 			            let trEl = '';
 			
@@ -1187,7 +1183,6 @@
 				type: 'GET',
 				data: {city, city},
 				success: function(res) {
-					console.log(res);
 					document.getElementById("cityName").textContent = res.name;
 					document.getElementById("temperature").textContent = res.main.temp.toFixed(1) + " °C";
           document.getElementById("condition").innerHTML = '<img src="${contextPath}' + res.weather[0].description + '" style="width: 200px; height: 200px; margin-top: 30px;" />';
