@@ -126,7 +126,6 @@ public class ChatController {
 		map.put("m", memNo);
 		map.put("msg", msgList);
 		map.put("title",chatTitle);
-		System.out.println("메시징메시징세밋지이"+msgList);
 		return map;
 	}
 	
