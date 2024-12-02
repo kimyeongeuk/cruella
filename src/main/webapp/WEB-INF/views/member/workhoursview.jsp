@@ -14,6 +14,9 @@
 <script src="${ contextPath }/resources/assets/js/config.js"></script>
 </head>
 <body>
+
+
+
 	<div class="layout-wrapper layout-content-navbar">
 		<div class="layout-container">
 
@@ -22,13 +25,14 @@
 			<jsp:include page="/WEB-INF/views/common/header.jsp" />
 			<!-- 헤더 끝 -->
 
-			<div class="layout-page">
-
 				<!-- nav 시작 -->
 				<jsp:include page="/WEB-INF/views/common/nav.jsp" />
 				<!-- nav 끗 -->
-
-
+				
+				
+			<div class="layout-page">
+			
+			
 				<div class="content-wrapper">
 					<!-- 세션 시작 -->
 					<div class="container-xxl flex-grow-1 container-p-y">
@@ -177,8 +181,13 @@
 
 
 
-			</div>
 			<!-- 세션 끝 -->
+
+
+
+
+
+
 
 
 
