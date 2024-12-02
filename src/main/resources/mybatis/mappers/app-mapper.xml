@@ -717,7 +717,7 @@ set VAC_COUNT = VAC_COUNT - (
 									app_form_ann
 								where doc_no = #{docNo}
 							)
-where mem_No = #{docMemNo}
+where mem_no = #{docMemNo}
 
 </update>
 
