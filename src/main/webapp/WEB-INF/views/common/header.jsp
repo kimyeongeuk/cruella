@@ -155,19 +155,19 @@
             </li>
 
             <!-- 전자결재 -->
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <li class="menu-item" id="app_main_active">
+              <a href="javascript:void(0);" class="menu-link menu-toggle" >
                 <i class="menu-icon tf-icons ti ti-edit"></i>
                 <div data-i18n="전자결재">전자결재</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="${contextPath }/app/app_main.do" class="menu-link">
+                  <a href="${contextPath }/app/app_main.do" class="menu-link" id="app_active">
                     <div data-i18n="결재 작성">결재 작성</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="${contextPath }/app/box_main.do" class="menu-link">
+                  <a href="${contextPath }/app/box_main.do" class="menu-link" id="app_box_active">
                     <div data-i18n="결재 문서함">결재 문서함</div>
                   </a>
                 </li>
