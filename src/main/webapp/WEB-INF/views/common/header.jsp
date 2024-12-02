@@ -297,7 +297,7 @@
 
             <!-- 메신저 -->
             <li class="menu-item">
-              <a href="${ contextPath }/chat/chatPage.do" class="menu-link">
+              <a href="${ contextPath }/chat/chatPage.do" id="message" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-messages"></i>
                 <div data-i18n="메신저">메신저</div>
               </a>

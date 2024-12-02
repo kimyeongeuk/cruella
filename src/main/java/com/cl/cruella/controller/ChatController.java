@@ -126,7 +126,7 @@ public class ChatController {
 		map.put("m", memNo);
 		map.put("msg", msgList);
 		map.put("title",chatTitle);
-		
+		System.out.println("메시징메시징세밋지이"+msgList);
 		return map;
 	}
 	
@@ -155,12 +155,16 @@ public class ChatController {
 	
 	@ResponseBody
 	@GetMapping(value="/msgNum.do",produces="application/json")
-	public int msgNum() {
-		
+	public Map<String, Object> msgNum(ChatDto cd) {
+		System.out.println(cd);
+		System.out.println("cd@!T^%$Y$#W%&Y#$W%^UYW$#E%U&YW$#%UY&W$%U&YW$%YW$#E%YTW#$YTGQW#A$TY");
 		
 		int result = chatServiceImpl.msgNum();
-		log.debug("번호 : {}",result);
-		return result;
+		MemberDto result2 = chatServiceImpl.writerUrl(cd);
+		Map<String,Object> map = new HashMap<>();
+		map.put("msgNum",result);
+		map.put("memUrl",result2);
+		return map;
 		
 	}
 	
@@ -250,19 +254,17 @@ public class ChatController {
 		
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/writerUrl.do",produces="application/json")
+	public MemberDto writerUrl(ChatDto cd) {
+		MemberDto result = chatServiceImpl.writerUrl(cd);
+		
+		
+		return result;
+		
+	}
 	
 	
-//	@ResponseBody
-//	@GetMapping(value="/deleteChat.do",produces="application/json")
-//	public int deleteChat(ChatListDto cl) {
-//
-//		int result = chatServiceImpl.deleteChat(cl);
-//		
-//		
-//		return result;
-//		
-//	}
-
 	
 	
 	
