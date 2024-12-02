@@ -25,6 +25,21 @@
 </head>
 <body>
 
+ <style>
+	#app_active::before {
+	  content: ''; /* 가상 요소 필수 */
+	  display: inline-block; /* 블록 요소 */
+	  width: 10px; /* 동그라미 크기 */
+	  height: 10px; /* 동그라미 크기 */
+	  border-radius: 50%; /* 완전한 원 */
+	  background-color: transparent; /* 배경을 투명으로 설정 */
+	  border: 2px solid gray; /* 초기 테두리 색상 */
+	}
+	#app_active.active::before {
+	  border: 2px solid white; /* 테두리만 흰색으로 변경 */
+	}
+   </style>
+
 
 <div class="layout-wrapper layout-content-navbar">
    <div class="layout-container">
@@ -564,7 +579,7 @@ $(document).ready(function(){
 	 var count = 0;
 	
 	
-	/* // 전자서명 
+ // 전자서명 
 	  $('.signbtn_div').on('click', function(){
 	        
 	        const sign = '${loginUser.signPath}';
@@ -586,31 +601,9 @@ $(document).ready(function(){
 	        
 	       count++;
 	       
-	    }); */
+	    }); 
 	    
-	    $('.signbtn_div').on('click', function() {
-	        const sign = '${loginUser.signPath}';
-
-	        // 이미지를 담고 있는 img 태그를 찾음
-	        const imgElement = $(this).closest('.line_user').find('.signImg_div');
-
-	        
-	        const imgSrc = imgElement.attr('src');
-
-	        if (!imgSrc || imgSrc.includes('null')) { // src가 null이거나 'null'을 포함한 경우
-	            
-	            $(this).closest('.line_user')
-	                .find('.signLine').text('${loginUser.memName}');
-	        } else {
-	            $(this).closest('.line_user')
-	                .find('.signImg_div')
-	                .css('display', 'block')
-	                .attr('src', sign);
-	        }
-
-	        $(this).remove();
-	        count++;
-	    });
+	
 	  
 
  // 뒤로가기
