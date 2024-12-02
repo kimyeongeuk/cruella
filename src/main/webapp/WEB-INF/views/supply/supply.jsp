@@ -27,6 +27,10 @@
 	.select2-selection__rendered{
 		display: none;
 	}
+	
+	.pagination .page-item {
+    cursor: pointer;
+}
 
 </style>
     
@@ -716,9 +720,8 @@
 						  a += "<tr style='height:55px;'>"
 							     +		"<td style='text-align:center; width:150px;'>" + res.list[i].supCategory + "</td>"
 							     +		"<td style='text-align:center;'>" + res.list[i].supType 
-							     +
-							     				"<button style='margin-left: 10px;' type='button' class='btn rounded-pill btn-outline-primary btn btn-sm'>" + '정보' + "</button>"
-							     +		"</td>"
+							     
+							      +		"</td>"
 							     +		"<td style='text-align:center;'>" + res.list[i].totalSupply + "</td>"
 							     +		"<td style='text-align:center;'>" + res.list[i].leftSupply + "</td>"
 							     +		"<td style='text-align:center;'>" + res.list[i].rentSupply + "</td>"
@@ -729,6 +732,13 @@
 									 +  "</tr>"
 									 
 									 
+									 
+									 
+									 <!--
+									 +
+					     				"<button style='margin-left: 10px;' type='button' class='btn rounded-pill btn-outline-primary btn btn-sm'>" + '정보' + "</button>"
+					    
+									 -->
 									 
 									 
 									 <!--
