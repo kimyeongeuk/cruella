@@ -209,32 +209,32 @@
 		                          <a class="d-flex align-items-center">
 		                          
 		                          
-						<div style="flex-direction: column; display: flex;">
+															<div style="flex-direction: column; display: flex;">
                 
-                <!-- 첫 번째 행 (두 개의 이미지) -->
-                <div style="flex-direction: row; display: flex;">
-                    <!-- 첫 번째 이미지: 로그인 사용자 프로필 URL (하나만 적용) -->
-                    <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
-                    
-                    <!-- 두 번째 이미지: memberLink에서 첫 번째 이미지 -->
-                    <c:if test="${ !empty memberLink and memberLink.size() > 0 }">
-                        <img src="${ contextPath }<c:out value='${ memberLink[0].profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
-                    </c:if>
-                </div>
-
-                <!-- 두 번째 행 (두 개의 이미지) -->
-                <div style="flex-direction: row; display: flex;">
-                    <!-- 세 번째 이미지: memberLink에서 두 번째 이미지 -->
-                    <c:if test="${ !empty memberLink and memberLink.size() > 1 }">
-                        <img src="${ contextPath }<c:out value='${ memberLink[1].profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
-                    </c:if>
-                    
-                    <!-- 네 번째 이미지: memberLink에서 세 번째 이미지 -->
-                    <c:if test="${ !empty memberLink and memberLink.size() > 2 }">
-                        <img src="${ contextPath }<c:out value='${ memberLink[2].profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
-                    </c:if>
-                </div>
-            </div>
+										                <!-- 첫 번째 행 (두 개의 이미지) -->
+										                <div style="flex-direction: row; display: flex;">
+										                    <!-- 첫 번째 이미지: 로그인 사용자 프로필 URL (하나만 적용) -->
+										                    <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+										                    
+										                    <!-- 두 번째 이미지: memberLink에서 첫 번째 이미지 -->
+										                    <c:if test="${ !empty memberLink and memberLink.size() > 0 }">
+										                        <img src="${ contextPath }<c:out value='${ memberLink[0].profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+										                    </c:if>
+										                </div>
+										
+										                <!-- 두 번째 행 (두 개의 이미지) -->
+										                <div style="flex-direction: row; display: flex;">
+										                    <!-- 세 번째 이미지: memberLink에서 두 번째 이미지 -->
+										                    <c:if test="${ !empty memberLink and memberLink.size() > 1 }">
+										                        <img src="${ contextPath }<c:out value='${ memberLink[1].profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+										                    </c:if>
+										                    
+										                    <!-- 네 번째 이미지: memberLink에서 세 번째 이미지 -->
+										                    <c:if test="${ !empty memberLink and memberLink.size() > 2 }">
+										                        <img src="${ contextPath }<c:out value='${ memberLink[2].profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+										                    </c:if>
+										                </div>
+										            </div>
 		                            
 		                            <div class="chat-contact-info flex-grow-1 ms-4">
 		                              <div class="d-flex justify-content-between align-items-center">
@@ -1201,8 +1201,6 @@
 	    	   var chatTitleData = chatData.chatTitle;
 	    	   var chatTitleData2 = chatData.chatTitle2;
 	    	   let c = "";
-	    	   console.log('채팅방이 생성되었습니다.');
-	    	   console.log('채팅방이 생성되었습니다.');
 			    	   c += '<li class="chat-contact-list-item mb-1 chat-list-form">';
 			    	   c += '<input type="hidden" value="'+chatNoData+'" class="chatlistno">';
 			    		 if(loginName == chatTitleData){
@@ -1212,7 +1210,7 @@
 			    		 }
 			    		 c += '<a class="d-flex align-items-center">';
 			    		 c += '<div class="flex-shrink-0 avatar">';
-			    		 c += '<img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" />';
+			    		 c += '<img src="${contextPath}' +chatData.profileURL + '" alt="Avatar" class="rounded-circle"/>';
 			    		 c += '</div>';
 			    		 c += '<div class="chat-contact-info flex-grow-1 ms-4 test1">';
 			    		 c += '<div class="d-flex justify-content-between align-items-center">';
@@ -1354,7 +1352,7 @@
 	    	   	
 	    	   	
     	   else if(chatData.type == "invite"){
-    		   
+    		   	 console.log("초대시 나옴");
 	    		   console.log(chatData);
 		    	   var chatNoData = chatData.chatNo;		// 채팅방 번호
 		    	   var chatTitleData = chatData.chatTitle;	// 채팅방 이름
@@ -1375,19 +1373,23 @@
 	    		   })
 	    		   
 	    		   $('#chathistory').append(invitemsg(chatTitleData2));
-    		   	
+	    		   
 		    		   str += '<li class="chat-contact-list-item mb-1 chat-list-form">'
 		    		   str += '<input type="hidden" value="'+chatNoData+'" class="chatlistno">'
 		    		   str += '<input type="hidden" value="'+chatTitleData+'">'
 		    		   str += '<a class="d-flex align-items-center">'
-		    		   str += '<div class="flex-shrink-0 avatar">'
-		    		   str += '<div style="flex-direction: row; display: flex;"><img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
-		   			   str += '<img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
-		 				   str += '</div>'
-		 				   str += '<div style="flex-direction: row; display: flex;"><img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
-						   str += '<img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />'
-						   str += '</div>'
-						   str += '</div>'
+		    			 str += '<div class="flex-shrink-0 avatar">';
+			    	 	 str += '<div style="flex-direction: row; display: flex;">';
+			    		 for (let i = 0; i < chatData.memIMG.length && i < 2; i++) { 
+			    		    str += '<img src="${contextPath}' + chatData.memIMG[i] + '" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />';
+			    		 }
+			    		 str += '</div>';
+			    		 str += '<div style="flex-direction: row; display: flex;">';
+			    		 for (let i = 2; i < chatData.memIMG.length && i < 4; i++) {
+			    		    str += '<img src="${contextPath}' + chatData.memIMG[i] + '" alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />';
+			    		 }
+			    		 str += '</div>';
+			    		 str += '</div>'; 
 						   str += '<div class="chat-contact-info flex-grow-1 ms-4">'
 						   str += '<div class="d-flex justify-content-between align-items-center">'
 						   str += '<h6 class="chat-contact-name text-truncate m-0 fw-normal chattitle">'+chatTitleData+'</h6>'
@@ -1416,6 +1418,7 @@
 						        var subscrip = client.subscribe('/sub/' + chatNoData, function (chat) {
 						            var content = JSON.parse(chat.body);
 						            var msgNum ="";
+						            var contentMemNo = content.memNo
 						            // 채팅번호 입력 및 메시지 출력 ajax 시작
 												if(content.type == 'message'){
 													

@@ -11,6 +11,7 @@
 	<result column="CHAT_NEWMSG" property="chatNewMsg" />
 	<result column="chat_count" property="chatCount"/>
 	<result column="msg_no" property="msgNo"/>
+	<result column="PROFILE_URL" property="profileURL" />
 </resultMap>
 
 
