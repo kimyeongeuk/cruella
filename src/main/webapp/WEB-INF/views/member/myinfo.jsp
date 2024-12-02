@@ -492,8 +492,8 @@
                   <!-- 팀게시판 영역 (재운님 코드)-->
                   <div class="row">
                     <!-- 나의 소속팀 목록 -->
-                    <div class="col-lg-12 col-xl-6">
-                      <div class="card card-action mb-6">
+                    <div class="col-lg-12 col-xl-6" >
+                      <div class="card card-action mb-6" style="height: 400px;">
                         <div class="card-header align-items-center">
                           <i class="ti ti-users ti-lg"></i>
                           <h5 class="card-action-title mb-0" style="margin-left: 15px;">${ loginUser.getDeptName() }</h5> <!-- 나의 소속팀이 보이게 -->

@@ -830,11 +830,14 @@
 	        // 기본값으로 전체 조회
 	        let memNo = '${loginUser.getMemNo()}';
 
+	        console.log(memNo);
+	        console.log(deptName);
 	        $.ajax({
 	            url: '${contextPath}/member/selectAll_db.do',
 	            type: 'POST',
 	            data: { memNo: memNo, deptName: deptName },
 	            success: function(res) {
+	            	console.log(res);
 	                let liEl = '<ul class="list-unstyled mb-0">';
 	                for (let i = 0; i < res.length; i++) {
 	                    liEl += '<li class="mb-4">'
@@ -971,7 +974,6 @@
 		
 		checkClockInStatus(); // 출근상태 체크
 		fnNoticeList();			  // 공지사항 조회
-  	//fnMemoList();	        // 메모 전체 리스트 조회
   	fnMemberList();       // 전체 사원 리스트 조회
   	fnAppList();				  // 결재 대기중인 문서 갯수 조회.
  	  fnLoadDeptList(); 		// 부서 목록 로드

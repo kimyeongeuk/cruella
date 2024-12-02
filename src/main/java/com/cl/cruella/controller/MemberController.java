@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cl.cruella.dto.AlertDto;
 import com.cl.cruella.dto.AppdocDto;
 import com.cl.cruella.dto.BoardDto;
+import com.cl.cruella.dto.DeptDto;
 import com.cl.cruella.dto.MemberDto;
 import com.cl.cruella.dto.NoticeDto;
 import com.cl.cruella.dto.PageInfoDto;
@@ -329,16 +330,6 @@ public class MemberController {
 	 }
 	 
 	 
-	 // 전 사원 정보 조회(이름, 메일, 사번, 사진)
-	 @PostMapping("/selectAll_db.do")
-	 @ResponseBody
-	 public List<MemberDto> selectAllMember(String memNo) {
-		 
-		 List<MemberDto> list = memberService.selectAllMember(memNo);
-		 
-		 return list;
-	 }
-	 
 	 // 내 결재 문서함 조회
 	 @PostMapping("/selectAppList.do")
 	 @ResponseBody
@@ -373,7 +364,32 @@ public class MemberController {
          return params;
 	 }
 	 
+	 // 부서명 조회
+	 @PostMapping("/getDeptList.do")
+	 @ResponseBody
+	 public List<DeptDto> getDeptList() {
+		 
+		 List<DeptDto> list = memberService.getDeptList();
+		 
+		 return list;
+	 }
 	 
+	 @PostMapping("/selectAll_db.do")
+	 @ResponseBody
+	 public List<MemberDto> selectAllMember(String memNo, String deptName) {
+		 
+		 
+		 if(deptName == null || deptName.trim().isEmpty()) {
+			 List<MemberDto> list = memberService.selectAllMember(memNo);
+			 
+			 return list;
+		 }else {
+			 List<MemberDto> list = memberService.selectAllMemberDept(memNo, deptName);
+			 
+			 return list;
+		 }
+		 
+	 }
 	 
 	 
 	 
