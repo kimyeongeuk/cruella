@@ -229,7 +229,20 @@
    </div>
    
    
-   
+   	<script>
+    // 사이드바 처리
+	document.addEventListener("DOMContentLoaded", function () {
+  	
+		const element = document.getElementById("checksalary");
+		
+  	document.getElementById("member").classList.add("open");
+  	element.style.backgroundColor = "#958CF4";
+  	element.style.color = "white";
+  	element.classList.add("active");
+  	
+  	
+	});
+	</script>
    
    
 </body>

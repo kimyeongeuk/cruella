@@ -109,31 +109,31 @@
 
 											<script>
 												
-		$(document).ready(function() {
-			
-			
-			// 파일 업로드 
-			$('#upload').on("change", function(evt) {
-				const file = evt.target.files[0]; // 사용자가 선택한 파일
-				console.log("실행");
-				const memNo = $('#memNo').val();
-
-				if (file) {
-					// 선택된 파일 업로드전 미리보기
-					const reader = new FileReader();
-					reader.onload = function(r) {
-						$('#uploadedAvatar').attr("src", r.target.result); // 이미지 변경
-					};
-					reader.readAsDataURL(file);
-
-					let formData = new FormData();
-					formData.append("uploadFile", file);
-					formData.append("memNo", memNo);
-				}
-
-			})
-		})
-	</script>
+												$(document).ready(function() {
+													
+													
+													// 파일 업로드 
+													$('#upload').on("change", function(evt) {
+														const file = evt.target.files[0]; // 사용자가 선택한 파일
+														console.log("실행");
+														const memNo = $('#memNo').val();
+										
+														if (file) {
+															// 선택된 파일 업로드전 미리보기
+															const reader = new FileReader();
+															reader.onload = function(r) {
+																$('#uploadedAvatar').attr("src", r.target.result); // 이미지 변경
+															};
+															reader.readAsDataURL(file);
+										
+															let formData = new FormData();
+															formData.append("uploadFile", file);
+															formData.append("memNo", memNo);
+														}
+										
+													})
+												})
+											</script>
 
 											<h5 class="pb-4 border-bottom mb-4"></h5>
 											<div class="card-body pt-4">
@@ -376,21 +376,21 @@
 													</div>
 
 													<script>
-    // 이메일 도메인 자동 적용 함수
-    function setEmailDomain(domain) {
-        const emailInput = document.getElementById('email');
-        const [localPart] = emailInput.value.split('@'); // '@' 기준으로 로컬 파트 분리
-
-        if (domain === 'custom') {
-            // 도메인 직접입력 선택 시 기존 값 유지
-            emailInput.value = localPart;
-            emailInput.focus();
-        } else {
-            // 선택된 도메인을 이메일에 추가
-            emailInput.value = localPart + '@' + domain;
-        }
-    }
-</script>
+													    // 이메일 도메인 자동 적용 함수
+													    function setEmailDomain(domain) {
+													        const emailInput = document.getElementById('email');
+													        const [localPart] = emailInput.value.split('@'); // '@' 기준으로 로컬 파트 분리
+													
+													        if (domain === 'custom') {
+													            // 도메인 직접입력 선택 시 기존 값 유지
+													            emailInput.value = localPart;
+													            emailInput.focus();
+													        } else {
+													            // 선택된 도메인을 이메일에 추가
+													            emailInput.value = localPart + '@' + domain;
+													        }
+													    }
+													</script>
 
 													<div class="mb-4 col-md-6">
 														<label for="salary" class="form-label">급여</label> <input
@@ -418,9 +418,10 @@
 															class="form-control" type="text" id="phone" name="phone"
 															placeholder="010-1111-2222" required
 															pattern="^\d{3}-\d{4}-\d{4}$" />
-															<div id="phoneError" class="text-danger mt-2" style="display: none;"></div>
+														<div id="phoneError" class="text-danger mt-2"
+															style="display: none;"></div>
 													</div>
-													
+
 													<script>
 													$(document).ready(function () {
 													    $('#phone').on('blur', function () {
@@ -446,7 +447,7 @@
 													});
 
 													</script>
-													
+
 												</div>
 												<div class="mt-2" style="justify-self: center;">
 													<button type="submit" class="btn btn-primary me-3">등록하기</button>
@@ -498,7 +499,43 @@
 
 
 
+	<script>
+    // 사이드바 처리
+	document.addEventListener("DOMContentLoaded", function () {
+  	
+		const element = document.getElementById("signup");
+		
+  	document.getElementById("member").classList.add("open");
+  	element.style.backgroundColor = "#958CF4";
+  	element.style.color = "white";
+  	element.classList.add("active");
+  	
+  	
+	});
+	</script>
+	
+	<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const salaryInput = document.getElementById("salary");
 
+        // 숫자에 콤마를 추가하는 함수
+        function formatNumberWithCommas(number) {
+            if (!number) return "";
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // 입력 값 실시간 포맷팅
+        salaryInput.addEventListener("input", function () {
+            const rawValue = salaryInput.value.replace(/,/g, ""); // 기존 콤마 제거
+            if (!isNaN(rawValue)) {
+                salaryInput.value = formatNumberWithCommas(rawValue); // 포맷팅된 값 삽입
+            } else {
+                salaryInput.value = ""; // 숫자가 아니면 초기화
+            }
+        });
+
+</script>
+	
 
 </body>
 </html>
