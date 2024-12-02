@@ -271,6 +271,7 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		    on m.dept_code = d.dept_code
 		 where m.mem_no != #{memNo}
 		 	 and d.dept_name = #{deptName}
+		 	 and m.status != 'N'
 	</select>
 	
 	<!-- 휴가내역 조회 -->
@@ -449,6 +450,7 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 		     , profile_url
 		  from member
 		 where mem_no != #{memNo}
+		   and status != 'N'
 	</select>
 	
 	<!-- 폰번호중복검사 -->
