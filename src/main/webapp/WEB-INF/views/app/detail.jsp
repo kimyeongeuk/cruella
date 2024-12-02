@@ -564,21 +564,52 @@ $(document).ready(function(){
 	 var count = 0;
 	
 	
-	// 전자서명 
+	/* // 전자서명 
 	  $('.signbtn_div').on('click', function(){
 	        
 	        const sign = '${loginUser.signPath}';
 	       
-	        $(this).closest('.line_user')
+	        
+	        if(sign == '' || sign == null){
+	        	$(this).closest('.line_user')
+	             .find('.signLine').html('${loginUser.memName}');
+	        
+	        }else{
+	        	$(this).closest('.line_user')
 	             .find('.signImg_div')
 	             .css('display', 'block') 
 	             .attr('src', sign); 
+	        }
 	        
-	        $(this).remove();
+	        	$(this).remove();
 	        
 	        
 	       count++;
 	       
+	    }); */
+	    
+	    $('.signbtn_div').on('click', function() {
+	        const sign = '${loginUser.signPath}';
+
+	        // 이미지를 담고 있는 img 태그를 찾음
+	        const imgElement = $(this).closest('.line_user').find('.signImg_div');
+
+	        
+	        const imgSrc = imgElement.attr('src');
+
+	        if (!imgSrc || imgSrc.includes('null')) { // src가 null이거나 'null'을 포함한 경우
+	            
+	            $(this).closest('.line_user')
+	                .find('.signLine').text('${loginUser.memName}');
+	        } else {
+	            $(this).closest('.line_user')
+	                .find('.signImg_div')
+	                .css('display', 'block')
+	                .attr('src', sign);
+	        }
+
+	        $(this).remove();
+	        count++;
 	    });
 	  
 
