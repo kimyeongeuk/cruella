@@ -353,12 +353,12 @@
                                     </div>
                                     <div class="modal-footer">
                                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                        Close
+                                        닫기
                                       </button>
                                       <button type="button" class="btn btn-danger" id="clear_btn">
                                         초기화
                                       </button>
-                                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="sign_save_btn">Save</button>
+                                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="sign_save_btn">저장</button>
                                     </div>
                                   </div>
                                 </div>

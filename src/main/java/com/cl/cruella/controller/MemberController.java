@@ -294,7 +294,7 @@ public class MemberController {
 
          int listCount = boardService.selectBoardListCount(deptCode);
 
-         PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 5);
+         PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
 
          Map<String, Object> params = new HashMap<>();
          params.put("pi", pi);
