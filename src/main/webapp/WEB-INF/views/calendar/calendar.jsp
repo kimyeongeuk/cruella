@@ -362,12 +362,10 @@
                         a += '<option value="rgb(238, 212, 255)" class="optionHover" style="background-color: rgb(238, 212, 255); color:transparent;">연보라</option>';    
                 	
                         
-
-
                         $('#color2').html(a);
                     	
                      // info.event.extendedProps.rgb 값과 일치하는 option을 selected로 설정
-                        $('#color2 option').each(function() {
+                        $('.optionHover').each(function() {
                             // 각 option의 value 값을 가져와서 비교
                             if ($(this).val() === info.event.extendedProps.rgb) {
                                 // 일치하는 값이 있으면 해당 option을 selected로 설정
