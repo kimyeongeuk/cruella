@@ -12,6 +12,21 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="${ contextPath }/resources/assets/js/config.js"></script>
+<style>
+		#signup::before {
+		  content: ''; /* 가상 요소 필수 */
+		  display: inline-block; /* 블록 요소 */
+		  width: 10px; /* 동그라미 크기 */
+		  height: 10px; /* 동그라미 크기 */
+		  border-radius: 50%; /* 완전한 원 */
+		  background-color: transparent; /* 배경을 투명으로 설정 */
+		  border: 2px solid gray; /* 초기 테두리 색상 */
+		}
+		#signup.active::before {
+		  border: 2px solid white; /* 테두리만 흰색으로 변경 */
+		}
+</style>
+
 </head>
 <body>
 	<div class="layout-wrapper layout-content-navbar">
@@ -83,7 +98,7 @@
 											enctype="multipart/form-data">
 											<div class="card-body">
 												<div style="text-align: center;">
-													<img src="${contextPath}/assets/img/avatars/1.png"
+													<img src="${contextPath}/assets/img/default_profile.png"
 														alt="user-avatar"
 														class="d-block w-px-140 h-px-140 rounded mx-auto"
 														id="uploadedAvatar"
@@ -307,7 +322,7 @@
 														<label class="form-label" for="memPwd">비밀번호</label>
 														<div class="input-group input-group-merge">
 															<input type="text" id="memPwd" name="memPwd"
-																value="${ memPwd }" class="form-control" />
+																value="${ memPwd }" class="form-control" readonly/>
 														</div>
 													</div>
 													<div class="mb-4 col-md-6">
