@@ -116,24 +116,18 @@
 
 
 
-						<div
+ 						<div
 							class="faq-header d-flex flex-column justify-content-center align-items-center "
-							style="margin-bottom: 10px;">
+							style="margin-bottom: 10px; ">
 							<img src="${contextPath }/assets/img/pages/header.png" class=""
-								alt="background image" style="width: 100%; height: 102px;" />
-							<div class="input-wrapper mt-4 input-group input-group-merge"
-								style="position: relative; bottom: 84px; background: white; width: 52%;">
-								<span class="input-group-text" id="basic-addon1"><i
-									class="ti ti-search"></i></span> <input type="text"
-									class="form-control" placeholder="Search articles..."
-									aria-label="Search" aria-describedby="basic-addon1" />
-							</div>
-						</div>
+								alt="background image" style="width: 100%; height: 102px; border-radius: 7px;" />
+						
+						</div> 
 						<!--/상단 검색바-->
 
 						<!--검색내용-->
 						<div class="card"
-							style="padding: 30px; padding: 30px; position: relative; bottom: 50px;">
+							style="padding: 30px; padding: 30px; position: relative; bottom: 3px;">
 							<h5 class="card-header">사원목록</h5>
 							<div class="table-responsive text-nowrap">
 								<table class="table" style="text-align: center;">
