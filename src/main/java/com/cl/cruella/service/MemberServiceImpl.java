@@ -161,7 +161,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<MemberDto> checksalary(String memNo) {
+	public MemberDto checksalary(String memNo) {
 		return memberDao.checksalary(memNo);
 	}
 

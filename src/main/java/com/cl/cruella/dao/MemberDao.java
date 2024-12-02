@@ -170,8 +170,8 @@ public class MemberDao {
 		return sqlSession.selectList("wlMapper.workhoursview", memNo);
 	}
 
-	public List<MemberDto> checksalary(String memNo) {
-		return sqlSession.selectList("memberMapper.checksalary", memNo);
+	public MemberDto checksalary(String memNo) {
+		return sqlSession.selectOne("memberMapper.checksalary", memNo);
 	}
 
 

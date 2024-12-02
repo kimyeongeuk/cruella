@@ -727,10 +727,9 @@ public class MemberController {
 	public void checksalary(HttpSession session, Model model) {
 		String memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
 		
-		log.debug("memNo: {}", memNo);
 		
-		List<MemberDto> cs = memberService.checksalary(memNo);
-		model.addAttribute("memNo", cs);
+		MemberDto cs = memberService.checksalary(memNo);
+		model.addAttribute("cs", cs);
 	}
 
 	 

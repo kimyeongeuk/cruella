@@ -86,7 +86,7 @@ public interface MemberService {
 
 	List<WorkLogDto> workhoursview(String memNo);
 
-	List<MemberDto> checksalary(String memNo);
+	MemberDto checksalary(String memNo);
 
 
 
