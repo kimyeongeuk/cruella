@@ -1456,6 +1456,161 @@
 						   
 						   
 						   
+						   
+						   
+						   if (subscrips[chatNoData]) {
+							    subscrips[chatNoData].unsubscribe();
+							    console.log('구독 취소 완료: ' + chatNoData);
+							}
+						 
+						 
+					        var subscrip = client.subscribe('/sub/' + chatNoData, function (chat) {
+					            var content = JSON.parse(chat.body);
+					            var msgNum ="";
+					            var contentMemNo = content.memNo
+					            // 채팅번호 입력 및 메시지 출력 ajax 시작
+									if(content.type == 'message'){
+			            $.ajax({
+										url:'${contextPath}/chat/msgNum.do',
+										data:{memNo:contentMemNo,chatNo:activeChat},
+										success:function(res){
+												  let memberProfiles = res.memberProfiles; 
+											        let memUrl = ""; 
+											        let memName = ""; 
+
+											        for (let member of memberProfiles) {
+											            if (member.memNo === content.memNo) { 
+											                memUrl = member.profileURL;
+											                memName = member.memName;
+											                break;
+											            }
+											        }
+					            if(chatNo == chatNo){
+					           	             	
+						            var str = msgPrint(content.memNo, "${loginUser.memNo}", content.msgContent, content.msgRegistDate, content.msgCheck,res.msgNum,'',memUrl,memName);
+								            $('#chathistory').append(str);
+								            $(".chatarea").scrollTop($(".chatarea")[0].scrollHeight);
+								            
+										        $('.mewmsg').each(function () { // 미리보기 ajax 시작
+										    		console.log('채팅방 번호 :'+chatNo);
+										    		console.log('테스트 : '+$(this).val());
+										    		
+												    if ($(this).val() == content.chatNo) { 
+												    	console.log('요소쳌');
+												    	console.log($(this).val())
+												    	console.log(content.chatNo)
+												    		$.ajax({ 
+												    			url:'${contextPath}/chat/updateNewMsg.do',
+												    			data:{chatNo:content.chatNo,msgContent:content.msgContent},
+												    			success:function(res){
+												    				console.log('성공');
+												    			}
+												    		})
+												    		// 채팅 날짜 넣어주기
+																$(this).closest('.chat-contact-info').find('.text-muted').html(function() {
+																    var msgDate = new Date(content.msgRegistDate); // Date 객체로 변환
+																    var today = new Date();  // 오늘 날짜
+																
+																    
+																    if (msgDate.toDateString() === today.toDateString()) {
+																        
+																        return msgDate.toLocaleTimeString('en-GB', { hour12: false }); 
+																    } else {
+																        
+																        return msgDate.toLocaleDateString(); 
+																    }
+																}); // 채팅 날짜 넣어주기 끝
+																
+												        $(this).prev().html(content.msgContent);
+												        $(this).closest('.chat-contact-info').find('.msgNum').val(content.msgNo);
+												    	} 
+								
+														}); // 미리보기 ajax 끝
+							            }
+												}
+											})
+											
+											
+											
+										}// 채팅번호 입력 및 메시지 출력 ajax 끝
+											else if(content.type == 'delete'){
+
+												 $('.mewmsg').each(function () { // 미리보기 ajax 시작
+													 		var listNumVal = $(this).closest('.chat-contact-info').find('.msgNum').val();   		
+												 			console.log($(this).prev().html());
+												 			console.log(listNumVal);
+											    		console.log(content);
+											    		console.log($(this).val());
+											    		if($(this).val() == content.chatNo) { 
+													    			$('#chatContent'+content.msgNo).html('삭제된 메시지입니다.');
+													    		if(content.msgNo == listNumVal){
+																		$(this).prev().html('삭제된 메시지입니다.'); 
+													    		}									    		
+											    		}
+									
+												});
+												 $("#chatContent"+content.msgNo).closest("li").find(".dropdown").remove();
+												 $("#chatContent"+content.msgNo).closest(".modifyDiv").find(".modifyDiv").remove();
+												 $("#chatContent"+content.msgNo).closest(".othermodifyDiv").find(".othermodifyDiv").remove();
+		                  }
+											else if(content.type == 'modify'){
+												$('.modifyDisplay').css('display','none');
+												
+												$('.mewmsg').each(function () { // 미리보기 ajax 시작
+												 		var listNumVal = $(this).closest('.chat-contact-info').find('.msgNum').val();   		
+											 			console.log($(this).prev().html());
+										    		
+										    		if($(this).val() == content.chatNo) { 
+												    			$('#chatContent'+content.msgNo).html(content.msgContent);
+												    		if(content.msgNo == listNumVal){
+																	$(this).prev().html(content.msgContent); 
+												    		}									    		
+										    		}
+										    		  $('#modifyForm').val('');
+											}); // 미리보기 ajax 끝
+															if(content.msgStatus != 'M'){
+												    		let th = '<div class="modifyDiv" style= "text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center; width: 50px;">(수정됨)</div>';
+												    		let str = '';
+												    		str += '<div class="othermodifyDiv" style="text-align: center; color: #737682; font-size: 10px; font-family: Public Sans; font-weight: 500; line-height: 20px; word-wrap: break-word; align-self: center;">';
+													      str += '(수정됨)';
+													      str += '</div>';
+																$('#chatContent'+content.msgNo).closest('.d-flex.overflow-hidden.othermodifyDiv').append(str);
+												    		$('#chatContent'+content.msgNo).closest('.d-flex.overflow-hidden.modifyDiv').prepend(th);
+															}
+												
+											}
+											else if(content.type == 'notice'){
+												console.log("콘콘콘콘슈퍼콘슈퍼쏜")
+												console.log(content);
+												$('.noticeMessage').html(content.msgContent);
+												$('#noticeContent').css('display','block');
+												
+											
+											}
+					            
+					            
+					        });  
+						   
+						   
+						   
+						   
+						   
+						   
+						   
+						   
+						   
+						   
+						   
+						   
+						   
+						   
+						   
+						   
+						   
+						   
+						   
+						   
+						   
 
 								 
 					
