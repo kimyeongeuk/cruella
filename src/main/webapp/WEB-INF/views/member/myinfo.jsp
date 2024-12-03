@@ -552,7 +552,7 @@
                     </div>
                     <!--/ 나의결재문서함 -->
                   </div>
-                  <div class="card" style="height: 750px;">
+                  <div class="card" style="height: 815px;">
                     <div class="d-flex align-items-center">
 		                  <div style="margin: 20px;">
 		                    <a id="board" class="btn btn-primary" style="font-size: 20px; color: white" href="${contextPath}/board/boardList.do">
@@ -577,7 +577,7 @@
 		                  <div class="ms-auto d-flex">
 		                  </div>
 		                </div>
-		             		<div class="card-datatable table-responsive pt-3">
+		             		<div class="card-datatable table-responsive pt-3"> 
 								  		<table class="datatables-basic table text-center">
 								    		<thead>
 								      		<tr>
@@ -596,7 +596,7 @@
 								  		</div>
 											<div class="card-body">
 											  <div class="row">
-											    <span class="col-lg-12 d-flex justify-content-center">
+											    <span class="col-lg-12 d-flex justify-content-center" >
 											      <div class="demo-inline-spacing">
 											        <nav aria-label="Page navigation">
 											          <ul class="pagination" id="paging_area">
