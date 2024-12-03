@@ -177,6 +177,71 @@
 
 
 
+<%-- <c:forEach var="list" items="${ chatList }">
+    <c:choose>
+        <c:when test="${ list.chatCount eq 2 }">
+            <li class="chat-contact-list-item mb-1 chat-list-form">
+                <input type="hidden" value="${ list.chatNo }" class="chatlistno">
+                <input type="hidden" value="${ list.chatTitle }">
+                <a class="d-flex align-items-center">
+                    <div class="flex-shrink-0 avatar">
+                        <!-- 1:1 채팅방에서 프로필 이미지 불러오기 -->
+                        <c:forEach var="link" items="${ memberLink }">
+                            <c:if test="${ link.chatNo == list.chatNo && link.memNo != loginUser.memNo }">
+                                <img src="${ contextPath }<c:out value='${ link.profileURL }' default='/assets/img/default_profile.png' />"
+                                     alt="Avatar" class="rounded-circle" />
+                            </c:if>
+                        </c:forEach>
+                    </div>
+                    <div class="chat-contact-info flex-grow-1 ms-4 test1">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="chat-contact-name text-truncate fw-normal m-0 chattitle">${ list.chatTitle }</h6>
+                            <small class="text-muted">${ list.strDate }</small>
+                        </div>
+                        <small class="chat-contact-status text-truncate">${ list.chatNewMsg }</small>
+                        <input type="hidden" value="${ list.chatNo }" class="mewmsg">
+                        <input type="hidden" value="${ list.msgNo }" class="msgNum">
+                    </div>
+                </a>
+            </li>
+        </c:when>
+
+        <c:otherwise>
+            <li class="chat-contact-list-item mb-1 chat-list-form">
+                <input type="hidden" value="${ list.chatNo }" class="chatlistno">
+                <input type="hidden" value="${ list.chatTitle }">
+                <a class="d-flex align-items-center">
+                    <div class="flex-shrink-0 avatar">
+                        <div style="display: flex; flex-wrap: wrap;">
+                            <img src="${ contextPath }<c:out value='${ loginUser.profileURL }' default='/assets/img/default_profile.png' />"
+                                 alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+                            <c:forEach var="link" items="${ memberLink }">
+                                <c:if test="${ link.chatNo == list.chatNo && link.memNo != loginUser.memNo }">
+                                    <img src="${ contextPath }<c:out value='${ link.profileURL }' default='/assets/img/default_profile.png' />"
+                                         alt="Avatar" class="rounded-circle" style="width: 20px; height: 20px;" />
+                                </c:if>
+                            </c:forEach>
+                        </div>
+                    </div>
+
+                    <div class="chat-contact-info flex-grow-1 ms-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="chat-contact-name text-truncate m-0 fw-normal chattitle">${ list.chatTitle }</h6>
+                            <small class="text-muted">${ list.strDate }</small>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center test1">
+                            <small class="chat-contact-status text-truncate">${ list.chatNewMsg }</small>
+                            <input type="hidden" value="${ list.chatNo }" class="mewmsg">
+                            <input type="hidden" value="${ list.msgNo }" class="msgNum">
+                            <div class="badge bg-danger rounded-pill ms-auto" style="display:none;">5</div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </c:otherwise>
+    </c:choose>
+</c:forEach> --%>
+
 <c:forEach var="list" items="${ chatList }">
     <c:choose>
         <c:when test="${ list.chatCount eq 2 }">
@@ -243,8 +308,6 @@
         </c:otherwise>
     </c:choose>
 </c:forEach>
-
-
 
 
 
@@ -1168,8 +1231,8 @@
      	function onMessage(evt){ 
 	        
 	        
-	        
     	   var chatData = JSON.parse(evt.data);
+	        console.log(chatData);
 	    	   if(evt.data == '0'){
 	   		  	alert('존재하는 채팅방입니다.');
 	   	   		}else if(evt.data == '1'){
@@ -1194,7 +1257,11 @@
 			    		 }
 			    		 c += '<a class="d-flex align-items-center">';
 			    		 c += '<div class="flex-shrink-0 avatar">';
-			    		 c += '<img src="${contextPath}' +chatData.profileURL + '" alt="Avatar" class="rounded-circle"/>';
+			    		 if(loginName == chatTitleData){
+			    			 c += '<img src="${contextPath}' +chatData.profileURL3 + '" alt="Avatar" class="rounded-circle"/>';
+			    		 }else{
+			    			 c += '<img src="${contextPath}' +chatData.profileURL + '" alt="Avatar" class="rounded-circle"/>';
+			    		 }
 			    		 c += '</div>';
 			    		 c += '<div class="chat-contact-info flex-grow-1 ms-4 test1">';
 			    		 c += '<div class="d-flex justify-content-between align-items-center">';
@@ -1226,6 +1293,7 @@
 												success:function(res){
 													  let memberProfiles = res.memberProfiles; 
 												        let memUrl = ""; 
+												        let memName = "";
 
 												        for (let member of memberProfiles) {
 												            if (member.memNo === content.memNo) { 

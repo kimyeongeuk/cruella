@@ -63,6 +63,7 @@ public class MemberDto {
 	    
 	    // 영욱
 	    private int chatNo;
+	    private String profileURL2;
 	    
 	    
 	    
