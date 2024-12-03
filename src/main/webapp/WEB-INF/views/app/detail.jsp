@@ -25,23 +25,138 @@
 </head>
 <body>
 
- <style>
-	#app_active::before {
-	  content: ''; /* 가상 요소 필수 */
-	  display: inline-block; /* 블록 요소 */
-	  width: 10px; /* 동그라미 크기 */
-	  height: 10px; /* 동그라미 크기 */
-	  border-radius: 50%; /* 완전한 원 */
-	  background-color: transparent; /* 배경을 투명으로 설정 */
-	  border: 2px solid gray; /* 초기 테두리 색상 */
-	}
-	#app_active.active::before {
-	  border: 2px solid white; /* 테두리만 흰색으로 변경 */
-	}
-   </style>
+<style>
+#app_active::before {
+	content: ''; /* 가상 요소 필수 */
+	display: inline-block; /* 블록 요소 */
+	width: 10px; /* 동그라미 크기 */
+	height: 10px; /* 동그라미 크기 */
+	border-radius: 50%; /* 완전한 원 */
+	background-color: transparent; /* 배경을 투명으로 설정 */
+	border: 2px solid gray; /* 초기 테두리 색상 */
+}
+
+#app_active.active::before {
+	border: 2px solid white; /* 테두리만 흰색으로 변경 */
+}
+
+* {
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+}
+
+.app_type {
+	width: 298px;
+	height: 100px;
+	text-align: center;
+	font-size: 30px;
+	font-weight: 800;
+	border: 1px solid black;
+}
+
+.app_line_div {
+	display: flex;
+	justify-content: right;
+	border: 1px solid black;
+	padding-bottom: 2px;
+}
+
+.line_title {
+	position: relative;
+	writing-mode: vertical-rl;
+	height: 147px;
+	text-align: center;
+	border: 1px solid black;
+}
+
+.line_user {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	width: 100px;
+}
+
+.line_user span {
+	border: 1px solid black;
+}
+
+.signLine {
+	height: 102px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.line_div {
+	width: 600px;
+}
+
+.app_table_container {
+	border-spacing: 0;
+	height: 40px;
+}
+
+.dept_td, .app_date, .app_no, .app_title_td {
+	width: 110px;
+	border: 1px solid black;
+}
+
+.dept_td_result, .app_date_result {
+	width: 188px;
+	border: 1px solid black;
+}
+
+.app_no_result {
+	width: 192px;
+	border: 1px solid black;
+}
+
+.app_result_div {
+	text-align: center;
+}
+
+.app_title {
+	border: 1px solid black;
+}
+
+.sign_date {
+	height: 23px;
+}
+
+.date-range {
+	display: flex;
+	align-items: center;
+}
+
+.start-date, .end-date {
+	padding: 8px;
+	margin: 0 5px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 14px;
+}
+
+.date-separator {
+	font-size: 16px;
+	margin: 0 10px;
+}
+
+.date-difference {
+	font-size: 14px;
+	margin-left: 10px;
+}
+
+.date-difference b {
+	color: #e74c3c;
+}
+</style>
 
 
-<div class="layout-wrapper layout-content-navbar">
+
+
+
+	<div class="layout-wrapper layout-content-navbar">
    <div class="layout-container">
    
    
@@ -135,105 +250,6 @@
 
 				<div class="col-12" style="margin-top: 20px;" id="content_div">
                   <div class="card mb-6">
-
-
-                    <style>
-                      * {
-                        padding: 0px;
-                        margin: 0px;
-                        box-sizing: border-box;
-                      }
-
-                      .app_type {
-                        width: 298px;
-                        height: 100px;
-                        text-align: center;
-                        font-size: 30px;
-                        font-weight: 800;
-                        border: 1px solid black;
-                      }
-
-                      .app_line_div {
-                        display: flex;
-                        justify-content: right;
-                        border: 1px solid black;
-                        padding-bottom: 2px;
-
-
-                      }
-
-                      .line_title {
-                        position: relative;
-                        writing-mode: vertical-rl;
-                        height: 147px;
-                        text-align: center;
-                        border: 1px solid black;
-
-                      }
-
-                      .line_user {
-
-                        display: flex;
-                        flex-direction: column;
-                        text-align: center;
-                        width: 100px;
-
-                      }
-
-                      .line_user span {
-                        border: 1px solid black;
-                      }
-
-                      .signLine {
-                        height: 102px;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-
-                      }
-
-                      .line_div {
-                        width: 600px;
-                      }
-
-                      .app_table_container {
-                        border-spacing: 0;
-                        height: 40px;
-                      }
-
-                      .dept_td,
-                      .app_date,
-                      .app_no,
-                      .app_title_td {
-                        width: 110px;
-                        border: 1px solid black;
-                      }
-
-                      .dept_td_result,
-                      .app_date_result {
-                        width: 188px;
-                        border: 1px solid black;
-                      }
-
-                      .app_no_result {
-                        width: 192px;
-                        border: 1px solid black;
-                      }
-
-                      .app_result_div {
-                        text-align: center;
-                      }
-
-                      .app_title {
-                        border: 1px solid black;
-                      }
-
-                      .sign_date {
-                        height: 23px;
-                      }
-                    </style>
-                    
-                    
 
 
 
@@ -386,37 +402,6 @@
                       </tr>
                     </table>
                     
-                    
-                    
-                     <style>
-                            .date-range {
-                              display: flex;
-                              align-items: center;
-                            }
-
-                            .start-date,
-                            .end-date {
-                              padding: 8px;
-                              margin: 0 5px;
-                              border: 1px solid #ccc;
-                              border-radius: 4px;
-                              font-size: 14px;
-                            }
-
-                            .date-separator {
-                              font-size: 16px;
-                              margin: 0 10px;
-                            }
-
-                            .date-difference {
-                              font-size: 14px;
-                              margin-left: 10px;
-                            }
-
-                            .date-difference b {
-                              color: #e74c3c;
-                            }
-                          </style>
                     
                     
                      <table style="border-spacing: 0;">

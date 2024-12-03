@@ -96,23 +96,7 @@
                 </div>
               </div>
   
-              <script>
-                $(document).ready(function(){
-  
-                  $('#nav-link1').on('click',function(){
-  
-                      $('#nav-link1').addClass('active');
-                      $('#nav-link2').removeClass('active');
-  
-                  })
-                  $('#nav-link2').on('click',function(){
-  
-                    $('#nav-link2').addClass('active');
-                    $('#nav-link1').removeClass('active');
-  
-                    })
-                })
-              </script>
+              
 
             <div class="card">
               <div class="card-header border-bottom" style="padding: 0;">
@@ -142,7 +126,7 @@
                           </span>
 
                           <span style="position: relative; left: 964px; top: 25px; cursor: pointer;">
-                            <i class="ti ti-trash" style="font-size: 25px;"></i>
+                            <i class="ti ti-trash" style="font-size: 25px;" id="delete_icon"></i>
                           </span>
 
 
@@ -332,6 +316,7 @@
      function goPage(pNum){
                         	   
        window.location.href = '${contextPath}/app/box_ref.do?page=' + pNum;
+       
  	}
      
      
@@ -387,6 +372,21 @@
     	    
     	    
     	    
+    	     $('#nav-link1').on('click',function(){
+  
+                      $('#nav-link1').addClass('active');
+                      $('#nav-link2').removeClass('active');
+  
+                  })
+                  $('#nav-link2').on('click',function(){
+  
+                    $('#nav-link2').addClass('active');
+                    $('#nav-link1').removeClass('active');
+  
+             })
+    	    
+    	    
+    	    
     	    
     	    
     	    
@@ -407,6 +407,8 @@
      
      
  </script>
+ 
+
 
 
 
