@@ -1472,7 +1472,7 @@
 									if(content.type == 'message'){
 			            $.ajax({
 										url:'${contextPath}/chat/msgNum.do',
-										data:{memNo:contentMemNo,chatNo:activeChat},
+										data:{memNo:contentMemNo,chatNo:activeChat}, 
 										success:function(res){
 												  let memberProfiles = res.memberProfiles; 
 											        let memUrl = ""; 
