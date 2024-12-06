@@ -69,13 +69,8 @@ public class AppService {
 		int annResult = 0; // 연차신청서
 		int coeResult = 0; // 증명서신청서
 		
-//		결재자
-//		for(AppRovalDto appRoval : rovalList) {
-//			rovalResult += appDao.insertRoval(appRoval);
-//		}
 		
-		
-		// 첫 결재자 사번 가져오기
+		// 첫 결재자 사번 가져오기 // 알림
 		String memNo = "";
 		for(int i=0;i<rovalList.size();i++) {
 			rovalResult += appDao.insertRoval(rovalList.get(i));
@@ -84,7 +79,7 @@ public class AppService {
 		// 첫 결재자 정보 알림에 넣기
 		int insertAlert = appDao.insertAlert(memNo);
 		
-		// 웹소켓 작동
+		// 웹소켓 작동 // 알림관련
 		if(insertAlert > 0) {
 			AlertDto adDto = appDao.selectAlert();
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -266,7 +261,7 @@ public class AppService {
 					result += appDao.vacation(ad); // 최종승인 / 휴가테이블 insert
 					result += appDao.memberVacation(ad); // 최종승인 / 멤버테이블 휴가갯수 update
 					
-					// 해당 사원에게 웹소켓 작동
+					// 해당 사원에게 웹소켓 작동 // 알림관련
 					int insertAlert = appDao.insertAlert(memNo);
 					if(insertAlert>0) {
 						// 알림 정보 가져오기
@@ -284,7 +279,7 @@ public class AppService {
 					}
 				}else {
 					result = appDao.detailAppRoval(ad); // 최종승인 / 결재선
-					System.out.println("최종결재시 실행"+ad);
+					
 					
 					// 해당 사원에게 웹소켓 작동
 					int insertAlert = appDao.insertAlert(memNo);
@@ -292,7 +287,7 @@ public class AppService {
 						AlertDto adDto = appDao.selectAlert();
 						adDto.setAlertContent("기안 문서 최종 결재가 완료되었습니다.");
 						adDto.setAlertLink("/app/box_complete.do");
-						System.out.println("실행실행실행실행실행222222222222222222222");
+						
 						ObjectMapper objectMapper = new ObjectMapper();
 						String cdJson = objectMapper.writeValueAsString(adDto); 
 						for(WebSocketSession wh : chatEchoHandler2.getSessionList()) {
