@@ -106,8 +106,11 @@ public class ChatEchoHandler extends TextWebSocketHandler{
 	    			cd.setType("create");
 	    			ChatDto chatDt = new ChatDto();
 	    			chatDt.setMemNo(inviteNo);
+	    			chatDt.setMemName(memNo);
 	    			MemberDto md = chatServiceImpl.writerUrl(chatDt);
+	    			md.setProfileURL2(chatServiceImpl.writerUrl2(chatDt));
 	    			cd.setProfileURL(md.getProfileURL());
+	    			cd.setProfileURL3(md.getProfileURL2());
 	    			ObjectMapper objectMapper = new ObjectMapper();
 	    			String cdJson = objectMapper.writeValueAsString(cd); 
 	    			for(String target : targetMemNo) {

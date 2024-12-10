@@ -651,6 +651,16 @@ select
         chat_no = #{chatNo}
 </select>
 
+<select id="writerUrl2" resultType="string">
+select
+        PROFILE_URL,  
+        mem_no,
+        mem_name
+  from
+        member
+ where
+        mem_no = #{memName}
+</select>
 
 
 </mapper>

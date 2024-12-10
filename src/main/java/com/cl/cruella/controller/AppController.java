@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/app")
+@RequestMapping("/app") // 전자결재
 public class AppController {
 	
 	private final AppService appService;

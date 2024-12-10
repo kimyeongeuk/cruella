@@ -14,21 +14,44 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+
     <script src="${ contextPath }/resources/assets/js/config.js"></script>
-   <style>
-	#app_box_active::before {
-	  content: ''; /* 가상 요소 필수 */
-	  display: inline-block; /* 블록 요소 */
-	  width: 10px; /* 동그라미 크기 */
-	  height: 10px; /* 동그라미 크기 */
-	  border-radius: 50%; /* 완전한 원 */
-	  background-color: transparent; /* 배경을 투명으로 설정 */
-	  border: 2px solid gray; /* 초기 테두리 색상 */
-	}
-	#app_box_active.active::before {
-	  border: 2px solid white; /* 테두리만 흰색으로 변경 */
-	}
-   </style>
+    
+    
+<style>
+
+#app_box_active::before {
+	content: ''; /* 가상 요소 필수 */
+	display: inline-block; /* 블록 요소 */
+	width: 10px; /* 동그라미 크기 */
+	height: 10px; /* 동그라미 크기 */
+	border-radius: 50%; /* 완전한 원 */
+	background-color: transparent; /* 배경을 투명으로 설정 */
+	border: 2px solid gray; /* 초기 테두리 색상 */
+}
+
+#app_box_active.active::before {
+	border: 2px solid white; /* 테두리만 흰색으로 변경 */
+}
+
+.table input[type="checkbox"] {
+	zoom: 1.4;
+}
+
+#app_list_click tr>th>span {
+	cursor: pointer;
+}
+
+#app_list_click tr>td {
+	cursor: pointer;
+}
+
+.header_title {
+	font-size: 13px;
+}
+
+</style>
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
@@ -57,21 +80,6 @@
 
         <!-- Session Start -->
 
-        <style>
-          .table input[type="checkbox"]{
-            zoom: 1.4;
-          }
-          #app_list_click tr>th>span{
-            cursor: pointer;
-          }
-          #app_list_click tr>td{
-            cursor: pointer;
-          }
-          
-        </style>
-
-
-
 
         <div class="content-wrapper">
           <div class="container-xxl flex-grow-1 container-p-y">
@@ -96,23 +104,6 @@
                 </div>
               </div>
   
-              <script>
-                $(document).ready(function(){
-  
-                  $('#nav-link1').on('click',function(){
-  
-                      $('#nav-link1').addClass('active');
-                      $('#nav-link2').removeClass('active');
-  
-                  })
-                  $('#nav-link2').on('click',function(){
-  
-                    $('#nav-link2').addClass('active');
-                    $('#nav-link1').removeClass('active');
-  
-                    })
-                })
-              </script>
 
             <div class="card">
               <div class="card-header border-bottom" style="padding: 0;">
@@ -178,14 +169,7 @@
 				</c:when>
 				<c:otherwise>
                     <!-- 해당 th 내용대로 정렬기능 추가 -->
-                    <style>
-                    	.header_title{
-                    		font-size: 13px;
-                    	}
-                    
-                    </style>
-                    
-                    
+                  
                 	<tr id="order_tr">
                       <th></th>
                       
@@ -208,7 +192,7 @@
 					<c:forEach var="a" items="${ list }">
                     <tr class="detail_tr" onclick="location.href='${contextPath}/app/detail.do?docNo=${a.docNo}'" >
                       <td></td>
-                      <td onclick="event.stopPropagation();">
+                      <td onclick="event.stopPropagation();"> <!-- 이벤트 중지  -->
                         <input type="checkbox" class="deleteCheck_box"  value="${a.docNo}">
                       </td>
                       <td><span class="name_box">${a.memName }</span></td>
@@ -345,7 +329,8 @@
        window.location.href = '${contextPath}/app/box_complete.do?page=' + pNum;
  	}
      
-     
+      
+
      $(document).ready(function() {
     	    
      // check박스 이벤트함수
@@ -361,10 +346,6 @@
     	            $('#all_checkBox').prop('checked', false); 
     	        }
     	    });
-    	    
-    	    
-    	    
-    	    
     	    
     	    
     	    $('#select_formType1').change(function(){
@@ -387,15 +368,11 @@
       	  })
       	  
     	    
-    	     function rowClick(event, url) {
+    	  /*    function rowClick(event, url) {
     				// 추가적으로 필요하면 조건을 확인한 뒤 URL 이동
     				window.location.href = url;
   			}
-    	    
-    	    
-    	    
-    	    
-    	    
+    	     */
     	    
    			// 체크한 기안서들 삭제
     	    $('#delete_icon').on('click',function(){
@@ -432,82 +409,54 @@
     	    		});
 	    	    	
     	    	}
-    	        
-    	      
+
     	    	
-    	    	
-    	    	
-    	    }
-    	        
-    	       
-    	    	
-    	    	
-    	    	
-    	    	
+    	   	   }
+
     	    })
-      	
     	    
     	    
-    	    
-    	    
-    	    
-    	    
-    	    
-    	    
-    	    
-    	    
+    	 // 사이드바 처리
+    		document.addEventListener("DOMContentLoaded", function () {
+    	  	
+    			const element = document.getElementById("app_box_active");
+    			
+    	  	document.getElementById("app_main_active").classList.add("open");
+    	  	element.style.backgroundColor = "#958CF4";
+    	  	element.style.color = "white";
+    	  	element.classList.add("active");
+    	  	
+    	  	
     	});
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
+    	     
+    	
+    	     
+    	     
+    	     
+    	 $('#nav-link1').on('click',function(){
+    	    	 
+                 $('#nav-link1').addClass('active');
+                 $('#nav-link2').removeClass('active');
+
+          })
+         $('#nav-link2').on('click',function(){
+
+            $('#nav-link2').addClass('active');
+            $('#nav-link1').removeClass('active');
+
+          })
+    	     
+  
+   	});
+  
      
  </script>
 
 
-
-
-
-
-
-
-						<!-- Session End -->
     
     
-    
-    
-    
-    
-    </div>
+ </div>
    <!-- 세션 끝 -->
-   
-   
-   
-     <script>
-     // 사이드바 처리
-		document.addEventListener("DOMContentLoaded", function () {
-	  	
-			const element = document.getElementById("app_box_active");
-			
-	  	document.getElementById("app_main_active").classList.add("open");
-	  	element.style.backgroundColor = "#958CF4";
-	  	element.style.color = "white";
-	  	element.classList.add("active");
-	  	
-	  	
-		});
-        
-        
-        </script>
-
 
 
    <!-- 푸터 시작 -->

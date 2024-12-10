@@ -22,8 +22,6 @@ function jstreeRendering(jstreeView, theme, nodeData){
 		
       },
 	  
-	  
-	  
       plugins: ['types', 'dnd'],
       types: {
         default: {
@@ -48,7 +46,7 @@ function jstreeRendering(jstreeView, theme, nodeData){
 
 
 $(function () {
-  var theme = $('html').hasClass('light-style') ? 'default' : 'default-dark',
+  var theme = $('html').hasClass('light-style') ? 'default' : 'default-dark', // 화이트모드 ,다크모드
   dragDrop = $('#jstree-drag-drop'),
   dragDrop2 = $('#jstree-drag-drop2');
   
@@ -90,8 +88,6 @@ $(function () {
 			nodeData.push(deptObj);
 			
 		}
-		
-		
 		
 		jstreeRendering(dragDrop, theme,nodeData ); // 참조선 jstree 렌더링
 		jstreeRendering(dragDrop2, theme,nodeData);// 결재선 jstree 렌더링

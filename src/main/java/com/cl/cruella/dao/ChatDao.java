@@ -214,6 +214,10 @@ public class ChatDao {
 	public List<MemberDto> chatMemName(ChatDto cd) {
 		return sqlSession.selectList("chatMapper.chatMemName",cd);
 	}
+
+	public String writerUrl2(ChatDto chatDt) {
+		return sqlSession.selectOne("chatMapper.writerUrl2",chatDt);
+	}
 	
 
 }

@@ -189,10 +189,6 @@
 														<label for="posCode" class="form-label">직급</label> <select
 															id="posCode" name="posCode" class="select form-select">
 															<option value="">선택</option>
-															<option value="C1"
-																${member.posCode == 'C1' ? 'selected' : ''}>점장</option>
-															<option value="C2"
-																${member.posCode == 'C2' ? 'selected' : ''}>부점장</option>
 															<option value="C3"
 																${member.posCode == 'C3' ? 'selected' : ''}>부장</option>
 															<option value="C4"

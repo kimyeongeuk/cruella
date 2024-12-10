@@ -127,6 +127,7 @@
      join position p using(pos_code)
 		where dept_code = #{deptCode}
           and mem_no != #{memNo}
+          and status != 'N'
 	</select>
 	
 	<!-- 등록된 메일 여부 확인(김동규) -->
