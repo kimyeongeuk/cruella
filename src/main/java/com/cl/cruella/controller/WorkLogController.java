@@ -34,23 +34,23 @@ public class WorkLogController {
 	private final MemberService memberService;
 
 
-	// 출근
+	// 출근(김동규)
 	@PostMapping("/clockIn.do")
 	@ResponseBody
 	public String clockIn(WorkLogDto workLog, HttpSession session) {
 		
 		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
 	    
-	    int result = wlService.clockIn(workLog);
+	    int result = wlService.clockIn(workLog); // 출근 정보 등록
 	    
+	    // 등록된 출근 정보를 포함하여 세션에 업데이트
 	    MemberDto m = memberService.selectMember(loginUser);
-	    
 	    session.setAttribute("loginUser", m);
 		
 		return workLog.getClockInTime();
 	}
 	
-	// 퇴근
+	// 퇴근(김동규)
 	@PostMapping("/clockOut.do")
 	@ResponseBody
 	public String clockOut(WorkLogDto workLog, HttpSession session) {
@@ -58,13 +58,14 @@ public class WorkLogController {
 		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
 		
 		String clockInTime = wlService.selectClockInTime(workLog.getMemNo()); // 출근 시간 가져오기
-		String clockOutTime = workLog.getClockOutTime();
+		String clockOutTime = workLog.getClockOutTime();					  // 퇴근 시간 가져오기
 		
 	    int coHour = Integer.parseInt(clockOutTime.split(":")[0]); // 퇴근 시간 ??시 추출
 	    int ciHour = Integer.parseInt(clockInTime.split(":")[0]);  // 출근 시간 ??시 추출
 		
-	    workLog.setWorkTime(coHour - ciHour); // 오늘의 근무 시간 저장
+	    workLog.setWorkTime(coHour - ciHour); // 오늘의 근무 시간 저장 (시간단위)
 	    
+	    // 출퇴근 시간을 활용하여 근태 상태 변경
 		if(coHour < 18) { // 조퇴
 			
 			workLog.setStatus("E");
@@ -81,7 +82,8 @@ public class WorkLogController {
 			int result = wlService.clockOut(workLog);
 			
 		}
-		// 세션에 출근 상태 업데이트
+		
+		// 변경된 근태 상태를 포함하여 세션에 업데이트
 		loginUser.setWlStatus(workLog.getStatus());
 	    session.setAttribute("loginUser", loginUser);
 	    
@@ -89,21 +91,19 @@ public class WorkLogController {
 		
 	}
 	
-	// 근태기록조회
+	// 근태기록조회(김동규)
 	@PostMapping("/loadWorkLog.do")
 	@ResponseBody
 	public List<CalendarDto> loadWorkLog(String memNo){
 		
-		List<CalendarDto> list = wlService.loadWorkLog(memNo);
+		List<CalendarDto> list = wlService.loadWorkLog(memNo); //근태기록(출퇴근시간 조회)
 		
 		return list;
 	}
 	
-	// 결근자 확인후 결근처리(스케줄러)
+	// 스케줄러 활용 결근처리 (김동규)
 	@Scheduled(cron="0 0 23 * * MON-FRI")
 	public void updateAbsences() {
-		
-		System.out.println("스케줄실행");
 		
 		wlService.updateAbsences(); // 결근자 update(출근기록 O, 퇴근기록 X)
 		wlService.insertAbsences(); // 결근자 insert(출근기록 X, 퇴근기록 X)

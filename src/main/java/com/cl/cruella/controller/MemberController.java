@@ -65,7 +65,7 @@ public class MemberController {
 	private final ChatServiceImpl chatServiceImpl;
 
 	
-	// 대쉬보드 포워딩
+	// 대시보드(김동규)
 	@GetMapping("/dashbord.do")
 	public String dashbordPage(HttpSession session) {
 		
@@ -73,49 +73,44 @@ public class MemberController {
 		
 		MemberDto loginUser = memberService.selectMember(m);
 		
+		session.setAttribute("loginUser", loginUser); // 세션에 담긴 유저정보 업데이트
 		
-		session.setAttribute("loginUser", loginUser);
 		return "redirect:/";
-		
-		
 	}
 	
 	
 	
 	// 로그인(김동규)
 	@PostMapping("/signin.do")
-	public String signin(MemberDto m
+	public String signin(MemberDto m 	// memNo = '입력한 아이디', memPwd = '입력한 비밀번호'
 								 , HttpSession session
 								 , HttpServletResponse response
-								 , HttpServletRequest request) throws IOException {	// memNo = '입력한 아이디', memPwd = '입력한 비밀번호'
+								 , HttpServletRequest request) throws IOException {	
 		
 		MemberDto loginUser = memberService.selectMember(m);
 		List<AlertDto> alert = chatServiceImpl.alertList(loginUser);
+		
 		session.setAttribute("alert", alert);
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
-		// System.out.println(m.getMemPwd()); 			
-		// System.out.println(loginUser.getMemPwd());	 
 		
-		if(loginUser != null && bcryptPwdEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) {	// 추후에 암호화된 비밀번호도 함께 비교할 예정(완료)
+		if(loginUser != null && bcryptPwdEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) {	// 암호화된 비밀번호 일치 조회
 			
-			String signPath = loginUser.getSignPath();
+			// Base64 문자열 -> 바이너리 데이터
+			String dataUrl = "data:image/png;base64," + loginUser.getSignPath(); 
 			
-			String dataUrl = "data:image/png;base64," + signPath;
-			
-			loginUser.setSignPath(dataUrl); // 전자서명 경로 재인코딩
-			
+			// 주민번호 뒷자리 '*'처리
 			String maskedSSN = loginUser.getMemSSN();
+			maskedSSN = maskedSSN.substring(0, maskedSSN.length() - 6) + "******"; 
 			
-			maskedSSN = maskedSSN.substring(0, maskedSSN.length() - 6) + "******";
-			loginUser.setMemSSN(maskedSSN);
-			  
-			session.setAttribute("loginUser", loginUser); // 세션에 로그인 한 회원 정보 담기
+			loginUser.setSignPath(dataUrl); // 전자서명 세션에 업데이트
+			loginUser.setMemSSN(maskedSSN); // 주민번호 '*'처리 후 전달
+			session.setAttribute("loginUser", loginUser); // 세션에 업데이트된 회원 정보 담기
 			
 			
-			if(loginUser.getStatus().equals("A")) {	// 비밀번호 변경이 필요한 회원일 경우 변경 화면으로 (첫 로그인, 임시 비번 발급)
-				return "/member/resetPwd";
+			if(loginUser.getStatus().equals("A")) {	// 비밀번호 변경이 필요한 경우
+				return "/member/resetPwd";			// 비밀번호 변경 페이지로
 			}
 			
 			return "/dashboard";
@@ -133,7 +128,7 @@ public class MemberController {
 	@PostMapping("/logout.do")
 	public String logout(HttpSession session, HttpServletRequest request) {
 		
-		session.invalidate();
+		session.invalidate(); // 세션 초기화
 		
 		return "redirect:/";
 		
@@ -143,10 +138,8 @@ public class MemberController {
 	// 비밀번호변경(김동규)
 	@PostMapping("/resetPwd.do")
 	public String newPwdCheck(String newPwd, String memNo, HttpServletResponse response) throws IOException {
-		
-		
 
-		int result = memberService.resetPwd(bcryptPwdEncoder.encode(newPwd), memNo); // 비밀번호 변경 실행
+		int result = memberService.resetPwd(bcryptPwdEncoder.encode(newPwd), memNo); // 비밀번호 변경 실행 (암호화)
 		
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
@@ -161,35 +154,34 @@ public class MemberController {
 		return "/";
 	}
 
-
-	
-
+	 // 마이페이지 - 내정보 페이지로(김동규)
 	 @GetMapping("/myinfo.do")
 	 public void myinfo() {}
 	 
-	 // 나의 팀 전체 리스트 조회(김동규)
+	 // 소속 팀 전체 리스트 조회(김동규)
 	 @PostMapping("/teamList.do")
 	 @ResponseBody
 	 public List<MemberDto> teamList(MemberDto m) {
 		 
 		 List<MemberDto> list = memberService.selectTeamList(m);
 		 
-		 // System.out.println(list);
-		 
 		 return list;
-		 
 	 }
 	 
 	 @GetMapping("/findPwd.do")
 	 public void findPwd() {};
+	 
 	 
 	 // 임시 비밀번호 발급(김동규)
 	 @PostMapping("/sendCode.do")
 	 @ResponseBody
 	 public String sendCode(String email) {
 		 
-		 /* https://velog.io/@hellocdpa/220319-%EC%9E%84%EC%8B%9C%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8-
-		 %EC%9D%B4%EB%A9%94%EC%9D%BC%EB%A1%9C-%EB%B3%B4%EB%82%B4%EB%8A%94-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84 */	// SMTP 참고 블로그
+		 /* SMTP(GMAIL) 참고 블로그
+		  * https://velog.io/@hellocdpa/220319-%EC%9E%84%EC%8B%9C%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8-
+		  * %EC%9D%B4%EB%A9%94%EC%9D%BC%EB%A1%9C-%EB%B3%B4%EB%82%B4%EB%8A%94-%EA%B8%B0%EB%8A%A5-
+		  * %EA%B5%AC%ED%98%84
+		  */
 		 
 		 // 1) 사용자가 입력한 이메일이 등록 되어있는지 
 		 	MemberDto m = memberService.checkEmail(email); // 등록된 이메일이 있는지 조회
@@ -200,36 +192,35 @@ public class MemberController {
 			 
 		 	// 임시 비밀번호 생성
 		 		char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', 'A', 'B', 'C', 'D', 'E' };
-			 
 		 		String str = "";
-			 
 		 		int idx = 0;
 			 
 		 		for (int i = 0; i < 7; i++) {
 				 idx = (int) (charSet.length * Math.random());
 				 str += charSet[idx];
 		 		}
-
-			 memberService.updatePwd(email, bcryptPwdEncoder.encode(str));	// 임시 비밀번호로 변경
+		 		
+		 	// 임시 비밀번호로 변경 (암호화)
+			 memberService.updatePwd(email, bcryptPwdEncoder.encode(str));	
 		     
 		 // 3) 메일 발송
 			 SimpleMailMessage message = new SimpleMailMessage();	
 			 
+			 // 메일 내용
 			 message.setTo(email);
 			 message.setSubject("Cruella 임시 비밀번호 발급 메일입니다.");
 			 message.setText("안녕하세요. 요청하신 임시비밀번호 안내 메일입니다. 회원님의 임시 비밀번호는  " + str + "  입니다."
-	 					+ "해당 번호로 로그인 후 새로운 비밀번호로 변경 해주세요.");
+	 					+ " 해당 번호로 로그인 후 새로운 비밀번호로 변경 해주세요.");
 			 message.setFrom("hiwinter99@gmail.com");
 			 message.setReplyTo("hiwinter99@gmail.com");
-			 mailSender.send(message);
 			 
+			 mailSender.send(message); // 담아놓은 메일 내용 발송
 			 
 			 return "YYY";
 			 
-		 }else {	// 등록된 이메일이 없을 경우
+		 }	else {	// 등록된 이메일이 없을 경우
 			 return "NNN";
 		 }
-		 
 		 
 	 }
 	 
@@ -247,19 +238,17 @@ public class MemberController {
 	 @ResponseBody
 	 public String saveSign(MemberDto m, HttpSession session) {
 		 
-		 // Base64 데이터 추출
+		 // Base64 인코딩
 		 String base64Data = m.getSignPath().split(",")[1];
-
-		 
 		 m.setSignPath(base64Data);
-		 	
-		 int result = memberService.saveSignPath(m);
 		 
-		 if(result > 0) {
+		 int result = memberService.saveSignPath(m); // 전자서명 저장
+		 
+		 if(result > 0) { // 저장 성공시
 			 
-	         // 세션의 loginUser의 signPath 업데이트
+	         // 세션내의 유저정보(저장 혹은 변경된 전자서명) 업데이트
 	         MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
-	         loginUser.setSignPath("data:image/png;base64," + base64Data);
+	         loginUser.setSignPath("data:image/png;base64," + base64Data); // 원본 데이터로 디코딩
 	         session.setAttribute("loginUser", loginUser);
 		 
 			 return "YYY";
@@ -269,31 +258,28 @@ public class MemberController {
 		 
 	 }
 	 
-	 // 근태관리 탭 클릭
+	 // 마이페이지 - 근태관리 페이지로(김동규)
 	 @GetMapping("/myinfo_workLog.do")
 	 public void myinfoWorkLog(HttpSession session, Model model) {
 		 
 		 MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
-		 
-		 String memNo = loginUser.getMemNo();	
+		 String memNo = loginUser.getMemNo();
 			
-		 List<WorkLogDto> list = wlService.allWorkTime(memNo);
+		 List<WorkLogDto> list = wlService.allWorkTime(memNo); // 해당 유저의 출퇴근 기록 조회
 		 model.addAttribute("wlList", list);
 		 
 		 MemberDto m = memberService.selectMember(loginUser);
 		 session.setAttribute("loginUser", m);
 	 }
 	 
-	 // 내정보 - 팀게시판리스트 조회
+	 // 소속팀 게시판 리스트 조회(김동규 - 재운님 코드 활용)
 	 @PostMapping("/boardList.do")
 	 @ResponseBody
      public Map<String, Object> boardList(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session) {
 		 
          MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
-
          String deptCode = loginUser.getDeptCode();
         
-
          int listCount = boardService.selectBoardListCount(deptCode);
 
          PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 10);
@@ -305,12 +291,10 @@ public class MemberController {
          List<BoardDto> list = boardService.selectBoardList(params);
          params.put("list", list);
 
-         
-
          return params;
      }
 	 
-	 // 대시보드 - 공지사항 조회
+	 // 공지사항 조회 (김동규 - 재운님 코드 활용)
 	 @PostMapping("/noticeList.do")
 	 @ResponseBody
 	 public Map<String, Object> noticeList(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model, HttpSession session){
@@ -335,13 +319,12 @@ public class MemberController {
          return params;		 
 	 }
 	 
-	 
-	 // 내 결재 문서함 조회
+	 // 내 결재 문서함 조회(김동규)
 	 @PostMapping("/selectAppList.do")
 	 @ResponseBody
 	 public Map<String, Integer> selectAppList(String memNo) {
 		 
-	     // 상태별 개수를 저장할 Map
+	     // 상태별 개수 저장
 	     Map<String, Integer> statusCounts = new HashMap<>();
 	     statusCounts.put("A", appService.selectStandbyCount(memNo));  // 대기
 	     statusCounts.put("B", appService.selectProgressCount(memNo)); // 진행
@@ -350,27 +333,25 @@ public class MemberController {
 	     return statusCounts;
 	 }
 	 
-	 // 휴가 신청 목록 조회
+	 // 휴가신청 목록 조회(김동규)
 	 @PostMapping("/vacList.do")
 	 @ResponseBody
 	 public Map<String, Object> selectVacList(String memNo, @RequestParam(value = "page", defaultValue = "1") int currentPage, Model model) {
 		 
-		 
-		 int listCount = memberService.selectVacListCount(memNo);
-		 
+		 // 페이징에 활용
+		 int listCount = memberService.selectVacListCount(memNo); // 목록의 전체 개수
 		 PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 10, 5);
 		 
          Map<String, Object> params = new HashMap<>();
          params.put("pi", pi);
          params.put("memNo", memNo);
-         
 
          List<AppdocDto> list = memberService.selectVacList(params);
          params.put("list", list);
          return params;
 	 }
 	 
-	 // 부서명 조회
+	 // 부서명 조회(김동규)
 	 @PostMapping("/getDeptList.do")
 	 @ResponseBody
 	 public List<DeptDto> getDeptList() {
@@ -380,12 +361,13 @@ public class MemberController {
 		 return list;
 	 }
 	 
+	 // 전체 사원 조회(김동규)
 	 @PostMapping("/selectAll_db.do")
 	 @ResponseBody
 	 public List<MemberDto> selectAllMember(String memNo, String deptName) {
 		 
-		 
-		 if(deptName == null || deptName.trim().isEmpty()) {
+		 // 선택된 부서명에 포함된 유저 전체 조회
+		 if(deptName == null || deptName.trim().isEmpty()) { // 선택된 부서명이 없을경우 전체 조회
 			 List<MemberDto> list = memberService.selectAllMember(memNo);
 			 
 			 return list;

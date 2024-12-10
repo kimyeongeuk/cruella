@@ -133,17 +133,12 @@
 		
 			
 			$(function(){
-				
 			
-			// 
 			$("#checkNewPwd").on("keyup", function(){
 				
 				let newPwd = $("#newPwd").val();							// 입력한 비번 값
 				let checkNewPwd = $("#checkNewPwd").val();		// 입력한 비번 확인 값
-				
-				// console.log(newPwd);
-				// console.log(checkNewPwd);
-				
+
 				if(newPwd === checkNewPwd && checkNewPwd !== "") {	// 두 값이 일치할 때
 					
 					checkPwdResult = true;
@@ -158,11 +153,10 @@
 					
 				}
 				
-				btnControl();
+				btnControl(); // 비밀번호 변경 버튼 처리
 				
 				})
 			})
-			
 		
 		</script>
 

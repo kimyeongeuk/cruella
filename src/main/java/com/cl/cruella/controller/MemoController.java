@@ -21,48 +21,37 @@ public class MemoController {
 	
 	private final MemoService memoService;
 	
-	// 메모 전체 리스트 조회(사번기준)
-	// 김동규
+	// 해당 유저의 메모 전체 조회(김동규)
 	@PostMapping("/memoList.do")
 	@ResponseBody
 	public List<MemoDto> memoList(String memNo) {
 		
-		
 		List<MemoDto> list = memoService.selectMemoList(memNo);	// 사번을 활용 -> 모든 메모 정보 조회
-		
 		
 		return list;
 	}
 	
-	// 메모 작성
-	// 김동규
+	// 메모 등록(김동규)
 	@PostMapping("/insertMemo.do")
 	@ResponseBody
 	public int insertMemo(MemoDto memo) {
 		
-		//System.out.println(memo);
-		
 		int result = memoService.insertMemo(memo);
 		
 		return result;
-		
 	}
 	
-	// 메모 조회 (메모번호로)
-	// 김동규
+	// 메모 상세조회
 	@PostMapping("/selectMemo.do")
 	@ResponseBody
 	public MemoDto selectMemo(int memoNo) {
 		
-		MemoDto memo = memoService.selectMemoByNo(memoNo);
-		
-		// System.out.println(memo);
+		MemoDto memo = memoService.selectMemoByNo(memoNo); // 메모 고유번호 활용 -> 해당 메모 상세조회
 		
 		return memo;
 	}
 	
-	// 메모 수정
-	// 김동규
+	// 메모 수정(김동규)
 	@PostMapping("/modifyMemo.do")
 	@ResponseBody
 	public int modifyMemo(MemoDto memo) {
@@ -70,28 +59,21 @@ public class MemoController {
 		MemoDto m = memoService.selectMemoByNo(memo.getMemoNo());
 		String before = m.getMemoContent(); 	// 수정 전 메모내용
 		
-		String after = memo.getMemoContent();  // 수정 후 메모내용
-		
-		 // System.out.println( " 수정요청 전_____ " + before);
-		 // System.out.println(" 수정요청 후_____ " + after); // 수정 후 메모내용
+		String after = memo.getMemoContent();   // 수정 후 메모내용
 		
 		int result = 0;
-		if(!before.equals(after)) {
+		if(!before.equals(after)) { // 내용이 변경 되었을 경우
 			
 			result = memoService.modifyMemo(memo);
-			
 		}
 		
 		return result;
-		
 	}
 	
-	// 메모삭제
-	// 김동규
+	// 메모삭제(김동규)
 	@PostMapping("/deleteMemo.do")
 	@ResponseBody
 	public String deleteMemo(int memoNo) {
-		
 		
 		memoService.deleteMemo(memoNo);
 		
