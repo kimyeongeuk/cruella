@@ -305,12 +305,6 @@
 	                  </div>
 									
 
-
-
-
-
-
-
                   <!-- 전자서명 등록영역 -->
                   <div class="card mb-6">
                     <div class="card-body">
@@ -382,108 +376,92 @@
                     </div>
                   </div>
 
-                  <!-- 전자서명 스크립트 -->
-                  <script>
+	<!-- 전자서명 스크립트 -->
+	<script>
+         
+		// 전자서명 영역에 기존에 등록된 서명 보이게
+		function fnLoadSign(){
+			
+			const signPath = '${loginUser.getSignPath()}';
+			$('#sign_image').attr('src', signPath);
+			
+		}
+	
+		$(document).ready(function(){
+			
+			const canvas = document.getElementById("canvas");
+			const context = canvas.getContext("2d");  
+			let drawing = false; // 서명 그리는 동안 -> true
 
-                  
-                  function fnLoadSign(){
-                	  
-                	  const signPath = '${loginUser.getSignPath()}';
-                	  
-                	  
-                	  $('#sign_image').attr('src', signPath);
-                	  
-                  }
-                  	
-												
-												
-											$(document).ready(function(){
-												
-												
-                        const canvas = document.getElementById("canvas");
-                        const context = canvas.getContext("2d");  
-                        let drawing = false;
+			
+			// 서명 작성 시작
+			$('#canvas').on('mousedown',function(){
+				drawing = true;
+				context.beginPath();
+			});
 
-                      $('#canvas').on('mousedown',function(){
-                        drawing = true;
-                        context.beginPath();
-                      });
+			// 서명 작성 진행
+			$('#canvas').on('mousemove',function(event){
+			  
+				if(!drawing) return; // 마우스 클릭을 뗐을때 그리기 종료
+				
+				const x = event.clientX - canvas.getBoundingClientRect().left;
+				const y = event.clientY - canvas.getBoundingClientRect().top;
+				context.lineTo(x,y);
+				context.stroke();
+			
+			});
 
-                      $('#canvas').on('mousemove',function(event){
-                        
-                        if(!drawing) return;
+			// 서명 작성 종료
+			$('#canvas').on('mouseup',function(){
+			  
+				drawing = false;
+				context.closePath();
+			
+			});
 
-                        const x = event.clientX - canvas.getBoundingClientRect().left;
-                        const y = event.clientY - canvas.getBoundingClientRect().top;
-                        context.lineTo(x,y);
-                        context.stroke();
+			// 초기화버튼 클릭시
+			$('#clear_btn').on('click',function(){
+				context.clearRect(0, 0, canvas.width, canvas.height);
+			});
 
-                      });
-
-                      $('#canvas').on('mouseup',function(){
-                        
-                        drawing = false;
-                        context.closePath();
-
-                      });
-
-                      $('#clear_btn').on('click',function(){
-                        context.clearRect(0, 0, canvas.width, canvas.height);
-                      });
-
-                      
-                      $('#sign_save_btn').on('click',function(){
-                    	  
-                        const signPath = canvas.toDataURL();
-                        
-                        $('#sign_image').attr('src', signPath);
-                        
-                        const memNo = '${loginUser.getMemNo()}';
-                        
-                        
-                        // DB에 저장(김동규)
-                        $.ajax({
-                        	url: '${contextPath}/member/saveSign.do',
-                        	type: 'POST',
-                        	data: {
-                        		signPath: signPath,
-                        		memNo: memNo
-                        		},
-                        	success: function(res){
-                        		if(res == 'YYY'){
-	                        		alert('전자서명이 등록되었습니다.');
-
-	                        		window.reload();
-                        		}else{
-	                        		alert('전자서명 등록에 실패했습니다. 다시 시도해주세요.');
-                        		}
-                        	}
-                        })
-                        
-                        
-                      });
-                      
-                      
-                      
-									})
-                      
-
-                  </script>
-                  <!-- /전자서명 등록영역 -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	    // 저장버튼 클릭시
+			$('#sign_save_btn').on('click',function(){
+			 
+				const memNo = '${loginUser.getMemNo()}';
+				const signPath = canvas.toDataURL();	// 캔버스의 내용 -> 데이터URL(이미지데이터를 Base64로 인코딩한 문자)로 변환
+				
+				$('#sign_image').attr('src', signPath);
+			  
+			  
+			  $.ajax({
+			  	url: '${contextPath}/member/saveSign.do',
+			  	type: 'POST',
+			  	data: {
+			  		signPath: signPath,
+			  		memNo: memNo
+			  		},
+			  	success: function(res){
+			  		
+			  		if(res == 'YYY'){
+				   		alert('전자서명이 등록되었습니다.');
+				
+				   		window.reload(); // 수정 했을 경우 수정된 서명이 보이도록
+			   		
+			  		}else{
+			   			alert('전자서명 등록에 실패했습니다. 다시 시도해주세요.');
+			   		
+			  		}
+			  	}
+			  })
+			  
+			});
+             
+             
+	  })
+	</script>
+	
+  <!-- 전자서명 스크립트 -->  
 
                   <!--/ Profile Overview -->
                 </div>
@@ -670,11 +648,12 @@
 	   			success: function(res) {
 	   			    let liEl = "<ul class='list-unstyled mb-2'>";
 
-	   			    if (res.length == 0) {
-	   			        // 메모가 없으면 문구 추가
+	   			    if (res.length == 0) {	// 메모가 없을 경우 보여질 문구 추가
+	   			        
 	   			        liEl += "<li class='text-center'>등록된 메모가 없습니다.</li>";
-	   			    } else {
-	   			        // 메모가 있을 경우 목록 추가
+	   			        
+	   			    } else {	// 메모가 있을 경우 목록 추가
+	   			        
 	   			        for (let i = 0; i < res.length; i++) {
 	   			            liEl += "<li class='d-flex align-items-center pt-5 pb-5 mt-3' id='memoList'>"
 	   			                    + "<span class='fw-medium mx-2' onclick='fnSelectMemo(" + res[i].memoNo + ");'>" + res[i].memoContent + "</span>"
@@ -693,14 +672,14 @@
 	   			    $('#memoDiv').html(liEl);
 	   			}
 
-	   	})	
+	   	})
    	}
     
     // 메모작성 아이콘 클릭 시 열리는 새 메모 작성 모달(김동규)
     function fnOpenMemoModal(){
+    	
       var memoModal = new bootstrap.Modal(document.getElementById("insertMemoModal"));
 
-			
       memoModal.show();
 
     }
@@ -722,6 +701,7 @@
 		    	$('#insertMemoInput_edit').val(res.memoContent);
 		    	$('#modifyMemoNo').val(res.memoNo);
     		}
+    		
     	})
     	
     }
@@ -738,7 +718,6 @@
  	       $('#selectMemoModal').modal('hide');
  	        
  	       return;
- 	       
     	   }
     	
     	$.ajax({
@@ -762,14 +741,14 @@
     // 메모 삭제
     function fnDeleteMemo(memoNo){
     	
-    	
     	$.ajax({
     		url: '${contextPath}/memo/deleteMemo.do',
     		type: 'POST',
     		data: {memoNo: memoNo},
     		success: function(res) {
+    			
     			fnMemoList();	// 삭제 후 전체 리스트 조회 재실행
-    	    	
+    	    
     		}
     		
     	})
@@ -791,7 +770,9 @@
     			memoContent: memoContent
     			},
     		success: function(res){
+    			
     			fnMemoList();	// 수정 후 전체 리스트 조회 재실행
+    			
     		}
     	})
     }
@@ -891,6 +872,7 @@
     		}
     	})
     }
+    
     function goToPage(pageNumber) {
         window.location.href = "${contextPath}/member/boardList.do?page=" + pageNumber;
       }
