@@ -73,7 +73,6 @@ public class MemberController {
 		
 		MemberDto loginUser = memberService.selectMember(m);
 		
-		
 		session.setAttribute("loginUser", loginUser);
 		return "redirect:/";
 		
