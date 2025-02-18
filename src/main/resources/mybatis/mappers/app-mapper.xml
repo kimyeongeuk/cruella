@@ -4,8 +4,8 @@
 
 
 
-
-<resultMap id="deptResultMap" type="DeptDto">
+<!-- jstree 용 -->
+<resultMap id="deptResultMap" type="DeptDto"> 
 	<result column="DEPT_CODE" property="deptCode"/>
   	<result column="DEPT_NAME" property="deptName"/>
   	
@@ -19,7 +19,7 @@
 
 
 
-
+<!-- 부서조회용 -->
 <resultMap  id="deptDtoResultSmall" type="DeptDto">
 	<result column="mem_name" property="memName"/>
 	<result column="dept_name" property="deptName"/>
@@ -28,7 +28,7 @@
 </resultMap>
 
 
-
+<!-- 참조용 -->
 <resultMap  id="selectStandbyResult" type="AppdocDto">
 	<result column="mem_name" property="memName"/>
 	<result column="doc_no" property="docNo"/>
@@ -42,7 +42,7 @@
 </resultMap>
 
 
-	  
+<!-- 상세페이지용  -->
 <resultMap  id="detailSelectAppdoc" type="AppdocDto">
 	<result column="mem_name" property="memName"/>
 	<result column="mem_no" property="memNo"/>
@@ -65,7 +65,7 @@
 </resultMap>
 
 
-
+<!-- 상세페이지 결재선용 -->
 <resultMap  id="detailSelectRoval" type="AppRovalDto">
 	<result column="dept_name" property="deptName"/>
 	<result column="mem_name" property="memName"/>
@@ -74,6 +74,9 @@
 	<result column="sign_path" property="signPath"/>
 	<result column="app_status" property="appStatus"/>
 </resultMap>
+
+
+
 
 <!-- 알람 맵 -->
 <resultMap type="AlertDto" id="alertResultMap">
@@ -132,7 +135,7 @@
 
 
 
-<!-- 기안 insert -->
+<!-- 기안서 insert -->
 <insert id="insertApp">
 insert 
 into app_doc
@@ -426,7 +429,7 @@ select
 
 </select>
 
-<!-- 진행리스트 -->
+<!-- 진행리스트 페이징용 -->
 <select id="selectProgressCount" resultType="_int">
 select 
        count(*)
@@ -468,7 +471,7 @@ select
 
 </select>
 
-<!-- 완료리스트 카운트 -->
+<!-- 완료리스트 페이징용 -->
 <select id="selectSuccessCount" resultType="_int">
 select count(*)
        

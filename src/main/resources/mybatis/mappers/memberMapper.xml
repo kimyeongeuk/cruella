@@ -284,6 +284,8 @@ where substr(mem_no, 2, 4) = to_char(sysdate, 'YYYY')
 			from app_doc
 		 where mem_no = #{memNo}
 		   and doc_type = '연차신청서'
+		 order
+		    by doc_date desc
 	</select>
 	
 	<!-- 휴가내역조회 리스트갯수 -->

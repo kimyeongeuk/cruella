@@ -219,22 +219,12 @@ public class AppDao {
 	 
 	 
 	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
 	 // 연차신청서 최종 승인시 // 휴가테이블 insert / member 테이블 휴가일수 update
 	 public int vacation(AppdocDto ad) {
 		 return sqlSession.insert("appMapper.vacation",ad);
 	 }
 	 
+	 // 사원 휴가일수 업데이트
 	 public int memberVacation(AppdocDto ad) {
 		 return sqlSession.update("appMapper.memberVacation",ad);
 	 }
@@ -245,6 +235,13 @@ public class AppDao {
 	 
 	 
 	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 // 김영욱 // 알림관련
 	 // 결재자 사번 가져오기
 	public String appRovalNo(AppdocDto ad) {
 		return sqlSession.selectOne("appMapper.appRovalNo",ad);
