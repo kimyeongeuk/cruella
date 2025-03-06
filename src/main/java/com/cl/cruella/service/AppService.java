@@ -314,7 +314,7 @@ public class AppService {
 				AlertDto adDto = appDao.selectAlert();
 				ObjectMapper objectMapper = new ObjectMapper();
 				String cdJson = objectMapper.writeValueAsString(adDto); 
-				System.out.println("실행실행실행실행실행333333333333333333333333333");
+				/* System.out.println("실행실행실행실행실행333333333333333333333333333"); */
 				for(WebSocketSession wh : chatEchoHandler2.getSessionList()) {
 					if(((MemberDto)wh.getAttributes().get("loginUser")).getMemNo().equals(memNo)) {
 						wh.sendMessage(new TextMessage(cdJson));

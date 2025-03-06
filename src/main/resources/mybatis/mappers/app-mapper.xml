@@ -503,15 +503,6 @@ select count(*)
 
 
 
-
-
-
-
-
-
-
-
-
 <!-- 상세페이지 -->
 <!-- 기안문서조회 (상세페이지용) -->
 <select id="appdocDetailSelectAll" resultMap="detailSelectAppdoc">
@@ -557,11 +548,7 @@ select count(*)
           app_form_ann af on(af.doc_no = ad.doc_no)
  left join 
           app_form_coe ac on(ad.doc_no = ac.doc_no)
-
- 
- where ad.doc_no = #{docNo}
- and ad.status = 'Y'
-
+ where ad.doc_no = #{docNo} and ad.status = 'Y'
 </select>
 
 
